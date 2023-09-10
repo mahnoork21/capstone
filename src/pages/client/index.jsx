@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./client.module.css";
-import YoutubeEmbed from "@/shared-components/youtubeEmbed/YoutubeEmbed";
+import styles from "./styles.module.css";
+import YoutubeEmbed from "@/shared/client/youtubeEmbed/YoutubeEmbed";
 
 const Home = () => {
   return (

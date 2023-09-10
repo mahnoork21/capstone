@@ -6,8 +6,8 @@ const Header = () => {
   return (
     <section className={styles.header}>
       <section className={styles["header-top"]}>
-        <section className={styles["header- top__logo"]}>
-          <a href="/" className={styles["header-logo"]}>
+        <section className={styles["header-top__logo"]}>
+          <a href="/client" className={styles["header-logo"]}>
             <i>
               <strong>PUFI-2</strong>
             </i>

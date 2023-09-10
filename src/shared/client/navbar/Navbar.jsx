@@ -7,16 +7,18 @@ function Navbar() {
   const [showDialog, setShowDialog] = useState(false);
   const [redirectTo, setRedirectTo] = useState("");
 
-  const handleNavItemClick = (navItem, event) => {
-    event.preventDefault();
-    const currentPath = window.location.pathname;
-    if (currentPath === "/survey" || currentPath === "/surveyComplete") {
-      setShowDialog(true);
-      setRedirectTo(navItem);
-    } else {
-      window.location.href = navItem;
-    }
-  };
+  //TODO warning for user
+
+  // const handleNavItemClick = (navItem, event) => {
+  //   event.preventDefault();
+  //   const currentPath = window.location.pathname;
+  //   if (currentPath === "/survey" || currentPath === "/surveyComplete") {
+  //     setShowDialog(true);
+  //     setRedirectTo(navItem);
+  //   } else {
+  //     window.location.href = navItem;
+  //   }
+  // };
 
   const handleCancel = () => {
     setShowDialog(false);
@@ -48,20 +50,20 @@ function Navbar() {
   return (
     <section className={styles.navbar}>
       <Link
-        href="/"
-        onClick={(event) => handleNavItemClick("/", event)}
+        href="/client"
+        // onClick={(event) => handleNavItemClick("/", event)}
         className={styles["navbar-item"]}
       >
         Home
       </Link>
       <Link
-        href="/about"
-        onClick={(event) => handleNavItemClick("/about", event)}
+        href="/client/about"
+        // onClick={(event) => handleNavItemClick("/about", event)}
         className={styles["navbar-item"]}
       >
         About
       </Link>
-      <Link href="/survey" className={styles["navbar-item"]}>
+      <Link href="/client/survey" className={styles["navbar-item"]}>
         Survey
       </Link>
       {showDialog && (

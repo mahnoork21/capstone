@@ -1,7 +1,7 @@
-import Card from "../card/Card";
-import Footer from "../footer/Footer";
-import Header from "../header/Header";
-import styles from "./client.module.css";
+import Card from "../client/card/Card";
+import Footer from "../client/footer/Footer";
+import Header from "../client/header/Header";
+import styles from "./Client.module.css";
 
 const ClientLayout = ({ children }) => {
   return (
