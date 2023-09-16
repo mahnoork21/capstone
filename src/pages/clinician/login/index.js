@@ -1,5 +1,5 @@
-const Login = () => {
-  return <div>Login</div>;
-};
+const { default: Login } = require("./main");
 
-export default Login;
+const LoginPage = () => <Login />;
+
+export default LoginPage;

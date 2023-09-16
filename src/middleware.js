@@ -13,19 +13,11 @@ export function middleware(request) {
   if (!publicRoutes.includes(pathName) && pathName.includes("/clinician")) {
     const token = request.cookies.get("userToken");
 
-    console.log(token);
     if (!token) {
-      // const url = request.nextUrl.clone();
-      // url.pathname = "/clinician/login";
-      console.log("Redirecting", pathName);
-
       return NextResponse.redirect(new URL("/clinician/login", request.url));
     }
 
-    //check if there is a jwt token
-    //check if it is expired
-    //not valid -- redirect to login
-    //valid -- redired to dashboard
+    //TODO: check if it is expired
   }
   return NextResponse.next();
 }
