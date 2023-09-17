@@ -8,12 +8,6 @@ const ClientLayout = ({ children }) => {
     <Card>
       <Header />
       {children}
-      {/* <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/survey" element={<Survey />} />
-      <Route path="/surveyComplete" element={<SurveyComplete />} />
-    </Routes> */}
       <Footer />
     </Card>
   );
