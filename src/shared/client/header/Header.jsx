@@ -10,7 +10,8 @@ const Header = () => {
     <MainContainer>
       <HeaderContainer>
         <span>PUFI-2</span>
-        <HeaderButton variant="outlined">SAVE AND EXIT</HeaderButton>
+        <Navbar />
+        {/* <HeaderButton variant="outlined">SAVE AND EXIT</HeaderButton> */}
       </HeaderContainer>
     </MainContainer>
   );

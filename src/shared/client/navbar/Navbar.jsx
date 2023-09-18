@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SurveyIncomplete from "../surveyIncomplete/surveyIncomplete";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
+import { HeaderButton } from "../header/styled";
 
 function Navbar() {
   const [showDialog, setShowDialog] = useState(false);
@@ -63,8 +64,9 @@ function Navbar() {
       >
         About
       </Link>
+
       <Link href="/client/survey" className={styles["navbar-item"]}>
-        Survey
+        <HeaderButton variant="outlined">START SURVEY</HeaderButton>
       </Link>
       {showDialog && (
         <SurveyIncomplete
