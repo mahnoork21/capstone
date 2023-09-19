@@ -1,4 +1,4 @@
-import ClientHome from "./main";
+import ClientHome from "../../scene/client";
 
 const ClientHomePage = () => <ClientHome />;
 
