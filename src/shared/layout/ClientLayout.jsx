@@ -1,15 +1,18 @@
-import Card from "../client/card/Card";
-import Footer from "../client/footer/Footer";
+import Footer from "../client/footer";
 import Header from "../client/header/Header";
-import styles from "./Client.module.css";
+import { CurvedBackground, PageWrapper } from "./client-shared";
+import ClientProviders from "./ClientProviders";
 
 const ClientLayout = ({ children }) => {
   return (
-    <Card>
-      <Header />
-      {children}
-      <Footer />
-    </Card>
+    <ClientProviders>
+      <PageWrapper>
+        <Header />
+        <CurvedBackground />
+        {children}
+        <Footer />
+      </PageWrapper>
+    </ClientProviders>
   );
 };
 

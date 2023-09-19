@@ -106,6 +106,33 @@ a {
   }
 } */
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,500&family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --max-width: 1024px;
+
+  /* Colors */
+  --primary-green: #3A9034;
+  --primary-blue: #1979BE;
+
+  --pufi-grey: #D9D9D9;
+  --pufi-grey-light: #F2F2F2;
+  --pufi-grey-dark: #A8A8A8;
+
+  --pufi-black: #333333;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Open Sans";
+  line-height: 1.5 !important;
+}
+
 .App {
   text-align: center;
 }
@@ -146,5 +173,5 @@ a {
 }
 
 body {
-  background-color: #4f9c69;
+  background-color: var(--pufi-grey-light);
 }
