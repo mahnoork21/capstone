@@ -15,6 +15,7 @@ const ClientHome = () => {
           clinicians about the functional use of a prosthetic device at home, at
           school, and in the community.
         </p>
+
         <p>
           Responses to these questions provide clinicians with meaningful
           information that can be used for prosthetic treatment planning and
