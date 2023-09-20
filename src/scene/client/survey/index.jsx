@@ -1,6 +1,6 @@
 import MainContainer from "@/shared/components/main-container";
 import { PufiFormControlLabel, SurveyContainer } from "./styled";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import SurveyProvider, { SurveyContext } from "./context";
 import { youngChildSurvey } from "@/utils/youngChildSurvey";
 import { StyledFormControlLabel } from "./components/option/styled";
@@ -13,19 +13,20 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
-import { answerFormat } from "./helper/surveyHelper";
 import { isNullOrUndefined } from "@/utils/utils";
+import { youngChildActivity } from "@/utils/youngChildActivity";
 
 const SurveyContent = () => {
-  const { currentActivity, updateAnswer } = useContext(SurveyContext);
+  const { currentQuestionIndex, currentAnswer, updateAnswer } =
+    useContext(SurveyContext);
+  const currentActivity = youngChildActivity[currentQuestionIndex];
+  const [steps, setSteps] = useState();
 
   const getResponseForQuestion = (questionId) => {
-    const activityId = currentActivity.id;
-    console.log("== Activity Id ==", currentActivity, activityId);
-    const responses = answerFormat.find(
-      (answer) => answer.activityId === activityId
-    ).responses;
-    return responses.find((response) => {
+    // const responses = currentAnswer.find(
+    //   (answer) => answer.activityId === currentActivity.id
+    // ).responses;
+    return currentAnswer?.responses.find((response) => {
       return response.questionId === questionId;
     });
   };
@@ -74,6 +75,14 @@ const SurveyContent = () => {
               };
             }
           }
+          return {
+            answered: true,
+            response,
+          };
+        } else {
+          return {
+            answered: false,
+          };
         }
         break;
       case "well":
@@ -115,25 +124,36 @@ const SurveyContent = () => {
     }
   };
 
-  const steps = youngChildSurvey.map((surveyQuestion) => {
-    const response = getResponseForQuestion(surveyQuestion.questionId);
-    const checkedResponse = checkIfResponseIsValid(response);
+  console.log(" 1 Current Answer = ", currentAnswer);
+  useEffect(() => {
+    if (currentAnswer) {
+      const steps = youngChildSurvey.map((surveyQuestion) => {
+        const response = getResponseForQuestion(surveyQuestion.questionId);
+        const checkedResponse = checkIfResponseIsValid(response);
 
-    return {
-      ...surveyQuestion,
-      checkedResponse,
-    };
-  });
+        return {
+          ...surveyQuestion,
+          checkedResponse,
+        };
+      });
+      console.log("Steps == ", steps);
+      setSteps(steps);
+    }
+  }, [currentAnswer]);
 
-  console.log("Steps", steps);
+  const isStepVisible = (step, index) => {
+    if (index === 0) return true;
+  };
+
+  console.log("Steps == ", steps);
 
   return (
     <MainContainer>
       <SurveyContainer>
         <Stepper orientation="vertical">
-          {steps.map((step, index) => {
+          {steps?.map((step, index) => {
             return (
-              <Step active={step.checkedResponse.answered}>
+              <Step active={step.checkedResponse.answered || index === 0}>
                 <StepLabel>{step.label}</StepLabel>
                 <StepContent>
                   <RadioGroup name="radio-buttons-group">
@@ -145,7 +165,7 @@ const SurveyContent = () => {
                           name={`radio-buttons-${option.questionId}`}
                           label={option.label}
                           onClick={() => {
-                            updateAnswer(step.questionId, step.value);
+                            updateAnswer(step.questionId, option.value);
                           }}
                         />
                       );

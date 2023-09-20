@@ -1,4 +1,4 @@
-export const activity = [
+export const youngChildActivity = [
   {
     id: "sock",
     label: "Put on a pair of socks",
