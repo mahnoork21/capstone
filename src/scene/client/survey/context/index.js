@@ -1,5 +1,4 @@
 const { useContext, useState, createContext, useEffect } = require("react");
-import { answerFormat } from "../helper/surveyHelper";
 import {
   getAnswerForIndex,
   getLastAnsweredIndex,
@@ -14,6 +13,9 @@ const SurveyProvider = ({ children }) => {
 
   const { currentUserId, currentSurveyId } = useContext(ClientContext);
 
+  //In localStorage, lastAnsweredIndex is stored that is initially -1
+  //It's used to track last answered activity. Different from currentQuestionIndex
+  //If user goes back currentQuestionIndex will change.
   useEffect(() => {
     const lastAnswerIndex = getLastAnsweredIndex(
       currentUserId,
@@ -29,24 +31,20 @@ const SurveyProvider = ({ children }) => {
         currentSurveyId,
         currentQuestionIndex
       );
-      console.log("Current Answer =", currentAnswer);
       setCurrentAnswer(currentAnswer);
     }
   }, [currentQuestionIndex]);
 
+  //Called when user selects an option
   const updateAnswer = (questionId, value) => {
-    console.log("Updating ==", questionId, value, currentAnswer);
     const response = currentAnswer.responses.find(
       (response) => response.questionId === questionId
     );
-    console.log("response", response);
     response.response.value = value;
     setCurrentAnswer({
       ...currentAnswer,
     });
   };
-
-  console.log("Current answer", currentAnswer);
 
   return (
     <SurveyContext.Provider

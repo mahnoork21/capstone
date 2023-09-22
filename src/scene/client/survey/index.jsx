@@ -6,27 +6,24 @@ import {
 } from "./styled";
 import { useContext, useEffect, useState } from "react";
 import SurveyProvider, { SurveyContext } from "./context";
-import { questionIds, youngChildSurvey } from "@/utils/youngChildSurvey";
-import { StyledFormControlLabel } from "./components/option/styled";
 import {
   Button,
-  FormControlLabel,
   Radio,
   RadioGroup,
   Step,
   StepContent,
   StepLabel,
   Stepper,
-  SvgIcon,
 } from "@mui/material";
-import { isNullOrUndefined } from "@/utils/utils";
-import { youngChildActivity } from "@/utils/youngChildActivity";
+import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import {
   getLastAnsweredIndex,
   incrementLastAnsweredIndex,
   updateAnswerForIndex,
 } from "@/utils/localStorageUtils";
 import Image from "next/image";
+import { checkIfResponseIsValid } from "./helper/surveyHelper";
+import { youngChildSurvey } from "./helper/youngChildSurvey";
 
 const SurveyContent = () => {
   const {
@@ -52,126 +49,32 @@ const SurveyContent = () => {
       : null;
   };
 
-  const checkIfResponseIsValid = ({ questionId, response }) => {
-    switch (questionId) {
-      case "do":
-        //do is valid if there is an answer
-        if (!isNullOrUndefined(response.value)) {
-          return {
-            isAnswered: true,
-            response,
-          };
-        } else {
-          return {
-            isAnswered: false,
-          };
-        }
-        break;
-      case "how":
-        //how is valid if it has value, if value is 3 bodypart input is given
-        //if value is 0, required comment is given
-        if (!isNullOrUndefined(response.value)) {
-          if (response.value === 3) {
-            //TODO check for empty
-            if (response.bodypart) {
-              return {
-                isAnswered: true,
-                response,
-              };
-            } else {
-              return {
-                isAnswered: false,
-              };
-            }
-          }
-          if (response.value === 0) {
-            if (response.commentForNotSure) {
-              return {
-                isAnswered: true,
-                response,
-              };
-            } else {
-              return {
-                isAnswered: false,
-              };
-            }
-          }
-          return {
-            isAnswered: true,
-            response,
-          };
-        } else {
-          return {
-            isAnswered: false,
-          };
-        }
-        break;
-      case "well":
-        if (!isNullOrUndefined(response.value)) {
-          return {
-            isAnswered: true,
-            response,
-          };
-        } else {
-          return {
-            isAnswered: false,
-          };
-        }
-        break;
-      case "useful":
-        if (!isNullOrUndefined(response.value)) {
-          return {
-            isAnswered: true,
-            response,
-          };
-        } else {
-          return {
-            isAnswered: false,
-          };
-        }
-        break;
-      case "without":
-        if (!isNullOrUndefined(response.value)) {
-          return {
-            isAnswered: true,
-            response,
-          };
-        } else {
-          return {
-            isAnswered: false,
-          };
-        }
-        break;
-    }
-  };
-
+  //Generates steps to be used in Stepper
   useEffect(() => {
-    console.log(" ** Updating steps ** ");
     if (currentAnswer) {
-      const steps = youngChildSurvey
-        .map((surveyQuestion) => {
-          const response = getResponseForQuestion(surveyQuestion.questionId);
-          const checkedResponse = checkIfResponseIsValid(response);
+      const steps = youngChildSurvey.map((surveyQuestion) => {
+        const response = getResponseForQuestion(surveyQuestion.questionId);
+        const checkedResponse = checkIfResponseIsValid(response);
 
-          if (surveyQuestion.questionId === "do" && isDoMessageVisible) {
-            return {
-              ...surveyQuestion,
-              checkedResponse,
-              messageIfSelected: surveyQuestion.options[1].messageIfSelected,
-            };
-          }
-
+        if (surveyQuestion.questionId === "do" && isDoMessageVisible) {
           return {
             ...surveyQuestion,
             checkedResponse,
+            messageIfSelected: surveyQuestion.options[1].messageIfSelected,
           };
-        })
-        .flat();
+        }
+
+        return {
+          ...surveyQuestion,
+          checkedResponse,
+        };
+      });
       setSteps(steps);
     }
   }, [currentAnswer]);
 
   const isStepVisible = (index) => {
+    //First question is always visible
     if (index === 0) return true;
 
     const prevQuestionId = youngChildSurvey[index - 1].questionId;
@@ -183,12 +86,6 @@ const SurveyContent = () => {
   };
 
   const getSavedAnswer = (index) => {
-    console.log(
-      "** Saved Answer, index = ",
-      index,
-      " Value = ",
-      currentAnswer.responses[index].response.value
-    );
     return currentAnswer.responses[index].response.value;
   };
 
@@ -201,7 +98,6 @@ const SurveyContent = () => {
         return;
       }
     }
-    // currentAnswer.responses.forEach((response) => {});
     //All questions are valid and have answers
 
     //save to local storage
@@ -212,13 +108,15 @@ const SurveyContent = () => {
       currentAnswer
     );
 
-    //TODO also check if an empty response is already genereated
+    /**
+     * TODO also check if an empty response is already genereated
+     *
+     * Increment lastAnsweredIndex only next activity is not answered
+     * If user goes back a couple of activity and clicks next, don't update
+     * the lastAnsweredIndex in localStorage
+     */
+
     if (getLastAnsweredIndex() === currentQuestionIndex - 1) {
-      console.log(
-        "++ Incrementing answered index ++ LastAnswered index",
-        getLastAnsweredIndex(),
-        " current = " + (currentQuestionIndex - 1)
-      );
       incrementLastAnsweredIndex(currentUserId, currentSurveyId);
     }
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -231,8 +129,6 @@ const SurveyContent = () => {
   console.log("Activity == ", currentActivity);
   console.log("Steps == ", steps);
   console.log("Current Answer", currentAnswer);
-
-  const firstStep = steps ? steps[0] : null;
 
   return (
     <MainContainer>
