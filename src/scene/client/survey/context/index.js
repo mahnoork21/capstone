@@ -9,8 +9,8 @@ import { ClientContext } from "@/context/ClientContext";
 export const SurveyContext = createContext();
 
 const SurveyProvider = ({ children }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [currentAnswer, setCurrentAnswer] = useState();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
+  const [currentAnswer, setCurrentAnswer] = useState(null);
 
   const { currentUserId, currentSurveyId } = useContext(ClientContext);
 
@@ -20,15 +20,19 @@ const SurveyProvider = ({ children }) => {
       currentSurveyId
     );
     setCurrentQuestionIndex(lastAnswerIndex + 1);
-
-    const currentAnswer = getAnswerForIndex(
-      currentUserId,
-      currentSurveyId,
-      lastAnswerIndex + 1
-    );
-    console.log("Current Answer =", currentAnswer);
-    setCurrentAnswer(currentAnswer);
   }, []);
+
+  useEffect(() => {
+    if (currentQuestionIndex !== -1) {
+      const currentAnswer = getAnswerForIndex(
+        currentUserId,
+        currentSurveyId,
+        currentQuestionIndex
+      );
+      console.log("Current Answer =", currentAnswer);
+      setCurrentAnswer(currentAnswer);
+    }
+  }, [currentQuestionIndex]);
 
   const updateAnswer = (questionId, value) => {
     console.log("Updating ==", questionId, value, currentAnswer);
@@ -36,15 +40,24 @@ const SurveyProvider = ({ children }) => {
       (response) => response.questionId === questionId
     );
     console.log("response", response);
-    response.value = value;
-    setCurrentAnswer(currentAnswer);
+    response.response.value = value;
+    setCurrentAnswer({
+      ...currentAnswer,
+    });
   };
 
   console.log("Current answer", currentAnswer);
 
   return (
     <SurveyContext.Provider
-      value={{ currentQuestionIndex, currentAnswer, updateAnswer }}
+      value={{
+        currentQuestionIndex,
+        currentAnswer,
+        updateAnswer,
+        setCurrentQuestionIndex,
+        currentUserId,
+        currentSurveyId,
+      }}
     >
       {children}
     </SurveyContext.Provider>

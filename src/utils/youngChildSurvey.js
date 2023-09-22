@@ -1,3 +1,5 @@
+export const questionIds = ["do", "how", "well", "useful", "without"];
+
 export const youngChildSurvey = [
   {
     questionId: "do",
@@ -9,11 +11,8 @@ export const youngChildSurvey = [
       },
       {
         label: "Has not tried but could probably do it",
-        messageIfSelected: {
-          label:
-            "That's okay that your child has not tried it. Please try to imagine your child doing the activity and answer the questions below.",
-          type: "loud", //subtle, normal, loud
-        },
+        messageIfSelected:
+          "That's okay that your child has not tried it. Please try to imagine your child doing the activity and answer the questions below.",
         value: 1,
       },
       {
@@ -32,70 +31,45 @@ export const youngChildSurvey = [
     visibleWhen: { questionId: "do", optionIndex: [0, 1] },
     options: [
       {
-        optionIndex: 0,
         label:
           "Both arms together with the prosthetic hand or terminal device used actively (open and close hand/device to hold the object)",
-        // responseGuide: {
-        //   image: "actively.jpg",
-        //   label: "Both arms together with the prosthesis actively to grasp",
-        // },
         responseGuideType: "activityGuide-actively",
+        value: 5,
       },
       {
-        optionIndex: 1,
         label:
           "Both arms together with the prosthesis used passively (to position or stabilize the object, hand does not open/close)",
-        // responseGuide: {
-        //   image: "passively.jpg",
-        //   label: "Both arms together with the prosthesis passively to grasp",
-        // },
         responseGuideType: "activityGuide-passively",
+        value: 4,
       },
       {
-        optionIndex: 2,
         label:
           "With assistance of residual limb and/or another body part and/or other assistive devices",
-        // responseGuide: {
-        //   image: "another-body-part.jpg",
-        //   label: "With the assistance of the residual limb",
-        // },
         responseGuideType: "activityGuide-anotherBodyPart",
         additionalResponseIfSelected: {
           type: "text",
           hint: "Please list the body part(s) and/or assistive device(s) your child uses to do the activity.",
           info: "Please separate items with a comma.",
         },
+        value: 3,
       },
       {
-        optionIndex: 3,
         label: "With non-prosthetic hand alone",
-        // responseGuide: {
-        //   image: "non-prostehtic-hand.jpg",
-        //   label: "With the non-prosthetic hand alone",
-        // },
         responseGuideType: "activityGuide-nonProstehticHand",
+        value: 2,
       },
       {
-        optionIndex: 4,
         label: "With some help from another person",
-        // responseGuide: {
-        //   image: "another-person.jpg",
-        //   label: "With some help from another person",
-        // },
         responseGuideType: "activityGuide-anotherPerson",
+        value: 1,
       },
       {
-        optionIndex: 5,
         label: "Don't know/not sure",
-        // responseGuide: {
-        //   image: "not-sure.jpg",
-        //   label:
-        //     "Don't know/ not sure\nUse this choice if none of the ways shown above seems quite right",
-        // },
         responseGuideType: "activityGuide-notSure",
         additionalResponseIfSelected: {
           label: "[Required] Comment for Don't know/not sure",
         },
+        value: 0,
       },
     ],
   },
@@ -109,30 +83,30 @@ export const youngChildSurvey = [
     visibleWhen: { questionId: "how", optionIndex: [0, 1, 2, 3, 4] },
     options: [
       {
-        optionIndex: 0,
         label: "With no difficulty",
         responseGuideType: "difficultyScale-noDifficulty",
+        value: 4,
       },
       {
-        optionIndex: 1,
         label: "With some difficulty",
         responseGuideType: "difficultyScale-someDifficulty",
+        value: 3,
       },
       {
-        optionIndex: 2,
         label: "With great difficulty",
         responseGuideType: "difficultyScale-greatDifficulty",
+        value: 2,
       },
       {
-        optionIndex: 3,
         label:
           "It is so difficult that my child needs help from another person",
         responseGuideType: "difficultyScale-anotherPerson",
+        value: 1,
       },
       {
-        optionIndex: 4,
         label: "Even with help, my child cannot do it using the prosthesis",
         responseGuideType: "difficultyScale-cannotDo",
+        value: 0,
       },
     ],
   },
@@ -142,17 +116,14 @@ export const youngChildSurvey = [
     visibleWhen: { questionId: "well" },
     options: [
       {
-        optionIndex: 0,
         label: "Very useful",
         value: 2,
       },
       {
-        optionIndex: 1,
         label: "Somewhat useful",
         value: 1,
       },
       {
-        optionIndex: 2,
         label: "Not useful",
         value: 0,
       },
@@ -168,30 +139,30 @@ export const youngChildSurvey = [
     visibleWhen: { questionId: "useful" },
     options: [
       {
-        optionIndex: 0,
         label: "With no difficulty",
         responseGuideType: "difficultyScale-noDifficulty",
+        value: 4,
       },
       {
-        optionIndex: 1,
         label: "With some difficulty",
         responseGuideType: "difficultyScale-someDifficulty",
+        value: 3,
       },
       {
-        optionIndex: 2,
         label: "With great difficulty",
         responseGuideType: "difficultyScale-greatDifficulty",
+        value: 2,
       },
       {
-        optionIndex: 3,
         label:
           "It is so difficult that my child needs help from another person",
         responseGuideType: "difficultyScale-anotherPerson",
+        value: 1,
       },
       {
-        optionIndex: 4,
         label: "Even with help, my child cannot do it using the prosthesis",
         responseGuideType: "difficultyScale-cannotDo",
+        value: 0,
       },
     ],
   },

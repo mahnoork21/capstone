@@ -1,7 +1,7 @@
 import {
   addSurveyToUserIdInLocalStorage,
   addUserToLocalStorage,
-  checkAddSurveyToUserIdInLocalStorage,
+  checkAndAddSurveyToUserIdInLocalStorage,
   isSurveyIdInLocalStorage,
   isUserIdInLocalStorage,
 } from "@/utils/localStorageUtils";
@@ -11,7 +11,6 @@ const { createContext, useEffect } = require("react");
 export const ClientContext = createContext();
 
 export const ClientProvider = ({ children }) => {
-
   //TODO check the status of this survey in the database
   //if complete, disable the start survey button, display message
 
@@ -24,7 +23,7 @@ export const ClientProvider = ({ children }) => {
       addUserToLocalStorage(currentUserId);
     }
 
-    checkAddSurveyToUserIdInLocalStorage(currentUserId, currentSurveyId);
+    checkAndAddSurveyToUserIdInLocalStorage(currentUserId, currentSurveyId);
   }, [currentUserId, currentSurveyId]);
 
   return (
