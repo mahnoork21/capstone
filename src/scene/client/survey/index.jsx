@@ -116,7 +116,10 @@ const SurveyContent = () => {
      * the lastAnsweredIndex in localStorage
      */
 
-    if (getLastAnsweredIndex() === currentQuestionIndex - 1) {
+    if (
+      getLastAnsweredIndex(currentUserId, currentSurveyId) ===
+      currentQuestionIndex - 1
+    ) {
       incrementLastAnsweredIndex(currentUserId, currentSurveyId);
     }
     setCurrentQuestionIndex(currentQuestionIndex + 1);
