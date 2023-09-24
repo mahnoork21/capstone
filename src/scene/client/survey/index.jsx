@@ -16,25 +16,20 @@ import {
   Stepper,
 } from "@mui/material";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
-import {
-  getLastAnsweredIndex,
-  incrementLastAnsweredIndex,
-  updateAnswerForIndex,
-} from "@/utils/localStorageUtils";
 import Image from "next/image";
 import { checkIfResponseIsValid } from "./helper/surveyHelper";
 import { youngChildSurvey } from "./helper/youngChildSurvey";
+import axios from "axios";
 
 const SurveyContent = () => {
   const {
-    currentQuestionIndex,
+    currentActivityIndex,
     currentAnswer,
     updateAnswer,
-    currentUserId,
     currentSurveyId,
-    setCurrentQuestionIndex,
+    setCurrentActivityIndex,
   } = useContext(SurveyContext);
-  const currentActivity = youngChildActivity[currentQuestionIndex];
+  const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
 
   const isDoMessageVisible = currentAnswer
@@ -89,7 +84,7 @@ const SurveyContent = () => {
     return currentAnswer.responses[index].response.value;
   };
 
-  const handleOnNextButtonClicked = () => {
+  const handleOnNextButtonClicked = async () => {
     for (const response of currentAnswer.responses) {
       const result = checkIfResponseIsValid(response);
       if (!result?.isAnswered) {
@@ -100,33 +95,35 @@ const SurveyContent = () => {
     }
     //All questions are valid and have answers
 
-    //save to local storage
-    updateAnswerForIndex(
-      currentUserId,
-      currentSurveyId,
-      currentQuestionIndex,
-      currentAnswer
-    );
-
-    /**
-     * TODO also check if an empty response is already genereated
-     *
-     * Increment lastAnsweredIndex only next activity is not answered
-     * If user goes back a couple of activity and clicks next, don't update
-     * the lastAnsweredIndex in localStorage
-     */
-
-    if (
-      getLastAnsweredIndex(currentUserId, currentSurveyId) ===
-      currentQuestionIndex - 1
-    ) {
-      incrementLastAnsweredIndex(currentUserId, currentSurveyId);
+    try {
+      const { data } = await axios.patch(
+        process.env.NEXT_PUBLIC_SURVEY_UPDATE_RESPONSES,
+        {
+          surveyId: currentSurveyId,
+          responses: {
+            activityId: youngChildActivity[currentActivityIndex].id,
+            responses: currentAnswer.responses,
+          },
+        }
+      );
+      console.log(data);
+      if (data.success) {
+        setCurrentActivityIndex(currentActivityIndex + 1);
+      } else {
+        console.log(`Error when updating ${data}`);
+      }
+    } catch (error) {
+      console.log(
+        `Error in ${process.env.NEXT_PUBLIC_SURVEY_UPDATE_RESPONSES}`,
+        error
+      );
     }
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+    setCurrentActivityIndex(currentActivityIndex + 1);
   };
 
   const handleOnBackButtonClicked = () => {
-    setCurrentQuestionIndex(currentQuestionIndex - 1);
+    setCurrentActivityIndex(currentActivityIndex - 1);
   };
 
   console.log("Activity == ", currentActivity);

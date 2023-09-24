@@ -36,7 +36,7 @@ const ClinicianProvider = ({ children }) => {
         // pass the decoded clinician id along with the token from local storage to an API that returns back all the clinician details
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_SERVER_PORT}/api/clinician/getClinicianInfo`,
+            `${process.env.NEXT_PUBLIC_SERVER}/api/clinician/getClinicianInfo`,
             {
               headers: {
                 Authorization: token,
