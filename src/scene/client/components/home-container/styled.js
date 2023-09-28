@@ -1,12 +1,10 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
-export const Container = styled.div`
+export const IntroBody = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
-  width: 80%;
   border-radius: 16px;
   padding: 40px;
   background-color: white;
@@ -34,25 +32,15 @@ export const Container = styled.div`
 
   .youtube-video {
     display: block;
-    aspect-ratio: 40 / 30;
+    aspect-ratio: 47 / 30;
     width: 100%;
   }
 
-  @media only screen and (min-width: 1225px) {
-    .youtube-video {
-      aspect-ratio: 45 / 30;
-    }
-  }
-
-  @media only screen and (max-width: 1099px) {
+  @media only screen and (max-width: 880px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
     row-gap: 24px;
-
-    .youtube-video {
-      aspect-ratio: 50 / 30;
-    }
 
     .content {
       width: 100%;
