@@ -69,21 +69,3 @@ export const updateAnswerForIndex = (userId, surveyId, index, responses) => {
   user[surveyId]["allResponses"][index] = responses;
   localStorage.setItem(`pufi_${userId}`, JSON.stringify(user));
 };
-
-const questionIds = ["do", "how", "well", "useful", "without"];
-
-export const generateEmptyAnswer = (activityId) => {
-  return {
-    activityId: activityId,
-    responses: questionIds.map((questionId) =>
-      generateEmptyResponse(questionId)
-    ),
-  };
-};
-
-export const generateEmptyResponse = (questionId) => {
-  return {
-    questionId: questionId,
-    response: {},
-  };
-};

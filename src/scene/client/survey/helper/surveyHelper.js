@@ -1,8 +1,9 @@
 import { isNullOrUndefined } from "@/utils/utils";
+import { questionIds } from "./youngChildSurvey";
 
 export const saveAnswer = () => {};
 
-export const checkIfResponseIsValid = ({ questionId, response }) => {
+export const checkIfResponseIsValid = (questionId, response) => {
   switch (questionId) {
     case "do":
       //do is valid if there is an answer
@@ -95,72 +96,54 @@ export const checkIfResponseIsValid = ({ questionId, response }) => {
   }
 };
 
-export const answerFormat = [
-  {
-    activityId: "sock",
-    responses: [
-      {
-        questionId: "do",
-        response: {
-          value: 0,
-        },
-      },
-      {
-        questionId: "how",
-        response: {
-          value: 3,
-          bodypart: "legs",
-        },
-      },
-      {
-        questionId: "well",
-        response: {
-          value: 3,
-          comment: "Comment on well",
-        },
-      },
-      {
-        questionId: "useful",
-        response: {
-          value: 1,
-          comment: "Comment on useful",
-        },
-      },
-      {
-        questionId: "without",
-        response: {
-          value: 3,
-          comment: "Comment on without",
-        },
-      },
-    ],
+export const generateEmptyAnswer = (activityId) => {
+  const emptyAnswer = {};
+  questionIds.forEach((questionId) => {
+    emptyAnswer[questionId] = {};
+  });
+  return emptyAnswer;
+};
+
+export const firestore_answerformat = {
+  sock: {
+    do: {
+      value: 0,
+    },
+    how: {
+      value: 3,
+      bodypart: "legs",
+    },
+    well: {
+      value: 3,
+      comment: "Comment on well",
+    },
+    useful: {
+      value: 1,
+      comment: "Comment on useful",
+    },
+    without: {
+      value: 3,
+      comment: "Comment on without",
+    },
   },
-  {
-    activityId: "velcro",
-    response: [
-      {
-        questionId: "do",
-        value: 1,
-      },
-      {
-        questionId: "how",
-        value: 0,
-        commentForNotSure: "Comment when user selects Not sure",
-      },
-      {
-        questionId: "well",
-        value: 4,
-        comment: "Comment on well",
-      },
-      {
-        questionId: "useful",
-        value: 1,
-      },
-      {
-        questionId: "without",
-        value: 3,
-        comment: "Comment on without",
-      },
-    ],
+  velcro: {
+    do: {
+      value: 1,
+    },
+    how: {
+      value: 0,
+      commentForNotSure: "Comment when user selects Not sure",
+    },
+    well: {
+      value: 4,
+      comment: "Comment on well",
+    },
+    useful: {
+      value: 1,
+    },
+    without: {
+      value: 3,
+      comment: "Comment on without",
+    },
   },
-];
+};

@@ -20,20 +20,22 @@ import Image from "next/image";
 import { checkIfResponseIsValid } from "./helper/surveyHelper";
 import { youngChildSurvey } from "./helper/youngChildSurvey";
 import axios from "axios";
+import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 
 const SurveyContent = () => {
   const {
     currentActivityIndex,
     currentAnswer,
-    updateAnswer,
     currentSurveyId,
     setCurrentActivityIndex,
+    updateAnswer,
+    setSurveyResponse,
   } = useContext(SurveyContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
 
   const isDoMessageVisible = currentAnswer
-    ? currentAnswer.responses[0].response.value === 1
+    ? currentAnswer.do.value === 1
     : false;
 
   const getResponseForQuestion = (questionId) => {
@@ -48,10 +50,17 @@ const SurveyContent = () => {
   useEffect(() => {
     if (currentAnswer) {
       const steps = youngChildSurvey.map((surveyQuestion) => {
-        const response = getResponseForQuestion(surveyQuestion.questionId);
-        const checkedResponse = checkIfResponseIsValid(response);
+        // const response = getResponseForQuestion(surveyQuestion.questionId);
+        const response = currentAnswer[surveyQuestion.questionId];
+        const checkedResponse = checkIfResponseIsValid(
+          surveyQuestion.questionId,
+          response
+        );
 
-        if (surveyQuestion.questionId === "do" && isDoMessageVisible) {
+        if (
+          surveyQuestion.questionId === "do" &&
+          currentAnswer.do.value === 1
+        ) {
           return {
             ...surveyQuestion,
             checkedResponse,
@@ -74,20 +83,22 @@ const SurveyContent = () => {
 
     const prevQuestionId = youngChildSurvey[index - 1].questionId;
 
-    const response = getResponseForQuestion(prevQuestionId);
-    const checkedResponse = checkIfResponseIsValid(response);
+    // const response = getResponseForQuestion(prevQuestionId);
+    const response = currentAnswer[prevQuestionId];
+    const checkedResponse = checkIfResponseIsValid(prevQuestionId, response);
 
     return checkedResponse.isAnswered;
   };
 
-  const getSavedAnswer = (index) => {
-    return currentAnswer.responses[index].response.value;
+  const getSavedAnswer = (questionId) => {
+    // console.log("Question id === ", questionId);
+    return currentAnswer[questionId].value;
   };
 
   const handleOnNextButtonClicked = async () => {
-    for (const response of currentAnswer.responses) {
-      const result = checkIfResponseIsValid(response);
-      if (!result?.isAnswered) {
+    for (const [questionId, response] of Object.entries(currentAnswer)) {
+      const result = checkIfResponseIsValid(questionId, response);
+      if (!result.isAnswered) {
         //Display error message and scroll to the error question
         console.log("Question Not answered", response.questionId);
         return;
@@ -95,34 +106,33 @@ const SurveyContent = () => {
     }
     //All questions are valid and have answers
 
+    //If user updated the answer update in db
+
     try {
-      const { data } = await axios.patch(
-        process.env.NEXT_PUBLIC_SURVEY_UPDATE_RESPONSES,
-        {
-          surveyId: currentSurveyId,
-          responses: {
-            activityId: youngChildActivity[currentActivityIndex].id,
-            responses: currentAnswer.responses,
-          },
-        }
+      await updateAnswerInSurvey(
+        youngChildActivity[currentActivityIndex].id,
+        currentAnswer
       );
-      console.log(data);
-      if (data.success) {
-        setCurrentActivityIndex(currentActivityIndex + 1);
-      } else {
-        console.log(`Error when updating ${data}`);
-      }
+      //update the local copy
+      const survey = await getSurveyById(currentSurveyId);
+      setSurveyResponse(survey.activity_response);
+
+      setCurrentActivityIndex(currentActivityIndex + 1);
     } catch (error) {
       console.log(
         `Error in ${process.env.NEXT_PUBLIC_SURVEY_UPDATE_RESPONSES}`,
         error
       );
+      return;
     }
 
     setCurrentActivityIndex(currentActivityIndex + 1);
   };
 
   const handleOnBackButtonClicked = () => {
+    //check if answer is updated
+    //if updated -> update server
+
     setCurrentActivityIndex(currentActivityIndex - 1);
   };
 
@@ -145,13 +155,13 @@ const SurveyContent = () => {
                 <StepContent>
                   <RadioGroup
                     name={`radio-buttons-group-${step.questionId}`}
-                    value={getSavedAnswer(stepIndex)}
+                    value={getSavedAnswer(step.questionId)}
                   >
                     {step.options.map(
                       ({ questionId, value, label }, optionIndex) => {
                         return (
                           <PufiFormControlLabel
-                            checked={getSavedAnswer(stepIndex) == value}
+                            checked={getSavedAnswer(step.questionId) == value}
                             key={`${step.questionId}${optionIndex}`}
                             value={value}
                             control={<Radio />}

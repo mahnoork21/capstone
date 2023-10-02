@@ -1,3 +1,4 @@
+import { auth } from "@/firebase/firebase";
 import {
   addSurveyToUserIdInLocalStorage,
   addUserToLocalStorage,
@@ -5,8 +6,9 @@ import {
   isSurveyIdInLocalStorage,
   isUserIdInLocalStorage,
 } from "@/utils/localStorageUtils";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 
-const { createContext, useEffect } = require("react");
+const { createContext, useEffect, useState } = require("react");
 
 export const ClientContext = createContext();
 
@@ -15,19 +17,23 @@ export const ClientProvider = ({ children }) => {
   //if complete, disable the start survey button, display message
 
   //TODO read the stored user and surveyId from params
-  const currentUserId = "12345";
-  const currentSurveyId = "650f21d9b62380b34bd10981";
+  const currentSurveyId = "qDzH1cFYVwLzJQ9Gn8En";
+  const [user, setUser] = useState(null);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setUser(user);
+    }
+  });
 
   useEffect(() => {
-    if (!isUserIdInLocalStorage(currentUserId)) {
-      addUserToLocalStorage(currentUserId);
-    }
-
-    checkAndAddSurveyToUserIdInLocalStorage(currentUserId, currentSurveyId);
-  }, [currentUserId, currentSurveyId]);
+    signInAnonymously(auth).then(() => {
+      console.log("Signed In anonymously");
+    });
+  }, []);
 
   return (
-    <ClientContext.Provider value={{ currentUserId, currentSurveyId }}>
+    <ClientContext.Provider value={{ currentSurveyId, user }}>
       {children}
     </ClientContext.Provider>
   );
