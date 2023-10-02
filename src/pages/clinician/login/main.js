@@ -9,8 +9,8 @@ const LoginLanding = () => {
       <Header text="PUFI-2" />
       <div className="login-container">
         <form action="/" style={{ border: 1 + "px" + " #ccc" }}>
-          <div class="container">
-            <h2>Log in to your clinician account</h2>
+          <div class="login-form">
+            <h2 class="centered-item">Log in to your clinician account</h2>
             <br />
             <label for="email">Email or clinician id</label>
             <input type="text" placeholder="" name="email" required></input>
@@ -22,13 +22,21 @@ const LoginLanding = () => {
               required
             ></input>
 
-            <button type="submit" class="pufi-primary-blue" id="loginbtn">
+            <button
+              type="submit"
+              class="pufi-primary-blue centered-item"
+              id="loginbtn"
+            >
               LOG IN
             </button>
 
             <p>Don't have an account yet?</p>
 
-            <button type="button" class="pufi-primary-blue" id="createbtn">
+            <button
+              type="button"
+              class="pufi-primary-blue centered-item"
+              id="createbtn"
+            >
               CREATE NEW ONE
             </button>
           </div>
