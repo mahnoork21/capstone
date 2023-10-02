@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { checkIfResponseIsValid } from "./helper/surveyHelper";
-import { youngChildSurvey } from "./helper/youngChildSurvey";
+import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
 import MessageToUser from "./components/info-component";
@@ -94,17 +94,25 @@ const SurveyContent = () => {
   };
 
   const handleOnNextButtonClicked = async () => {
-    for (const [questionId, response] of Object.entries(currentAnswer)) {
+    for (const questionId of questionIds) {
+      const response = currentAnswer[questionId];
       const result = checkIfResponseIsValid(questionId, response);
       if (!result.isAnswered) {
         //Display error message and scroll to the error question
-        console.log("Question Not answered", questionId);
         setErrors({
           [questionId]: result.error,
         });
         return;
+      } else {
+        if (
+          (questionId === "do" && currentAnswer.do.value === 0) ||
+          (questionId === "how" && currentAnswer.how.value === 0)
+        ) {
+          break;
+        }
       }
     }
+
     //All questions are valid and have answers
 
     //If user updated the answer update in db

@@ -104,6 +104,13 @@ const SurveyProvider = ({ children }) => {
         currentAnswer[questionId]["commentForNotSure"] = answer;
     }
 
+    const questionIndex = questionIds.indexOf(questionId);
+    questionIds.forEach((questionId, index) => {
+      if (index > questionIndex) {
+        currentAnswer[questionId] = {};
+      }
+    });
+
     setErrors({});
     setCurrentAnswer({
       ...currentAnswer,
