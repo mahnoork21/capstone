@@ -3,7 +3,7 @@ import { questionIds } from "./youngChildSurvey";
 
 export const saveAnswer = () => {};
 
-export const checkIfResponseIsValid = (questionId, response) => {
+export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
   switch (questionId) {
     case "do":
       //do is valid if there is an answer

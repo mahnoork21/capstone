@@ -25,7 +25,7 @@ const ActivityInfoHeading = ({ currentActivityIndex, activityLabel }) => {
         value={progress}
       ></BorderLinearProgress>
       <ProgressLabel>
-        {activityPosition} of {youngChildActivity.length} activtiies
+        {activityPosition} of {youngChildActivity.length} activities
       </ProgressLabel>
       <ActivityHeading>
         Activity {activityPosition}. {activityLabel}{" "}

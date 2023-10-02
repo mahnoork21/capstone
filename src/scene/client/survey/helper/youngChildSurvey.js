@@ -28,7 +28,7 @@ export const youngChildSurvey = [
     comment: {
       hint: "[Optional] Notes for clinicians (for example, why you chose a particular response, other ways you've seen your child perform an activity, etc.)",
     },
-    visibleWhen: { questionId: "do", optionIndex: [0, 1] },
+    visibleWhen: { questionId: "do", optionValue: [1, 2] },
     options: [
       {
         label:
@@ -80,7 +80,7 @@ export const youngChildSurvey = [
     comment: {
       hint: "[Optional] Notes for clinicians (for example, why you chose a particular response, other ways you've seen your child perform an activity, etc.)",
     },
-    visibleWhen: { questionId: "how", optionIndex: [0, 1, 2, 3, 4] },
+    visibleWhen: { questionId: "how", optionValue: [1, 2, 3, 4, 5] },
     options: [
       {
         label: "With no difficulty",
@@ -113,7 +113,7 @@ export const youngChildSurvey = [
   {
     questionId: "useful",
     label: "How useful is the prosthesis for the activity?",
-    visibleWhen: { questionId: "well" },
+    visibleWhen: { questionId: "well", optionValue: [0, 1, 2, 3, 4] },
     comment: {
       hint: "[Optional] Notes for clinicians (for example, why you chose a particular response, other ways you've seen your child perform an activity, etc.)",
     },
@@ -139,7 +139,7 @@ export const youngChildSurvey = [
     comment: {
       hint: "[Optional] Notes for clinicians (for example, why you chose a particular response, other ways you've seen your child perform an activity, etc.)",
     },
-    visibleWhen: { questionId: "useful" },
+    visibleWhen: { questionId: "useful", optionValue: [0, 1, 2, 3, 4] },
     options: [
       {
         label: "With no difficulty",

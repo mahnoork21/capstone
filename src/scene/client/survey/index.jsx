@@ -73,13 +73,26 @@ const SurveyContent = () => {
     //First question is always visible
     if (index === 0) return true;
 
+    //Check if last question is valid.
     const prevQuestionId = youngChildSurvey[index - 1].questionId;
-
-    // const response = getResponseForQuestion(prevQuestionId);
     const response = currentAnswer[prevQuestionId];
     const checkedResponse = checkIfResponseIsValid(prevQuestionId, response);
 
-    return checkedResponse.isAnswered;
+    //Checks if user selected don't know in previous answer
+    const visibleWhen = youngChildSurvey[index].visibleWhen;
+    const shouldShowCurrentStep = visibleWhen.optionValue?.includes(
+      currentAnswer[visibleWhen.questionId].value
+    );
+
+    //any question after well should be inactive if how response becomes invalid
+    const isHowResponseValue =
+      index > 2
+        ? checkIfResponseIsValid("how", currentAnswer.how).isAnswered
+        : true;
+
+    return (
+      checkedResponse.isAnswered && shouldShowCurrentStep && isHowResponseValue
+    );
   };
 
   const getSavedAnswer = (questionId) => {
