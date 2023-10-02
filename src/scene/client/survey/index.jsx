@@ -1,7 +1,9 @@
 import MainContainer from "@/shared/components/main-container";
 import {
+  BodyPartInputContainer,
   PufiFormControlLabel,
   StyledStepper,
+  StyledTextField,
   SurveyContainer,
   UserMessageWrapper,
 } from "./styled";
@@ -14,14 +16,14 @@ import {
   Step,
   StepContent,
   StepLabel,
-  Stepper,
 } from "@mui/material";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import Image from "next/image";
 import { checkIfResponseIsValid } from "./helper/surveyHelper";
-import { youngChildSurvey } from "./helper/youngChildSurvey";
+import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
+import InfoToUser from "./components/info-component";
 
 const SurveyContent = () => {
   const {
@@ -39,13 +41,13 @@ const SurveyContent = () => {
     ? currentAnswer.do.value === 1
     : false;
 
-  const getResponseForQuestion = (questionId) => {
-    return currentAnswer
-      ? currentAnswer.responses.find((response) => {
-          return response.questionId === questionId;
-        })
-      : null;
-  };
+  // const getResponseForQuestion = (questionId) => {
+  //   return currentAnswer
+  //     ? currentAnswer.responses.find((response) => {
+  //         return response.questionId === questionId;
+  //       })
+  //     : null;
+  // };
 
   //Generates steps to be used in Stepper
   useEffect(() => {
@@ -57,17 +59,6 @@ const SurveyContent = () => {
           surveyQuestion.questionId,
           response
         );
-
-        if (
-          surveyQuestion.questionId === "do" &&
-          currentAnswer.do.value === 1
-        ) {
-          return {
-            ...surveyQuestion,
-            checkedResponse,
-            messageIfSelected: surveyQuestion.options[1].messageIfSelected,
-          };
-        }
 
         return {
           ...surveyQuestion,
@@ -172,18 +163,72 @@ const SurveyContent = () => {
                             name={`radio-buttons-${questionId}`}
                             label={label}
                             onClick={() => {
-                              updateAnswer(step.questionId, value);
+                              updateAnswer(step.questionId, value, "value");
                             }}
                           />
                         );
                       }
                     )}
                   </RadioGroup>
-                  {step.messageIfSelected && (
-                    <UserMessageWrapper>
-                      <Image width={32} height={32} src="/icons/info.svg" />
-                      <p>{step.messageIfSelected}</p>
-                    </UserMessageWrapper>
+                  {step.questionId === "how" &&
+                    currentAnswer.how.value === 3 && (
+                      <>
+                        <StyledTextField
+                          id="bodypart-input"
+                          label={
+                            youngChildSurvey[1].options[2]
+                              .additionalResponseIfSelected.hint
+                          }
+                          variant="filled"
+                          value={currentAnswer.how.bodypart}
+                          onChange={(event) => {
+                            updateAnswer(
+                              step.questionId,
+                              event.target.value,
+                              "body-part"
+                            );
+                          }}
+                        />
+                        <InfoToUser
+                          message={
+                            youngChildSurvey[1].options[2]
+                              .additionalResponseIfSelected.info
+                          }
+                          questionId={step.questionId}
+                          fillWidth={false}
+                        />
+                      </>
+                    )}
+                  {step.questionId === "do" && currentAnswer.do.value === 1 && (
+                    <InfoToUser
+                      message={youngChildSurvey[0].options[1].messageIfSelected}
+                      fillWidth
+                      questionId={step.questionId}
+                    />
+                  )}
+                  {step.questionId !== "do" && (
+                    <>
+                      <StyledTextField
+                        style={{ marginTop: 12 }}
+                        id="comment-input"
+                        label="Comments"
+                        variant="filled"
+                        multiline
+                        value={currentAnswer[step.questionId].comment}
+                        onChange={(event) => {
+                          updateAnswer(
+                            step.questionId,
+                            event.target.value,
+                            "comment"
+                          );
+                        }}
+                      />
+                      <InfoToUser
+                        message={youngChildSurvey[stepIndex]?.comment?.hint}
+                        fillWidth
+                        questionId={step.questionId}
+                      />
+                    </>
                   )}
                 </StepContent>
               </Step>

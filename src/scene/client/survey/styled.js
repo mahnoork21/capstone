@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FormControlLabel, LinearProgress, Stepper, css } from "@mui/material";
+import { FormControlLabel, Stepper, TextField, css } from "@mui/material";
 
 export const SurveyContainer = styled.div`
   background-color: white;
@@ -34,18 +34,6 @@ export const SurveyContainer = styled.div`
       : ``}
 `;
 
-export const UserMessageWrapper = styled.div`
-  display: flex;
-  gap: 8px;
-  margin: 8px 0;
-
-  p {
-    width: 550px;
-    font-weight: bold;
-    font-size: 0.75rem;
-  }
-`;
-
 export const PufiFormControlLabel = styled(FormControlLabel)`
   background-color: var(--pufi-grey-light);
   max-width: 690px;
@@ -59,5 +47,21 @@ export const StyledStepper = styled(Stepper)`
   & .MuiStepLabel-label.Mui-active {
     font-size: 1rem;
     font-weight: 600;
+  }
+`;
+
+export const StyledTextField = styled(TextField)`
+  width: 690px;
+  border-radius: 12px;
+`;
+
+export const BodyPartInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  & > div:last-child {
+    flex: 1;
   }
 `;

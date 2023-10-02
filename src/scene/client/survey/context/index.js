@@ -91,8 +91,18 @@ const SurveyProvider = ({ children }) => {
   }, [user]);
 
   //Called when user selects an option
-  const updateAnswer = (questionId, value) => {
-    currentAnswer[questionId].value = value;
+  const updateAnswer = (questionId, answer, type) => {
+    switch (type) {
+      case "value":
+        currentAnswer[questionId].value = answer;
+        break;
+      case "body-part":
+        currentAnswer[questionId]["bodypart"] = answer;
+        break;
+      case "comment":
+        currentAnswer[questionId]["comment"] = answer;
+    }
+
     setCurrentAnswer({
       ...currentAnswer,
     });
@@ -100,7 +110,6 @@ const SurveyProvider = ({ children }) => {
 
   console.log("Current response == ", surveyResponse);
   console.log("Current activity index == ", currentActivityIndex);
-  console.log("## Current answer == ", currentAnswer);
 
   return (
     <SurveyContext.Provider

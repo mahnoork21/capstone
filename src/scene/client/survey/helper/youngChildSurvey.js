@@ -114,6 +114,9 @@ export const youngChildSurvey = [
     questionId: "useful",
     label: "How useful is the prosthesis for the activity?",
     visibleWhen: { questionId: "well" },
+    comment: {
+      hint: "[Optional] Notes for clinicians (for example, why you chose a particular response, other ways you've seen your child perform an activity, etc.)",
+    },
     options: [
       {
         label: "Very useful",

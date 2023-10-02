@@ -36,7 +36,7 @@ export const ImageContainer = styled.div`
   height: 260px;
   position: sticky;
   top: 30px;
-  z-index: 1;
+  z-index: 2;
 `;
 
 export const ActivityImage = styled(Image)`
