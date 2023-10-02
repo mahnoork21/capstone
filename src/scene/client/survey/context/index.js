@@ -17,6 +17,7 @@ const SurveyProvider = ({ children }) => {
   const [currentActivityIndex, setCurrentActivityIndex] = useState(null);
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [surveyResponse, setSurveyResponse] = useState();
+  const [errors, setErrors] = useState({});
 
   const { currentSurveyId, user } = useContext(ClientContext);
 
@@ -99,10 +100,11 @@ const SurveyProvider = ({ children }) => {
       case "body-part":
         currentAnswer[questionId]["bodypart"] = answer;
         break;
-      case "comment":
-        currentAnswer[questionId]["comment"] = answer;
+      case "commentForNotSure":
+        currentAnswer[questionId]["commentForNotSure"] = answer;
     }
 
+    setErrors({});
     setCurrentAnswer({
       ...currentAnswer,
     });
@@ -120,6 +122,8 @@ const SurveyProvider = ({ children }) => {
         setCurrentActivityIndex: setCurrentActivityIndex,
         currentSurveyId,
         setSurveyResponse: setSurveyResponse,
+        errors,
+        setErrors,
       }}
     >
       {children}

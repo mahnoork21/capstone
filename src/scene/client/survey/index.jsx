@@ -1,13 +1,11 @@
 import MainContainer from "@/shared/components/main-container";
 import {
-  BodyPartInputContainer,
   PufiFormControlLabel,
   StyledStepper,
   StyledTextField,
   SurveyContainer,
-  UserMessageWrapper,
 } from "./styled";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import SurveyProvider, { SurveyContext } from "./context";
 import {
   Button,
@@ -18,12 +16,11 @@ import {
   StepLabel,
 } from "@mui/material";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
-import Image from "next/image";
 import { checkIfResponseIsValid } from "./helper/surveyHelper";
-import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
+import { youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
-import InfoToUser from "./components/info-component";
+import MessageToUser from "./components/info-component";
 
 const SurveyContent = () => {
   const {
@@ -33,27 +30,24 @@ const SurveyContent = () => {
     setCurrentActivityIndex,
     updateAnswer,
     setSurveyResponse,
+    errors,
+    setErrors,
   } = useContext(SurveyContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
+
+  const noResponseRef = useRef();
+  const bodyPartRef = useRef();
+  const notsureRef = useRef();
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
     : false;
 
-  // const getResponseForQuestion = (questionId) => {
-  //   return currentAnswer
-  //     ? currentAnswer.responses.find((response) => {
-  //         return response.questionId === questionId;
-  //       })
-  //     : null;
-  // };
-
   //Generates steps to be used in Stepper
   useEffect(() => {
     if (currentAnswer) {
       const steps = youngChildSurvey.map((surveyQuestion) => {
-        // const response = getResponseForQuestion(surveyQuestion.questionId);
         const response = currentAnswer[surveyQuestion.questionId];
         const checkedResponse = checkIfResponseIsValid(
           surveyQuestion.questionId,
@@ -96,7 +90,6 @@ const SurveyContent = () => {
   };
 
   const getSavedAnswer = (questionId) => {
-    // console.log("Question id === ", questionId);
     return currentAnswer[questionId].value;
   };
 
@@ -105,7 +98,10 @@ const SurveyContent = () => {
       const result = checkIfResponseIsValid(questionId, response);
       if (!result.isAnswered) {
         //Display error message and scroll to the error question
-        console.log("Question Not answered", response.questionId);
+        console.log("Question Not answered", questionId);
+        setErrors({
+          [questionId]: result.error,
+        });
         return;
       }
     }
@@ -144,6 +140,30 @@ const SurveyContent = () => {
   console.log("Activity == ", currentActivity);
   console.log("Steps == ", steps);
   console.log("Current Answer", currentAnswer);
+  console.log("Current erro", errors);
+
+  useEffect(() => {
+    //assumes that there can be only one error at a time
+    const error = Object.values(errors)[0];
+    console.log("Curreint error ==>", error);
+    switch (error) {
+      case "no-response":
+        noResponseRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      case "no-bodypart":
+        console.log(bodyPartRef);
+        bodyPartRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      case "no-commentForNotSure":
+        notsureRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+    }
+  }, [errors]);
 
   return (
     <MainContainer>
@@ -161,6 +181,15 @@ const SurveyContent = () => {
               >
                 <StepLabel>{step.label}</StepLabel>
                 <StepContent>
+                  {errors[step.questionId] === "no-response" ? (
+                    <MessageToUser
+                      type="error"
+                      message={"Please select a response"}
+                      ref={noResponseRef}
+                    />
+                  ) : (
+                    ""
+                  )}
                   <RadioGroup
                     name={`radio-buttons-group-${step.questionId}`}
                     value={getSavedAnswer(step.questionId)}
@@ -183,6 +212,12 @@ const SurveyContent = () => {
                       }
                     )}
                   </RadioGroup>
+                  {step.questionId === "do" && currentAnswer.do.value === 1 && (
+                    <MessageToUser
+                      message={youngChildSurvey[0].options[1].messageIfSelected}
+                      questionId={step.questionId}
+                    />
+                  )}
                   {step.questionId === "how" &&
                     currentAnswer.how.value === 3 && (
                       <>
@@ -201,48 +236,82 @@ const SurveyContent = () => {
                               "body-part"
                             );
                           }}
+                          helperText={
+                            errors[step.questionId] === "no-bodypart"
+                              ? "Please provide body part input."
+                              : ""
+                          }
+                          error={errors[step.questionId] === "no-bodypart"}
+                          ref={bodyPartRef}
                         />
-                        <InfoToUser
+
+                        <MessageToUser
                           message={
                             youngChildSurvey[1].options[2]
                               .additionalResponseIfSelected.info
                           }
                           questionId={step.questionId}
-                          fillWidth={false}
                         />
                       </>
                     )}
-                  {step.questionId === "do" && currentAnswer.do.value === 1 && (
-                    <InfoToUser
-                      message={youngChildSurvey[0].options[1].messageIfSelected}
-                      fillWidth
-                      questionId={step.questionId}
-                    />
-                  )}
-                  {step.questionId !== "do" && (
-                    <>
-                      <StyledTextField
-                        style={{ marginTop: 12 }}
-                        id="comment-input"
-                        label="Comments"
-                        variant="filled"
-                        multiline
-                        value={currentAnswer[step.questionId].comment}
-                        onChange={(event) => {
-                          updateAnswer(
-                            step.questionId,
-                            event.target.value,
-                            "comment"
-                          );
-                        }}
-                      />
-                      <InfoToUser
-                        message={youngChildSurvey[stepIndex]?.comment?.hint}
-                        fillWidth
-                        questionId={step.questionId}
-                      />
-                    </>
-                  )}
+                  {step.questionId === "how" &&
+                    currentAnswer.how.value === 0 && (
+                      <>
+                        <StyledTextField
+                          id="comment-notsure"
+                          label={"Comment"}
+                          variant="filled"
+                          value={currentAnswer.how.commentForNotSure}
+                          onChange={(event) => {
+                            updateAnswer(
+                              step.questionId,
+                              event.target.value,
+                              "commentForNotSure"
+                            );
+                          }}
+                          helperText={
+                            errors[step.questionId] === "no-commentForNotSure"
+                              ? "Please provide comment."
+                              : ""
+                          }
+                          error={
+                            errors[step.questionId] === "no-commentForNotSure"
+                          }
+                          ref={notsureRef}
+                        />
+
+                        <MessageToUser
+                          message={"Please provide comment."}
+                          questionId={step.questionId}
+                        />
+                      </>
+                    )}
+
+                  {step.questionId !== "do" &&
+                    step.questionId === "how" &&
+                    currentAnswer.how.value !== 0 && (
+                      <>
+                        <StyledTextField
+                          style={{ marginTop: 12 }}
+                          id="comment-input"
+                          label="Comments"
+                          variant="filled"
+                          multiline
+                          value={currentAnswer[step.questionId].comment}
+                          onChange={(event) => {
+                            updateAnswer(
+                              step.questionId,
+                              event.target.value,
+                              "comment"
+                            );
+                          }}
+                        />
+                        <MessageToUser
+                          message={youngChildSurvey[stepIndex]?.comment?.hint}
+                          questionId={step.questionId}
+                        />
+                      </>
+                    )}
                 </StepContent>
               </Step>
             );

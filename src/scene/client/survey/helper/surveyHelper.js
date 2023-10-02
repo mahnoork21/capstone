@@ -3,7 +3,7 @@ import { questionIds } from "./youngChildSurvey";
 
 export const saveAnswer = () => {};
 
-export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
+export const checkIfResponseIsValid = (questionId, response) => {
   switch (questionId) {
     case "do":
       //do is valid if there is an answer
@@ -15,6 +15,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
       } else {
         return {
           isAnswered: false,
+          error: "no-response",
         };
       }
       break;
@@ -32,6 +33,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
           } else {
             return {
               isAnswered: false,
+              error: "no-bodypart",
             };
           }
         }
@@ -44,6 +46,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
           } else {
             return {
               isAnswered: false,
+              error: "no-commentForNotSure",
             };
           }
         }
@@ -54,6 +57,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
       } else {
         return {
           isAnswered: false,
+          error: "no-response",
         };
       }
       break;
@@ -66,6 +70,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
       } else {
         return {
           isAnswered: false,
+          error: "no-response",
         };
       }
       break;
@@ -78,6 +83,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
       } else {
         return {
           isAnswered: false,
+          error: "no-response",
         };
       }
       break;
@@ -90,6 +96,7 @@ export const checkIfResponseIsValid = (questionId, response, currentAnswer) => {
       } else {
         return {
           isAnswered: false,
+          error: "no-response",
         };
       }
       break;

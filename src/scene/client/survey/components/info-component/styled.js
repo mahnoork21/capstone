@@ -5,6 +5,7 @@ export const UserMessageWrapper = styled.div`
   gap: 8px;
   margin: 8px 0;
   align-items: center;
+  scroll-margin-top: 340px;
 
   p {
     width: 550px;

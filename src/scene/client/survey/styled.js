@@ -53,6 +53,7 @@ export const StyledStepper = styled(Stepper)`
 export const StyledTextField = styled(TextField)`
   width: 690px;
   border-radius: 12px;
+  scroll-margin-top: 300px;
 `;
 
 export const BodyPartInputContainer = styled.div`
