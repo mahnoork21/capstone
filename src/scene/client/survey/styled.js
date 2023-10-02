@@ -34,15 +34,6 @@ export const SurveyContainer = styled.div`
       : ``}
 `;
 
-export const PufiFormControlLabel = styled(FormControlLabel)`
-  background-color: var(--pufi-grey-light);
-  max-width: 680px;
-  padding: 10px;
-  margin-bottom: 8px;
-  margin-left: 0px;
-  border-radius: 8px;
-`;
-
 export const StyledStepper = styled(Stepper)`
   & .MuiStepLabel-label.Mui-active {
     font-size: 1rem;

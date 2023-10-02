@@ -23,6 +23,7 @@ import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
 import MessageToUser from "./components/info-component";
 import ActivityQuestion from "./components/activity-question";
+import Option from "./components/option";
 
 const SurveyContent = () => {
   const {
@@ -162,7 +163,14 @@ const SurveyContent = () => {
     setActivityGuideAnchorEL(null);
   };
 
-  const handleOnMiniGuideClick = (event) => {};
+  const handleOnMiniGuideClick = (event, info) => {
+    setMiniGuideAnchorEL(event.currentTarget);
+    setMiniGuideInfo(info);
+  };
+
+  const handleOnMiniGuideClose = () => {
+    setMiniGuideAnchorEL(null);
+  };
 
   console.log("Activity == ", currentActivity);
   console.log("Steps == ", steps);
@@ -231,18 +239,33 @@ const SurveyContent = () => {
                     {step.options.map(
                       ({ questionId, value, label }, optionIndex) => {
                         return (
-                          <PufiFormControlLabel
+                          <Option
                             checked={getSavedAnswer(step.questionId) == value}
-                            key={`${step.questionId}${optionIndex}`}
                             value={value}
                             control={<Radio />}
                             name={`radio-buttons-${questionId}`}
                             label={label}
-                            onClick={() => {
-                              updateAnswer(step.questionId, value, "value");
-                            }}
+                            updateAnswer={updateAnswer}
+                            questionId={step.questionId}
+                            handleOnMiniGuideClick={handleOnMiniGuideClick}
+                            // onClick={() => {
+                            //   updateAnswer(step.questionId, value, "value");
+                            // }}
                           />
                         );
+                        // return (
+                        //   <PufiFormControlLabel
+                        //     checked={getSavedAnswer(step.questionId) == value}
+                        //     key={`${step.questionId}${optionIndex}`}
+                        //     value={value}
+                        //     control={<Radio />}
+                        //     name={`radio-buttons-${questionId}`}
+                        //     label={label}
+                        //     onClick={() => {
+                        //       updateAnswer(step.questionId, value, "value");
+                        //     }}
+                        //   />
+                        // );
                       }
                     )}
                   </RadioGroup>
@@ -389,7 +412,7 @@ const SurveyContent = () => {
         id={"mini-guide"}
         open={Boolean(miniGuideAnchorEl)}
         anchorEl={miniGuideAnchorEl}
-        onClose={handleOnMiniGuideClick}
+        onClose={handleOnMiniGuideClose}
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
@@ -399,7 +422,13 @@ const SurveyContent = () => {
           horizontal: "center",
         }}
       >
-        <div style={{ width: "750px", height: "550px" }}>Activity Guide</div>
+        {miniGuideInfo ? (
+          <div
+            style={{ width: "300px", height: "200px" }}
+          >{`question:  ${miniGuideInfo.questionId}, response:  ${miniGuideInfo.label}`}</div>
+        ) : (
+          ""
+        )}
       </Popover>
     </MainContainer>
   );

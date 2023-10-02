@@ -1,19 +1,36 @@
 import { Radio } from "@mui/material";
-import { PufiOptionResponse } from "./styled";
+import { OptionContentWrapper, PufiFormControlLabel } from "./styled";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
-const Option = ({ checked, value, questionId, label, updateAnswer }) => {
+const Option = ({
+  checked,
+  value,
+  questionId,
+  label,
+  updateAnswer,
+  handleOnMiniGuideClick,
+}) => {
   return (
-    <PufiFormControlLabel
-      checked={getSavedAnswer(step.questionId) == value}
-      key={`${step.questionId}${optionIndex}`}
-      value={value}
-      control={<Radio />}
-      name={`radio-buttons-${questionId}`}
-      label={label}
-      onClick={() => {
-        updateAnswer(step.questionId, value, "value");
-      }}
-    />
+    <OptionContentWrapper>
+      <PufiFormControlLabel
+        checked={checked}
+        key={`${questionId}${label}`}
+        value={value}
+        control={<Radio />}
+        label={label}
+        onClick={() => {
+          updateAnswer(questionId, value, "value");
+        }}
+      />
+      <HelpOutlineIcon
+        onClick={(event) => {
+          handleOnMiniGuideClick(event, {
+            questionId: questionId,
+            label: label,
+          });
+        }}
+      />
+    </OptionContentWrapper>
   );
 };
 
