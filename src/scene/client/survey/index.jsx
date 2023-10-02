@@ -9,6 +9,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import SurveyProvider, { SurveyContext } from "./context";
 import {
   Button,
+  Popover,
   Radio,
   RadioGroup,
   Step,
@@ -21,6 +22,7 @@ import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
 import MessageToUser from "./components/info-component";
+import ActivityQuestion from "./components/activity-question";
 
 const SurveyContent = () => {
   const {
@@ -39,6 +41,12 @@ const SurveyContent = () => {
   const noResponseRef = useRef();
   const bodyPartRef = useRef();
   const notsureRef = useRef();
+
+  const [activityGuideAnchorEL, setActivityGuideAnchorEL] = useState(null);
+  const [isActivityGuide, setIsActivityGuide] = useState(true);
+
+  const [miniGuideAnchorEl, setMiniGuideAnchorEL] = useState(null);
+  const [miniGuideInfo, setMiniGuideInfo] = useState(null);
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
@@ -145,6 +153,17 @@ const SurveyContent = () => {
     setCurrentActivityIndex(currentActivityIndex - 1);
   };
 
+  const handleOnResponseGuideClick = (event, isActivityGuide) => {
+    setActivityGuideAnchorEL(event.currentTarget);
+    setIsActivityGuide(isActivityGuide);
+  };
+
+  const handleOnActivityClose = () => {
+    setActivityGuideAnchorEL(null);
+  };
+
+  const handleOnMiniGuideClick = (event) => {};
+
   console.log("Activity == ", currentActivity);
   console.log("Steps == ", steps);
   console.log("Current Answer", currentAnswer);
@@ -187,7 +206,14 @@ const SurveyContent = () => {
                 className={step.questionId}
                 active={isStepVisible(stepIndex)}
               >
-                <StepLabel>{step.label}</StepLabel>
+                <StepLabel>
+                  <ActivityQuestion
+                    label={step.label}
+                    questionId={step.questionId}
+                    isActive={isStepVisible(stepIndex)}
+                    handleOnResponseGuideClick={handleOnResponseGuideClick}
+                  />
+                </StepLabel>
                 <StepContent>
                   {errors[step.questionId] === "no-response" ? (
                     <MessageToUser
@@ -337,6 +363,44 @@ const SurveyContent = () => {
           </Button>
         </div>
       </SurveyContainer>
+      <Popover
+        id={"activity-guide"}
+        open={Boolean(activityGuideAnchorEL)}
+        anchorEl={activityGuideAnchorEL}
+        onClose={handleOnActivityClose}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "right",
+        }}
+      >
+        {isActivityGuide ? (
+          <div style={{ width: "750px", height: "550px" }}>Activity Guide</div>
+        ) : (
+          <div style={{ width: "750px", height: "550px" }}>
+            Difficulty Scale
+          </div>
+        )}
+      </Popover>
+      <Popover
+        id={"mini-guide"}
+        open={Boolean(miniGuideAnchorEl)}
+        anchorEl={miniGuideAnchorEl}
+        onClose={handleOnMiniGuideClick}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <div style={{ width: "750px", height: "550px" }}>Activity Guide</div>
+      </Popover>
     </MainContainer>
   );
 };

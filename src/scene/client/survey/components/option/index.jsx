@@ -1,12 +1,18 @@
 import { Radio } from "@mui/material";
 import { PufiOptionResponse } from "./styled";
 
-const Option = () => {
+const Option = ({ checked, value, questionId, label, updateAnswer }) => {
   return (
-    <PufiOptionResponse
-      value="No don't know"
+    <PufiFormControlLabel
+      checked={getSavedAnswer(step.questionId) == value}
+      key={`${step.questionId}${optionIndex}`}
+      value={value}
       control={<Radio />}
-      label="No don't know"
+      name={`radio-buttons-${questionId}`}
+      label={label}
+      onClick={() => {
+        updateAnswer(step.questionId, value, "value");
+      }}
     />
   );
 };

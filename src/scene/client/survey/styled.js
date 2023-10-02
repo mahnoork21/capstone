@@ -36,7 +36,7 @@ export const SurveyContainer = styled.div`
 
 export const PufiFormControlLabel = styled(FormControlLabel)`
   background-color: var(--pufi-grey-light);
-  max-width: 690px;
+  max-width: 680px;
   padding: 10px;
   margin-bottom: 8px;
   margin-left: 0px;
@@ -51,7 +51,7 @@ export const StyledStepper = styled(Stepper)`
 `;
 
 export const StyledTextField = styled(TextField)`
-  width: 690px;
+  width: 680px;
   border-radius: 12px;
   scroll-margin-top: 300px;
 `;

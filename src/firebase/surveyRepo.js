@@ -22,7 +22,6 @@ export const getSurveyById = async (surveyId) => {
 };
 
 export const updateAnswerInSurvey = async (activityId, currentAnswer) => {
-  console.log("### current ser ", currentSurveyPath);
   const surveyRef = doc(db, currentSurveyPath);
   await updateDoc(surveyRef, {
     [`activity_response.${activityId}`]: currentAnswer,
