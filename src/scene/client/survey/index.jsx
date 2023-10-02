@@ -1,6 +1,7 @@
 import MainContainer from "@/shared/components/main-container";
 import {
   PufiFormControlLabel,
+  StyledStepper,
   SurveyContainer,
   UserMessageWrapper,
 } from "./styled";
@@ -19,8 +20,8 @@ import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActiv
 import Image from "next/image";
 import { checkIfResponseIsValid } from "./helper/surveyHelper";
 import { youngChildSurvey } from "./helper/youngChildSurvey";
-import axios from "axios";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
+import ActivityInfoHeading from "./components/activity-info-heading";
 
 const SurveyContent = () => {
   const {
@@ -143,8 +144,11 @@ const SurveyContent = () => {
   return (
     <MainContainer>
       <SurveyContainer isDoMessageVisible={Boolean(isDoMessageVisible)}>
-        <h1>{currentActivity?.label} </h1>
-        <Stepper key={currentActivity?.id} orientation="vertical">
+        <ActivityInfoHeading
+          currentActivityIndex={currentActivityIndex}
+          activityLabel={currentActivity?.label}
+        />
+        <StyledStepper key={currentActivity?.id} orientation="vertical">
           {steps?.map((step, stepIndex) => {
             return (
               <Step
@@ -185,12 +189,14 @@ const SurveyContent = () => {
               </Step>
             );
           })}
-        </Stepper>
+        </StyledStepper>
 
         <div>
-          <Button variant="outlined" onClick={handleOnBackButtonClicked}>
-            Back
-          </Button>
+          {currentActivityIndex !== 0 && (
+            <Button variant="outlined" onClick={handleOnBackButtonClicked}>
+              Back
+            </Button>
+          )}
           <Button variant="outlined" onClick={handleOnNextButtonClicked}>
             Next
           </Button>

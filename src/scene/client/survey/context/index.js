@@ -67,8 +67,12 @@ const SurveyProvider = ({ children }) => {
         } else {
           setCurrentAnswer(generateEmptyAnswer());
         }
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
       }
-      // getSavedAnswerForCurrentIndex(currentActivityIndex);
     }
   }, [currentActivityIndex]);
 

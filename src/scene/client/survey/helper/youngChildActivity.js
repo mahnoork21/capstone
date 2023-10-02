@@ -1,6 +1,6 @@
 export const youngChildActivity = [
   {
-    id: "sock",
+    id: "socks",
     label: "Put on a pair of socks",
     image: "01-socks.png",
   },
@@ -15,7 +15,7 @@ export const youngChildActivity = [
     image: "03-pants.png",
   },
   {
-    id: "shirt",
+    id: "t-shirt",
     label: "Put On An Over-The-Head T-Shirt, Sweatshirt, Or Hoodie",
     image: "04-t-shirt.png",
   },

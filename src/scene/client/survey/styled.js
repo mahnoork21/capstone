@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FormControlLabel, css } from "@mui/material";
+import { FormControlLabel, LinearProgress, Stepper, css } from "@mui/material";
 
 export const SurveyContainer = styled.div`
   background-color: white;
@@ -49,8 +49,15 @@ export const UserMessageWrapper = styled.div`
 export const PufiFormControlLabel = styled(FormControlLabel)`
   background-color: var(--pufi-grey-light);
   max-width: 690px;
-  padding: 12px;
+  padding: 10px;
   margin-bottom: 8px;
   margin-left: 0px;
   border-radius: 8px;
+`;
+
+export const StyledStepper = styled(Stepper)`
+  & .MuiStepLabel-label.Mui-active {
+    font-size: 1rem;
+    font-weight: 600;
+  }
 `;
