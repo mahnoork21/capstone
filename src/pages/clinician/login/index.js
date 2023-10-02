@@ -1,5 +1,12 @@
-const { default: Login } = require("./main");
+// const { default: Login } = require("./main");
 
-const LoginPage = () => <Login />;
+// const LoginPage = () => <Login />;
 
-export default LoginPage;
+// export default LoginPage;
+import LoginLanding from "./main";
+
+const LoginLandingPage = () => {
+  return <LoginLanding />;
+};
+
+export default LoginLandingPage;
