@@ -32,20 +32,6 @@ const SurveyProvider = ({ children }) => {
           currentActivityResponse
         );
 
-        // const isAllResponseValid = questionIds
-        //   .map((questionId) => {
-        //     const { isAnswered } = checkIfResponseIsValid(
-        //       questionId,
-        //       currentActivityResponse[questionId]
-        //     );
-        //     console.log("@@@ is valid = ", questionId, isAnswered);
-
-        //     return isAnswered;
-        //   })
-        //   .reduce((acc, currentValue) => {
-        //     //checks if array has false value
-        //     return acc && currentValue;
-        //   }, true);
         //TODO create central logic for checking if the answer is valid
         let isAllResponseValid = true;
         for (const questionId of questionIds) {
