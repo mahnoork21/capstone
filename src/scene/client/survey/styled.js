@@ -1,10 +1,11 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
-import { FormControlLabel, Stepper, TextField, css } from "@mui/material";
+import { Stepper, TextField, css } from "@mui/material";
 
 export const SurveyContainer = styled.div`
   background-color: white;
   border-radius: 12px;
-  padding: 24px;
+  padding: 16px;
 
   li {
     max-width: 550px;
@@ -32,6 +33,10 @@ export const SurveyContainer = styled.div`
           }
         `
       : ``}
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 24px;
+  }
 `;
 
 export const StyledStepper = styled(Stepper)`
@@ -42,9 +47,13 @@ export const StyledStepper = styled(Stepper)`
 `;
 
 export const StyledTextField = styled(TextField)`
-  width: 680px;
+  width: calc(100% - 40px);
   border-radius: 12px;
   scroll-margin-top: 300px;
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    width: 680px;
+  }
 `;
 
 export const BodyPartInputContainer = styled.div`

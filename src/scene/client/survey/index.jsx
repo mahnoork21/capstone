@@ -248,24 +248,8 @@ const SurveyContent = () => {
                             updateAnswer={updateAnswer}
                             questionId={step.questionId}
                             handleOnMiniGuideClick={handleOnMiniGuideClick}
-                            // onClick={() => {
-                            //   updateAnswer(step.questionId, value, "value");
-                            // }}
                           />
                         );
-                        // return (
-                        //   <PufiFormControlLabel
-                        //     checked={getSavedAnswer(step.questionId) == value}
-                        //     key={`${step.questionId}${optionIndex}`}
-                        //     value={value}
-                        //     control={<Radio />}
-                        //     name={`radio-buttons-${questionId}`}
-                        //     label={label}
-                        //     onClick={() => {
-                        //       updateAnswer(step.questionId, value, "value");
-                        //     }}
-                        //   />
-                        // );
                       }
                     )}
                   </RadioGroup>

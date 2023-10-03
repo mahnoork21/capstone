@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { LinearProgress } from "@mui/material";
 import Image from "next/image";
@@ -22,12 +23,16 @@ export const ProgressLabel = styled.p`
 export const ActivityHeading = styled.h1`
   width: 100%;
   background-color: white;
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   margin-top: 8px;
   position: sticky;
   font-weight: 600;
   top: 0px;
   z-index: 2;
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    font-size: 1.375rem;
+  }
 `;
 
 export const ImageContainer = styled.div`
@@ -35,8 +40,12 @@ export const ImageContainer = styled.div`
   background-color: white;
   height: 260px;
   position: sticky;
-  top: 30px;
+  top: ${(props) => (props.isOneLiner ? "30px" : "60px")};
   z-index: 2;
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    top: 30px;
+  }
 `;
 
 export const ActivityImage = styled(Image)`

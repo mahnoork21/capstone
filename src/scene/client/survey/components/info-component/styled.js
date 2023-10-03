@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const UserMessageWrapper = styled.div`
@@ -8,8 +9,12 @@ export const UserMessageWrapper = styled.div`
   scroll-margin-top: 340px;
 
   p {
-    width: 550px;
+    width: calc(82%);
     font-weight: ${(props) => (props.questionId === "do" ? 700 : 600)};
     font-size: 0.75rem;
+
+    @media screen and (min-width: ${breakpoint.desktop}) {
+      width: 550px;
+    }
   }
 `;

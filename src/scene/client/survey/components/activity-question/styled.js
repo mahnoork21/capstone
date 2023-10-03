@@ -1,12 +1,18 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 
 export const QuestionWrapper = styled.div`
-  width: 680px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 4px;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    width: 680px;
+  }
 `;
 
 export const GuideButton = styled(Button)`

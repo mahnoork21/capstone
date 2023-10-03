@@ -18,6 +18,8 @@ const ActivityInfoHeading = ({ currentActivityIndex, activityLabel }) => {
 
   const activity = youngChildActivity[currentActivityIndex];
 
+  const heading = `Activity ${activityPosition}. ${activityLabel}`;
+
   return (
     <>
       <BorderLinearProgress
@@ -27,10 +29,9 @@ const ActivityInfoHeading = ({ currentActivityIndex, activityLabel }) => {
       <ProgressLabel>
         {activityPosition} of {youngChildActivity.length} activities
       </ProgressLabel>
-      <ActivityHeading>
-        Activity {activityPosition}. {activityLabel}{" "}
-      </ActivityHeading>
-      <ImageContainer>
+      <ActivityHeading>{heading}</ActivityHeading>
+      {/* TODO use better method of detecting multiple lines */}
+      <ImageContainer isOneLiner={heading.length < 50}>
         <ActivityImage
           src={`/survey_activity/${activity.id}.png`}
           fill={true}

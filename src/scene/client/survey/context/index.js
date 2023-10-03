@@ -26,27 +26,51 @@ const SurveyProvider = ({ children }) => {
       const currentActivityResponse = surveyResponse[activity.id];
       if (currentActivityResponse) {
         //check if it is valid
-        const isAllResponseValid = questionIds
-          .map((questionId) => {
-            const { isAnswered } = checkIfResponseIsValid(
-              questionId,
-              currentActivityResponse[questionId]
-            );
-            return isAnswered;
-          })
-          .reduce((acc, currentValue) => {
-            //checks if array has false value
-            return acc && currentValue;
-          }, true);
+        console.log(
+          "@@@ activity response = ",
+          activity,
+          currentActivityResponse
+        );
+
+        // const isAllResponseValid = questionIds
+        //   .map((questionId) => {
+        //     const { isAnswered } = checkIfResponseIsValid(
+        //       questionId,
+        //       currentActivityResponse[questionId]
+        //     );
+        //     console.log("@@@ is valid = ", questionId, isAnswered);
+
+        //     return isAnswered;
+        //   })
+        //   .reduce((acc, currentValue) => {
+        //     //checks if array has false value
+        //     return acc && currentValue;
+        //   }, true);
+        //TODO create central logic for checking if the answer is valid
+        let isAllResponseValid = true;
+        for (const questionId of questionIds) {
+          const response = currentActivityResponse[questionId];
+          const result = checkIfResponseIsValid(questionId, response);
+          if (!result.isAnswered) {
+            isAllResponseValid = false;
+            return;
+          } else {
+            if (
+              (questionId === "do" && currentActivityResponse.do.value === 0) ||
+              (questionId === "how" && currentActivityResponse.how.value === 0)
+            ) {
+              isAllResponseValid = true;
+              break;
+            }
+          }
+        }
+
         if (!isAllResponseValid) {
-          // setCurrentAnswer(currentActivityResponse);
           setCurrentActivityIndex(index);
           break;
         }
       } else {
         //generate empty response
-        // const emptyResponse = generateEmptyAnswer();
-        // setCurrentAnswer(emptyResponse);
         setCurrentActivityIndex(index);
         break;
       }
@@ -54,15 +78,12 @@ const SurveyProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("$$$ In effect ", currentActivityIndex);
     if (!isNullOrUndefined(currentActivityIndex)) {
-      console.log("$$$ In effect ", currentActivityIndex);
       if (currentActivityIndex == -1) {
         moveToLastAnsweredIndex();
       } else {
         const currentActivityResponse =
           surveyResponse[youngChildActivity[currentActivityIndex].id];
-        console.log("$$$ In effect ", currentActivityResponse);
         if (currentActivityResponse) {
           setCurrentAnswer(currentActivityResponse);
         } else {
@@ -79,7 +100,6 @@ const SurveyProvider = ({ children }) => {
 
   const getCurrentSurvey = async () => {
     const survey = await getSurveyById(currentSurveyId);
-    console.log("##Survey = ", survey);
 
     setSurveyResponse(survey.activity_response);
     setCurrentActivityIndex(-1);

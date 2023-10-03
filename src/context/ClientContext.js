@@ -60,7 +60,7 @@ export const ClientProvider = ({ children }) => {
   console.log(" ****** Current Breakpoint == ", breakpoint);
 
   return (
-    <ClientContext.Provider value={{ currentSurveyId, user }}>
+    <ClientContext.Provider value={{ currentSurveyId, user, breakpoint }}>
       {children}
     </ClientContext.Provider>
   );
