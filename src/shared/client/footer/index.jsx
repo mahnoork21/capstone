@@ -14,7 +14,7 @@ const Footer = () => {
           <Image
             src="/bloorview-logo.png"
             width={breakpoint === "desktop" ? 180 : 100}
-            height={breakpoint === "desktop" ? 80 : 40}
+            height={breakpoint === "desktop" ? 70 : 40}
           />
           <p>Bloorview Research Institute © 2023</p>
           {breakpoint === "desktop" && (

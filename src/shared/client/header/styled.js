@@ -37,4 +37,10 @@ export const HeaderContainer = styled.div`
     padding: 0 24px;
     margin-bottom: 20px;
   }
+
+  @media only screen and (max-width: 600px) {
+    & > span {
+      font-size: 1.5rem;
+    }
+  }
 `;
