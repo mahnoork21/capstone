@@ -1,25 +1,16 @@
 import { auth } from "@/firebase/firebase";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
-import { useRouter } from "next/router";
 
-const { createContext, useEffect, useState, useRef } = require("react");
+const { createContext, useEffect, useState } = require("react");
 
 export const ClientContext = createContext();
-
-const initialHeaderButtonInfo = {
-  label: "Start Survey",
-  action: () => {
-    router.push("/client/survey");
-  },
-};
 
 export const ClientProvider = ({ children }) => {
   //TODO check the status of this survey in the database
   //if complete, disable the start survey button, display message
 
   //TODO read the stored user and surveyId from params
-  // const currentSurveyId = "qDzH1cFYVwLzJQ9Gn8En";
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
   const [user, setUser] = useState(null);
   const [breakpoint, setBreakpoint] = useState(`desktop`);
