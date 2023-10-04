@@ -10,6 +10,8 @@ import { youngChildActivity } from "../helper/youngChildActivity";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import { questionIds } from "../helper/youngChildSurvey";
 import { isNullOrUndefined } from "@/utils/utils";
+import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import { useRouter } from "next/router";
 
 export const SurveyContext = createContext();
 
@@ -19,18 +21,16 @@ const SurveyProvider = ({ children }) => {
   const [surveyResponse, setSurveyResponse] = useState();
   const [errors, setErrors] = useState({});
 
-  const { currentSurveyId, user } = useContext(ClientContext);
+  const router = useRouter();
+
+  const { currentSurveyId, user, setHeaderButtonType } =
+    useContext(ClientContext);
 
   const moveToLastAnsweredIndex = () => {
     for (const [index, activity] of youngChildActivity.entries()) {
       const currentActivityResponse = surveyResponse[activity.id];
       if (currentActivityResponse) {
         //check if it is valid
-        console.log(
-          "@@@ activity response = ",
-          activity,
-          currentActivityResponse
-        );
 
         //TODO create central logic for checking if the answer is valid
         let isAllResponseValid = true;
@@ -54,6 +54,12 @@ const SurveyProvider = ({ children }) => {
         if (!isAllResponseValid) {
           setCurrentActivityIndex(index);
           break;
+        }
+
+        //the last activity is valid
+        if (index + 1 === youngChildActivity.length) {
+          router.push("/client/summary");
+          return;
         }
       } else {
         //generate empty response
@@ -86,13 +92,25 @@ const SurveyProvider = ({ children }) => {
 
   const getCurrentSurvey = async () => {
     const survey = await getSurveyById(currentSurveyId);
-
-    setSurveyResponse(survey.activity_response);
-    setCurrentActivityIndex(-1);
+    if (survey) {
+      if (!survey.is_submitted) {
+        setSurveyResponse(survey.activity_response);
+        setCurrentActivityIndex(-1);
+      } else {
+        //TODO route to already complete screen
+        console.log(" ## Survey Is submitted ##");
+        router.push("/client");
+      }
+    } else {
+      //TODO show error message that error not found in homepage
+      console.log(" ## Survey Not found ##");
+      router.push("/client");
+    }
   };
 
   useEffect(() => {
     if (user) {
+      setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
       getCurrentSurvey();
     }
   }, [user]);
@@ -123,8 +141,9 @@ const SurveyProvider = ({ children }) => {
     });
   };
 
-  console.log("Current response == ", surveyResponse);
-  console.log("Current activity index == ", currentActivityIndex);
+  console.log("[Debug] Current response == ", surveyResponse);
+  console.log("[Debug] Current activity index == ", currentActivityIndex);
+  console.log("[Debug] Current survey id == ", currentSurveyId);
 
   return (
     <SurveyContext.Provider

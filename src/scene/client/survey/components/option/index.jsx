@@ -22,14 +22,16 @@ const Option = ({
           updateAnswer(questionId, value, "value");
         }}
       />
-      <HelpOutlineIcon
-        onClick={(event) => {
-          handleOnMiniGuideClick(event, {
-            questionId: questionId,
-            label: label,
-          });
-        }}
-      />
+      {["how", "well", "without"].includes(questionId) && (
+        <HelpOutlineIcon
+          onClick={(event) => {
+            handleOnMiniGuideClick(event, {
+              questionId: questionId,
+              label: label,
+            });
+          }}
+        />
+      )}
     </OptionContentWrapper>
   );
 };

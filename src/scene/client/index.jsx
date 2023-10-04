@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import YoutubeEmbed from "@/shared/client/youtubeEmbed/YoutubeEmbed";
 
 import styles from "./styles.module.css";
+import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
 
 const ClientHome = () => {
+  const { setCurrentSurveyId } = useContext(ClientContext);
+
+  const router = useRouter();
+  const { surveyId } = router.query;
+  setCurrentSurveyId(surveyId);
+
   return (
     <div className={styles.main}>
       <section className={styles.pros}>

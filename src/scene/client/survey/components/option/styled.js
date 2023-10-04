@@ -12,7 +12,7 @@ export const PufiFormControlLabel = styled(FormControlLabel)`
 
   &:hover {
     background-color: ${(props) =>
-      props.checked ? "var(--primary-green-light)" : "rgba(58, 144, 52, 0.2)"};
+      props.checked ? "var(--primary-green-light)" : "rgba(58, 144, 52, 0.15)"};
   }
 
   background-color: ${(props) =>

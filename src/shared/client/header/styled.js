@@ -9,6 +9,10 @@ export const HeaderButton = styled(Button)`
   border-radius: 12px;
   border-width: 2px;
   font-size: 16px;
+
+  &:hover {
+    border-color: white;
+  }
 `;
 
 export const HeaderContainer = styled.div`

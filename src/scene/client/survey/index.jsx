@@ -24,6 +24,7 @@ import ActivityInfoHeading from "./components/activity-info-heading";
 import MessageToUser from "./components/info-component";
 import ActivityQuestion from "./components/activity-question";
 import Option from "./components/option";
+import { useRouter } from "next/router";
 
 const SurveyContent = () => {
   const {
@@ -42,6 +43,8 @@ const SurveyContent = () => {
   const noResponseRef = useRef();
   const bodyPartRef = useRef();
   const notsureRef = useRef();
+
+  const router = useRouter();
 
   const [activityGuideAnchorEL, setActivityGuideAnchorEL] = useState(null);
   const [isActivityGuide, setIsActivityGuide] = useState(true);
@@ -135,16 +138,16 @@ const SurveyContent = () => {
       const survey = await getSurveyById(currentSurveyId);
       setSurveyResponse(survey.activity_response);
 
+      //end of survey
+      if (currentActivityIndex + 1 === youngChildActivity.length) {
+        router.push("/client/summary");
+        return;
+      }
       setCurrentActivityIndex(currentActivityIndex + 1);
     } catch (error) {
-      console.log(
-        `Error in ${process.env.NEXT_PUBLIC_SURVEY_UPDATE_RESPONSES}`,
-        error
-      );
+      console.log(`Error when updating or getting`, error);
       return;
     }
-
-    setCurrentActivityIndex(currentActivityIndex + 1);
   };
 
   const handleOnBackButtonClicked = () => {
@@ -172,15 +175,14 @@ const SurveyContent = () => {
     setMiniGuideAnchorEL(null);
   };
 
-  console.log("Activity == ", currentActivity);
-  console.log("Steps == ", steps);
-  console.log("Current Answer", currentAnswer);
-  console.log("Current erro", errors);
+  console.log("[Debug] Activity == ", currentActivity);
+  console.log("[Debug] Steps == ", steps);
+  console.log("[Debug] Answer == ", currentAnswer);
+  console.log("[Debug] Errors == ", errors);
 
   useEffect(() => {
     //assumes that there can be only one error at a time
     const error = Object.values(errors)[0];
-    console.log("Curreint error ==>", error);
     switch (error) {
       case "no-response":
         noResponseRef.current?.scrollIntoView({
