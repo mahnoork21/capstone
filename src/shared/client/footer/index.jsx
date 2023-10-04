@@ -11,7 +11,7 @@ const Footer = () => {
         <Container>
           <Image src="/bloorview-logo.png" width={180} height={70} />
           <p>Bloorview Research Institute © 2023</p>
-          <Image src="/bloorview-logo.png" width={180} height={70} />
+          {/* <Image src="/bloorview-logo.png" width={180} height={70} /> */}
         </Container>
       </MainContainer>
     </FooterContainer>
