@@ -5,13 +5,20 @@ import { GreyP } from "./components/home-container/styled";
 import { StyledButton } from "./components/button";
 import Link from "next/link";
 import MainContainer from "@/shared/components/main-container";
+import { useState } from "react";
 
 const ClientHome = () => {
+  const [wideMode, setWideMode] = useState(false);
+
+  const handlePlay = () => {
+    setWideMode(!wideMode);
+    console.log("IM HERE");
+  };
   return (
     <MainContainer>
       <HomeContainer>
         <div className="content">
-          <h1>What is PUFI-2 survey?</h1>
+          <h1 className="intro-body-header">What is PUFI-2 survey?</h1>
           <p>
             The PUFI-2 questionnaire lets children and parents tell their
             clinicians about the functional use of a prosthetic device at home,
@@ -25,7 +32,11 @@ const ClientHome = () => {
         </div>
 
         <div>
-          <YoutubeEmbed embedId="7C8MMd7iiEU" />
+          <YoutubeEmbed
+            embedId="7C8MMd7iiEU"
+            wideMode={wideMode}
+            onClick={handlePlay}
+          />
           <GreyP>SELECT THE PLAY BUTTON TO START THE VIDEO.</GreyP>
         </div>
 

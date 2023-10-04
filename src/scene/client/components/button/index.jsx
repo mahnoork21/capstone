@@ -16,4 +16,10 @@ export const StyledButton = styled(Button)`
   &:hover {
     border-width: 2px; /* Set the desired border-width on hover */
   }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 0.875rem;
+    padding: 0.75rem 1.25rem;
+    gap: 0.625rem;
+  }
 `;

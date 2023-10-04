@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { IntroBody } from "./styled";
+import { Container } from "./styled";
 
 const HomeContainer = ({ children }) => {
-  return <IntroBody>{children}</IntroBody>;
+  return <Container>{children}</Container>;
 };
 
 export default HomeContainer;
