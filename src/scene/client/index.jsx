@@ -5,15 +5,23 @@ import { GreyP } from "./components/home-container/styled";
 import { StyledButton } from "./components/button";
 import Link from "next/link";
 import MainContainer from "@/shared/components/main-container";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
 
 const ClientHome = () => {
   const [wideMode, setWideMode] = useState(false);
+  const { setCurrentSurveyId } = useContext(ClientContext);
+
+  const router = useRouter();
+  const { surveyId } = router.query;
+  setCurrentSurveyId(surveyId);
 
   const handlePlay = () => {
     setWideMode(!wideMode);
     console.log("IM HERE");
   };
+
   return (
     <MainContainer>
       <HomeContainer>

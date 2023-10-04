@@ -11,7 +11,7 @@ export const StyledButton = styled(Button)`
   font-size: 16px;
   width: max-content;
   background-color: ${(props) =>
-    props.primary ? "var(--pufi-primary-light)" : "white"};
+    props.primary ? "var(--primary-green-light)" : "white"};
 
   &:hover {
     border-width: 2px; /* Set the desired border-width on hover */

@@ -1,3 +1,4 @@
+import { ClientProvider } from "@/context/ClientContext";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 
@@ -19,7 +20,11 @@ const theme = createTheme({
 });
 
 const ClientProviders = ({ children }) => {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ClientProvider>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </ClientProvider>
+  );
 };
 
 export default ClientProviders;

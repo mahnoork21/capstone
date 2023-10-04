@@ -1,38 +1,44 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const FooterContainer = styled.div`
   width: 100%;
-  height: 80px;
+  height: 64px;
   background-color: white;
   margin-top: 32px;
   position: absolute;
   bottom: 0;
+  display: flex;
+  align-items: center;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    height: 80px;
+  }
 `;
 
 export const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 16px;
 
-  // & img:last-child {
-  //   visibility: hidden;
-  // }
+  & img:last-child {
+    visibility: hidden;
+  }
 
   p {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.8rem;
+
+    @media only screen and (min-width: ${breakpoint.desktop}) {
+      padding: 0 24px;
+      font-size: 1rem;
+    }
   }
 
-  @media only screen and (max-width: 600px) {
-    & img {
-      width: 6.0625rem;
-      height: 2.3125rem;
-    }
-
-    p {
-      font-size: 0.5rem;
-    }
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 0 24px;
   }
 `;

@@ -1,14 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SurveyIncomplete from "../surveyIncomplete/surveyIncomplete";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
 import { HeaderButton } from "../header/styled";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import Image from "next/image";
+import { ClientContext } from "@/context/ClientContext";
+import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import { useRouter } from "next/router";
 
-function Navbar({ desktop }) {
+function Navbar() {
   const [showDialog, setShowDialog] = useState(false);
   const [redirectTo, setRedirectTo] = useState("");
+
+  const { breakpoint, headerButtonType } = useContext(ClientContext);
+
+  const router = useRouter();
+
+  const handleOnClick = () => {
+    if (headerButtonType === HeaderButtonType.START_SURVEY) {
+      router.push("/client/survey");
+    } else {
+      //TODO save survey
+    }
+  };
 
   //TODO warning for user
 
@@ -45,50 +61,9 @@ function Navbar({ desktop }) {
     setAnchorEl(null);
   };
 
-  // const renderMobile = () => {
-  //   if (!desktop) {
-  //     return (
-  //       <div>
-  //         <IconButton
-  //           aria-controls="menu"
-  //           aria-haspopup="true"
-  //           onClick={handleMenuOpen}
-  //         >
-  //           <MenuIcon sx={{ color: "white" }} />
-  //         </IconButton>
-  //         <Menu
-  //           id="menu"
-  //           anchorEl={anchorEl}
-  //           open={Boolean(anchorEl)}
-  //           onClose={handleMenuClose}
-  //         >
-  //           <MenuItem onClick={handleMenuClose}>Link 1</MenuItem>
-  //           <MenuItem onClick={handleMenuClose}>Link 2</MenuItem>
-  //           <MenuItem onClick={handleMenuClose}>Link 3</MenuItem>
-  //         </Menu>
-  //       </div>
-  //     );
-  //   }
-  // };
-
-  // const handleBeforeUnload = (event) => {
-  //   if (showDialog) {
-  //     event.preventDefault();
-  //     event.returnValue = 'Your progress will be lost. Are you sure you want to leave the survey ?';
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, [showDialog]);
-
   return (
     <>
-      {desktop ? (
+      {breakpoint === "desktop" ? (
         <section className={styles.navbar}>
           <Link
             href="/client"
@@ -105,9 +80,18 @@ function Navbar({ desktop }) {
             About
           </Link>
 
-          <Link href="/client/survey" className={styles["navbar-item"]}>
+          {/* <Link href="/client/survey" className={styles["navbar-item"]}>
             <HeaderButton variant="outlined">START SURVEY</HeaderButton>
-          </Link>
+          </Link> */}
+          <HeaderButton
+            variant="outlined"
+            onClick={handleOnClick}
+            className={styles["navbar-item"]}
+          >
+            {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+              ? "SAVE AND EXIT"
+              : "START SURVEY"}
+          </HeaderButton>
           {showDialog && (
             <SurveyIncomplete
               message=""
@@ -118,13 +102,19 @@ function Navbar({ desktop }) {
         </section>
       ) : (
         <div>
-          <IconButton
+          {/* <IconButton
             aria-controls="menu"
             aria-haspopup="true"
             onClick={handleMenuOpen}
           >
             <MenuIcon sx={{ color: "white" }} />
-          </IconButton>
+          </IconButton> */}
+          <Image
+            src="/icons/menu.svg"
+            width={32}
+            height={32}
+            onClick={handleMenuOpen}
+          />
           <Menu
             id="menu"
             anchorEl={anchorEl}

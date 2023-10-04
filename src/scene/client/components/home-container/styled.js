@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 export const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   border-radius: 1rem;
   padding: 24px 24px 36px;
   background-color: white;
@@ -23,8 +23,8 @@ export const Container = styled.div`
   .content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    aligh-content: space-between;
+    justify-content: start;
+    align-content: space-between;
     row-gap: 24px;
     padding-right: 30px;
     width: 50%;
