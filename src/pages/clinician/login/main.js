@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Header } from "@/shared/clinician/header/Header";
+import { Footer } from "@/shared/clinician/footer";
 
 const LoginLanding = () => {
   return (
@@ -24,7 +25,7 @@ const LoginLanding = () => {
 
             <button
               type="submit"
-              class="pufi-primary-blue centered-item"
+              className="pufi-primary-blue centered-item"
               id="loginbtn"
             >
               LOG IN
@@ -34,7 +35,7 @@ const LoginLanding = () => {
 
             <button
               type="button"
-              class="pufi-primary-blue centered-item"
+              className="pufi-primary-blue centered-item"
               id="createbtn"
             >
               CREATE NEW ONE
@@ -42,6 +43,8 @@ const LoginLanding = () => {
           </div>
         </form>
       </div>
+
+      {/* <Footer></Footer> */}
     </>
   );
 };
