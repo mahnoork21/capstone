@@ -30,6 +30,14 @@ export const Container = styled.div`
     width: 50%;
   }
 
+  .content-text {
+    font-size: 1rem;
+  }
+
+  .instructions1-questions-list {
+    padding-left: 2rem;
+  }
+
   .buttons {
     display: flex;
     flex-direction: row;
@@ -71,6 +79,10 @@ export const Container = styled.div`
   @media only screen and (max-width: 600px) {
     .intro-body-header {
       font-size: 1.375rem;
+    }
+
+    .content-text {
+      font-size: 0.875rem;
     }
   }
 `;
