@@ -6,6 +6,7 @@ const InstructionNavigation = ({
   activePositionId,
   onBackClick,
   onNextClick,
+  nextButtonDisabled,
 }) => {
   return (
     <InstructionNavigationContainer>
@@ -22,9 +23,15 @@ const InstructionNavigation = ({
       <Button
         variant="outlined"
         endIcon={
-          <img src="/instructions/navigation/next-arrow.svg" alt="Next" />
+          <img
+            src={`/instructions/navigation/next-arrow-${
+              nextButtonDisabled ? "disabled" : "enabled"
+            }.svg`}
+            alt="Next"
+          />
         }
         onClick={onNextClick}
+        disabled={nextButtonDisabled}
       >
         Next
       </Button>

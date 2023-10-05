@@ -1,21 +1,45 @@
 import MainContainer from "@/shared/components/main-container";
 import HomeContainer from "../components/home-container";
 import TypesOfQuestions from "./components/types-of-questions";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";
 import BeforeStartSurvey from "./components/before-start-survey";
+import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
 
 const ViewInstructions = () => {
   const [instructionId, setInstructionId] = useState(0);
+  const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
+  const router = useRouter();
+  const { currentSurveyId } = useContext(ClientContext);
 
-  //TODO: disable Back button if instructionId < 0
   const handleBackClick = () => {
-    setInstructionId((prevInstructionId) => prevInstructionId - 1);
+    if (instructionId >= 0) {
+      setInstructionId((prevInstructionId) => prevInstructionId - 1);
+    }
   };
-  //TODO: disable Next button if instructionId > 3
+
   const handleNextClick = () => {
-    setInstructionId((prevInstructionId) => prevInstructionId + 1);
+    if (instructionId < 3) {
+      setInstructionId((prevInstructionId) => prevInstructionId + 1);
+    }
   };
+
+  useEffect(() => {
+    if (instructionId < 0) {
+      router.push({
+        pathname: "/client",
+        query: {
+          surveyId: currentSurveyId,
+        },
+      });
+    } else if (instructionId >= 3) {
+      setNextButtonDisabled(true);
+    } else {
+      setNextButtonDisabled(false);
+    }
+  }, [instructionId]);
+
   //TODO: create other instructions pages
   return (
     <MainContainer>
@@ -32,6 +56,7 @@ const ViewInstructions = () => {
             activePositionId={instructionId}
             onBackClick={handleBackClick}
             onNextClick={handleNextClick}
+            nextButtonDisabled={nextButtonDisabled}
           />
         </div>
       </HomeContainer>
