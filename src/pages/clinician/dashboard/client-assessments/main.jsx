@@ -4,7 +4,7 @@ import { Header } from "@/shared/clinician/header/Header";
 import { Sidebar } from "@/shared/clinician/sidebar/Sidebar";
 import { Button } from "@mui/material";
 import { aboutNavbarItems } from "@/utils";
-import { ClinicianContext } from "@/context/ClinicianContext";
+import { ClinicianContext } from "@/context/OldClinicianContext";
 
 const ClientAssessments = () => {
   const [token, setToken] = useState();

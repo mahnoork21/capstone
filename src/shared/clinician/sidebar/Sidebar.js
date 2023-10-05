@@ -1,4 +1,4 @@
-import { ClinicianContext } from "@/context/ClinicianContext";
+import { ClinicianContext } from "@/context/OldClinicianContext";
 import { React, useContext } from "react";
 
 export const Sidebar = () => {
