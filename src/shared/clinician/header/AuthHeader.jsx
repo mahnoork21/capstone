@@ -1,5 +1,5 @@
 import React from "react";
-// import Navbar from "../navbar/Navbar";
+import Navbar from "../navbar/Navbar";
 // import styles from "./AuthHeader.module.css";
 import MainContainer from "@/shared/components/main-container";
 // import { Button } from "@mui/material";
@@ -15,7 +15,9 @@ const Header = () => {
   return (
     <MainContainer>
       <HeaderContainer>
+        <Navbar />
         <span>PUFI-2</span>
+        <div></div>
       </HeaderContainer>
     </MainContainer>
   );

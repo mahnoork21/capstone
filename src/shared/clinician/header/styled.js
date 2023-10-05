@@ -3,10 +3,24 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 
 
+export const HeaderButton = styled(Button)`
+  color: white;
+  border-color: white;
+  padding: 16px 36px;
+  border-radius: 12px;
+  border-width: 2px;
+  font-size: 16px;
+
+  &:hover {
+    border-color: white;
+  }
+`;
+
+
 export const HeaderContainer = styled.div`
   height: 60px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 0 16px;
 
