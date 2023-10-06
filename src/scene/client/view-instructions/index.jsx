@@ -6,6 +6,7 @@ import InstructionNavigation from "./components/instruction-navigation";
 import BeforeStartSurvey from "./components/before-start-survey";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
+import ActivityGuideInstructions from "./components/activity-guide-instructions";
 
 const ViewInstructions = () => {
   const [instructionId, setInstructionId] = useState(0);
@@ -48,6 +49,8 @@ const ViewInstructions = () => {
           <TypesOfQuestions />
         ) : instructionId === 1 ? (
           <BeforeStartSurvey />
+        ) : instructionId === 2 ? (
+          <ActivityGuideInstructions />
         ) : (
           <></>
         )}
