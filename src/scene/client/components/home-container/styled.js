@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: start;
-  border-radius: 1rem;
+  border-radius: 16px;
   padding: 24px 24px 36px;
   background-color: white;
   flex-wrap: wrap;
@@ -35,7 +35,7 @@ export const Container = styled.div`
   }
 
   .instructions1-questions-list {
-    padding-left: 2rem;
+    padding-left: 32px;
   }
 
   .buttons {
@@ -53,13 +53,6 @@ export const Container = styled.div`
     width: 100%;
     border-radius: 12px;
   }
-
-  // .wide {
-  //   display: block;
-  //   aspect-ratio: 90 / 30;
-  //   width: 100%;
-  //   border-radius: 12px;
-  // }
 
   @media only screen and (max-width: 987px) {
     flex-direction: column;

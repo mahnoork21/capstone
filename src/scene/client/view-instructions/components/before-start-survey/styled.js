@@ -14,7 +14,7 @@ export const LeftRightColumn = styled.div`
   display: flex;
 
   & .mobile-image {
-    margin-right: 1rem;
+    margin-right: 16px;
   }
 `;
 
@@ -36,11 +36,11 @@ export const CenterColumn = styled.div`
 
 export const GreyContainer = styled.div`
   display: flex;
-  padding: 0.625rem;
+  padding: 10px;
   height: 100%;
   justify-content: center;
   align-items: center;
-  gap: 0.625rem;
+  gap: 10px;
   flex-shrink: 0;
   background: var(--pufi-grey-light, #f2f2f2);
   width: 100%;

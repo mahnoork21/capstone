@@ -11,8 +11,8 @@ export const InstructionNavigationContainer = styled.div`
     font-weight: 600;
     border: 2px solid;
     font-size: 1rem;
-    padding: 1rem 2.25rem;
-    border-radius: 0.75rem;
+    padding: 16px 36px;
+    border-radius: 12px;
     border: 4px solid var(--pufi-primary-dark, #3a9034);
   }
 
@@ -24,7 +24,7 @@ export const InstructionNavigationContainer = styled.div`
   @media screen and (max-width: ${breakpoint.desktop}) {
     & .MuiButton-root {
       font-size: 0.875rem;
-      padding: 0.75rem 1.25rem;
+      padding: 12px 20px;
     }
   }
 `;

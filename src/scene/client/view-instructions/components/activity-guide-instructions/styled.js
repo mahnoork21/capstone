@@ -3,15 +3,15 @@ import styled from "@emotion/styled";
 export const GreyHeader = styled.div`
   display: flex;
   width: 60%;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-radius: 0.75rem;
+  border-radius: 12px;
   background: var(--pufi-grey-light, #f2f2f2);
   margin: 0 auto;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 
   & p {
     font-size: 0.875rem;
@@ -46,13 +46,13 @@ export const Row = styled.div`
 
 export const ActivityGuideCard = styled.div`
   display: flex;
-  width: 26.25rem;
+  width: 420px;
   padding-right: 0px;
   align-items: center;
-  gap: 0.75rem;
-  border-radius: 0.75rem;
+  gap: 12px;
+  border-radius: 12px;
   border: 2px solid #1979be;
-  margin-top: 0.75rem;
+  margin-top: 12px;
 
   & span {
     color: var(--pufi-primary, #3a9034);
@@ -66,5 +66,5 @@ export const ActivityGuideCard = styled.div`
 
 export const Container = styled.div`
   width: 100%;
-  padding: 0 3rem;
+  padding: 0 48px;
 `;
