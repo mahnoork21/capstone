@@ -1,4 +1,4 @@
-import Auth from "./main";
+import Auth from "@/scene/clinician/auth";
 
 const AuthPage = () => <Auth />;
 
