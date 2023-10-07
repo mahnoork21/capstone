@@ -1,30 +1,30 @@
 import React, { useState, useEffect, useContext } from "react";
 // import SurveyIncomplete from "../surveyIncomplete/surveyIncomplete";
-import styles from "./Navbar.module.css";
+// import styles from "./Navbar.module.css";
 import Link from "next/link";
-import { HeaderButton } from "../header/styled";
+// import { HeaderButton } from "../header/styled";
 import { IconButton, Menu, MenuItem } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+// import MenuIcon from "@mui/icons-material/Menu";
 import Image from "next/image";
 import { ClinicianContext } from "@/context/ClinicianContext";
-import { HeaderButtonType } from "@/utils/enums/headingButtonType";
-import { useRouter } from "next/router";
+// import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+// import { useRouter } from "next/router";
 
 function Navbar() {
-  const [showDialog, setShowDialog] = useState(false);
-  const [redirectTo, setRedirectTo] = useState("");
+  // const [showDialog, setShowDialog] = useState(false);
+  // const [redirectTo, setRedirectTo] = useState("");
 
-  const { breakpoint, headerButtonType } = useContext(ClinicianContext);
+  const { breakpoint } = useContext(ClinicianContext);
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const handleOnClick = () => {
-    if (headerButtonType === HeaderButtonType.START_SURVEY) {
-      router.push("/clinician/survey");
-    } else {
-      //TODO save survey
-    }
-  };
+  // const handleOnClick = () => {
+  //   if (headerButtonType === HeaderButtonType.START_SURVEY) {
+  //     router.push("/clinician/survey");
+  //   } else {
+  //     //TODO save survey
+  //   }
+  // };
 
   //TODO warning for user
 
@@ -62,7 +62,7 @@ function Navbar() {
   };
 
   return (
-    <div>
+    <>
       {breakpoint === "mobile" && (
         // ? (
         //   <section className={styles.navbar}>
@@ -102,7 +102,7 @@ function Navbar() {
         //     )}
         //   </section>
         // ) :
-        <>
+        <div>
           {/* <IconButton
             aria-controls="menu"
             aria-haspopup="true"
@@ -132,9 +132,9 @@ function Navbar() {
               <Link href="/clinician/survey">Start Survey</Link>
             </MenuItem>
           </Menu>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
