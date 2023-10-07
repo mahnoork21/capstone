@@ -1,6 +1,7 @@
 import MainContainer from "@/shared/components/main-container";
 import {
   PufiFormControlLabel,
+  ResponseGuideContainer,
   StyledStepper,
   StyledTextField,
   SurveyContainer,
@@ -211,7 +212,7 @@ const SurveyContent = () => {
         />
         <StyledStepper key={currentActivity?.id} orientation="vertical">
           {steps?.map((step, stepIndex) => {
-            return (
+            return step.questionId === "do" || currentAnswer.do.value ? (
               <Step
                 className={step.questionId}
                 active={isStepVisible(stepIndex)}
@@ -238,22 +239,20 @@ const SurveyContent = () => {
                     name={`radio-buttons-group-${step.questionId}`}
                     value={getSavedAnswer(step.questionId)}
                   >
-                    {step.options.map(
-                      ({ questionId, value, label }, optionIndex) => {
-                        return (
-                          <Option
-                            checked={getSavedAnswer(step.questionId) == value}
-                            value={value}
-                            control={<Radio />}
-                            name={`radio-buttons-${questionId}`}
-                            label={label}
-                            updateAnswer={updateAnswer}
-                            questionId={step.questionId}
-                            handleOnMiniGuideClick={handleOnMiniGuideClick}
-                          />
-                        );
-                      }
-                    )}
+                    {step.options.map(({ questionId, value, label }) => {
+                      return (
+                        <Option
+                          checked={getSavedAnswer(step.questionId) == value}
+                          value={value}
+                          control={<Radio />}
+                          name={`radio-buttons-${questionId}`}
+                          label={label}
+                          updateAnswer={updateAnswer}
+                          questionId={step.questionId}
+                          handleOnMiniGuideClick={handleOnMiniGuideClick}
+                        />
+                      );
+                    })}
                   </RadioGroup>
                   {step.questionId === "do" && currentAnswer.do.value === 1 && (
                     <MessageToUser
@@ -357,7 +356,7 @@ const SurveyContent = () => {
                     )}
                 </StepContent>
               </Step>
-            );
+            ) : null;
           })}
         </StyledStepper>
 
@@ -387,11 +386,9 @@ const SurveyContent = () => {
         }}
       >
         {isActivityGuide ? (
-          <div style={{ width: "750px", height: "550px" }}>Activity Guide</div>
+          <ResponseGuideContainer>Activity Guide</ResponseGuideContainer>
         ) : (
-          <div style={{ width: "750px", height: "550px" }}>
-            Difficulty Scale
-          </div>
+          <ResponseGuideContainer>Difficulty Scale</ResponseGuideContainer>
         )}
       </Popover>
       <Popover

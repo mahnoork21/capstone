@@ -35,7 +35,7 @@ export const HeaderContainer = styled.div`
   @media only screen and (min-width: ${breakpoint.desktop}) {
     height: 80px;
     padding: 0 24px;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
   }
 
   @media only screen and (max-width: 600px) {
@@ -44,3 +44,33 @@ export const HeaderContainer = styled.div`
     }
   }
 `;
+
+export const NavigationWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & a {
+    margin-right: 24px;
+    color: white;
+    text-decoration: inherit;
+    text-transform: uppercase;
+    outline: none;
+  }
+
+  & a:last-child {
+    margin-right: 0;
+  }
+`;
+
+// export const StyledMenuItem = styled(MenuItem)`
+//   width: 200px;
+//   min-width: 200px;
+
+//   & a {
+//     color: var(--pufi-black);
+//     text-decoration: inherit;
+//     text-transform: uppercase;
+//     outline: none;
+//   }
+// `;

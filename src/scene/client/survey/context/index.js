@@ -32,7 +32,6 @@ const SurveyProvider = ({ children }) => {
       if (currentActivityResponse) {
         //check if it is valid
 
-        //TODO create central logic for checking if the answer is valid
         let isAllResponseValid = true;
         for (const questionId of questionIds) {
           const response = currentActivityResponse[questionId];

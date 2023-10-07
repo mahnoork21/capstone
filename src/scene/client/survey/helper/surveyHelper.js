@@ -24,8 +24,7 @@ export const checkIfResponseIsValid = (questionId, response) => {
       //if value is 0, required comment is given
       if (!isNullOrUndefined(response.value)) {
         if (response.value === 3) {
-          //TODO check for empty
-          if (response.bodypart) {
+          if (response.bodypart.trim()) {
             return {
               isAnswered: true,
               response,

@@ -1,22 +1,45 @@
 import React, { useContext } from "react";
-import Navbar from "../navbar/Navbar";
-import styles from "./Header.module.css";
 import MainContainer from "@/shared/components/main-container";
-import { Button } from "@mui/material";
-import { HeaderButton, HeaderContainer } from "./styled";
-import { ClientContext } from "@/context/ClientContext";
-import Image from "next/image";
-import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import { HeaderButton, HeaderContainer, NavigationWrapper } from "./styled";
 import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
+import Link from "next/link";
+import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 
 const Header = () => {
+  const { breakpoint, headerButtonType } = useContext(ClientContext);
   const router = useRouter();
+
+  const handleOnClick = () => {
+    if (headerButtonType === HeaderButtonType.START_SURVEY) {
+      router.push("/client/survey");
+    } else {
+      //TODO save survey
+    }
+  };
 
   return (
     <MainContainer>
       <HeaderContainer>
         <span>PUFI-2</span>
-        <Navbar />
+        <NavigationWrapper>
+          <Link href="/client">Home</Link>
+
+          {breakpoint === "desktop" ? (
+            <HeaderButton variant="outlined" onClick={handleOnClick}>
+              {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                ? "SAVE AND EXIT"
+                : "START SURVEY"}
+            </HeaderButton>
+          ) : (
+            <Link href="/client/survey">
+              {" "}
+              {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                ? "SAVE AND EXIT"
+                : "START SURVEY"}
+            </Link>
+          )}
+        </NavigationWrapper>
       </HeaderContainer>
     </MainContainer>
   );

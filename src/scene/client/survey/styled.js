@@ -66,3 +66,8 @@ export const BodyPartInputContainer = styled.div`
     flex: 1;
   }
 `;
+
+export const ResponseGuideContainer = styled.div`
+  width: 750px;
+  height: 550px;
+`;
