@@ -8,7 +8,6 @@ import {
 } from "./styled";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
-  Button,
   Popover,
   Radio,
   RadioGroup,
@@ -66,6 +65,10 @@ const SurveyContent = () => {
     ? currentAnswer.do.value === 1
     : false;
 
+  useEffect(() => {
+    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
+  }, []);
+
   //Generates steps to be used in Stepper
   useEffect(() => {
     if (currentAnswer) {
@@ -86,8 +89,26 @@ const SurveyContent = () => {
   }, [currentAnswer]);
 
   useEffect(() => {
-    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
-  }, []);
+    //assumes that there can be only one error at a time
+    const error = Object.values(errors)[0];
+    switch (error) {
+      case "no-response":
+        noResponseRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      case "no-bodypart":
+        console.log(bodyPartRef);
+        bodyPartRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      case "no-commentForNotSure":
+        notsureRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+    }
+  }, [errors]);
 
   const isStepVisible = (index) => {
     //First question is always visible
@@ -195,28 +216,6 @@ const SurveyContent = () => {
   const handleOnMiniGuideClose = () => {
     setMiniGuideAnchorEL(null);
   };
-
-  useEffect(() => {
-    //assumes that there can be only one error at a time
-    const error = Object.values(errors)[0];
-    switch (error) {
-      case "no-response":
-        noResponseRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
-      case "no-bodypart":
-        console.log(bodyPartRef);
-        bodyPartRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
-      case "no-commentForNotSure":
-        notsureRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-    }
-  }, [errors]);
 
   console.log("[Debug] Activity == ", currentActivity);
   console.log("[Debug] Answer == ", currentAnswer);

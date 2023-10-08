@@ -10,7 +10,6 @@ import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDo
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { isNullOrUndefined } from "@/utils/utils";
 import MessageToUser from "../survey/components/info-component";
-import { Button } from "@mui/material";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
 import { updateCommentAndCompleteSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
@@ -26,7 +25,6 @@ const {
   AnswerWrapper,
   FinalCommentTextField,
   ButtonWrapper,
-  setIsNavBarVisible,
 } = require("./styled");
 
 const SummaryContent = () => {

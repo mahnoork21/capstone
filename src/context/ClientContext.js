@@ -33,40 +33,6 @@ export const ClientProvider = ({ children }) => {
 
   const activityResponses = survey?.activity_response;
 
-  const getCurrentSurvey = async () => {
-    const survey = await getSurveyById(currentSurveyId);
-    if (survey) {
-      setSurvey(survey);
-
-      if (survey.is_submitted) {
-        router.push("/client/survey-complete");
-      }
-    }
-  };
-
-  const handleStartSurveyClick = useCallback(() => {
-    if (survey) {
-      if (currentActivityIndex + 1 === youngChildActivity.length) {
-        router.push("/client/summary");
-      } else {
-        router.push("/client/survey");
-      }
-    } else {
-      //TODO show error message that error not found in homepage
-      if (!currentSurveyId) {
-        return "Survey Id is not provided. Please contact your clinician for a link to the survey.";
-      } else {
-        return "Survey Id is not valid. Please contact your clinician.";
-      }
-    }
-  }, [currentSurveyId, survey, currentActivityIndex]);
-
-  useEffect(() => {
-    if (user && currentSurveyId) {
-      getCurrentSurvey();
-    }
-  }, [currentSurveyId, user]);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -103,26 +69,19 @@ export const ClientProvider = ({ children }) => {
     }
   }, []);
 
-  const moveToLastAnsweredIndex = () => {
-    for (const [index, activity] of youngChildActivity.entries()) {
-      const currentActivityResponse = activityResponses[activity.id];
-      if (currentActivityResponse) {
-        const error = checkIfALLResponsesAreValid(currentActivityResponse);
+  useEffect(() => {
+    if (user && currentSurveyId) {
+      getCurrentSurvey();
+    }
+  }, [currentSurveyId, user]);
 
-        if (error) {
-          setCurrentActivityIndex(index);
-          break;
-        }
+  const getCurrentSurvey = async () => {
+    const survey = await getSurveyById(currentSurveyId);
+    if (survey) {
+      setSurvey(survey);
 
-        //the last activity is valid
-        if (index + 1 === youngChildActivity.length) {
-          setCurrentActivityIndex(index);
-          return;
-        }
-      } else {
-        //generate empty response
-        setCurrentActivityIndex(index);
-        break;
+      if (survey.is_submitted) {
+        router.push("/client/survey-complete");
       }
     }
   };
@@ -148,6 +107,47 @@ export const ClientProvider = ({ children }) => {
       }
     }
   }, [currentActivityIndex, activityResponses]);
+
+  const moveToLastAnsweredIndex = () => {
+    for (const [index, activity] of youngChildActivity.entries()) {
+      const currentActivityResponse = activityResponses[activity.id];
+      if (currentActivityResponse) {
+        const error = checkIfALLResponsesAreValid(currentActivityResponse);
+
+        if (error) {
+          setCurrentActivityIndex(index);
+          break;
+        }
+
+        //the last activity is valid
+        if (index + 1 === youngChildActivity.length) {
+          setCurrentActivityIndex(index);
+          return;
+        }
+      } else {
+        //generate empty response
+        setCurrentActivityIndex(index);
+        break;
+      }
+    }
+  };
+
+  const handleStartSurveyClick = useCallback(() => {
+    if (survey) {
+      if (currentActivityIndex + 1 === youngChildActivity.length) {
+        router.push("/client/summary");
+      } else {
+        router.push("/client/survey");
+      }
+    } else {
+      //TODO show error message that error not found in homepage
+      if (!currentSurveyId) {
+        return "Survey Id is not provided. Please contact your clinician for a link to the survey.";
+      } else {
+        return "Survey Id is not valid. Please contact your clinician.";
+      }
+    }
+  }, [currentSurveyId, survey, currentActivityIndex]);
 
   //Called when user selects an option
   const updateAnswer = (questionId, answer, type) => {
