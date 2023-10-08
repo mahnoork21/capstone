@@ -1,4 +1,4 @@
-  import { breakpoint } from "@/styles/breakpoints";
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 

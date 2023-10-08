@@ -1,17 +1,17 @@
 import React, { useState, useContext } from "react";
-import Image from "next/image";
 import { ClinicianContext } from "@/context/ClinicianContext";
 
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+} from "@mui/material";
 import {
   HomeOutlined,
   AccountBoxOutlined,
@@ -19,35 +19,19 @@ import {
   AccountCircle,
   Logout,
 } from "@mui/icons-material";
-import {
-  LogOutBtn,
-  MobileNavContainer,
-  SpecialHighlightedListItemBtn,
-} from "./styled";
-import { Toolbar } from "@mui/material";
+import { LogOutBtn, SpecialHighlightedListItemBtn } from "./styled";
 
-function Navbar() {
+function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
   const { breakpoint } = useContext(ClinicianContext);
+  console.log(breakpoint);
 
-  const [state, setState] = useState({
-    top: false,
-  });
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   // For selection of List Item
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
-  };
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
   };
 
   const listItemsArray = [
@@ -56,13 +40,9 @@ function Navbar() {
     { IconType: BallotOutlined, text: "All Surveys" },
   ];
 
-  const list = (anchor) => (
-    <Box
-      sx={{ width: "100%", maxWidth: 280 }}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
+  const Content = () => (
+    <Box>
+      <Toolbar />
       <List>
         <ListItem>
           <ListItemAvatar>
@@ -98,41 +78,43 @@ function Navbar() {
 
   return (
     <>
-      {breakpoint === "desktop" ? (
-        <div>
-          <Drawer
-            variant="permanent"
-            sx={{
-              width: 280,
-              flexShrink: 0,
-              [`& .MuiDrawer-paper`]: {
-                width: 280,
-                boxSizing: "border-box",
-              },
-            }}
-          >
-            <Toolbar />
-            {list("left")}
-          </Drawer>
-        </div>
-      ) : (
-        <MobileNavContainer>
-          <Image
-            src="/icons/menu.svg"
-            width={32}
-            height={32}
-            onClick={toggleDrawer("left", true)}
-          />
-
-          <Drawer
-            anchor={"left"}
-            open={state["left"]}
-            onClose={toggleDrawer("left", false)}
-          >
-            {list("left")}
-          </Drawer>
-        </MobileNavContainer>
-      )}
+      <Box
+        component="nav"
+        sx={{ width: { lg: drawerWidth }, flexShrink: { lg: 0 } }}
+        aria-label="mailbox folders"
+      >
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { md: "block", lg: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          {Content()}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: "none", sm: "none", md: "none", lg: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+          open
+        >
+          {Content()}
+        </Drawer>
+      </Box>
     </>
   );
 }

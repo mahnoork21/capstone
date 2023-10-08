@@ -24,3 +24,7 @@ export const SpecialHighlightedListItemBtn = styled(ListItemButton)`
     }
 
 `;
+
+export const NavigationPanel = styled.div`
+    background-color: white;
+`;
