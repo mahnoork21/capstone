@@ -22,7 +22,7 @@ const ClinicianLayout = ({ children }) => {
         {isAuth ? <CurvedBackground /> : <NormalBackground />}
         {/* {isAuth ? <></> : <Sidebar />} */}
         {children}
-        <Footer />
+        {isAuth && <Footer />}
       </PageWrapper>
     </ClinicianProviders>
   );

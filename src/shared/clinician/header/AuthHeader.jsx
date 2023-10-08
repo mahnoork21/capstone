@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../navbar/Navbar";
+import Navbar from "../navbar";
 // import styles from "./AuthHeader.module.css";
 import MainContainer from "@/shared/components/main-container";
 // import { Button } from "@mui/material";
