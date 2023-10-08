@@ -13,11 +13,9 @@ import MessageToUser from "../survey/components/info-component";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
 import { updateCommentAndCompleteSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
+import MainContainer from "@/shared/components/main-container";
 
-const {
-  default: MainContainer,
-} = require("@/shared/components/main-container");
-const {
+import {
   SummaryContainer,
   ActivitySummaryWrapper,
   ActivitySummary,
@@ -25,7 +23,7 @@ const {
   AnswerWrapper,
   FinalCommentTextField,
   ButtonWrapper,
-} = require("./styled");
+} from "./styled";
 
 const SummaryContent = () => {
   const { activityResponses, setIsNavBarVisible } = useContext(ClientContext);

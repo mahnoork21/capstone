@@ -1,4 +1,4 @@
-const { default: Login } = require("./main");
+import Login from "./main";
 
 const LoginPage = () => <Login />;
 

@@ -10,7 +10,7 @@ import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { useRouter } from "next/router";
 
-const { createContext, useEffect, useState, useCallback } = require("react");
+import { createContext, useEffect, useState, useCallback } from "react";
 
 export const ClientContext = createContext();
 

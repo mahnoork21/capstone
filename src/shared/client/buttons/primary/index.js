@@ -1,4 +1,4 @@
-const { StyledPrimaryClientButton } = require("./styled");
+import { StyledPrimaryClientButton } from "./styled";
 
 const PrimaryClientButton = ({ children, onClick }) => {
   return (
