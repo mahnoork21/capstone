@@ -4,6 +4,7 @@ import {
   StyledStepper,
   StyledTextField,
   SurveyContainer,
+  SurveyNavigationWrapper,
 } from "./styled";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -29,6 +30,8 @@ import Option from "./components/option";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
+import { ProgressLabel } from "./components/activity-info-heading/styled";
 
 const SurveyContent = () => {
   const {
@@ -57,6 +60,7 @@ const SurveyContent = () => {
 
   const [miniGuideAnchorEl, setMiniGuideAnchorEL] = useState(null);
   const [miniGuideInfo, setMiniGuideInfo] = useState(null);
+  const [isUpdatingdb, setIsUpdatingdb] = useState(false);
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
@@ -120,6 +124,7 @@ const SurveyContent = () => {
 
     if (!error) {
       try {
+        setIsUpdatingdb(true);
         await updateAnswerInSurvey(
           youngChildActivity[currentActivityIndex].id,
           currentAnswer
@@ -127,6 +132,8 @@ const SurveyContent = () => {
         //update the local copy
         const survey = await getSurveyById(currentSurveyId);
         setSurvey(survey);
+
+        setIsUpdatingdb(false);
 
         //end of survey
         if (currentActivityIndex + 1 === youngChildActivity.length) {
@@ -148,14 +155,10 @@ const SurveyContent = () => {
 
     const isInProgressQuestion =
       currentActivityIndex + 1 === Object.keys(activityResponses).length;
-    console.log(
-      "### isInProgressQuestion",
-      isInProgressQuestion,
-      activityResponses.length
-    );
 
     if (!error || isInProgressQuestion) {
       try {
+        setIsUpdatingdb(true);
         await updateAnswerInSurvey(
           youngChildActivity[currentActivityIndex].id,
           currentAnswer
@@ -163,6 +166,7 @@ const SurveyContent = () => {
         //update the local copy
         const survey = await getSurveyById(currentSurveyId);
         setSurvey(survey);
+        setIsUpdatingdb(false);
 
         setCurrentActivityIndex(currentActivityIndex - 1);
       } catch (error) {
@@ -376,16 +380,28 @@ const SurveyContent = () => {
           })}
         </StyledStepper>
 
-        <div>
+        <SurveyNavigationWrapper>
           {currentActivityIndex !== 0 && (
-            <Button variant="outlined" onClick={handleOnBackButtonClicked}>
+            <SurveyNavButton
+              variant="outlined"
+              onClick={handleOnBackButtonClicked}
+              isBack={true}
+              isLoading={isUpdatingdb}
+            >
               Back
-            </Button>
+            </SurveyNavButton>
           )}
-          <Button variant="outlined" onClick={handleOnNextButtonClicked}>
+          <ProgressLabel>
+            {currentActivityIndex + 1} of {youngChildActivity.length} Activities
+          </ProgressLabel>
+          <SurveyNavButton
+            variant="outlined"
+            onClick={handleOnNextButtonClicked}
+            isLoading={isUpdatingdb}
+          >
             Next
-          </Button>
-        </div>
+          </SurveyNavButton>
+        </SurveyNavigationWrapper>
       </SurveyContainer>
       <Popover
         id={"activity-guide"}

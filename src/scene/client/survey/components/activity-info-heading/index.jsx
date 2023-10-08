@@ -27,7 +27,7 @@ const ActivityInfoHeading = ({ currentActivityIndex, activityLabel }) => {
         value={progress}
       ></BorderLinearProgress>
       <ProgressLabel>
-        {activityPosition} of {youngChildActivity.length}
+        {activityPosition} of {youngChildActivity.length} Activities
       </ProgressLabel>
       <ActivityHeading>{heading}</ActivityHeading>
       {/* TODO use better method of detecting multiple lines */}

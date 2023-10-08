@@ -71,3 +71,11 @@ export const ResponseGuideContainer = styled.div`
   width: 750px;
   height: 550px;
 `;
+
+export const SurveyNavigationWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+`;
