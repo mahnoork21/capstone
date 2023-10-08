@@ -12,6 +12,7 @@ export const HeaderButton = styled(Button)`
 
   &:hover {
     border-color: white;
+    border-width: 2px;
   }
 `;
 

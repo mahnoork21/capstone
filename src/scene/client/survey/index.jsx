@@ -21,7 +21,7 @@ import {
   checkIfALLResponsesAreValid,
   checkIfResponseIsValid,
 } from "./helper/surveyHelper";
-import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
+import { youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
 import MessageToUser from "./components/info-component";
@@ -154,7 +154,7 @@ const SurveyContent = () => {
     const error = checkIfALLResponsesAreValid(currentAnswer);
 
     const isInProgressQuestion =
-      currentActivityIndex + 1 === Object.keys(activityResponses).length;
+      currentActivityIndex + 1 >= Object.keys(activityResponses).length;
 
     if (!error || isInProgressQuestion) {
       try {

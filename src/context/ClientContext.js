@@ -2,7 +2,6 @@ import { auth } from "@/firebase/firebase";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import {
   checkIfALLResponsesAreValid,
-  checkIfResponseIsValid,
   generateEmptyAnswer,
 } from "@/scene/client/survey/helper/surveyHelper";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
@@ -43,7 +42,12 @@ export const ClientProvider = ({ children }) => {
   const handleStartSurveyClick = useCallback(() => {
     if (survey) {
       if (!survey.is_submitted) {
-        router.push("/client/survey");
+        console.log("currentActivityIndex ", currentActivityIndex);
+        if (currentActivityIndex + 1 === youngChildActivity.length) {
+          router.push("/client/summary");
+        } else {
+          router.push("/client/survey");
+        }
       } else {
         //TODO route to already complete screen
         console.log(" ## Survey Is submitted ##");
@@ -56,7 +60,7 @@ export const ClientProvider = ({ children }) => {
         return "Survey Id is not valid. Please contact your clinician.";
       }
     }
-  }, [currentSurveyId, survey]);
+  }, [currentSurveyId, survey, currentActivityIndex]);
 
   useEffect(() => {
     if (user && currentSurveyId) {
@@ -113,7 +117,7 @@ export const ClientProvider = ({ children }) => {
 
         //the last activity is valid
         if (index + 1 === youngChildActivity.length) {
-          router.push("/client/summary");
+          setCurrentActivityIndex(index);
           return;
         }
       } else {
