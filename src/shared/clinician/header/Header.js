@@ -1,46 +1,49 @@
 import { ClinicianContext } from "@/context/ClinicianContext";
-import Link from "next/link";
-import { React, useContext, useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-export const Header = ({ text, navbarItems }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { clearClinicianInfo } = useContext(ClinicianContext);
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("token"));
-  }, [isLoggedIn]);
-
-  const signInOut = () => {
-    if (isLoggedIn) {
-      //remove token from the local storage
-      localStorage.removeItem("token");
-      //clear the clinician data from the context api
-      clearClinicianInfo();
-      // navigate("/clinician-home");
-    } else {
-      // handleNavigate("/clinician-login");
-    }
-  };
-
+import { FullscreenExit } from "@mui/icons-material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import IconButton from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { React } from "react";
+const Header = ({ text }) => {
   return (
-    <div className="doc-header s-heading-text">
-      <div className="heading-text">
-        <b>{text}</b>
-      </div>
-      <div className="navbar-menu">
-        {navbarItems?.map((item, index) => (
-          <Link className="m-0 ml-5 cp" href={item.url} key={index}>
-            <b>{item.name}</b>
-          </Link>
-        ))}
-        <button
-          className="doc-btn ml-5 cp s-heading-text bg-g-c-w"
-          onClick={() => signInOut()}
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar
+          position="static"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            padding: "1rem",
+            background: "blue",
+            backdropFilter: "blur(2px)",
+            alignItems: "center",
+          }}
         >
-          <b>{isLoggedIn ? "Sign Out" : "Sign In"}</b>
-        </button>
-      </div>
-    </div>
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h4" align="center">
+              <b>PUFI-2</b>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </>
   );
 };
+export default Header;
