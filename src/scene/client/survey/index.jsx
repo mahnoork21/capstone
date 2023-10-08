@@ -16,7 +16,10 @@ import {
   StepLabel,
 } from "@mui/material";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
-import { checkIfResponseIsValid } from "./helper/surveyHelper";
+import {
+  checkIfALLResponsesAreValid,
+  checkIfResponseIsValid,
+} from "./helper/surveyHelper";
 import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
@@ -38,6 +41,7 @@ const SurveyContent = () => {
     setSurvey,
     currentSurveyId,
     setHeaderButtonType,
+    activityResponses,
   } = useContext(ClientContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
@@ -112,56 +116,62 @@ const SurveyContent = () => {
   };
 
   const handleOnNextButtonClicked = async () => {
-    for (const questionId of questionIds) {
-      const response = currentAnswer[questionId];
-      const result = checkIfResponseIsValid(questionId, response);
-      if (!result.isAnswered) {
-        //Display error message and scroll to the error question
-        setErrors({
-          [questionId]: result.error,
-        });
-        return;
-      } else {
-        if (
-          (questionId === "do" && currentAnswer.do.value === 0) ||
-          (questionId === "how" && currentAnswer.how.value === 0)
-        ) {
-          break;
+    const error = checkIfALLResponsesAreValid(currentAnswer);
+
+    if (!error) {
+      try {
+        await updateAnswerInSurvey(
+          youngChildActivity[currentActivityIndex].id,
+          currentAnswer
+        );
+        //update the local copy
+        const survey = await getSurveyById(currentSurveyId);
+        setSurvey(survey);
+
+        //end of survey
+        if (currentActivityIndex + 1 === youngChildActivity.length) {
+          router.push("/client/summary");
+          return;
         }
-      }
-    }
-
-    //All questions are valid and have answers
-
-    //If user updated the answer update in db
-
-    try {
-      await updateAnswerInSurvey(
-        youngChildActivity[currentActivityIndex].id,
-        currentAnswer
-      );
-      //update the local copy
-      const survey = await getSurveyById(currentSurveyId);
-      setSurvey(survey);
-
-      //end of survey
-      if (currentActivityIndex + 1 === youngChildActivity.length) {
-        router.push("/client/summary");
+        setCurrentActivityIndex(currentActivityIndex + 1);
+      } catch (error) {
+        console.log(`Error when updating or getting`, error);
         return;
       }
-      setCurrentActivityIndex(currentActivityIndex + 1);
-    } catch (error) {
-      console.log(`Error when updating or getting`, error);
-      return;
+    } else {
+      setErrors(error);
     }
   };
 
-  const handleOnBackButtonClicked = () => {
-    //check if answer is updated
-    //if updated -> update server
-    //TODO TODO TODO
+  const handleOnBackButtonClicked = async () => {
+    const error = checkIfALLResponsesAreValid(currentAnswer);
 
-    setCurrentActivityIndex(currentActivityIndex - 1);
+    const isInProgressQuestion =
+      currentActivityIndex + 1 === Object.keys(activityResponses).length;
+    console.log(
+      "### isInProgressQuestion",
+      isInProgressQuestion,
+      activityResponses.length
+    );
+
+    if (!error || isInProgressQuestion) {
+      try {
+        await updateAnswerInSurvey(
+          youngChildActivity[currentActivityIndex].id,
+          currentAnswer
+        );
+        //update the local copy
+        const survey = await getSurveyById(currentSurveyId);
+        setSurvey(survey);
+
+        setCurrentActivityIndex(currentActivityIndex - 1);
+      } catch (error) {
+        console.log(`Error when updating or getting`, error);
+        return;
+      }
+    } else {
+      setErrors(error);
+    }
   };
 
   const handleOnResponseGuideClick = (event, isActivityGuide) => {
@@ -181,11 +191,6 @@ const SurveyContent = () => {
   const handleOnMiniGuideClose = () => {
     setMiniGuideAnchorEL(null);
   };
-
-  console.log("[Debug] Activity == ", currentActivity);
-  console.log("[Debug] Answer == ", currentAnswer);
-  console.log("[Debug] Steps == ", steps);
-  console.log("[Debug] Errors == ", errors);
 
   useEffect(() => {
     //assumes that there can be only one error at a time
@@ -208,6 +213,11 @@ const SurveyContent = () => {
         });
     }
   }, [errors]);
+
+  console.log("[Debug] Activity == ", currentActivity);
+  console.log("[Debug] Answer == ", currentAnswer);
+  console.log("[Debug] Steps == ", steps);
+  console.log("[Debug] Errors == ", errors);
 
   return (
     <MainContainer>

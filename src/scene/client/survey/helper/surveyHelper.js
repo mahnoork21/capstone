@@ -110,6 +110,31 @@ export const generateEmptyAnswer = (activityId) => {
   return emptyAnswer;
 };
 
+/**
+ * @param {currentAnswer} currentAnswer
+ * @returns Object containing error message for questionId
+ *          If no error, returns null
+ */
+export const checkIfALLResponsesAreValid = (currentAnswer) => {
+  for (const questionId of questionIds) {
+    const response = currentAnswer[questionId];
+    const result = checkIfResponseIsValid(questionId, response);
+    if (!result.isAnswered) {
+      return {
+        [questionId]: result.error,
+      };
+    } else {
+      if (
+        (questionId === "do" && currentAnswer.do.value === 0) ||
+        (questionId === "how" && currentAnswer.how.value === 0)
+      ) {
+        break;
+      }
+    }
+  }
+  return null;
+};
+
 export const firestore_answerformat = {
   sock: {
     do: {

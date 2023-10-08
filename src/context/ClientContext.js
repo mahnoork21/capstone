@@ -1,6 +1,7 @@
 import { auth } from "@/firebase/firebase";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import {
+  checkIfALLResponsesAreValid,
   checkIfResponseIsValid,
   generateEmptyAnswer,
 } from "@/scene/client/survey/helper/surveyHelper";
@@ -103,24 +104,9 @@ export const ClientProvider = ({ children }) => {
     for (const [index, activity] of youngChildActivity.entries()) {
       const currentActivityResponse = activityResponses[activity.id];
       if (currentActivityResponse) {
-        let isAllResponseValid = true;
-        for (const questionId of questionIds) {
-          const response = currentActivityResponse[questionId];
-          const result = checkIfResponseIsValid(questionId, response);
-          if (!result.isAnswered) {
-            isAllResponseValid = false;
-          } else {
-            if (
-              (questionId === "do" && currentActivityResponse.do.value === 0) ||
-              (questionId === "how" && currentActivityResponse.how.value === 0)
-            ) {
-              isAllResponseValid = true;
-              break;
-            }
-          }
-        }
+        const error = checkIfALLResponsesAreValid(currentActivityResponse);
 
-        if (!isAllResponseValid) {
+        if (error) {
           setCurrentActivityIndex(index);
           break;
         }
@@ -196,6 +182,7 @@ export const ClientProvider = ({ children }) => {
       value={{
         currentSurveyId,
         setSurvey,
+        activityResponses,
         breakpoint,
         headerButtonType,
         setHeaderButtonType: setHeaderButtonType,
