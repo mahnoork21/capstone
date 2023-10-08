@@ -1,5 +1,11 @@
 import { auth } from "@/firebase/firebase";
 import { getSurveyById } from "@/firebase/surveyRepo";
+import {
+  checkIfResponseIsValid,
+  generateEmptyAnswer,
+} from "@/scene/client/survey/helper/surveyHelper";
+import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
+import { questionIds } from "@/scene/client/survey/helper/youngChildSurvey";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -17,7 +23,13 @@ export const ClientProvider = ({ children }) => {
     HeaderButtonType.START_SURVEY
   );
 
+  const [currentActivityIndex, setCurrentActivityIndex] = useState(-1);
+  const [currentAnswer, setCurrentAnswer] = useState(null);
+  const [errors, setErrors] = useState({});
+
   const router = useRouter();
+
+  const activityResponses = survey?.activity_response;
 
   const getCurrentSurvey = async () => {
     const survey = await getSurveyById(currentSurveyId);
@@ -85,20 +97,117 @@ export const ClientProvider = ({ children }) => {
     }
   }, []);
 
+  const moveToLastAnsweredIndex = () => {
+    for (const [index, activity] of youngChildActivity.entries()) {
+      const currentActivityResponse = activityResponses[activity.id];
+      if (currentActivityResponse) {
+        //check if it is valid
+
+        let isAllResponseValid = true;
+        for (const questionId of questionIds) {
+          const response = currentActivityResponse[questionId];
+          const result = checkIfResponseIsValid(questionId, response);
+          if (!result.isAnswered) {
+            isAllResponseValid = false;
+            return;
+          } else {
+            if (
+              (questionId === "do" && currentActivityResponse.do.value === 0) ||
+              (questionId === "how" && currentActivityResponse.how.value === 0)
+            ) {
+              isAllResponseValid = true;
+              break;
+            }
+          }
+        }
+
+        if (!isAllResponseValid) {
+          setCurrentActivityIndex(index);
+          break;
+        }
+
+        //the last activity is valid
+        if (index + 1 === youngChildActivity.length) {
+          router.push("/client/summary");
+          return;
+        }
+      } else {
+        //generate empty response
+        setCurrentActivityIndex(index);
+        break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (activityResponses) {
+      if (currentActivityIndex == -1) {
+        moveToLastAnsweredIndex();
+      } else {
+        const currentActivityResponse =
+          activityResponses[youngChildActivity[currentActivityIndex].id];
+        setErrors({});
+        if (currentActivityResponse) {
+          setCurrentAnswer(currentActivityResponse);
+        } else {
+          setCurrentAnswer(generateEmptyAnswer());
+        }
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [currentActivityIndex, activityResponses]);
+
+  //Called when user selects an option
+  const updateAnswer = (questionId, answer, type) => {
+    switch (type) {
+      case "value":
+        currentAnswer[questionId].value = answer;
+        break;
+      case "body-part":
+        currentAnswer[questionId]["bodypart"] = answer;
+        break;
+      case "commentForNotSure":
+        currentAnswer[questionId]["commentForNotSure"] = answer;
+    }
+
+    const questionIndex = questionIds.indexOf(questionId);
+    questionIds.forEach((questionId, index) => {
+      if (index > questionIndex) {
+        currentAnswer[questionId] = {};
+      }
+    });
+
+    setErrors({});
+    setCurrentAnswer({
+      ...currentAnswer,
+    });
+  };
+
   console.log("[Debug] SurveyId == ", currentSurveyId);
   console.log("[Debug] Survey == ", survey);
+  console.log("[Debug] Activity Response == ", survey?.activity_response);
+  console.log("[Debug] Activity index == ", currentActivityIndex);
 
   return (
     <ClientContext.Provider
       value={{
         currentSurveyId,
-        activityResponses: survey?.activity_response,
         setSurvey,
         breakpoint,
         headerButtonType,
         setHeaderButtonType: setHeaderButtonType,
         setCurrentSurveyId: setCurrentSurveyId,
         handleStartSurveyClick: handleStartSurveyClick,
+        currentActivityIndex,
+        currentAnswer,
+        updateAnswer,
+        setCurrentActivityIndex: setCurrentActivityIndex,
+        errors,
+        setErrors,
       }}
     >
       {children}

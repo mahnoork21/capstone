@@ -6,7 +6,6 @@ import {
   SurveyContainer,
 } from "./styled";
 import { useContext, useEffect, useRef, useState } from "react";
-import SurveyProvider, { SurveyContext } from "./context";
 import {
   Button,
   Popover,
@@ -26,6 +25,7 @@ import ActivityQuestion from "./components/activity-question";
 import Option from "./components/option";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
+import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 
 const SurveyContent = () => {
   const {
@@ -35,8 +35,10 @@ const SurveyContent = () => {
     updateAnswer,
     errors,
     setErrors,
-  } = useContext(SurveyContext);
-  const { setSurvey, currentSurveyId } = useContext(ClientContext);
+    setSurvey,
+    currentSurveyId,
+    setHeaderButtonType,
+  } = useContext(ClientContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
 
@@ -74,6 +76,10 @@ const SurveyContent = () => {
       setSteps(steps);
     }
   }, [currentAnswer]);
+
+  useEffect(() => {
+    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
+  }, []);
 
   const isStepVisible = (index) => {
     //First question is always visible
@@ -418,11 +424,7 @@ const SurveyContent = () => {
 };
 
 const Survey = () => {
-  return (
-    <SurveyProvider>
-      <SurveyContent />
-    </SurveyProvider>
-  );
+  return <SurveyContent />;
 };
 
 export default Survey;
