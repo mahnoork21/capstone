@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MainContainer from "@/shared/components/main-container";
 import { HeaderButton, HeaderContainer, NavigationWrapper } from "./styled";
 import { ClientContext } from "@/context/ClientContext";
@@ -17,11 +17,17 @@ const Header = () => {
     currentAnswer,
     currentActivityIndex,
     handleStartSurveyClick,
+    setHeaderButtonType,
+    isNavBarVisible,
   } = useContext(ClientContext);
 
   const router = useRouter();
 
   const [error, setError] = useState();
+
+  useEffect(() => {
+    setHeaderButtonType(HeaderButtonType.START_SURVEY);
+  });
 
   const handleOnClick = async () => {
     if (headerButtonType === HeaderButtonType.START_SURVEY) {
@@ -60,24 +66,28 @@ const Header = () => {
     <MainContainer>
       <HeaderContainer>
         <span>PUFI-2</span>
-        <NavigationWrapper>
-          <Link href="/client">Home</Link>
 
-          {breakpoint === "desktop" ? (
-            <HeaderButton variant="outlined" onClick={handleOnClick}>
-              {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                ? "SAVE AND EXIT"
-                : "START SURVEY"}
-            </HeaderButton>
-          ) : (
-            <Link href="/client/survey">
-              {" "}
-              {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                ? "SAVE AND EXIT"
-                : "START SURVEY"}
-            </Link>
-          )}
-        </NavigationWrapper>
+        {isNavBarVisible && (
+          <NavigationWrapper>
+            <Link href="/client">Home</Link>
+
+            {breakpoint === "desktop" ? (
+              <HeaderButton variant="outlined" onClick={handleOnClick}>
+                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                  ? "SAVE AND EXIT"
+                  : "START SURVEY"}
+              </HeaderButton>
+            ) : (
+              <Link href="/client/survey">
+                {" "}
+                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                  ? "SAVE AND EXIT"
+                  : "START SURVEY"}
+              </Link>
+            )}
+          </NavigationWrapper>
+        )}
+
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={Boolean(error)}

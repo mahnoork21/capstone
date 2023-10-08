@@ -1,8 +1,8 @@
 const { StyledPrimaryClientButton } = require("./styled");
 
-const PrimaryClientButton = ({ children }) => {
+const PrimaryClientButton = ({ children, onClick }) => {
   return (
-    <StyledPrimaryClientButton variant="contained">
+    <StyledPrimaryClientButton variant="contained" onClick={onClick}>
       {children}{" "}
     </StyledPrimaryClientButton>
   );

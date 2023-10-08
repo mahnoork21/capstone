@@ -5,20 +5,36 @@ import { TextField } from "@mui/material";
 export const SummaryContainer = styled.div`
   background-color: white;
   border-radius: 12px;
-  padding: 24px;
+  padding: 16px;
+  padding-bottom: 32px;
 
   & h1 {
     width: 100%;
-    font-size: 1.75rem;
-    text-align: center;
+    font-size: 1.375rem;
+    text-align: start;
     font-weight: 600;
+
+    @media screen and (min-width: ${breakpoint.desktop}) {
+      font-size: 1.75rem;
+      text-align: center;
+    }
   }
 
   & > p {
     width: 100%;
-    text-align: center;
-    font-size: 1rem;
-    margin-top: 4px;
+    text-align: start;
+    font-size: 0.875;
+
+    @media screen and (min-width: ${breakpoint.desktop}) {
+      font-size: 1rem;
+      text-align: center;
+      margin-top: 4px;
+    }
+  }
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    padding: 24px;
+    padding-bottom: 40px;
   }
 `;
 
@@ -42,6 +58,10 @@ export const ActivitySummary = styled.div`
   & h2 {
     font-size: 1.25rem;
     font-weight: 700;
+
+    @media screen and (min-width: ${breakpoint.desktop}) {
+      font-size: 1.25rem;
+    }
   }
 
   & > div:first-child span {
@@ -53,7 +73,7 @@ export const ActivitySummary = styled.div`
   & > div:first-child {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     gap: 8px;
   }
 `;
@@ -76,8 +96,13 @@ export const AnswerWrapper = styled.div`
 `;
 
 export const FinalCommentTextField = styled(TextField)`
-  width: 680px;
-  margin-top: 24px;
+  width: 100%;
+  margin-top: 12px;
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    width: 680px;
+    margin-top: 24px;
+  }
 `;
 
 export const ButtonWrapper = styled.div`

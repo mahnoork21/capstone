@@ -27,6 +27,8 @@ export const ClientProvider = ({ children }) => {
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [errors, setErrors] = useState({});
 
+  const [isNavBarVisible, setIsNavBarVisible] = useState(true);
+
   const router = useRouter();
 
   const activityResponses = survey?.activity_response;
@@ -35,22 +37,19 @@ export const ClientProvider = ({ children }) => {
     const survey = await getSurveyById(currentSurveyId);
     if (survey) {
       setSurvey(survey);
-    } else {
+
+      if (survey.is_submitted) {
+        router.push("/client/survey-complete");
+      }
     }
   };
 
   const handleStartSurveyClick = useCallback(() => {
     if (survey) {
-      if (!survey.is_submitted) {
-        console.log("currentActivityIndex ", currentActivityIndex);
-        if (currentActivityIndex + 1 === youngChildActivity.length) {
-          router.push("/client/summary");
-        } else {
-          router.push("/client/survey");
-        }
+      if (currentActivityIndex + 1 === youngChildActivity.length) {
+        router.push("/client/summary");
       } else {
-        //TODO route to already complete screen
-        console.log(" ## Survey Is submitted ##");
+        router.push("/client/survey");
       }
     } else {
       //TODO show error message that error not found in homepage
@@ -198,6 +197,8 @@ export const ClientProvider = ({ children }) => {
         setCurrentActivityIndex: setCurrentActivityIndex,
         errors,
         setErrors,
+        isNavBarVisible,
+        setIsNavBarVisible: setIsNavBarVisible,
       }}
     >
       {children}

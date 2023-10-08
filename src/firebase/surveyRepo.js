@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -12,7 +13,6 @@ import {
 let currentSurveyPath;
 
 export const getSurveyById = async (surveyId) => {
-  //TODO message: survey id not found
   if (!surveyId) return null;
 
   const surveyQuery = query(
@@ -21,7 +21,6 @@ export const getSurveyById = async (surveyId) => {
   );
   const surveySnapshot = await getDocs(surveyQuery);
 
-  //TODO survey not found in db
   if (!surveySnapshot.size) return null;
   currentSurveyPath = surveySnapshot.docs[0].ref.path;
   return surveySnapshot.docs[0].data();
@@ -31,5 +30,15 @@ export const updateAnswerInSurvey = async (activityId, currentAnswer) => {
   const surveyRef = doc(db, currentSurveyPath);
   await updateDoc(surveyRef, {
     [`activity_response.${activityId}`]: currentAnswer,
+    updated: serverTimestamp(),
+  });
+};
+
+export const updateCommentAndCompleteSurvey = async (comment) => {
+  const surveyRef = doc(db, currentSurveyPath);
+  await updateDoc(surveyRef, {
+    final_comment: comment,
+    is_submitted: true,
+    updated: serverTimestamp(),
   });
 };

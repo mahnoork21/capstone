@@ -1,5 +1,5 @@
 import { ClientContext } from "@/context/ClientContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { youngChildActivity } from "../survey/helper/youngChildActivity";
 import {
   questionIds,
@@ -12,6 +12,8 @@ import { isNullOrUndefined } from "@/utils/utils";
 import MessageToUser from "../survey/components/info-component";
 import { Button } from "@mui/material";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
+import { updateCommentAndCompleteSurvey } from "@/firebase/surveyRepo";
+import { useRouter } from "next/router";
 
 const {
   default: MainContainer,
@@ -24,10 +26,27 @@ const {
   AnswerWrapper,
   FinalCommentTextField,
   ButtonWrapper,
+  setIsNavBarVisible,
 } = require("./styled");
 
 const SummaryContent = () => {
-  const { activityResponses } = useContext(ClientContext);
+  const { activityResponses, setIsNavBarVisible } = useContext(ClientContext);
+  const [finalComment, setFinalComment] = useState();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsNavBarVisible(false);
+
+    return () => {
+      setIsNavBarVisible(true);
+    };
+  });
+
+  const handleSubmitClick = async () => {
+    await updateCommentAndCompleteSurvey(finalComment);
+    router.push("/client/survey-complete");
+  };
 
   return (
     <MainContainer>
@@ -49,7 +68,6 @@ const SummaryContent = () => {
                   const activityRespose = activityResponses[activity.id];
                   const questionRespose = activityRespose[questionId];
 
-                  console.log("### ", youngChildSurvey[questionIndex].options);
                   const option = youngChildSurvey[questionIndex].options.find(
                     (option) => {
                       return option.value === questionRespose.value;
@@ -96,10 +114,17 @@ const SummaryContent = () => {
             );
           })}
         </ActivitySummaryWrapper>
-        <FinalCommentTextField variant="filled" multiline rows={4} />
+        <FinalCommentTextField
+          variant="filled"
+          multiline
+          rows={3}
+          onChange={(event) => {
+            setFinalComment(event.target.value);
+          }}
+        />
         <MessageToUser message="Please write any comments about the skills your child does, how they use their prosthesis, and/or other activities they do two-handed." />
         <ButtonWrapper>
-          <PrimaryClientButton variant="contained">
+          <PrimaryClientButton variant="contained" onClick={handleSubmitClick}>
             Submit Survey
           </PrimaryClientButton>
         </ButtonWrapper>
