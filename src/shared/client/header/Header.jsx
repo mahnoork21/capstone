@@ -12,7 +12,7 @@ const Header = () => {
 
   const handleOnClick = () => {
     if (headerButtonType === HeaderButtonType.START_SURVEY) {
-      router.push("/client/survey");
+      handleStartSurveyClick();
     } else {
       //TODO save survey
     }

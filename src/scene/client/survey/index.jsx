@@ -1,6 +1,5 @@
 import MainContainer from "@/shared/components/main-container";
 import {
-  PufiFormControlLabel,
   ResponseGuideContainer,
   StyledStepper,
   StyledTextField,
@@ -26,18 +25,18 @@ import MessageToUser from "./components/info-component";
 import ActivityQuestion from "./components/activity-question";
 import Option from "./components/option";
 import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
 
 const SurveyContent = () => {
   const {
     currentActivityIndex,
     currentAnswer,
-    currentSurveyId,
     setCurrentActivityIndex,
     updateAnswer,
-    setSurveyResponse,
     errors,
     setErrors,
   } = useContext(SurveyContext);
+  const { setSurvey, currentSurveyId } = useContext(ClientContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
 
@@ -137,7 +136,7 @@ const SurveyContent = () => {
       );
       //update the local copy
       const survey = await getSurveyById(currentSurveyId);
-      setSurveyResponse(survey.activity_response);
+      setSurvey(survey);
 
       //end of survey
       if (currentActivityIndex + 1 === youngChildActivity.length) {
@@ -154,6 +153,7 @@ const SurveyContent = () => {
   const handleOnBackButtonClicked = () => {
     //check if answer is updated
     //if updated -> update server
+    //TODO TODO TODO
 
     setCurrentActivityIndex(currentActivityIndex - 1);
   };
@@ -177,8 +177,8 @@ const SurveyContent = () => {
   };
 
   console.log("[Debug] Activity == ", currentActivity);
-  console.log("[Debug] Steps == ", steps);
   console.log("[Debug] Answer == ", currentAnswer);
+  console.log("[Debug] Steps == ", steps);
   console.log("[Debug] Errors == ", errors);
 
   useEffect(() => {

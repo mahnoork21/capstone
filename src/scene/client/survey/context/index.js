@@ -16,19 +16,19 @@ import { useRouter } from "next/router";
 export const SurveyContext = createContext();
 
 const SurveyProvider = ({ children }) => {
-  const [currentActivityIndex, setCurrentActivityIndex] = useState(null);
+  const [currentActivityIndex, setCurrentActivityIndex] = useState(-1);
   const [currentAnswer, setCurrentAnswer] = useState(null);
-  const [surveyResponse, setSurveyResponse] = useState();
+  // const [surveyResponse, setSurveyResponse] = useState();
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
 
-  const { currentSurveyId, user, setHeaderButtonType } =
+  const { setHeaderButtonType, activityResponses, setSurveyResponse } =
     useContext(ClientContext);
 
   const moveToLastAnsweredIndex = () => {
     for (const [index, activity] of youngChildActivity.entries()) {
-      const currentActivityResponse = surveyResponse[activity.id];
+      const currentActivityResponse = activityResponses[activity.id];
       if (currentActivityResponse) {
         //check if it is valid
 
@@ -69,12 +69,13 @@ const SurveyProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!isNullOrUndefined(currentActivityIndex)) {
+    if (activityResponses) {
       if (currentActivityIndex == -1) {
         moveToLastAnsweredIndex();
       } else {
         const currentActivityResponse =
-          surveyResponse[youngChildActivity[currentActivityIndex].id];
+          activityResponses[youngChildActivity[currentActivityIndex].id];
+        setErrors({});
         if (currentActivityResponse) {
           setCurrentAnswer(currentActivityResponse);
         } else {
@@ -87,32 +88,11 @@ const SurveyProvider = ({ children }) => {
         });
       }
     }
-  }, [currentActivityIndex]);
-
-  const getCurrentSurvey = async () => {
-    const survey = await getSurveyById(currentSurveyId);
-    if (survey) {
-      if (!survey.is_submitted) {
-        setSurveyResponse(survey.activity_response);
-        setCurrentActivityIndex(-1);
-      } else {
-        //TODO route to already complete screen
-        console.log(" ## Survey Is submitted ##");
-        router.push("/client");
-      }
-    } else {
-      //TODO show error message that error not found in homepage
-      console.log(" ## Survey Not found ##");
-      router.push("/client");
-    }
-  };
+  }, [currentActivityIndex, activityResponses]);
 
   useEffect(() => {
-    if (user) {
-      setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
-      getCurrentSurvey();
-    }
-  }, [user]);
+    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
+  }, []);
 
   //Called when user selects an option
   const updateAnswer = (questionId, answer, type) => {
@@ -140,9 +120,8 @@ const SurveyProvider = ({ children }) => {
     });
   };
 
-  console.log("[Debug] Current response == ", surveyResponse);
-  console.log("[Debug] Current activity index == ", currentActivityIndex);
-  console.log("[Debug] Current survey id == ", currentSurveyId);
+  console.log("[Debug] Activity Response == ", activityResponses);
+  console.log("[Debug] Activity index == ", currentActivityIndex);
 
   return (
     <SurveyContext.Provider
@@ -151,7 +130,6 @@ const SurveyProvider = ({ children }) => {
         currentAnswer,
         updateAnswer,
         setCurrentActivityIndex: setCurrentActivityIndex,
-        currentSurveyId,
         setSurveyResponse: setSurveyResponse,
         errors,
         setErrors,

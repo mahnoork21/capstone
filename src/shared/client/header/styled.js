@@ -62,15 +62,3 @@ export const NavigationWrapper = styled.div`
     margin-right: 0;
   }
 `;
-
-// export const StyledMenuItem = styled(MenuItem)`
-//   width: 200px;
-//   min-width: 200px;
-
-//   & a {
-//     color: var(--pufi-black);
-//     text-decoration: inherit;
-//     text-transform: uppercase;
-//     outline: none;
-//   }
-// `;
