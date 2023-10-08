@@ -1,22 +1,60 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import MainContainer from "@/shared/components/main-container";
 import { HeaderButton, HeaderContainer, NavigationWrapper } from "./styled";
-import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
+import { updateAnswerInSurvey } from "@/firebase/surveyRepo";
+import { useRouter } from "next/router";
+import { IconButton, Snackbar } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Header = () => {
-  const { breakpoint, headerButtonType } = useContext(ClientContext);
+  const {
+    breakpoint,
+    headerButtonType,
+    currentAnswer,
+    currentActivityIndex,
+    handleStartSurveyClick,
+  } = useContext(ClientContext);
+
   const router = useRouter();
 
-  const handleOnClick = () => {
+  const [error, setError] = useState();
+
+  const handleOnClick = async () => {
     if (headerButtonType === HeaderButtonType.START_SURVEY) {
-      handleStartSurveyClick();
+      const error = handleStartSurveyClick();
+      if (error) {
+        setError(error);
+      }
     } else {
-      //TODO save survey
+      await updateAnswerInSurvey(
+        youngChildActivity[currentActivityIndex].id,
+        currentAnswer
+      );
+
+      router.push("/client");
     }
   };
+
+  const handleClose = () => {
+    setError("");
+  };
+
+  const action = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
 
   return (
     <MainContainer>
@@ -40,6 +78,14 @@ const Header = () => {
             </Link>
           )}
         </NavigationWrapper>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={Boolean(error)}
+          autoHideDuration={10000}
+          onClose={handleClose}
+          message={error}
+          action={action}
+        />
       </HeaderContainer>
     </MainContainer>
   );

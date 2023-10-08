@@ -3,15 +3,18 @@ import YoutubeEmbed from "@/shared/client/youtubeEmbed/YoutubeEmbed";
 import HomeContainer from "./components/home-container";
 import { GreyP } from "./components/home-container/styled";
 import { StyledButton } from "./components/button";
-import Link from "next/link";
 import MainContainer from "@/shared/components/main-container";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
+import { IconButton, Snackbar } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ClientHome = () => {
   const [wideMode, setWideMode] = useState(false);
-  const { setCurrentSurveyId } = useContext(ClientContext);
+  const [error, setError] = useState("");
+  const { setCurrentSurveyId, handleStartSurveyClick } =
+    useContext(ClientContext);
 
   const router = useRouter();
   const { surveyId } = router.query;
@@ -21,6 +24,30 @@ const ClientHome = () => {
     setWideMode(!wideMode);
     console.log("IM HERE");
   };
+
+  const handleOnClick = async () => {
+    const error = handleStartSurveyClick();
+    if (error) {
+      setError(error);
+    }
+  };
+
+  const handleClose = () => {
+    setError("");
+  };
+
+  const action = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
 
   return (
     <MainContainer>
@@ -49,14 +76,21 @@ const ClientHome = () => {
         </div>
 
         <div className="buttons">
-          <Link href="/client/survey">
-            <StyledButton primary variant="contained">
-              START SURVEY
-            </StyledButton>
-          </Link>
+          <StyledButton primary variant="contained" onClick={handleOnClick}>
+            START SURVEY
+          </StyledButton>
 
           <StyledButton variant="outlined">VIEW INSTRUCTIONS</StyledButton>
         </div>
+
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={Boolean(error)}
+          autoHideDuration={10000}
+          onClose={handleClose}
+          message={error}
+          action={action}
+        />
       </HomeContainer>
     </MainContainer>
   );

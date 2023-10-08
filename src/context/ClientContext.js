@@ -46,14 +46,16 @@ export const ClientProvider = ({ children }) => {
       } else {
         //TODO route to already complete screen
         console.log(" ## Survey Is submitted ##");
-        router.push("/client");
       }
     } else {
       //TODO show error message that error not found in homepage
-      console.log(" ## Survey Not found ##");
-      router.push("/client");
+      if (!currentSurveyId) {
+        return "Survey Id is not provided. Please contact your clinician for a link to the survey.";
+      } else {
+        return "Survey Id is not valid. Please contact your clinician.";
+      }
     }
-  }, []);
+  }, [currentSurveyId, survey]);
 
   useEffect(() => {
     if (user && currentSurveyId) {
@@ -101,15 +103,12 @@ export const ClientProvider = ({ children }) => {
     for (const [index, activity] of youngChildActivity.entries()) {
       const currentActivityResponse = activityResponses[activity.id];
       if (currentActivityResponse) {
-        //check if it is valid
-
         let isAllResponseValid = true;
         for (const questionId of questionIds) {
           const response = currentActivityResponse[questionId];
           const result = checkIfResponseIsValid(questionId, response);
           if (!result.isAnswered) {
             isAllResponseValid = false;
-            return;
           } else {
             if (
               (questionId === "do" && currentActivityResponse.do.value === 0) ||
