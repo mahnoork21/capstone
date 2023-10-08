@@ -8,19 +8,24 @@ const NormalHeader = ({ handleDrawerToggle }) => {
       position="fixed"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
-      <Toolbar>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
           edge="start"
           onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { lg: "none" } }}
+          sx={{ display: { lg: "none" } }}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h5" noWrap component="div" sx={{ pl: "20%" }}>
+        {/* Just to center the heading */}
+        <Typography
+          sx={{ display: { xs: "none", sm: "none", md: "none", lg: "block" } }}
+        />
+        <Typography variant="h5" noWrap component="div">
           PUFI-2
         </Typography>
+        <Typography />
       </Toolbar>
     </AppBar>
   );
