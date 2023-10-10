@@ -1,13 +1,8 @@
-import { useContext } from "react";
-import { ClientContext } from "@/context/ClientContext";
 import { data } from "./data";
 import BeforeStartSurveyRow from "./components/before-start-survey-row";
 import HeaderRow from "./components/header-row";
 
-//TODO: finish BeforeStartSurvey
 const BeforeStartSurvey = () => {
-  const { breakpoint } = useContext(ClientContext);
-
   return (
     <>
       <HeaderRow />
