@@ -4,10 +4,14 @@ import {
   Container,
   FrequencyQuestion,
   GreyHeader,
-  Row,
 } from "./styled";
+import { Grid } from "@mui/material";
+import { data } from "./data";
+import { useContext } from "react";
+import { ClientContext } from "@/context/ClientContext";
 
 const ActivityGuideInstructions = () => {
+  const { breakpoint } = useContext(ClientContext);
   return (
     <Container>
       <GreyHeader>
@@ -26,69 +30,20 @@ const ActivityGuideInstructions = () => {
         </p>
       </FrequencyQuestion>
 
-      <Row>
-        <ActivityGuideCard>
-          <Image
-            height={140}
-            width={140}
-            src={"/instructions/activity-guide/activity-1.png"}
-          />
-          <p>
-            Both arms together with the prosthesis <span>actively</span> to
-            grasp
-          </p>
-        </ActivityGuideCard>
-        <ActivityGuideCard>
-          <Image
-            height={140}
-            width={140}
-            src={"/instructions/activity-guide/activity-2.png"}
-          />
-          <p>With the non-prosthetic hand alone</p>
-        </ActivityGuideCard>
-      </Row>
-      <Row>
-        <ActivityGuideCard>
-          <Image
-            height={140}
-            width={140}
-            src={"/instructions/activity-guide/activity-3.png"}
-          />
-          <p>
-            Both arms together with the prosthesis <span>passively</span> to
-            grasp
-          </p>
-        </ActivityGuideCard>
-        <ActivityGuideCard>
-          <Image
-            height={140}
-            width={140}
-            src={"/instructions/activity-guide/activity-4.png"}
-          />
-          <p>With the assistance of the residual limb</p>
-        </ActivityGuideCard>
-      </Row>
-      <Row>
-        <ActivityGuideCard>
-          <Image
-            height={140}
-            width={140}
-            src={"/instructions/activity-guide/activity-5.png"}
-          />
-          <p>With some help from another person</p>
-        </ActivityGuideCard>
-        <ActivityGuideCard>
-          <Image
-            height={140}
-            width={140}
-            src={"/instructions/activity-guide/activity-6.png"}
-          />
-          <p>
-            Don't know/ not sure Use this choice if none of the ways shown above
-            seems quite right
-          </p>
-        </ActivityGuideCard>
-      </Row>
+      <Grid container spacing={3} justify="center" alignItems="center">
+        {data.map(({ src, text }, index) => (
+          <Grid item xs={breakpoint === "desktop" ? 6 : 12} key={index}>
+            <ActivityGuideCard>
+              <Image
+                height={breakpoint === "desktop" ? 140 : 100}
+                width={breakpoint === "desktop" ? 140 : 100}
+                src={src}
+              />
+              <p dangerouslySetInnerHTML={{ __html: text }} />
+            </ActivityGuideCard>
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
 };
