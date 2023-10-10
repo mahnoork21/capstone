@@ -5,7 +5,12 @@ import { Toolbar, Box, CssBaseline } from "@mui/material";
 import Footer from "../clinician/footer";
 import AuthHeader from "../clinician/header/AuthHeader";
 import NormalHeader from "../clinician/header/NormalHeader";
-import { CurvedBackground, PageWrapper } from "./clinician-shared";
+import {
+  CurvedBackground,
+  PageWrapper,
+  FlexBox,
+  ContentBox,
+} from "./clinician-shared";
 import ClinicianProviders from "./ClinicianProviders";
 import Navbar from "../clinician/navbar";
 
@@ -30,7 +35,7 @@ const ClinicianLayout = ({ window, children }) => {
           <Footer />
         </PageWrapper>
       ) : (
-        <Box sx={{ display: "flex" }}>
+        <FlexBox>
           <CssBaseline />
 
           <NormalHeader handleDrawerToggle={handleDrawerToggle} />
@@ -42,18 +47,11 @@ const ClinicianLayout = ({ window, children }) => {
             drawerWidth={drawerWidth}
           />
 
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              width: { lg: `calc(100% - ${drawerWidth}px)` },
-            }}
-          >
+          <ContentBox component="main">
             <Toolbar />
             {children}
-          </Box>
-        </Box>
+          </ContentBox>
+        </FlexBox>
       )}
     </ClinicianProviders>
   );

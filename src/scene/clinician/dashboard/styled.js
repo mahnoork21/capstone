@@ -8,8 +8,8 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 23.48px 0;
-  gap: 16.48px 0;
+  padding: 24px 0;
+  gap: 16px 0;
 
   & img:last-child {
     visibility: hidden;

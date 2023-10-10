@@ -3,7 +3,6 @@ import { ClinicianContext } from "@/context/ClinicianContext";
 
 import {
   Box,
-  Drawer,
   List,
   ListItem,
   ListItemAvatar,
@@ -19,7 +18,13 @@ import {
   AccountCircle,
   Logout,
 } from "@mui/icons-material";
-import { LogOutBtn, SpecialHighlightedListItemBtn } from "./styled";
+import {
+  LogOutBtn,
+  SpecialHighlightedListItemBtn,
+  NavbarBox,
+  MobileDrawer,
+  DesktopDrawer,
+} from "./styled";
 
 function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
   const { breakpoint } = useContext(ClinicianContext);
@@ -78,12 +83,8 @@ function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
 
   return (
     <>
-      <Box
-        component="nav"
-        sx={{ width: { lg: drawerWidth }, flexShrink: { lg: 0 } }}
-        aria-label="mailbox folders"
-      >
-        <Drawer
+      <NavbarBox component="nav" aria-label="mailbox folders">
+        <MobileDrawer
           container={container}
           variant="temporary"
           open={mobileOpen}
@@ -91,30 +92,13 @@ function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
-          sx={{
-            display: { md: "block", lg: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
         >
           {Content()}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "none", md: "none", lg: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
+        </MobileDrawer>
+        <DesktopDrawer variant="permanent" open>
           {Content()}
-        </Drawer>
-      </Box>
+        </DesktopDrawer>
+      </NavbarBox>
     </>
   );
 }

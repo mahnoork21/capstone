@@ -1,6 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
-import { Button, ListItemButton } from "@mui/material";
+import { Button, ListItemButton, Box, Drawer } from "@mui/material";
 
 export const LogOutBtn = styled(Button)`
     border-radius: 12px;
@@ -27,4 +27,32 @@ export const SpecialHighlightedListItemBtn = styled(ListItemButton)`
 
 export const NavigationPanel = styled.div`
     background-color: white;
+`;
+
+export const NavbarBox = styled(Box)`
+
+    @media only screen and (min-width: ${breakpoint.desktop}) {
+        flex-shrink: 0;
+        width: 280px;
+    }
+`;
+
+export const MobileDrawer = styled(Drawer)`
+    & .MuiDrawer-paper {
+        width: 280px
+    }
+
+    @media only screen and (min-width: ${breakpoint.desktop}) {
+        display: none;
+    }
+`;
+
+export const DesktopDrawer = styled(Drawer)`
+    display: none;
+    & .MuiDrawer-paper {
+        width: 280px
+    }
+    @media only screen and (min-width: ${breakpoint.desktop}) {
+        display: block;
+    }
 `;

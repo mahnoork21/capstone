@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./styles.module.css";
+import { AuthContainer } from "./styled";
 
 const Auth = () => {
   return (
-    <div className={styles.Auth}>
+    <AuthContainer>
       Auth Page
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam dolor
@@ -31,7 +31,7 @@ const Auth = () => {
         aspernatur accusamus non animi reiciendis quod doloribus sapiente
         excepturi? Architecto, quia blanditiis?
       </p>
-    </div>
+    </AuthContainer>
   );
 };
 
