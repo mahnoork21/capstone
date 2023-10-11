@@ -7,7 +7,7 @@ export const InstructionNavigationContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  & .MuiButton-root {
+  & .nav-button {
     font-weight: 600;
     border: 2px solid;
     font-size: 1rem;
@@ -16,8 +16,8 @@ export const InstructionNavigationContainer = styled.div`
     border: 4px solid var(--pufi-primary-dark, #3a9034);
   }
 
-  & .MuiButton-root:hover,
-  & .MuiButton-root:active {
+  & .nav-button:hover,
+  & .nav-button:active {
     border: 4px solid var(--pufi-primary-dark, #3a9034);
   }
 
