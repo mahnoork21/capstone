@@ -13,3 +13,8 @@
   text-transform: uppercase;
   outline: none;
 }
+
+.menu-item-link {
+  color: inherit;
+  text-decoration: none;
+}

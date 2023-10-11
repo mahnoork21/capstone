@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: start;
-  border-radius: 1rem;
+  border-radius: 16px;
   padding: 24px 24px 36px;
   background-color: white;
   flex-wrap: wrap;
@@ -30,6 +30,14 @@ export const Container = styled.div`
     width: 50%;
   }
 
+  .content-text {
+    font-size: 1rem;
+  }
+
+  .instructions1-questions-list {
+    padding-left: 32px;
+  }
+
   .buttons {
     display: flex;
     flex-direction: row;
@@ -46,14 +54,7 @@ export const Container = styled.div`
     border-radius: 12px;
   }
 
-  // .wide {
-  //   display: block;
-  //   aspect-ratio: 90 / 30;
-  //   width: 100%;
-  //   border-radius: 12px;
-  // }
-
-  @media only screen and (max-width: 987px) {
+  @media only screen and (max-width: ${breakpoint.desktop}) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -71,6 +72,10 @@ export const Container = styled.div`
   @media only screen and (max-width: 600px) {
     .intro-body-header {
       font-size: 1.375rem;
+    }
+
+    .content-text {
+      font-size: 0.875rem;
     }
   }
 `;

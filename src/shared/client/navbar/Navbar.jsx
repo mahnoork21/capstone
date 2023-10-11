@@ -102,13 +102,6 @@ function Navbar() {
         </section>
       ) : (
         <div>
-          {/* <IconButton
-            aria-controls="menu"
-            aria-haspopup="true"
-            onClick={handleMenuOpen}
-          >
-            <MenuIcon sx={{ color: "white" }} />
-          </IconButton> */}
           <Image
             src="/icons/menu.svg"
             width={32}
@@ -122,13 +115,19 @@ function Navbar() {
             onClose={handleMenuClose}
           >
             <MenuItem onClick={handleMenuClose}>
-              <Link href="/client">Home</Link>
+              <Link className={styles["menu-item-link"]} href="/client">
+                Home
+              </Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-              <Link href="/client/about">About</Link>
+              <Link className={styles["menu-item-link"]} href="/client/about">
+                About
+              </Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-              <Link href="/client/survey">Start Survey</Link>
+              <Link className={styles["menu-item-link"]} href="/client/survey">
+                Start Survey
+              </Link>
             </MenuItem>
           </Menu>
         </div>
