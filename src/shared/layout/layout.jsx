@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/router";
 import ClientLayout from "./ClientLayout";
 import ClinicianLayout from "./ClinicianLayout";
