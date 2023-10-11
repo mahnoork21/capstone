@@ -2,15 +2,15 @@ import Image from "next/image";
 import {
   ActivityGuideCard,
   Container,
-  FrequencyQuestion,
   GreyHeader,
+  HowQuestion,
 } from "./styled";
 import { Grid } from "@mui/material";
 import { data } from "./data";
 import { useContext } from "react";
 import { ClientContext } from "@/context/ClientContext";
 
-const ActivityGuideInstructions = () => {
+const ActivityGuide = () => {
   const { breakpoint } = useContext(ClientContext);
   return (
     <Container>
@@ -22,13 +22,13 @@ const ActivityGuideInstructions = () => {
         </p>
       </GreyHeader>
 
-      <FrequencyQuestion>
+      <HowQuestion>
         <h2>How is the activity usually performed?</h2>
         <p>
           Choose the way this activity is performed <span>most often</span> if
           done in more than one way
         </p>
-      </FrequencyQuestion>
+      </HowQuestion>
 
       <Grid container spacing={3} justify="center" alignItems="center">
         {data.map(({ src, text }, index) => (
@@ -48,4 +48,4 @@ const ActivityGuideInstructions = () => {
   );
 };
 
-export default ActivityGuideInstructions;
+export default ActivityGuide;

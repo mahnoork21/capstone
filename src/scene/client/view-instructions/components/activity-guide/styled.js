@@ -32,7 +32,7 @@ export const GreyHeader = styled.div`
   }
 `;
 
-export const FrequencyQuestion = styled.div`
+export const HowQuestion = styled.div`
   & span {
     color: #3a9034;
   }

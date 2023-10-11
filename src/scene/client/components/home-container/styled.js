@@ -54,7 +54,7 @@ export const Container = styled.div`
     border-radius: 12px;
   }
 
-  @media only screen and (max-width: 987px) {
+  @media only screen and (max-width: ${breakpoint.desktop}) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
