@@ -27,7 +27,7 @@ import {
 
 const SummaryContent = () => {
   const { activityResponses, setIsNavBarVisible } = useContext(ClientContext);
-  const [finalComment, setFinalComment] = useState();
+  const [finalComment, setFinalComment] = useState(null);
 
   const router = useRouter();
 
