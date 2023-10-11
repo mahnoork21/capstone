@@ -66,6 +66,7 @@ const SurveyContent = () => {
     : false;
 
   useEffect(() => {
+    console.log(" === Setting save and exit");
     setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
   }, []);
 

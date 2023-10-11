@@ -27,7 +27,7 @@ const Header = () => {
 
   useEffect(() => {
     setHeaderButtonType(HeaderButtonType.START_SURVEY);
-  });
+  }, []);
 
   const handleOnClick = async () => {
     if (headerButtonType === HeaderButtonType.START_SURVEY) {
