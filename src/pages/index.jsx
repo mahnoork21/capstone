@@ -1,5 +1,5 @@
-const { useRouter } = require("next/router");
-const { useEffect } = require("react");
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const IndexPage = () => {
   const router = useRouter();

@@ -1,22 +1,101 @@
-import React, { useContext } from "react";
-import Navbar from "../navbar/Navbar";
-import styles from "./Header.module.css";
+import React, { useContext, useEffect, useState } from "react";
 import MainContainer from "@/shared/components/main-container";
-import { Button } from "@mui/material";
-import { HeaderButton, HeaderContainer } from "./styled";
+import { HeaderButton, HeaderContainer, NavigationWrapper } from "./styled";
 import { ClientContext } from "@/context/ClientContext";
-import Image from "next/image";
+import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
+import { updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
+import { IconButton, Snackbar } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Header = () => {
+  const {
+    breakpoint,
+    headerButtonType,
+    currentAnswer,
+    currentActivityIndex,
+    handleStartSurveyClick,
+    setHeaderButtonType,
+    isNavBarVisible,
+  } = useContext(ClientContext);
+
   const router = useRouter();
+
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    setHeaderButtonType(HeaderButtonType.START_SURVEY);
+  }, []);
+
+  const handleOnClick = async () => {
+    if (headerButtonType === HeaderButtonType.START_SURVEY) {
+      const error = handleStartSurveyClick();
+      if (error) {
+        setError(error);
+      }
+    } else {
+      await updateAnswerInSurvey(
+        youngChildActivity[currentActivityIndex].id,
+        currentAnswer
+      );
+
+      router.push("/client");
+    }
+  };
+
+  const handleClose = () => {
+    setError("");
+  };
+
+  const action = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
 
   return (
     <MainContainer>
       <HeaderContainer>
         <span>PUFI-2</span>
-        <Navbar />
+
+        {isNavBarVisible && (
+          <NavigationWrapper>
+            <Link href="/client">Home</Link>
+
+            {breakpoint === "desktop" ? (
+              <HeaderButton variant="outlined" onClick={handleOnClick}>
+                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                  ? "SAVE AND EXIT"
+                  : "START SURVEY"}
+              </HeaderButton>
+            ) : (
+              <Link href="/client/survey">
+                {" "}
+                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                  ? "SAVE AND EXIT"
+                  : "START SURVEY"}
+              </Link>
+            )}
+          </NavigationWrapper>
+        )}
+
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={Boolean(error)}
+          autoHideDuration={10000}
+          onClose={handleClose}
+          message={error}
+          action={action}
+        />
       </HeaderContainer>
     </MainContainer>
   );
