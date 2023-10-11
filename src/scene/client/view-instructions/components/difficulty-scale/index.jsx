@@ -17,7 +17,7 @@ const DifficultyScale = () => {
         <h2>How well is the activity performed with/without the prosthesis?</h2>
       </HowQuestion>
       <DifficultyInfoContainer>
-        {data.map(({ data }, index) => (
+        {data.map((data, index) => (
           <DifficultyInfo
             key={index}
             scaleSrc={data.scale}
