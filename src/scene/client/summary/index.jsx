@@ -37,12 +37,18 @@ const SummaryContent = () => {
     return () => {
       setIsNavBarVisible(true);
     };
-  });
+  }, []);
 
   const handleSubmitClick = async () => {
     await updateCommentAndCompleteSurvey(finalComment);
     router.push("/client/survey-complete");
   };
+
+  //TODO: check if survey is present and valid
+  //Temp fix
+  if (!activityResponses) {
+    return;
+  }
 
   return (
     <MainContainer>
