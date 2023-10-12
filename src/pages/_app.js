@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-  const isClient = router.pathname.startsWith("/client");
+  const isClinician = router.pathname.startsWith("/clinician");
 
-  if (isClient) {
-    import("@/styles/globals-client.css");
-  } else {
+  if (isClinician) {
     import("@/styles/globals-clinician.css");
+  } else {
+    import("@/styles/globals-client.css");
   }
 
   return (
