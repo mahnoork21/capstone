@@ -1,5 +1,4 @@
 import { Box, Button, Card, FormControlLabel, FormLabel, TextField, Typography } from "@mui/material";
-import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { InfoOutlined } from "@mui/icons-material";
 

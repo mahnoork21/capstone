@@ -1,13 +1,9 @@
 import React from "react";
 import {
-  Button,
   CardContent,
   CardActions,
-  Box,
   FormControl,
-  FormLabel,
   RadioGroup,
-  FormControlLabel,
   Radio,
 } from "@mui/material";
 import {
@@ -39,7 +35,7 @@ const AddNewClient = () => {
             <ClientIdTypography>Input Client ID</ClientIdTypography>
             <ClientIdTextField
               id="outlined-basic"
-              defaultValue="Hello World"
+              defaultValue=""
               variant="outlined"
               error={false}
             />
@@ -52,12 +48,12 @@ const AddNewClient = () => {
             </CenterFlexBox>
 
             <FormControl>
-              <ModifiedFormLabel id="demo-radio-buttons-group-label">
+              <ModifiedFormLabel id="selectSurveyType">
                 Select survey type:
               </ModifiedFormLabel>
               <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="female"
+                aria-labelledby="selectSurveyType"
+                defaultValue="youngChild"
                 name="radio-buttons-group"
               >
                 <ModifiedFormControlLabel
