@@ -19,7 +19,7 @@ export const StyledButton = styled(Button)`
 
   @media only screen and (max-width: 600px) {
     font-size: 0.875rem;
-    padding: 0.75rem 1.25rem;
-    gap: 0.625rem;
+    padding: 12px 20px;
+    gap: 10px;
   }
 `;

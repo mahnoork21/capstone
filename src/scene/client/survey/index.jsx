@@ -1,14 +1,13 @@
 import MainContainer from "@/shared/components/main-container";
 import {
-  PufiFormControlLabel,
+  ResponseGuideContainer,
   StyledStepper,
   StyledTextField,
   SurveyContainer,
+  SurveyNavigationWrapper,
 } from "./styled";
 import { useContext, useEffect, useRef, useState } from "react";
-import SurveyProvider, { SurveyContext } from "./context";
 import {
-  Button,
   Popover,
   Radio,
   RadioGroup,
@@ -17,26 +16,35 @@ import {
   StepLabel,
 } from "@mui/material";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
-import { checkIfResponseIsValid } from "./helper/surveyHelper";
-import { questionIds, youngChildSurvey } from "./helper/youngChildSurvey";
+import {
+  checkIfALLResponsesAreValid,
+  checkIfResponseIsValid,
+} from "./helper/surveyHelper";
+import { youngChildSurvey } from "./helper/youngChildSurvey";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import ActivityInfoHeading from "./components/activity-info-heading";
 import MessageToUser from "./components/info-component";
 import ActivityQuestion from "./components/activity-question";
 import Option from "./components/option";
 import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
+import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
+import { ProgressLabel } from "./components/activity-info-heading/styled";
 
 const SurveyContent = () => {
   const {
     currentActivityIndex,
     currentAnswer,
-    currentSurveyId,
     setCurrentActivityIndex,
     updateAnswer,
-    setSurveyResponse,
     errors,
     setErrors,
-  } = useContext(SurveyContext);
+    setSurvey,
+    currentSurveyId,
+    setHeaderButtonType,
+    activityResponses,
+  } = useContext(ClientContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
 
@@ -51,10 +59,16 @@ const SurveyContent = () => {
 
   const [miniGuideAnchorEl, setMiniGuideAnchorEL] = useState(null);
   const [miniGuideInfo, setMiniGuideInfo] = useState(null);
+  const [isUpdatingdb, setIsUpdatingdb] = useState(false);
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
     : false;
+
+  useEffect(() => {
+    console.log(" === Setting save and exit");
+    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
+  }, []);
 
   //Generates steps to be used in Stepper
   useEffect(() => {
@@ -74,6 +88,28 @@ const SurveyContent = () => {
       setSteps(steps);
     }
   }, [currentAnswer]);
+
+  useEffect(() => {
+    //assumes that there can be only one error at a time
+    const error = Object.values(errors)[0];
+    switch (error) {
+      case "no-response":
+        noResponseRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      case "no-bodypart":
+        console.log(bodyPartRef);
+        bodyPartRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+        break;
+      case "no-commentForNotSure":
+        notsureRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+    }
+  }, [errors]);
 
   const isStepVisible = (index) => {
     //First question is always visible
@@ -106,55 +142,62 @@ const SurveyContent = () => {
   };
 
   const handleOnNextButtonClicked = async () => {
-    for (const questionId of questionIds) {
-      const response = currentAnswer[questionId];
-      const result = checkIfResponseIsValid(questionId, response);
-      if (!result.isAnswered) {
-        //Display error message and scroll to the error question
-        setErrors({
-          [questionId]: result.error,
-        });
-        return;
-      } else {
-        if (
-          (questionId === "do" && currentAnswer.do.value === 0) ||
-          (questionId === "how" && currentAnswer.how.value === 0)
-        ) {
-          break;
+    const error = checkIfALLResponsesAreValid(currentAnswer);
+
+    if (!error) {
+      try {
+        setIsUpdatingdb(true);
+        await updateAnswerInSurvey(
+          youngChildActivity[currentActivityIndex].id,
+          currentAnswer
+        );
+        //update the local copy
+        const survey = await getSurveyById(currentSurveyId);
+        setSurvey(survey);
+
+        setIsUpdatingdb(false);
+
+        //end of survey
+        if (currentActivityIndex + 1 === youngChildActivity.length) {
+          router.push("/client/summary");
+          return;
         }
-      }
-    }
-
-    //All questions are valid and have answers
-
-    //If user updated the answer update in db
-
-    try {
-      await updateAnswerInSurvey(
-        youngChildActivity[currentActivityIndex].id,
-        currentAnswer
-      );
-      //update the local copy
-      const survey = await getSurveyById(currentSurveyId);
-      setSurveyResponse(survey.activity_response);
-
-      //end of survey
-      if (currentActivityIndex + 1 === youngChildActivity.length) {
-        router.push("/client/summary");
+        setCurrentActivityIndex(currentActivityIndex + 1);
+      } catch (error) {
+        console.log(`Error when updating or getting`, error);
         return;
       }
-      setCurrentActivityIndex(currentActivityIndex + 1);
-    } catch (error) {
-      console.log(`Error when updating or getting`, error);
-      return;
+    } else {
+      setErrors(error);
     }
   };
 
-  const handleOnBackButtonClicked = () => {
-    //check if answer is updated
-    //if updated -> update server
+  const handleOnBackButtonClicked = async () => {
+    const error = checkIfALLResponsesAreValid(currentAnswer);
 
-    setCurrentActivityIndex(currentActivityIndex - 1);
+    const isInProgressQuestion =
+      currentActivityIndex + 1 >= Object.keys(activityResponses).length;
+
+    if (!error || isInProgressQuestion) {
+      try {
+        setIsUpdatingdb(true);
+        await updateAnswerInSurvey(
+          youngChildActivity[currentActivityIndex].id,
+          currentAnswer
+        );
+        //update the local copy
+        const survey = await getSurveyById(currentSurveyId);
+        setSurvey(survey);
+        setIsUpdatingdb(false);
+
+        setCurrentActivityIndex(currentActivityIndex - 1);
+      } catch (error) {
+        console.log(`Error when updating or getting`, error);
+        return;
+      }
+    } else {
+      setErrors(error);
+    }
   };
 
   const handleOnResponseGuideClick = (event, isActivityGuide) => {
@@ -176,31 +219,9 @@ const SurveyContent = () => {
   };
 
   console.log("[Debug] Activity == ", currentActivity);
-  console.log("[Debug] Steps == ", steps);
   console.log("[Debug] Answer == ", currentAnswer);
+  console.log("[Debug] Steps == ", steps);
   console.log("[Debug] Errors == ", errors);
-
-  useEffect(() => {
-    //assumes that there can be only one error at a time
-    const error = Object.values(errors)[0];
-    switch (error) {
-      case "no-response":
-        noResponseRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
-      case "no-bodypart":
-        console.log(bodyPartRef);
-        bodyPartRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-        break;
-      case "no-commentForNotSure":
-        notsureRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-    }
-  }, [errors]);
 
   return (
     <MainContainer>
@@ -211,7 +232,7 @@ const SurveyContent = () => {
         />
         <StyledStepper key={currentActivity?.id} orientation="vertical">
           {steps?.map((step, stepIndex) => {
-            return (
+            return step.questionId === "do" || currentAnswer.do.value ? (
               <Step
                 className={step.questionId}
                 active={isStepVisible(stepIndex)}
@@ -238,22 +259,20 @@ const SurveyContent = () => {
                     name={`radio-buttons-group-${step.questionId}`}
                     value={getSavedAnswer(step.questionId)}
                   >
-                    {step.options.map(
-                      ({ questionId, value, label }, optionIndex) => {
-                        return (
-                          <Option
-                            checked={getSavedAnswer(step.questionId) == value}
-                            value={value}
-                            control={<Radio />}
-                            name={`radio-buttons-${questionId}`}
-                            label={label}
-                            updateAnswer={updateAnswer}
-                            questionId={step.questionId}
-                            handleOnMiniGuideClick={handleOnMiniGuideClick}
-                          />
-                        );
-                      }
-                    )}
+                    {step.options.map(({ questionId, value, label }) => {
+                      return (
+                        <Option
+                          checked={getSavedAnswer(step.questionId) == value}
+                          value={value}
+                          control={<Radio />}
+                          name={`radio-buttons-${questionId}`}
+                          label={label}
+                          updateAnswer={updateAnswer}
+                          questionId={step.questionId}
+                          handleOnMiniGuideClick={handleOnMiniGuideClick}
+                        />
+                      );
+                    })}
                   </RadioGroup>
                   {step.questionId === "do" && currentAnswer.do.value === 1 && (
                     <MessageToUser
@@ -357,20 +376,32 @@ const SurveyContent = () => {
                     )}
                 </StepContent>
               </Step>
-            );
+            ) : null;
           })}
         </StyledStepper>
 
-        <div>
+        <SurveyNavigationWrapper>
           {currentActivityIndex !== 0 && (
-            <Button variant="outlined" onClick={handleOnBackButtonClicked}>
+            <SurveyNavButton
+              variant="outlined"
+              onClick={handleOnBackButtonClicked}
+              isBack={true}
+              isLoading={isUpdatingdb}
+            >
               Back
-            </Button>
+            </SurveyNavButton>
           )}
-          <Button variant="outlined" onClick={handleOnNextButtonClicked}>
+          <ProgressLabel>
+            {currentActivityIndex + 1} of {youngChildActivity.length} Activities
+          </ProgressLabel>
+          <SurveyNavButton
+            variant="outlined"
+            onClick={handleOnNextButtonClicked}
+            isLoading={isUpdatingdb}
+          >
             Next
-          </Button>
-        </div>
+          </SurveyNavButton>
+        </SurveyNavigationWrapper>
       </SurveyContainer>
       <Popover
         id={"activity-guide"}
@@ -387,11 +418,9 @@ const SurveyContent = () => {
         }}
       >
         {isActivityGuide ? (
-          <div style={{ width: "750px", height: "550px" }}>Activity Guide</div>
+          <ResponseGuideContainer>Activity Guide</ResponseGuideContainer>
         ) : (
-          <div style={{ width: "750px", height: "550px" }}>
-            Difficulty Scale
-          </div>
+          <ResponseGuideContainer>Difficulty Scale</ResponseGuideContainer>
         )}
       </Popover>
       <Popover
@@ -421,11 +450,7 @@ const SurveyContent = () => {
 };
 
 const Survey = () => {
-  return (
-    <SurveyProvider>
-      <SurveyContent />
-    </SurveyProvider>
-  );
+  return <SurveyContent />;
 };
 
 export default Survey;
