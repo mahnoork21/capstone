@@ -3,12 +3,8 @@ import styled from "@emotion/styled";
 import { InfoOutlined } from "@mui/icons-material";
 
 export const PageHeadingTypography = styled(Typography)`
-    color: #000;
-    font-family: Open Sans;
     font-size: 1.375rem;
-    font-style: normal;
     font-weight: 700;
-    line-height: 150%; /* 2.0625rem */
     margin: 24px 16px;
 `;
 
@@ -20,12 +16,8 @@ export const MobileContentCard = styled(Card)`
 
 
 export const MobileCardHeadingTypography = styled(Typography)`
-    color: var(--pufi-black, #333);
-    font-family: Open Sans;
     font-size: 1.25rem;
-    font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 1.875rem */
     text-align: center;
 `;
 
@@ -36,12 +28,8 @@ export const FormBox = styled(Box)`
 `;
 
 export const ClientIdTypography = styled(Typography)`
-    color: var(--pufi-black, #333);
-    font-family: Open Sans;
     font-size: 0.875rem;
-    font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 1.3125rem */
 `;
 
 export const ClientIdTextField = styled(TextField)`
@@ -61,23 +49,16 @@ export const GreenInfoOutlinedIcon = styled(InfoOutlined)`
 `
 
 export const SmallTextTypography = styled(Typography)`
-    color: #000;
-    font-family: Open Sans;
     font-size: 0.75rem;
-    font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 1.125rem */
     display: inline;
     margin: 8px 4px;
 `;
 
 export const ModifiedFormLabel = styled(FormLabel)`
     color: var(--pufi-black, #333);
-    font-family: Open Sans;
     font-size: 0.875rem;
-    font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 1.3125rem */
     margin: 16px 0 0 8px;
 `;
 
