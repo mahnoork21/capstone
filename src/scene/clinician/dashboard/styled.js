@@ -16,12 +16,7 @@ export const Container = styled.div`
   }
 
   p {
-    color: #000;
-    font-family: Open Sans;
-    font-size: 1rem;
-    font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 1.5rem */ 
 
     @media only screen and (min-width: ${breakpoint.desktop}) {
       font-size: 1.5rem;
