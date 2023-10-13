@@ -28,6 +28,7 @@ export const ClientProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
 
   const [isNavBarVisible, setIsNavBarVisible] = useState(true);
+  const [didViewResponseGuide, setDidViewResponseGuide] = useState(false);
 
   const router = useRouter();
 
@@ -137,7 +138,11 @@ export const ClientProvider = ({ children }) => {
       if (currentActivityIndex + 1 === youngChildActivity.length) {
         router.push("/client/summary");
       } else {
-        router.push("/client/survey");
+        if (didViewResponseGuide) {
+          router.push("/client/survey");
+        } else {
+          router.push("/client/response-guide");
+        }
       }
     } else {
       //TODO show error message that error not found in homepage
@@ -199,6 +204,7 @@ export const ClientProvider = ({ children }) => {
         setErrors,
         isNavBarVisible,
         setIsNavBarVisible: setIsNavBarVisible,
+        setDidViewResponseGuide: setDidViewResponseGuide,
       }}
     >
       {children}

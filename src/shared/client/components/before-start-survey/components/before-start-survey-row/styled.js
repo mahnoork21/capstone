@@ -9,7 +9,6 @@ export const Row = styled.div`
 export const LeftRightColumn = styled.div`
   flex: 1;
   justify-content: center;
-  textalign: "center";
   align-items: center;
   display: flex;
 
