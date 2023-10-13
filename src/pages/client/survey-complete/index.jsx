@@ -1,5 +1,6 @@
 import { ClientContext } from "@/context/ClientContext";
 import MainContainer from "@/shared/components/main-container";
+import useSurveyIdCheck from "@/utils/custom-hooks/useSurveyIdCheck";
 import styled from "@emotion/styled";
 import { useContext, useEffect } from "react";
 
@@ -20,6 +21,8 @@ const SurveyCompletePage = () => {
       setIsNavBarVisible(true);
     };
   });
+
+  useSurveyIdCheck();
 
   return (
     <MainContainer>

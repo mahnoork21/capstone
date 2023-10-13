@@ -19,6 +19,7 @@ const Header = () => {
     handleStartSurveyClick,
     setHeaderButtonType,
     isNavBarVisible,
+    currentSurveyId,
   } = useContext(ClientContext);
 
   const router = useRouter();
@@ -41,7 +42,12 @@ const Header = () => {
         currentAnswer
       );
 
-      router.push("/client");
+      router.push({
+        pathname: "/client",
+        query: {
+          surveyId: currentSurveyId,
+        },
+      });
     }
   };
 
@@ -69,7 +75,14 @@ const Header = () => {
 
         {isNavBarVisible && (
           <NavigationWrapper>
-            <Link href="/client">Home</Link>
+            <Link
+              href={{
+                pathname: "/client",
+                query: { surveyId: currentSurveyId },
+              }}
+            >
+              Home
+            </Link>
 
             {breakpoint === "desktop" ? (
               <HeaderButton variant="outlined" onClick={handleOnClick}>
@@ -78,7 +91,12 @@ const Header = () => {
                   : "START SURVEY"}
               </HeaderButton>
             ) : (
-              <Link href="/client/survey">
+              <Link
+                href={{
+                  pathname: "/client/survey",
+                  query: { surveyId: currentSurveyId },
+                }}
+              >
                 {" "}
                 {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
                   ? "SAVE AND EXIT"

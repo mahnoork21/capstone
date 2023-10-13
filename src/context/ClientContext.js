@@ -82,8 +82,20 @@ export const ClientProvider = ({ children }) => {
       setSurvey(survey);
 
       if (survey.is_submitted) {
-        router.push("/client/survey-complete");
+        router.push({
+          pathname: "/client/survey-complete",
+          query: {
+            surveyId: currentSurveyId,
+          },
+        });
       }
+    } else {
+      router.push({
+        pathname: "/client",
+        query: {
+          ["error-status"]: "invalid-survey-id",
+        },
+      });
     }
   };
 
@@ -136,12 +148,27 @@ export const ClientProvider = ({ children }) => {
   const handleStartSurveyClick = useCallback(() => {
     if (survey) {
       if (currentActivityIndex + 1 === youngChildActivity.length) {
-        router.push("/client/summary");
+        router.push({
+          pathname: "/client/summary",
+          query: {
+            surveyId: currentSurveyId,
+          },
+        });
       } else {
         if (didViewResponseGuide) {
-          router.push("/client/survey");
+          router.push({
+            pathname: "/client/survey",
+            query: {
+              surveyId: currentSurveyId,
+            },
+          });
         } else {
-          router.push("/client/response-guide");
+          router.push({
+            pathname: "/client/response-guide",
+            query: {
+              surveyId: currentSurveyId,
+            },
+          });
         }
       }
     } else {
@@ -152,7 +179,7 @@ export const ClientProvider = ({ children }) => {
         return "Survey Id is not valid. Please contact your clinician.";
       }
     }
-  }, [currentSurveyId, survey, currentActivityIndex]);
+  }, [currentSurveyId, survey, currentActivityIndex, didViewResponseGuide]);
 
   //Called when user selects an option
   const updateAnswer = (questionId, answer, type) => {
@@ -180,7 +207,7 @@ export const ClientProvider = ({ children }) => {
     });
   };
 
-  console.log("[Debug] SurveyId == ", currentSurveyId);
+  console.log("[Debug] SurveyId == ", currentSurveyId, didViewResponseGuide);
   console.log("[Debug] Survey == ", survey);
   console.log("[Debug] Activity Response == ", survey?.activity_response);
   console.log("[Debug] Activity index == ", currentActivityIndex);
@@ -189,12 +216,13 @@ export const ClientProvider = ({ children }) => {
     <ClientContext.Provider
       value={{
         currentSurveyId,
+        setCurrentSurveyId: setCurrentSurveyId,
+        survey,
         setSurvey,
         activityResponses,
         breakpoint,
         headerButtonType,
         setHeaderButtonType: setHeaderButtonType,
-        setCurrentSurveyId: setCurrentSurveyId,
         handleStartSurveyClick: handleStartSurveyClick,
         currentActivityIndex,
         currentAnswer,

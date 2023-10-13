@@ -31,6 +31,7 @@ import { ClientContext } from "@/context/ClientContext";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
 import { ProgressLabel } from "./components/activity-info-heading/styled";
+import useSurveyIdCheck from "@/utils/custom-hooks/useSurveyIdCheck";
 
 const SurveyContent = () => {
   const {
@@ -159,7 +160,12 @@ const SurveyContent = () => {
 
         //end of survey
         if (currentActivityIndex + 1 === youngChildActivity.length) {
-          router.push("/client/summary");
+          router.push({
+            pathname: "/client/summary",
+            query: {
+              surveyId: currentSurveyId,
+            },
+          });
           return;
         }
         setCurrentActivityIndex(currentActivityIndex + 1);

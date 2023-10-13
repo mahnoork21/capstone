@@ -7,7 +7,8 @@ import { useContext, useEffect } from "react";
 import { ClientContext } from "@/context/ClientContext";
 
 const ResponseGuide = () => {
-  const { setDidViewResponseGuide } = useContext(ClientContext);
+  const { setDidViewResponseGuide, currentSurveyId } =
+    useContext(ClientContext);
 
   useEffect(() => {
     setDidViewResponseGuide(true);
@@ -17,8 +18,13 @@ const ResponseGuide = () => {
     <MainContainer>
       <ResponseGuideWrapper>
         <BeforeStartSurvey />
-        <Link href="/client/survey">
-          <SurveyNavButton> Go To First question </SurveyNavButton>
+        <Link
+          href={{
+            pathname: "/client/survey",
+            query: { surveyId: currentSurveyId },
+          }}
+        >
+          <SurveyNavButton>Go To First question</SurveyNavButton>
         </Link>
       </ResponseGuideWrapper>
     </MainContainer>

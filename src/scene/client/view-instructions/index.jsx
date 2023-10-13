@@ -1,5 +1,5 @@
 import MainContainer from "@/shared/components/main-container";
-import HomeContainer from "../components/home-container";
+import HomeContainer from "../home/components/home-container";
 import TypesOfQuestions from "./components/types-of-questions";
 import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";

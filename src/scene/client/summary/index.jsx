@@ -26,7 +26,8 @@ import {
 } from "./styled";
 
 const SummaryContent = () => {
-  const { activityResponses, setIsNavBarVisible } = useContext(ClientContext);
+  const { activityResponses, setIsNavBarVisible, currentSurveyId } =
+    useContext(ClientContext);
   const [finalComment, setFinalComment] = useState(null);
 
   const router = useRouter();
@@ -41,7 +42,12 @@ const SummaryContent = () => {
 
   const handleSubmitClick = async () => {
     await updateCommentAndCompleteSurvey(finalComment);
-    router.push("/client/survey-complete");
+    router.push({
+      pathname: "/client/survey-complete",
+      query: {
+        surveyId: currentSurveyId,
+      },
+    });
   };
 
   //TODO: check if survey is present and valid
