@@ -7,7 +7,7 @@ import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
-import { IconButton, Snackbar } from "@mui/material";
+import { Button, IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 const Header = () => {
@@ -84,25 +84,14 @@ const Header = () => {
               Home
             </Link>
 
-            {breakpoint === "desktop" ? (
-              <HeaderButton variant="outlined" onClick={handleOnClick}>
-                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                  ? "SAVE AND EXIT"
-                  : "START SURVEY"}
-              </HeaderButton>
-            ) : (
-              <Link
-                href={{
-                  pathname: "/client/survey",
-                  query: { surveyId: currentSurveyId },
-                }}
-              >
-                {" "}
-                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                  ? "SAVE AND EXIT"
-                  : "START SURVEY"}
-              </Link>
-            )}
+            <HeaderButton
+              variant={breakpoint === "desktop" ? "outlined" : "text"}
+              onClick={handleOnClick}
+            >
+              {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
+                ? "SAVE AND EXIT"
+                : "START SURVEY"}
+            </HeaderButton>
           </NavigationWrapper>
         )}
 

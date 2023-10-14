@@ -39,14 +39,13 @@ export const HowQuestion = styled.div`
 `;
 
 export const InstructionAreaWrapper = styled.div`
-  width: 100%;
-  min-width: 320px;
-  padding: 0px;
+  width: ${(props) => (props.isInSurvey ? "320px" : "100%")};
+  padding: ${(props) => (props.isInSurvey ? "16px" : "0px")};
   position: relative;
 
   @media screen and (min-width: ${breakpoint.desktop}) {
     padding: 24px;
-    width: ${(props) => (props.isInSurvey ? "800px" : "100%")};
+    width: ${(props) => (props.isInSurvey ? "820px" : "100%")};
   }
 
   & > button {
