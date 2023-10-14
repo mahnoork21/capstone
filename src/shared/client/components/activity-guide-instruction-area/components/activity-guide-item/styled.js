@@ -10,6 +10,7 @@ export const ActivityGuideCard = styled.div`
   border-radius: 12px;
   border: 2px solid var(--primary-blue);
   margin: 0 auto;
+  background-color: white;
 
   & span {
     color: var(--pufi-primary, #3a9034);

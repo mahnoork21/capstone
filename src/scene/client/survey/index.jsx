@@ -1,5 +1,7 @@
 import MainContainer from "@/shared/components/main-container";
 import {
+  MiniGuidePopover,
+  MiniGuidePopoverWrapper,
   ResponseGuideContainer,
   StyledPopover,
   StyledStepper,
@@ -35,6 +37,7 @@ import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
 import { ProgressLabel } from "./components/activity-info-heading/styled";
 import ActivityGuideInstructionArea from "@/shared/client/components/activity-guide-instruction-area";
 import DifficultyScaleInstructionArea from "@/shared/client/components/difficulty-scale-instruction-area";
+import MiniGuide from "./components/mini-guide";
 
 const SurveyContent = () => {
   const {
@@ -224,6 +227,7 @@ const SurveyContent = () => {
   };
 
   const handleOnMiniGuideClose = () => {
+    console.log("========= Closing mini guide =====");
     setMiniGuideAnchorEL(null);
   };
 
@@ -268,20 +272,23 @@ const SurveyContent = () => {
                     name={`radio-buttons-group-${step.questionId}`}
                     value={getSavedAnswer(step.questionId)}
                   >
-                    {step.options.map(({ questionId, value, label }) => {
-                      return (
-                        <Option
-                          checked={getSavedAnswer(step.questionId) == value}
-                          value={value}
-                          control={<Radio />}
-                          name={`radio-buttons-${questionId}`}
-                          label={label}
-                          updateAnswer={updateAnswer}
-                          questionId={step.questionId}
-                          handleOnMiniGuideClick={handleOnMiniGuideClick}
-                        />
-                      );
-                    })}
+                    {step.options.map(
+                      ({ questionId, value, label }, optionIndex) => {
+                        return (
+                          <Option
+                            checked={getSavedAnswer(step.questionId) == value}
+                            value={value}
+                            control={<Radio />}
+                            name={`radio-buttons-${questionId}`}
+                            label={label}
+                            updateAnswer={updateAnswer}
+                            questionId={step.questionId}
+                            optionIndex={optionIndex}
+                            handleOnMiniGuideClick={handleOnMiniGuideClick}
+                          />
+                        );
+                      }
+                    )}
                   </RadioGroup>
                   {step.questionId === "do" && currentAnswer.do.value === 1 && (
                     <MessageToUser
@@ -412,7 +419,7 @@ const SurveyContent = () => {
           </SurveyNavButton>
         </SurveyNavigationWrapper>
       </SurveyContainer>
-      <Popover
+      <MiniGuidePopover
         id={"mini-guide"}
         open={Boolean(miniGuideAnchorEl)}
         anchorEl={miniGuideAnchorEl}
@@ -426,14 +433,15 @@ const SurveyContent = () => {
           horizontal: "center",
         }}
       >
-        {miniGuideInfo ? (
-          <div
-            style={{ width: "300px", height: "200px" }}
-          >{`question:  ${miniGuideInfo.questionId}, response:  ${miniGuideInfo.label}`}</div>
-        ) : (
-          ""
+        {miniGuideInfo && (
+          <MiniGuidePopoverWrapper>
+            <MiniGuide
+              questionId={miniGuideInfo.questionId}
+              optionIndex={miniGuideInfo.optionIndex}
+            />
+          </MiniGuidePopoverWrapper>
         )}
-      </Popover>
+      </MiniGuidePopover>
       {breakpoint === "desktop" ? (
         <StyledPopover
           id={"survey-activity-guide"}

@@ -92,3 +92,14 @@ export const StyledPopover = styled(Popover)`
     border: solid 2px var(--primary-blue);
   }
 `;
+
+export const MiniGuidePopover = styled(Popover)`
+  & .MuiPopover-paper {
+    background-color: transparent;
+    border-radius: 12px;
+  }
+`;
+
+export const MiniGuidePopoverWrapper = styled.div`
+  width: 320px;
+`;
