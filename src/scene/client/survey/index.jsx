@@ -1,8 +1,8 @@
 import MainContainer from "@/shared/components/main-container";
 import {
+  EditModeButtons,
   MiniGuidePopover,
   MiniGuidePopoverWrapper,
-  ResponseGuideContainer,
   StyledPopover,
   StyledStepper,
   StyledTextField,
@@ -38,11 +38,16 @@ import { ProgressLabel } from "./components/activity-info-heading/styled";
 import ActivityGuideInstructionArea from "@/shared/client/section/activity-guide-instruction-area";
 import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-scale-instruction-area";
 import MiniGuide from "./components/mini-guide";
+import PrimaryClientButton from "@/shared/client/buttons/primary";
+import SecondaryClientButton from "@/shared/client/buttons/secondary";
 
 const SurveyContent = () => {
   const {
+    isEditMode,
+    setIsEditMode,
     currentActivityIndex,
     currentAnswer,
+    setCurrentAnswer,
     setCurrentActivityIndex,
     updateAnswer,
     errors,
@@ -68,18 +73,24 @@ const SurveyContent = () => {
   const [miniGuideAnchorEl, setMiniGuideAnchorEL] = useState(null);
   const [miniGuideInfo, setMiniGuideInfo] = useState(null);
   const [isUpdatingdb, setIsUpdatingdb] = useState(false);
+  const [currentAnswerCopy, setCurrentAnswerCopy] = useState();
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
     : false;
 
   useEffect(() => {
-    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
+    isEditMode
+      ? setHeaderButtonType(HeaderButtonType.SAVE_CHANGES)
+      : setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
   }, []);
 
   //Generates steps to be used in Stepper
   useEffect(() => {
     if (currentAnswer) {
+      if (!currentAnswerCopy) {
+        setCurrentAnswerCopy(currentAnswer);
+      }
       const steps = youngChildSurvey.map((surveyQuestion) => {
         const response = currentAnswer[surveyQuestion.questionId];
         const checkedResponse = checkIfResponseIsValid(
@@ -174,7 +185,16 @@ const SurveyContent = () => {
           });
           return;
         }
-        setCurrentActivityIndex(currentActivityIndex + 1);
+
+        setIsEditMode(false);
+        isEditMode
+          ? router.push({
+              pathname: "/client/summary",
+              query: {
+                surveyId: currentSurveyId,
+              },
+            })
+          : setCurrentActivityIndex(currentActivityIndex + 1);
       } catch (error) {
         console.log(`Error when updating or getting`, error);
         return;
@@ -227,8 +247,17 @@ const SurveyContent = () => {
   };
 
   const handleOnMiniGuideClose = () => {
-    console.log("========= Closing mini guide =====");
     setMiniGuideAnchorEL(null);
+  };
+
+  const handleDiscardButtonClick = () => {
+    setCurrentAnswer(currentAnswerCopy);
+    router.push({
+      pathname: "/client/summary",
+      query: {
+        surveyId: currentSurveyId,
+      },
+    });
   };
 
   console.log("[Debug] Activity == ", currentActivity);
@@ -396,28 +425,40 @@ const SurveyContent = () => {
           })}
         </StyledStepper>
 
-        <SurveyNavigationWrapper>
-          {currentActivityIndex !== 0 && (
+        {isEditMode ? (
+          <EditModeButtons>
+            <PrimaryClientButton onClick={handleOnNextButtonClicked}>
+              Save Changes
+            </PrimaryClientButton>
+            <SecondaryClientButton onClick={handleDiscardButtonClick}>
+              Discard Changes
+            </SecondaryClientButton>
+          </EditModeButtons>
+        ) : (
+          <SurveyNavigationWrapper>
+            {currentActivityIndex !== 0 && (
+              <SurveyNavButton
+                variant="outlined"
+                onClick={handleOnBackButtonClicked}
+                isBack={true}
+                isLoading={isUpdatingdb}
+              >
+                Back
+              </SurveyNavButton>
+            )}
+            <ProgressLabel>
+              {currentActivityIndex + 1} of {youngChildActivity.length}{" "}
+              Activities
+            </ProgressLabel>
             <SurveyNavButton
               variant="outlined"
-              onClick={handleOnBackButtonClicked}
-              isBack={true}
+              onClick={handleOnNextButtonClicked}
               isLoading={isUpdatingdb}
             >
-              Back
+              Next
             </SurveyNavButton>
-          )}
-          <ProgressLabel>
-            {currentActivityIndex + 1} of {youngChildActivity.length} Activities
-          </ProgressLabel>
-          <SurveyNavButton
-            variant="outlined"
-            onClick={handleOnNextButtonClicked}
-            isLoading={isUpdatingdb}
-          >
-            Next
-          </SurveyNavButton>
-        </SurveyNavigationWrapper>
+          </SurveyNavigationWrapper>
+        )}
       </SurveyContainer>
       <MiniGuidePopover
         id={"mini-guide"}

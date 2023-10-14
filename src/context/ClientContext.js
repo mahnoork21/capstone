@@ -16,9 +16,12 @@ export const ClientContext = createContext();
 
 export const ClientProvider = ({ children }) => {
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
+  const [survey, setSurvey] = useState();
+  const [isEditMode, setIsEditMode] = useState(false);
+
   const [user, setUser] = useState(null);
   const [breakpoint, setBreakpoint] = useState(`desktop`);
-  const [survey, setSurvey] = useState();
+
   const [headerButtonType, setHeaderButtonType] = useState(
     HeaderButtonType.START_SURVEY
   );
@@ -219,6 +222,8 @@ export const ClientProvider = ({ children }) => {
         setCurrentSurveyId: setCurrentSurveyId,
         survey,
         setSurvey,
+        isEditMode,
+        setIsEditMode: setIsEditMode,
         activityResponses,
         breakpoint,
         headerButtonType,
@@ -226,6 +231,7 @@ export const ClientProvider = ({ children }) => {
         handleStartSurveyClick: handleStartSurveyClick,
         currentActivityIndex,
         currentAnswer,
+        setCurrentAnswer,
         updateAnswer,
         setCurrentActivityIndex: setCurrentActivityIndex,
         errors,

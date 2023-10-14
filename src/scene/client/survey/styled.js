@@ -86,6 +86,16 @@ export const SurveyNavigationWrapper = styled.div`
   margin-top: 24px;
 `;
 
+export const EditModeButtons = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-top: 24px;
+  gap: 16px;
+  margin-left: 32px;
+`;
+
 export const StyledPopover = styled(Popover)`
   & .MuiPopover-paper {
     border-radius: 12px;

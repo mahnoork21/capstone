@@ -5,10 +5,11 @@ import { ClientContext } from "@/context/ClientContext";
 import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
-import { updateAnswerInSurvey } from "@/firebase/surveyRepo";
+import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
 import { Button, IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { checkIfALLResponsesAreValid } from "@/scene/client/survey/helper/surveyHelper";
 
 const Header = () => {
   const {
@@ -20,6 +21,9 @@ const Header = () => {
     setHeaderButtonType,
     isNavBarVisible,
     currentSurveyId,
+    setErrors,
+    setSurvey,
+    setIsEditMode,
   } = useContext(ClientContext);
 
   const router = useRouter();
@@ -36,7 +40,7 @@ const Header = () => {
       if (error) {
         setError(error);
       }
-    } else {
+    } else if (headerButtonType === HeaderButtonType.SAVE_AND_EXIT) {
       await updateAnswerInSurvey(
         youngChildActivity[currentActivityIndex].id,
         currentAnswer
@@ -48,6 +52,27 @@ const Header = () => {
           surveyId: currentSurveyId,
         },
       });
+    } else if (headerButtonType === HeaderButtonType.SAVE_CHANGES) {
+      const error = checkIfALLResponsesAreValid(currentAnswer);
+      if (!error) {
+        await updateAnswerInSurvey(
+          youngChildActivity[currentActivityIndex].id,
+          currentAnswer
+        );
+
+        const survey = await getSurveyById(currentSurveyId);
+        setSurvey(survey);
+
+        setIsEditMode(false);
+        router.push({
+          pathname: "/client/summary",
+          query: {
+            surveyId: currentSurveyId,
+          },
+        });
+      } else {
+        setErrors(error);
+      }
     }
   };
 
@@ -88,9 +113,7 @@ const Header = () => {
               variant={breakpoint === "desktop" ? "outlined" : "text"}
               onClick={handleOnClick}
             >
-              {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                ? "SAVE AND EXIT"
-                : "START SURVEY"}
+              {headerButtonType}
             </HeaderButton>
           </NavigationWrapper>
         )}
