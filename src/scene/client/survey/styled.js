@@ -68,8 +68,14 @@ export const BodyPartInputContainer = styled.div`
 `;
 
 export const ResponseGuideContainer = styled.div`
-  width: 750px;
-  height: 550px;
+  width: 400px;
+  height: 100vh;
+  padding: 24px;
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    width: 820px;
+    height: 540px;
+  }
 `;
 
 export const SurveyNavigationWrapper = styled.div`

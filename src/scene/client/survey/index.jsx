@@ -8,6 +8,7 @@ import {
 } from "./styled";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
+  Drawer,
   Popover,
   Radio,
   RadioGroup,
@@ -32,6 +33,8 @@ import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
 import { ProgressLabel } from "./components/activity-info-heading/styled";
 import useSurveyIdCheck from "@/utils/custom-hooks/useSurveyIdCheck";
+import { data_activity_guide } from "../../../shared/client/components/activity-guide-instruction-area/data";
+import ActivityGuideInstructionArea from "@/shared/client/components/activity-guide-instruction-area";
 
 const SurveyContent = () => {
   const {
@@ -410,26 +413,6 @@ const SurveyContent = () => {
         </SurveyNavigationWrapper>
       </SurveyContainer>
       <Popover
-        id={"activity-guide"}
-        open={Boolean(activityGuideAnchorEL)}
-        anchorEl={activityGuideAnchorEL}
-        onClose={handleOnActivityClose}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-      >
-        {isActivityGuide ? (
-          <ResponseGuideContainer>Activity Guide</ResponseGuideContainer>
-        ) : (
-          <ResponseGuideContainer>Difficulty Scale</ResponseGuideContainer>
-        )}
-      </Popover>
-      <Popover
         id={"mini-guide"}
         open={Boolean(miniGuideAnchorEl)}
         anchorEl={miniGuideAnchorEl}
@@ -451,6 +434,18 @@ const SurveyContent = () => {
           ""
         )}
       </Popover>
+      <Drawer
+        anchor={"right"}
+        open={Boolean(activityGuideAnchorEL)}
+        onClose={handleOnActivityClose}
+        variant="temporary"
+      >
+        {isActivityGuide ? (
+          <ActivityGuideInstructionArea isInSurvey={true} />
+        ) : (
+          <ResponseGuideContainer>Difficulty Scale</ResponseGuideContainer>
+        )}
+      </Drawer>
     </MainContainer>
   );
 };

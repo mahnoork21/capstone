@@ -24,7 +24,7 @@ const ResponseGuide = () => {
             query: { surveyId: currentSurveyId },
           }}
         >
-          <SurveyNavButton>Go To First question</SurveyNavButton>
+          <SurveyNavButton>Survey Questions</SurveyNavButton>
         </Link>
       </ResponseGuideWrapper>
     </MainContainer>

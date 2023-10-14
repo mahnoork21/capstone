@@ -1,4 +1,4 @@
-export const data = [
+export const data_activity_guide = [
   {
     src: "/instructions/activity-guide/activity-1.png",
     text: "Both arms together with the prosthesis <span>actively</span> to grasp",
