@@ -1,6 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
-import { Stepper, TextField, css } from "@mui/material";
+import { Popover, Stepper, TextField, css } from "@mui/material";
 
 export const SurveyContainer = styled.div`
   background-color: white;
@@ -84,4 +84,11 @@ export const SurveyNavigationWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
+`;
+
+export const StyledPopover = styled(Popover)`
+  & .MuiPopover-paper {
+    border-radius: 12px;
+    border: solid 2px var(--primary-blue);
+  }
 `;

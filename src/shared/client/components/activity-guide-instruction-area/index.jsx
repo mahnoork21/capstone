@@ -7,8 +7,13 @@ import {
 import { data_activity_guide } from "@/shared/client/components/activity-guide-instruction-area/data";
 import { useContext } from "react";
 import { ClientContext } from "@/context/ClientContext";
+import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "@mui/material";
 
-const ActivityGuideInstructionArea = ({ isInSurvey = false }) => {
+const ActivityGuideInstructionArea = ({
+  isInSurvey = false,
+  handleOnActivityClose,
+}) => {
   const { breakpoint } = useContext(ClientContext);
 
   return (
@@ -30,6 +35,11 @@ const ActivityGuideInstructionArea = ({ isInSurvey = false }) => {
           />
         ))}
       </InstructionsWrapper>
+      {isInSurvey && breakpoint === "desktop" && (
+        <Button startIcon={<CloseIcon />} onClick={handleOnActivityClose}>
+          Close
+        </Button>
+      )}
     </InstructionAreaWrapper>
   );
 };

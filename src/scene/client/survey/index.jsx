@@ -1,6 +1,7 @@
 import MainContainer from "@/shared/components/main-container";
 import {
   ResponseGuideContainer,
+  StyledPopover,
   StyledStepper,
   StyledTextField,
   SurveyContainer,
@@ -32,9 +33,8 @@ import { ClientContext } from "@/context/ClientContext";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
 import { ProgressLabel } from "./components/activity-info-heading/styled";
-import useSurveyIdCheck from "@/utils/custom-hooks/useSurveyIdCheck";
-import { data_activity_guide } from "../../../shared/client/components/activity-guide-instruction-area/data";
 import ActivityGuideInstructionArea from "@/shared/client/components/activity-guide-instruction-area";
+import DifficultyScaleInstructionArea from "@/shared/client/components/difficulty-scale-instruction-area";
 
 const SurveyContent = () => {
   const {
@@ -48,6 +48,7 @@ const SurveyContent = () => {
     currentSurveyId,
     setHeaderButtonType,
     activityResponses,
+    breakpoint,
   } = useContext(ClientContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
@@ -70,7 +71,6 @@ const SurveyContent = () => {
     : false;
 
   useEffect(() => {
-    console.log(" === Setting save and exit");
     setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
   }, []);
 
@@ -434,18 +434,47 @@ const SurveyContent = () => {
           ""
         )}
       </Popover>
-      <Drawer
-        anchor={"right"}
-        open={Boolean(activityGuideAnchorEL)}
-        onClose={handleOnActivityClose}
-        variant="temporary"
-      >
-        {isActivityGuide ? (
-          <ActivityGuideInstructionArea isInSurvey={true} />
-        ) : (
-          <ResponseGuideContainer>Difficulty Scale</ResponseGuideContainer>
-        )}
-      </Drawer>
+      {breakpoint === "desktop" ? (
+        <StyledPopover
+          id={"survey-activity-guide"}
+          open={Boolean(activityGuideAnchorEL)}
+          anchorEl={activityGuideAnchorEL}
+          onClose={handleOnActivityClose}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "right",
+          }}
+        >
+          {isActivityGuide ? (
+            <ActivityGuideInstructionArea
+              isInSurvey={true}
+              handleOnActivityClose={handleOnActivityClose}
+            />
+          ) : (
+            <DifficultyScaleInstructionArea
+              isInSurvey={true}
+              handleOnActivityClose={handleOnActivityClose}
+            />
+          )}
+        </StyledPopover>
+      ) : (
+        <Drawer
+          anchor={"right"}
+          open={Boolean(activityGuideAnchorEL)}
+          onClose={handleOnActivityClose}
+          variant="temporary"
+        >
+          {isActivityGuide ? (
+            <ActivityGuideInstructionArea isInSurvey={true} />
+          ) : (
+            <DifficultyScaleInstructionArea isInSurvey={true} />
+          )}
+        </Drawer>
+      )}
     </MainContainer>
   );
 };

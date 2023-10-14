@@ -10,7 +10,7 @@ export const InstructionsWrapper = styled.div`
 
   @media screen and (min-width: ${breakpoint.desktop}) {
     grid-template-columns: ${(props) =>
-      props.isInSurvey ? "1fr" : "420px 420px"};
+      props.isInSurvey ? "360px 360px" : "420px 420px"};
     row-gap: 16px;
     column-gap: 24px;
   }
@@ -39,16 +39,20 @@ export const HowQuestion = styled.div`
 `;
 
 export const InstructionAreaWrapper = styled.div`
-  width: 320px;
-  padding: 24px;
+  width: 100%;
+  min-width: 320px;
+  padding: 0px;
+  position: relative;
 
   @media screen and (min-width: ${breakpoint.desktop}) {
-    width: 100%;
-    ${(props) =>
-      props.isInSurvey
-        ? css`
-            max-width: 420px;
-          `
-        : css``}
+    padding: 24px;
+    width: ${(props) => (props.isInSurvey ? "800px" : "100%")};
+  }
+
+  & > button {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    color: black;
   }
 `;
