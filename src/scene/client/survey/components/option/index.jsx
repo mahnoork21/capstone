@@ -1,6 +1,7 @@
 import { Radio } from "@mui/material";
 import { OptionContentWrapper, PufiFormControlLabel } from "./styled";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import PufiToolTip from "@/shared/components/pufi-tooltip";
 
 const Option = ({
   checked,
@@ -18,7 +19,7 @@ const Option = ({
         key={`${questionId}${label}`}
         value={value}
         control={<Radio />}
-        label={label}
+        label={<PufiToolTip>{label}</PufiToolTip>}
         onClick={() => {
           updateAnswer(questionId, value, "value");
         }}

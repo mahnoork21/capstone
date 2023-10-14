@@ -3,7 +3,7 @@ import HomeContainer from "../home/components/home-container";
 import TypesOfQuestions from "./components/types-of-questions";
 import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";
-import BeforeStartSurvey from "../../../shared/client/components/before-start-survey";
+import BeforeStartSurvey from "../../../shared/client/section/before-start-survey";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import ActivityGuide from "./components/activity-guide";

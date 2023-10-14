@@ -11,6 +11,7 @@ import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import PufiToolTip from "@/shared/components/pufi-tooltip";
 
 const ClientHome = () => {
   const [wideMode, setWideMode] = useState(false);
@@ -53,7 +54,7 @@ const ClientHome = () => {
       <HomeContainer>
         <div className="content">
           <h1 className="intro-body-header">What is PUFI-2 survey?</h1>
-          <p className="content-text">
+          <p>
             The PUFI-2 questionnaire lets children and parents tell their
             clinicians about the functional use of a prosthetic device at home,
             at school, and in the community.

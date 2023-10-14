@@ -1,7 +1,7 @@
 import { Container, GreyHeader } from "./styled";
 import { useContext } from "react";
 import { ClientContext } from "@/context/ClientContext";
-import ActivityGuideInstructionArea from "@/shared/client/components/activity-guide-instruction-area";
+import ActivityGuideInstructionArea from "@/shared/client/section/activity-guide-instruction-area";
 
 const ActivityGuide = () => {
   const { breakpoint } = useContext(ClientContext);

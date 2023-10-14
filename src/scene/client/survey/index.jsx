@@ -35,8 +35,8 @@ import { ClientContext } from "@/context/ClientContext";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
 import { ProgressLabel } from "./components/activity-info-heading/styled";
-import ActivityGuideInstructionArea from "@/shared/client/components/activity-guide-instruction-area";
-import DifficultyScaleInstructionArea from "@/shared/client/components/difficulty-scale-instruction-area";
+import ActivityGuideInstructionArea from "@/shared/client/section/activity-guide-instruction-area";
+import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-scale-instruction-area";
 import MiniGuide from "./components/mini-guide";
 
 const SurveyContent = () => {

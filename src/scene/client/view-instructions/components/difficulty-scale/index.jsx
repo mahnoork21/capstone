@@ -2,8 +2,8 @@ import { GreyHeader } from "../activity-guide/styled";
 import DifficultyInfo from "./components/difficulty-info";
 import { DifficultyInfoContainer } from "./styled";
 import { data } from "./data";
-import { HowQuestion } from "@/shared/client/components/activity-guide-instruction-area/styled";
-import DifficultyScaleInstructionArea from "@/shared/client/components/difficulty-scale-instruction-area";
+import { HowQuestion } from "@/shared/client/section/activity-guide-instruction-area/styled";
+import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-scale-instruction-area";
 
 const DifficultyScale = () => {
   return (

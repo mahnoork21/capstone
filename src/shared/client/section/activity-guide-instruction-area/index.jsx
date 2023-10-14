@@ -1,10 +1,10 @@
-import ActivityGuideItem from "@/shared/client/components/activity-guide-instruction-area/components/activity-guide-item";
+import ActivityGuideItem from "@/shared/client/section/activity-guide-instruction-area/components/activity-guide-item";
 import {
   HowQuestion,
   InstructionAreaWrapper,
   InstructionsWrapper,
 } from "./styled";
-import { data_activity_guide } from "@/shared/client/components/activity-guide-instruction-area/data";
+import { data_activity_guide } from "@/shared/client/section/activity-guide-instruction-area/data";
 import { useContext } from "react";
 import { ClientContext } from "@/context/ClientContext";
 import CloseIcon from "@mui/icons-material/Close";
