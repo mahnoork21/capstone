@@ -3,13 +3,14 @@ import { breakpoint } from "@/styles/breakpoints";
 import { Button, AppBar, IconButton, Toolbar } from "@mui/material";
 
 export const HeaderContainer = styled.div`
-  display: flex;
+  display: none;
   width: 1440px;
   padding: 10px 0px 16px 0px;
   justify-content: center;
   align-items: center;
 
   & > span {
+    display: flex;
     font-size: 40px;
     color: white;
     font-weight: 700;
@@ -17,6 +18,7 @@ export const HeaderContainer = styled.div`
   @media only screen and (min-width: ${breakpoint.desktop}) {
     padding: 0 24px;
     margin-bottom: 20px;
+    display: flex;
   }
 `;
 export const HeaderAppBar = styled(AppBar)`
