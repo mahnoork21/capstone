@@ -1,53 +1,64 @@
-import React from "react";
 import YoutubeEmbed from "@/shared/client/youtubeEmbed/YoutubeEmbed";
 
-import styles from "./styles.module.css";
+import HomeContainer from "./components/home-container";
+import { GreyP } from "./components/home-container/styled";
+import { StyledButton } from "./components/button";
+import Link from "next/link";
+import MainContainer from "@/shared/components/main-container";
+import { useContext, useState } from "react";
+import { useRouter } from "next/router";
+import { ClientContext } from "@/context/ClientContext";
 
 const ClientHome = () => {
+  const [wideMode, setWideMode] = useState(false);
+  const { setCurrentSurveyId } = useContext(ClientContext);
+
+  const router = useRouter();
+  const { surveyId } = router.query;
+  setCurrentSurveyId(surveyId);
+
+  const handlePlay = () => {
+    setWideMode(!wideMode);
+    console.log("IM HERE");
+  };
+
   return (
-    <div className={styles.main}>
-      <section className={styles.pros}>
-        <h3>Prosthetic Upper Limb Functional Index (PUFI-2)</h3>
-        <br />
-      </section>
-      <section>
-        <p>
-          The PUFI-2 was designed to help us understand how a child prosthetic
-          user performs bilateral activities in different ways, the ease of task
-          performance with and without their prosthesis, and the perceived
-          usefulness of their prosthesis.
-        </p>
-      </section>
-      <section>
-        <p>
-          The PUFI-2 questionnaire lets children and parents tell their
-          clinicians about the functional use of a prosthetic device at home, at
-          school, and in the community.
-        </p>
-        <YoutubeEmbed embedId="7C8MMd7iiEU" />
-        <p>
-          The PUFI-2 contains a list of commonly performed daily tasks and for
-          each one asks the following questions:
-        </p>
-      </section>
-      <section>
-        <ul>
-          <li> Is this an activity that you do?</li>
-          <li> How do you USUALLY do the activity?</li>
-          <li> How well do you do the activity using the prosthesis?</li>
-          <li> How useful is the prosthesis for the activity?</li>
-          <li> How well do you do the activity without the prosthesis</li>
-        </ul>
-        <br />
-        <p className={styles.paracl}>
-          Responses to these questions provide clinicians with meaningful
-          information that can be used for prosthetic treatment planning and
-          functional and prosthetic training in daily activities. The PUFI-2
-          summary scores can be immediately shared with clients, their parents
-          and their health care team.
-        </p>
-      </section>
-    </div>
+    <MainContainer>
+      <HomeContainer>
+        <div className="content">
+          <h1 className="intro-body-header">What is PUFI-2 survey?</h1>
+          <p>
+            The PUFI-2 questionnaire lets children and parents tell their
+            clinicians about the functional use of a prosthetic device at home,
+            at school, and in the community.
+          </p>
+          <p>
+            Responses to these questions provide clinicians with meaningful
+            information that can be used for prosthetic treatment planning and
+            functional and prosthetic training in daily activities.
+          </p>
+        </div>
+
+        <div>
+          <YoutubeEmbed
+            embedId="7C8MMd7iiEU"
+            wideMode={wideMode}
+            onClick={handlePlay}
+          />
+          <GreyP>SELECT THE PLAY BUTTON TO START THE VIDEO.</GreyP>
+        </div>
+
+        <div className="buttons">
+          <Link href="/client/survey">
+            <StyledButton primary variant="contained">
+              START SURVEY
+            </StyledButton>
+          </Link>
+
+          <StyledButton variant="outlined">VIEW INSTRUCTIONS</StyledButton>
+        </div>
+      </HomeContainer>
+    </MainContainer>
   );
 };
 

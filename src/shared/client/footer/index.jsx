@@ -1,34 +1,29 @@
-import React from "react";
-import styles from "./Footer.module.css";
+import React, { useContext } from "react";
 import MainContainer from "@/shared/components/main-container";
 import { Container, FooterContainer } from "./styled";
 import Image from "next/image";
+import { ClientContext } from "@/context/ClientContext";
 
 const Footer = () => {
+  const { breakpoint } = useContext(ClientContext);
+
   return (
     <FooterContainer>
       <MainContainer>
         <Container>
-          <Image src="/bloorview-logo.png" width={180} height={70} />
+          <Image
+            src="/bloorview-logo.png"
+            width={breakpoint === "desktop" ? 180 : 100}
+            height={breakpoint === "desktop" ? 70 : 40}
+          />
           <p>Bloorview Research Institute © 2023</p>
-          <Image src="/bloorview-logo.png" width={180} height={70} />
+          {breakpoint === "desktop" && (
+            <Image src="/bloorview-logo.png" width={180} height={70} />
+          )}
         </Container>
       </MainContainer>
     </FooterContainer>
   );
-
-  // return (
-  //   <section className={styles.footer}>
-  //     <section className={styles["footer-info"]}>
-  //       <section className={styles["footer-info-center"]}>
-  //         <span className={styles.tnc}> Terms and Conditions </span>
-  //         <span className={styles.bri}>
-  //           Holland Bloorview Kids Rehabilitation Hospital © 2023{" "}
-  //         </span>
-  //       </section>
-  //     </section>
-  //   </section>
-  // );
 };
 
 export default Footer;

@@ -9,23 +9,38 @@ export const HeaderButton = styled(Button)`
   border-radius: 12px;
   border-width: 2px;
   font-size: 16px;
+
+  &:hover {
+    border-color: white;
+  }
 `;
 
 export const HeaderContainer = styled.div`
-  height: 80px;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
 
   & > span {
-    font-size: 40px;
+    font-size: 2rem;
     color: white;
     font-weight: 700;
+
+    @media only screen and (min-width: ${breakpoint.desktop}) {
+      font-size: 2.5rem;
+    }
   }
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
+    height: 80px;
     padding: 0 24px;
     margin-bottom: 20px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    & > span {
+      font-size: 1.5rem;
+    }
   }
 `;
