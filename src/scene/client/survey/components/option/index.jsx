@@ -10,7 +10,7 @@ const Option = ({
   label,
   updateAnswer,
   handleOnMiniGuideClick,
-  optionIndex,
+  miniGuideType,
 }) => {
   return (
     <OptionContentWrapper>
@@ -29,7 +29,7 @@ const Option = ({
           onClick={(event) => {
             handleOnMiniGuideClick(event, {
               questionId: questionId,
-              optionIndex: optionIndex,
+              miniGuideType: miniGuideType,
             });
           }}
         />

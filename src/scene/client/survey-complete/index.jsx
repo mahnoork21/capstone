@@ -39,18 +39,9 @@ const SurveyComplete = () => {
     };
   });
 
-  const createPDFBlob = async () => {
-    const surveyPdfBlob = await pdf(<SurveyPdf />).toBlob();
-    setSurveyBlob(surveyPdfBlob);
-  };
-
-  useEffect(() => {
-    createPDFBlob();
-  });
-
-  if (!activityResponses) {
-    return;
-  }
+  // if (!activityResponses) {
+  //   return;
+  // }
 
   Font.register({
     family: "Open Sans",
@@ -124,6 +115,17 @@ const SurveyComplete = () => {
       </Page>
     </Document>
   );
+
+  const createPDFBlob = async () => {
+    const surveyPdfBlob = await pdf(<SurveyPdf />).toBlob();
+    setSurveyBlob(surveyPdfBlob);
+  };
+
+  useEffect(() => {
+    if (activityResponses) {
+      createPDFBlob();
+    }
+  }, [activityResponses]);
 
   const styles = StyleSheet.create({
     page: {

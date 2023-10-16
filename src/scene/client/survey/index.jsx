@@ -302,7 +302,10 @@ const SurveyContent = () => {
                     value={getSavedAnswer(step.questionId)}
                   >
                     {step.options.map(
-                      ({ questionId, value, label }, optionIndex) => {
+                      (
+                        { questionId, value, label, miniGuideType },
+                        optionIndex
+                      ) => {
                         return (
                           <Option
                             checked={getSavedAnswer(step.questionId) == value}
@@ -312,7 +315,7 @@ const SurveyContent = () => {
                             label={label}
                             updateAnswer={updateAnswer}
                             questionId={step.questionId}
-                            optionIndex={optionIndex}
+                            miniGuideType={miniGuideType}
                             handleOnMiniGuideClick={handleOnMiniGuideClick}
                           />
                         );
@@ -478,7 +481,7 @@ const SurveyContent = () => {
           <MiniGuidePopoverWrapper>
             <MiniGuide
               questionId={miniGuideInfo.questionId}
-              optionIndex={miniGuideInfo.optionIndex}
+              miniGuideType={miniGuideInfo.miniGuideType}
             />
           </MiniGuidePopoverWrapper>
         )}

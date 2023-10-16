@@ -33,19 +33,19 @@ export const youngChildSurvey = [
       {
         label:
           "Both arms together with the prosthetic hand or terminal device used actively (open and close hand/device to hold the object)",
-        responseGuideType: "activityGuide-actively",
+        miniGuideType: "activityGuide-actively",
         value: 5,
       },
       {
         label:
           "Both arms together with the prosthesis used passively (to position or stabilize the object, hand does not open/close)",
-        responseGuideType: "activityGuide-passively",
+        miniGuideType: "activityGuide-passively",
         value: 4,
       },
       {
         label:
           "With assistance of residual limb and/or another body part and/or other assistive devices",
-        responseGuideType: "activityGuide-anotherBodyPart",
+        miniGuideType: "activityGuide-anotherBodyPart",
         additionalResponseIfSelected: {
           type: "text",
           hint: "Please list the body part(s) and/or assistive device(s) your child uses to do the activity.",
@@ -55,17 +55,17 @@ export const youngChildSurvey = [
       },
       {
         label: "With non-prosthetic hand alone",
-        responseGuideType: "activityGuide-nonProstehticHand",
+        miniGuideType: "activityGuide-nonProstehticHand",
         value: 2,
       },
       {
         label: "With some help from another person",
-        responseGuideType: "activityGuide-anotherPerson",
+        miniGuideType: "activityGuide-anotherPerson",
         value: 1,
       },
       {
         label: "Don't know/not sure",
-        responseGuideType: "activityGuide-notSure",
+        miniGuideType: "activityGuide-notSure",
         additionalResponseIfSelected: {
           label: "[Required] Comment for Don't know/not sure",
         },
@@ -84,28 +84,28 @@ export const youngChildSurvey = [
     options: [
       {
         label: "With no difficulty",
-        responseGuideType: "difficultyScale-noDifficulty",
+        miniGuideType: "difficultyScale-noDifficulty",
         value: 4,
       },
       {
         label: "With some difficulty",
-        responseGuideType: "difficultyScale-someDifficulty",
+        miniGuideType: "difficultyScale-someDifficulty",
         value: 3,
       },
       {
         label: "With great difficulty",
-        responseGuideType: "difficultyScale-greatDifficulty",
+        miniGuideType: "difficultyScale-greatDifficulty",
         value: 2,
       },
       {
         label:
           "It is so difficult that my child needs help from another person",
-        responseGuideType: "difficultyScale-anotherPerson",
+        miniGuideType: "difficultyScale-anotherPerson",
         value: 1,
       },
       {
         label: "Even with help, my child cannot do it using the prosthesis",
-        responseGuideType: "difficultyScale-cannotDo",
+        miniGuideType: "difficultyScale-cannotDo",
         value: 0,
       },
     ],
@@ -143,28 +143,28 @@ export const youngChildSurvey = [
     options: [
       {
         label: "With no difficulty",
-        responseGuideType: "difficultyScale-noDifficulty",
+        miniGuideType: "difficultyScale-noDifficulty",
         value: 4,
       },
       {
         label: "With some difficulty",
-        responseGuideType: "difficultyScale-someDifficulty",
+        miniGuideType: "difficultyScale-someDifficulty",
         value: 3,
       },
       {
         label: "With great difficulty",
-        responseGuideType: "difficultyScale-greatDifficulty",
+        miniGuideType: "difficultyScale-greatDifficulty",
         value: 2,
       },
       {
         label:
           "It is so difficult that my child needs help from another person",
-        responseGuideType: "difficultyScale-anotherPerson",
+        miniGuideType: "difficultyScale-anotherPerson",
         value: 1,
       },
       {
         label: "Even with help, my child cannot do it using the prosthesis",
-        responseGuideType: "difficultyScale-cannotDo",
+        miniGuideType: "difficultyScale-cannotDo",
         value: 0,
       },
     ],

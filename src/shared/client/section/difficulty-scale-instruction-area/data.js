@@ -9,6 +9,7 @@ export const data_difficulty_scale = [
     color: "#EAF7EA",
     description:
       "The activity can be complete <span>without anyone's help,</span> at the <span>same speed, ease, and skill</span> as others",
+    miniGuideType: "difficultyScale-noDifficulty",
   },
   {
     scale: "/instructions/difficulty-scale/scale-2.png",
@@ -20,6 +21,7 @@ export const data_difficulty_scale = [
     color: "#CAF7FF",
     description:
       "The activity can be complete <span>without anyone's help,</span> but it is <span>not so easy, is a little awkward,</span> or it takes a little longer to do than others",
+    miniGuideType: "difficultyScale-someDifficulty",
   },
   {
     scale: "/instructions/difficulty-scale/scale-3.png",
@@ -31,6 +33,7 @@ export const data_difficulty_scale = [
     color: "#FEDF9E",
     description:
       "It is <span>a struggle to do the activity,</span> is <span>very awkward,</span> or that it <span>takes a long time,</span> but can still be done <span>without anyone's help</span>",
+    miniGuideType: "difficultyScale-greatDifficulty",
   },
   {
     scale: "/instructions/difficulty-scale/scale-4.png",
@@ -42,6 +45,7 @@ export const data_difficulty_scale = [
     color: "#FEC2A6",
     description:
       "<span>At least 10% of the activity can be complete,</span> but <span>some assistance</span> required to do the rest",
+    miniGuideType: "difficultyScale-anotherPerson",
   },
   {
     scale: "/instructions/difficulty-scale/scale-5.png",
@@ -53,5 +57,6 @@ export const data_difficulty_scale = [
     color: "#FEBEB6",
     description:
       "<span>Someone else does the activity,</span> since no part of the activity can be complete when wearing the prosthesis",
+    miniGuideType: "difficultyScale-cannotDo",
   },
 ];
