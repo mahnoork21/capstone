@@ -6,7 +6,8 @@ import {HeaderAppBar, HeaderToolbar, HeaderMenuIconButton} from "./styled";
 import { Menu as MenuIcon } from "@mui/icons-material";
 const Header = () =>{
   return(
-    <><p>inside header.jsx</p>
+    <>
+    {/* // <p>inside header.jsx</p> */}
     <HeaderAppBar position="fixed">
       <HeaderToolbar>
         <HeaderMenuIconButton
