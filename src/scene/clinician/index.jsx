@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./styled";
-import Header from "@/shared/clinician/header/Header";
+// import styled from "./styled";
+// import Header from "@/shared/clinician/header/Header";
 import { makeStyles } from "@mui/styles";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -114,7 +114,7 @@ const LoginLanding = () => {
                 </Typography>
 
                 <Button
-                  href="#"
+                  href= "../registartion/index.jsx"
                   variant="contained"
                   sx={{ width: "100%", mb: 2 }}
                 >
