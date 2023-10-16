@@ -23,6 +23,10 @@ export const HeaderContainer = styled.div`
 `;
 export const HeaderAppBar = styled(AppBar)`
   z-index: 1201;
+  display: flex;
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    display: none;
+  }
 `;
 export const HeaderToolbar = styled(Toolbar)`
   display: flex;
