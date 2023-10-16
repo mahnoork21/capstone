@@ -113,7 +113,6 @@ const SummaryContent = () => {
                       </SummaryItemWrapper>
                       <SummaryItemWrapper>
                         <KeyboardDoubleArrowRightOutlinedIcon />
-                        {}
 
                         <AnswerWrapper>
                           {!isNullOrUndefined(questionRespose.value) ? (
