@@ -11,7 +11,7 @@ export const QuestionWrapper = styled.div`
   gap: 4px;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 680px;
+    width: 860px;
   }
 `;
 

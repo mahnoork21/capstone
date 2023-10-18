@@ -12,6 +12,7 @@ export const HeaderButton = styled(Button)`
 
   &:hover {
     border-color: white;
+    border-width: 2px;
   }
 `;
 
@@ -35,12 +36,30 @@ export const HeaderContainer = styled.div`
   @media only screen and (min-width: ${breakpoint.desktop}) {
     height: 80px;
     padding: 0 24px;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
   }
 
   @media only screen and (max-width: 600px) {
     & > span {
       font-size: 1.5rem;
     }
+  }
+`;
+
+export const NavigationWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & a {
+    margin-right: 24px;
+    color: white;
+    text-decoration: inherit;
+    text-transform: uppercase;
+    outline: none;
+  }
+
+  & a:last-child {
+    margin-right: 0;
   }
 `;

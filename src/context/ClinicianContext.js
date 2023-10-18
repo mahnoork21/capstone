@@ -1,74 +1,73 @@
-import { createContext, useState, useEffect } from "react";
-import jwtDecode from "jwt-decode";
-import axios from "axios";
+import { auth } from "@/firebase/firebase";
+// import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
+
+const { createContext, useEffect, useState } = require("react");
 
 export const ClinicianContext = createContext();
 
-const ClinicianProvider = ({ children }) => {
-  // stores the id (in login page, the token is converted to clinciian_id in the beginning and stored here)
-  const [clinicianId, setClinicianId] = useState(null);
-  //this stores all the clinician info (even the id)
-  const [clinicianInfo, setClinicianInfo] = useState({});
+export const ClinicianProvider = ({ children }) => {
+  //TODO check the status of this survey in the database
+  //if complete, disable the start survey button, display message
 
-  const storeClinicianId = (id) => {
-    setClinicianId(id);
-  };
+  //TODO read the stored user and surveyId from params
+//   const [currentSurveyId, setCurrentSurveyId] = useState(null);
+//   const [user, setUser] = useState(null);
+  const [breakpoint, setBreakpoint] = useState(`desktop`);
+//   const [headerButtonType, setHeaderButtonType] = useState(
+//     HeaderButtonType.START_SURVEY
+//   );
 
-  const storeClinicianInfo = (info) => {
-    setClinicianInfo(info);
-  };
-
-  //clearing the clinician info
-  const clearClinicianInfo = () => {
-    setClinicianId(null);
-    setClinicianInfo(null);
-  };
-
-  //getting clinician_id from the token in the local storage in the context api so that it persists throughout the website
   useEffect(() => {
-    const fetchClinicianInfo = async () => {
-      // Retrieve token from the local storage
-      const token = localStorage.getItem("token");
-      if (token) {
-        // decode the clinician id back from the token
-        const decodedToken = jwtDecode(token, process.env.REACT_APP_TOKEN_KEY);
-        const clinicianId = decodedToken.id;
-        // pass the decoded clinician id along with the token from local storage to an API that returns back all the clinician details
-        try {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_SERVER}/api/clinician/getClinicianInfo`,
-            {
-              headers: {
-                Authorization: token,
-                clinicianId: clinicianId,
-              },
-            }
-          );
-          // Assuming clinicianInfo is a property of the response data
-          const clinicianInfo = response.data;
-          storeClinicianInfo(clinicianInfo);
-        } catch (e) {
-          console.log(e);
-        }
+    // const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     setUser(user);
+    //   }
+    // });
+
+    // signInAnonymously(auth).then(() => {
+    //   console.log("Signed In anonymously");
+    // });
+
+    const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
+    const changeListener = (e) => {
+      if (e.matches) {
+        setBreakpoint(`desktop`);
+      } else {
+        setBreakpoint(`mobile`);
       }
     };
-
-    // call the method that gets token from local storage, decodes it into clincian id using which generates clincian info
-    fetchClinicianInfo();
+    changeListener(mediaQuery);
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", changeListener);
+      return () => {
+        // unsubscribe();
+        mediaQuery.removeEventListener("change", changeListener);
+      };
+    } else {
+      //for backward compatibility with older safari broswers
+      mediaQuery.addListener(changeListener);
+      return () => {
+        // unsubscribe();
+        mediaQuery.removeListener(changeListener);
+      };
+    }
   }, []);
+
+  console.log("[Debug] Current Breakpoint == ", breakpoint);
 
   return (
     <ClinicianContext.Provider
       value={{
-        clinicianId,
-        storeClinicianId,
-        clinicianInfo,
-        clearClinicianInfo,
+        // currentSurveyId,
+        // user,
+        breakpoint
+        // headerButtonType,
+        // setHeaderButtonType: setHeaderButtonType,
+        // setCurrentSurveyId: setCurrentSurveyId,
       }}
     >
       {children}
     </ClinicianContext.Provider>
   );
 };
-
-export default ClinicianProvider;
