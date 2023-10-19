@@ -38,7 +38,7 @@ export const StyledHeading = styled(Typography)`
   font-family: Open Sans;
   font-size: 24px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 30px; /* 125% */
   text-align: center;
 `;
