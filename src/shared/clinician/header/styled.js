@@ -42,10 +42,6 @@ export const HeaderMenuIconButton = styled(IconButton)`
   
   }
 `;
-import { breakpoint } from "@/styles/breakpoints";
-import styled from "@emotion/styled";
-import { Button, AppBar, IconButton, Toolbar } from "@mui/material";
-
 export const HeaderButton = styled(Button)`
   color: white;
   border-color: white;
@@ -87,24 +83,4 @@ export const AuthHeaderContainer = styled.div`
       font-size: 1.5rem;
     }
   }
-`;
-
-export const HeaderAppBar = styled(AppBar)`
-  z-index: 1201;
-`;
-
-export const HeaderMenuIconButton = styled(IconButton)`
-  display: block;
-  @media only screen and (min-width: ${breakpoint.desktop}) {
-    & > svg{
-    display: none;
-    }
-  }
-  
-  }
-`;
-
-export const HeaderToolbar = styled(Toolbar)`
-  display: flex;
-  justify-content: space-between;
 `;

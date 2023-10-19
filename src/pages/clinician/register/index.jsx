@@ -1,4 +1,4 @@
-import Registration from "@/scene/clinician/Registartion";
+import Registration from "@/scene/clinician/Registration";
 
 const RegistrationPage = () => {
   return <Registration />;
