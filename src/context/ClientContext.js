@@ -189,6 +189,12 @@ export const ClientProvider = ({ children }) => {
     switch (type) {
       case "value":
         currentAnswer[questionId].value = answer;
+        const questionIndex = questionIds.indexOf(questionId);
+        questionIds.forEach((questionId, index) => {
+          if (index > questionIndex) {
+            currentAnswer[questionId] = {};
+          }
+        });
         break;
       case "body-part":
         currentAnswer[questionId]["bodypart"] = answer;
@@ -196,13 +202,6 @@ export const ClientProvider = ({ children }) => {
       case "commentForNotSure":
         currentAnswer[questionId]["commentForNotSure"] = answer;
     }
-
-    const questionIndex = questionIds.indexOf(questionId);
-    questionIds.forEach((questionId, index) => {
-      if (index > questionIndex) {
-        currentAnswer[questionId] = {};
-      }
-    });
 
     setErrors({});
     setCurrentAnswer({

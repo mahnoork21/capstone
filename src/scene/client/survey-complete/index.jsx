@@ -26,7 +26,7 @@ import {
 import { isNullOrUndefined } from "@/utils/utils";
 
 const SurveyComplete = () => {
-  const { setIsNavBarVisible, activityResponses, currentSurveyId } =
+  const { setIsNavBarVisible, activityResponses, currentSurveyId, survey } =
     useContext(ClientContext);
   const [surveyBlob, setSurveyBlob] = useState(null);
 
@@ -115,6 +115,9 @@ const SurveyComplete = () => {
             );
           })}
         </View>
+        <Text style={styles.finalComment}>
+          Final Comment: {survey.final_comment}
+        </Text>
       </Page>
     </Document>
   );
@@ -151,7 +154,7 @@ const SurveyComplete = () => {
       flexDirection: "column",
       gap: "16px",
       justifyContent: "center",
-      marginTop: 16,
+      marginTop: 10,
     },
     activity: {
       width: "80%",
@@ -172,6 +175,10 @@ const SurveyComplete = () => {
       fontSize: 14,
       fontWeight: 700,
       marginTop: 8,
+    },
+    finalComment: {
+      fontSize: 16,
+      marginTop: 10,
     },
   });
 
