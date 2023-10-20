@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { ListItemButton, Typography } from "@mui/material";
+import { breakpoint } from "@/styles/breakpoints";
 
 export const StyledClientIdTypography = styled(Typography)`
   font-weight: 700;
@@ -12,7 +13,7 @@ export const StyledClientAddDateTypography = styled(Typography)`
 
 export const StyledListItemButton = styled(ListItemButton)`
   display: flex;
-  width: 280px;
+  width: 100%;
   padding: 8px;
   flex-direction: column;
   align-items: flex-start;
@@ -26,5 +27,9 @@ export const StyledListItemButton = styled(ListItemButton)`
     p {
       color: var(--primary-contrast, #fff);
     }
+  }
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    width: 200px;
   }
 `;

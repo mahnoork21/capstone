@@ -28,7 +28,6 @@ import {
 
 function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
   const { breakpoint } = useContext(ClinicianContext);
-  console.log(breakpoint);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -55,7 +54,9 @@ function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
               <AccountCircle />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="Clinician Name" secondary="View Profile" />
+          {/* As View profile isn't in this scope right now, I've removed the link to it 
+          <ListItemText primary="Clinician Name" secondary="View Profile" /> */}
+          <ListItemText primary="Clinician Name" />
         </ListItem>
 
         {listItemsArray.map(({ IconType, text }, index) => (
