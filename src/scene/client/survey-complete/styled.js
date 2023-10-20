@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const SurveyCompleteContainer = styled.div`
@@ -12,9 +13,14 @@ export const SurveyCompleteContainer = styled.div`
   flex-direction: column;
 
   svg {
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
     color: var(--primary-green);
+
+    @media screen and (min-width: ${breakpoint.desktop}) {
+      width: 160px;
+      height: 160px;
+    }
   }
 
   & > p:first-of-type {

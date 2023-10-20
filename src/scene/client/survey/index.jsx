@@ -397,31 +397,33 @@ const SurveyContent = () => {
                       </>
                     )}
 
-                  {step.questionId !== "do" &&
-                    step.questionId === "how" &&
-                    currentAnswer.how.value !== 0 && (
-                      <>
-                        <StyledTextField
-                          style={{ marginTop: 12 }}
-                          id="comment-input"
-                          label="Comments"
-                          variant="filled"
-                          multiline
-                          value={currentAnswer[step.questionId].comment}
-                          onChange={(event) => {
-                            updateAnswer(
-                              step.questionId,
-                              event.target.value,
-                              "comment"
-                            );
-                          }}
-                        />
-                        <MessageToUser
-                          message={youngChildSurvey[stepIndex]?.comment?.hint}
-                          questionId={step.questionId}
-                        />
-                      </>
-                    )}
+                  {(step.questionId === "how" &&
+                    currentAnswer.how.value !== 0) ||
+                  ["well", "useful", "without"].includes(step.questionId) ? (
+                    <>
+                      <StyledTextField
+                        style={{ marginTop: 12 }}
+                        id="comment-input"
+                        label="Comments"
+                        variant="filled"
+                        multiline
+                        value={currentAnswer[step.questionId].comment}
+                        onChange={(event) => {
+                          updateAnswer(
+                            step.questionId,
+                            event.target.value,
+                            "comment"
+                          );
+                        }}
+                      />
+                      <MessageToUser
+                        message={youngChildSurvey[stepIndex]?.comment?.hint}
+                        questionId={step.questionId}
+                      />
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </StepContent>
               </Step>
             ) : null;

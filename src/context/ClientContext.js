@@ -201,6 +201,8 @@ export const ClientProvider = ({ children }) => {
         break;
       case "commentForNotSure":
         currentAnswer[questionId]["commentForNotSure"] = answer;
+      case "comment":
+        currentAnswer[questionId]["comment"] = answer;
     }
 
     setErrors({});
