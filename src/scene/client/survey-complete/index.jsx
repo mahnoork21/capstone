@@ -1,6 +1,5 @@
 import { ClientContext } from "@/context/ClientContext";
 import MainContainer from "@/shared/components/main-container";
-import useSurveyIdCheck from "@/utils/custom-hooks/useSurveyIdCheck";
 
 import { useContext, useEffect, useState } from "react";
 import { SurveyCompleteContainer } from "./styled";
@@ -39,13 +38,17 @@ const SurveyComplete = () => {
     };
   });
 
-  // if (!activityResponses) {
-  //   return;
-  // }
-
   Font.register({
     family: "Open Sans",
-    src: `https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,500&family=Roboto:wght@400;500;700&display=swap`,
+    fonts: [
+      {
+        src: `https://fonts.googleapis.com/css2?family=Open+Sans&display=swap`,
+      },
+      {
+        src: `https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap`,
+        fontWeight: 700,
+      },
+    ],
   });
 
   const SurveyPdf = () => (
@@ -101,7 +104,7 @@ const SurveyComplete = () => {
                               <Text>{questionRespose.comment}</Text>
                             </>
                           ) : (
-                            "N/A"
+                            <Text>N/A</Text>
                           )}
                         </View>
                       </View>
@@ -148,14 +151,16 @@ const SurveyComplete = () => {
       flexDirection: "column",
       gap: "16px",
       justifyContent: "center",
+      marginTop: 16,
     },
     activity: {
       width: "80%",
       padding: "8px",
+      fontSize: 14,
     },
     activityTitle: {
       fontSize: 16,
-      fontWeight: "bold",
+      fontWeight: 700,
     },
     answerWrapper: {
       flexDirection: "row",
@@ -165,7 +170,8 @@ const SurveyComplete = () => {
     },
     question: {
       fontSize: 14,
-      fontWeight: "bold",
+      fontWeight: 700,
+      marginTop: 8,
     },
   });
 
