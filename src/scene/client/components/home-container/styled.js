@@ -83,6 +83,6 @@ export const Container = styled.div`
 export const GreyP = styled.p`
   color: var(--pufi-grey-dark);
   font-weight: bold;
-  font-size: 10px;
+  font-size: 0.625rem;
   text-align: right;
 `;

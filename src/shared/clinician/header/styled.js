@@ -2,20 +2,18 @@ import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { Button, AppBar, IconButton, Toolbar } from "@mui/material";
 
-
 export const HeaderButton = styled(Button)`
   color: white;
   border-color: white;
   padding: 16px 36px;
   border-radius: 12px;
   border-width: 2px;
-  font-size: 16px;
+  font-size: 1rem;
 
   &:hover {
     border-color: white;
   }
 `;
-
 
 export const AuthHeaderContainer = styled.div`
   height: 60px;
@@ -63,6 +61,6 @@ export const HeaderMenuIconButton = styled(IconButton)`
 `;
 
 export const HeaderToolbar = styled(Toolbar)`
-  display: flex; 
+  display: flex;
   justify-content: space-between;
 `;

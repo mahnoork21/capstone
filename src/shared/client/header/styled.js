@@ -8,7 +8,7 @@ export const HeaderButton = styled(Button)`
   padding: 16px 36px;
   border-radius: 12px;
   border-width: 2px;
-  font-size: 16px;
+  font-size: 1rem;
 
   &:hover {
     border-color: white;
