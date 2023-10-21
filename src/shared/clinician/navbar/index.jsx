@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ClinicianContext } from "@/context/ClinicianContext";
+import { useRouter } from "next/router";
 
 import {
   Box,
@@ -26,7 +27,19 @@ import {
   DesktopDrawer,
 } from "./styled";
 
-function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
+const listItemsArray = [
+  { IconType: HomeOutlined, text: "Dashboard" },
+  { IconType: AccountBoxOutlined, text: "My Clients" },
+  { IconType: BallotOutlined, text: "All Surveys" },
+];
+
+export default function Navbar({
+  window,
+  mobileOpen,
+  handleDrawerToggle,
+  drawerWidth,
+}) {
+  const router = useRouter();
   const { breakpoint } = useContext(ClinicianContext);
 
   const container =
@@ -34,15 +47,19 @@ function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
 
   // For selection of List Item
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
 
-  const listItemsArray = [
-    { IconType: HomeOutlined, text: "Dashboard" },
-    { IconType: AccountBoxOutlined, text: "My Clients" },
-    { IconType: BallotOutlined, text: "All Surveys" },
-  ];
+  useEffect(() => {
+    const path = router.pathname.split("/")[2];
+    const indexOfThisPage = listItemsArray.findIndex(
+      ({ text }) => text.toLowerCase().trim().replace(" ", "-") == path
+    );
+    setSelectedIndex(indexOfThisPage);
+  }, []);
+
+  const handleListItemClick = (event, index, text) => {
+    setSelectedIndex(index);
+    router.push("/clinician/" + text.toLowerCase().trim().replace(" ", "-"));
+  };
 
   const Content = () => (
     <Box>
@@ -63,7 +80,7 @@ function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
           <ListItem key={text} disablePadding>
             <SpecialHighlightedListItemBtn
               selected={selectedIndex === index}
-              onClick={(event) => handleListItemClick(event, index)}
+              onClick={(event) => handleListItemClick(event, index, text)}
             >
               <ListItemIcon>
                 <IconType />
@@ -103,5 +120,3 @@ function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
     </>
   );
 }
-
-export default Navbar;

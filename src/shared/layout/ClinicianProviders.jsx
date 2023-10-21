@@ -19,7 +19,7 @@ const theme = createTheme({
   },
 });
 
-const ClientProviders = ({ children }) => {
+const ClinicianProviders = ({ children }) => {
   return (
     <ClinicianProvider>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
@@ -27,4 +27,4 @@ const ClientProviders = ({ children }) => {
   );
 };
 
-export default ClientProviders;
+export default ClinicianProviders;
