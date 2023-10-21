@@ -11,6 +11,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Checkbox,
 } from "@mui/material";
 import {
   StyledPaper,
@@ -20,173 +21,236 @@ import {
   Labels,
   StyledTextfield,
 } from "./styled";
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  Controller,
+} from "react-hook-form";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
 
+const PersonalDetils = () => {
+  return (
+    <>
+      <React.Fragment>
+        <Box display={"block"}>
+          <Labels>First Name</Labels>
+          <StyledTextfield />
+        </Box>
+        <Box display={"block"}>
+          <Labels>Last Name</Labels>
+          <StyledTextfield />
+        </Box>
+        <Box display={"block"}>
+          <Labels>Email</Labels>
+          <StyledTextfield />
+        </Box>
+        <Box display={"block"}>
+          <Labels>Password</Labels>
+          <StyledTextfield />
+        </Box>
+        <Box display={"block"}>
+          <Labels>Confirm Password</Labels>
+          <StyledTextfield />
+        </Box>
+      </React.Fragment>
+    </>
+  );
+};
+
+const OrganizationDetails = () => {
+  return (
+    <>
+      <React.Fragment>
+        <Box display={"block"}>
+          <Labels>Organization Name</Labels>
+          <StyledTextfield />
+        </Box>
+
+        <Box display={"block"}>
+          <Labels>Clinician Id</Labels>
+          <StyledTextfield />
+        </Box>
+        <Box display={"block"}>
+          <Labels>Role</Labels>
+          <StyledTextfield />
+        </Box>
+      </React.Fragment>
+    </>
+  );
+};
+const TOS = () => {
+  const [checked, setChecked] = React.useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+  return (
+    <>
+      <Typography variant="h4" marginBottom={2}>
+        <b>Terms of Service and Privacy Policy</b>
+      </Typography>
+      <Typography marginBottom={2}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Libero enim sed
+        faucibus turpis. Pellentesque habitant morbi tristique senectus et netus
+        et malesuada fames. Eu scelerisque felis imperdiet proin fermentum leo
+        vel orci porta. Euismod nisi porta lorem mollis aliquam ut. Habitant
+        morbi tristique senectus et. Risus sed vulputate odio ut enim. Accumsan
+        lacus vel facilisis volutpat est velit. Neque aliquam vestibulum morbi
+        blandit cursus. Id faucibus nisl tincidunt eget nullam.{" "}
+      </Typography>
+      <Typography marginBottom={2}>
+        Et netus et malesuada fames ac turpis egestas sed. Arcu vitae elementum
+        curabitur vitae. Tellus orci ac auctor augue mauris augue neque gravida.
+        Duis at tellus at urna condimentum mattis pellentesque id nibh. Massa
+        ultricies mi quis hendrerit dolor. Aliquet nibh praesent tristique magna
+        sit amet. Massa sed elementum tempus egestas sed. Ut diam quam nulla
+        porttitor massa id neque aliquam vestibulum. Eget magna fermentum
+        iaculis eu. Tellus rutrum tellus pellentesque eu tincidunt tortor
+        aliquam nulla facilisi. Scelerisque fermentum dui faucibus in ornare.
+        Dolor magna eget est lorem ipsum dolor sit.{" "}
+      </Typography>
+
+      <Typography display={"inline-block"}>
+        <Checkbox
+          sx={{ display: "inline-block" }}
+          label="agree"
+          checked={checked}
+          onChange={handleChange}
+          inputProps={{ "aria-label": "controlled" }}
+        />
+        I agree to abide by the Terms and Conditions and Privacy Policy.
+      </Typography>
+    </>
+  );
+};
+function getStepContent(step) {
+  switch (step) {
+    case 0:
+      return <PersonalDetils />;
+
+    case 1:
+      return <OrganizationDetails />;
+    case 2:
+      return <TOS />;
+
+    default:
+      return "unknown step";
+  }
+}
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
+  // const [skipped, setSkipped] = React.useState(new Set());
 
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
+  const methods = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      organization: "",
+      clinicianid: "",
+      role: "",
+    },
+  });
 
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+  const handleNext = (data) => {
+    console.log(data);
+    if (activeStep == steps.length - 1) {
+      fetch("https://jsonplaceholder.typicode.com/comments")
+        .then((data) => data.json())
+        .then((res) => {
+          console.log(res);
+          // setActiveStep(activeStep + 1);
+        });
+    } else {
+      console.log("data is not there");
+      setActiveStep(activeStep + 1);
     }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep(activeStep - 1);
   };
 
   const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
+    if (!isStepSkipped(activeStep)) {
+      setSkippedSteps([...skippedSteps, activeStep]);
     }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
+    setActiveStep(activeStep + 1);
   };
 
   const handleReset = () => {
     setActiveStep(0);
   };
-
   return (
     <>
       <Container gap="10" justifyContent="space-around" fontFamily="Open Sans">
         <StyledPaper>
           <StyledTypo>Create a new Clinician account</StyledTypo>
 
-          <Stepper activeStep={activeStep}>
+          <Stepper activeStep={activeStep} sx={{ m: 2 }}>
             {steps.map((label, index) => {
               const stepProps = {};
               const labelProps = {};
-              // if (isStepOptional(index)) {
-              //   labelProps.optional = (
-              //     <Typography variant="caption">Optional</Typography>
-              //   );
-              // }
-              // if (isStepSkipped(index)) {
-              //   stepProps.completed = false;
-              // }
+
               return (
-                <Step key={label} {...stepProps}>
+                <Step key={index} {...stepProps}>
                   <StepLabel {...labelProps}>{label}</StepLabel>
                 </Step>
               );
             })}
           </Stepper>
 
-          <StepperBox>
-            {activeStep === 2 ? (
-              <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
+          {activeStep === steps.length ? (
+            <>
+              <StepperBox>
+                <Typography variant="h3" align="center">
+                  Thank You
                 </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    pt: 2,
-                    justifyContent: "left",
-                  }}
-                >
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-                    Back To Login
-                  </Button>
-                  <Button variant="contained" onClick={handleReset}>
-                    Reset
-                  </Button>
-                </Box>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  Step {activeStep + 1}
-                </Typography>
-                <FormBox>
-                  <form>
-                    <Box display={"inline-block"}>
-                      <Labels>First Name</Labels>
-                      <StyledTextfield />
-                    </Box>
-                    <Box display={"inline-block"}>
-                      <Labels>Last Name</Labels>
-                      <StyledTextfield />
-                    </Box>
-                    <Box display={"block"}>
-                      <Labels>Email</Labels>
-                      <StyledTextfield />
-                    </Box>
-                    <Box display={"block"}>
-                      <Labels>Password</Labels>
-                      <StyledTextfield />
-                    </Box>
-                    <Box display={"block"}>
-                      <Labels>Confirm Password</Labels>
-                      <StyledTextfield />
-                    </Box>
+              </StepperBox>
+            </>
+          ) : (
+            <>
+              <FormProvider {...methods}>
+                <StepperBox>
+                  <form onSubmit={methods.handleSubmit(handleNext)}>
+                    <FormBox>
+                      {getStepContent(activeStep)}
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          pt: 2,
+                          justifyContent: "left",
+                        }}
+                      >
+                        <Button
+                          color="inherit"
+                          onClick={handleBack}
+                          sx={{ mr: 1 }}
+                        >
+                          Back
+                        </Button>
+
+                        <Button
+                          variant="contained"
+                          // onClick={handleNext}
+                          type="submit"
+                        >
+                          {activeStep === steps.length - 1 ? "SIGN UP" : "Next"}
+                        </Button>
+                        <Box sx={{ flex: "1 1 auto" }} />
+                      </Box>
+                    </FormBox>
                   </form>
-                </FormBox>
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                  <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-                    Back To Login
-                  </Button>
-                  <Box sx={{ flex: "1 1 auto" }} />
-
-                  <Button variant="contained" onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    pt: 2,
-                    justifyContent: "left",
-                  }}
-                >
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-                    Back To Login
-                  </Button>
-                  <Button variant="contained" onClick={handleReset}>
-                    Reset
-                  </Button>
-                </Box>
-              </React.Fragment>
-            ) : (
-              <></>
-            )}
-          </StepperBox>
+                </StepperBox>
+              </FormProvider>
+            </>
+          )}
         </StyledPaper>
-
         <StyledPaper>
           <StyledTypo>
             Learn about the PUFI-2, how it was develped, and how it can be used.
@@ -226,7 +290,12 @@ const Registration = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>text2</Typography>
+                <Typography>
+                  The PUFI-2 is used for children with upper limb prosthesis.
+                  There are two versions: The young child version - ages 3 to 6
+                  years The older child version - ages 7 and up The assessment
+                  can be taken by the child and/or their parent/caregiver.
+                </Typography>
               </AccordionDetails>
             </Accordion>
             <Accordion>
@@ -240,7 +309,15 @@ const Registration = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>text3</Typography>
+                <Typography>
+                  After creating an account, health care practitioner's request
+                  the completion of the PUFI-2 via email, and children and/or
+                  parents complete the assessment on their own. Once complete,
+                  health care practitioner's can view raw scores and summary
+                  charts for use either in an associated research project or in
+                  clinical use for sharing and discussing the results with the
+                  child/parent and using within the child's clinical record.
+                </Typography>
               </AccordionDetails>
             </Accordion>
             <Accordion>
@@ -254,7 +331,18 @@ const Registration = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>text4</Typography>
+                <Typography>
+                  {" "}
+                  Reasons for completing the PUFI-2 questionnaire may include,
+                  but are not limited to: First time prosthetic user After
+                  client receives new prosthetic device(s) or any
+                  changes/adjustments to their prosthetic device(s) or treatment
+                  plan Monitoring prosthetic and functional needs over time
+                  (e.g. 3 month, 6 months, 12 months check-in). Each
+                  clinic/health care practitioner will determine when to
+                  re-administer the PUFI-2 based on their client's needs and
+                  practice setting.
+                </Typography>
               </AccordionDetails>
             </Accordion>
             <Accordion>
@@ -268,7 +356,21 @@ const Registration = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>text4</Typography>
+                <Typography>
+                  {" "}
+                  The PUFI was created and validated over 25 years ago at
+                  Holland Bloorview Kids Rehab Hospital by Dr. Virginia Wright
+                  and her team. The PUFI has since been updated with co-creation
+                  involvement by children and clinicians. Publications: Wright
+                  FV, Hubbard S, Jutai J, Naumann S. The Prosthetic Upper
+                  Extremity Functional Index: development and reliability
+                  testing of a new functional status questionnaire for children
+                  who use upper extremity prostheses.
+                  https://pubmed.ncbi.nlm.nih.gov/11382260/ Wright FV, Hubbard
+                  S, Naumann S, Jutai J. Evaluation of the validity of the
+                  prosthetic upper extremity functional index for children.
+                  https://pubmed.ncbi.nlm.nih.gov/12690590/
+                </Typography>
               </AccordionDetails>
             </Accordion>
           </Box>

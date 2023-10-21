@@ -9,10 +9,9 @@ export const ContentContainer = styled(Container)`
 `;
 
 export const StepperBox = styled(Box)`
-  display: flex;
+  display: block;
   padding: 1rem;
-  // width: 952px;
-  flex-direction: column;
+  width: 100%
   align-items: flex-start;
   gap: 24px;
   // justify-content: center;
@@ -21,12 +20,13 @@ export const StepperBox = styled(Box)`
 
 export const FormBox = styled(Box)`
   padding: 1rem;
-  width: 100%;
+  // width: 100%;
   gap: 5px;
   align-content: center;
   display: flex;
-  // justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
 
   @media (min-width: 600px) {
     margin-left: 4px; /* Margin for small screens */
@@ -54,7 +54,7 @@ export const Labels = styled(Typography)`
 `;
 export const StyledTextfield = styled.input`
   width: 100%;
-  max-width: 420px;
+  max-width: 520px;
   height: 48px;
   border-radius: 8px;
   border: 2px solid var(--pufi-grey, #d9d9d9);
@@ -94,7 +94,7 @@ export const StyledPaper = styled(Paper)`
 export const StyledTypo = styled(Typography)`
   text-align: center;
   color: var(--pufi-black, #333);
-
+  margin-top: 10px;
   max-width: 650px;
   color: #000;
   font-family: Open Sans;

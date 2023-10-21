@@ -43,8 +43,10 @@ const LoginLanding = () => {
               </Labels>
               <StyledButton href="#"> LOG IN</StyledButton>
               <Labels mt={3}>Don't have an account yet?</Labels>
-              {/* <StyledButton href="/clinician/register"></StyledButton> */}
-              <StyledButton href="#"> CREATE NEW ACCOUNT</StyledButton>
+              <StyledButton href="/clinician/register">
+                {/* <StyledButton href="#">*/}
+                CREATE NEW ACCOUNT
+              </StyledButton>
             </form>
           </FormBox>
         </StyledPaper>
