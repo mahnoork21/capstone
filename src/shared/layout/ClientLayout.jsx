@@ -1,5 +1,5 @@
 import Footer from "../client/footer";
-import Header from "../client/header/Header";
+import NormalHeader from "@/shared/clinician/header/NormalHeader";
 import { CurvedBackground, PageWrapper } from "./client-shared";
 import ClientProviders from "./ClientProviders";
 
@@ -7,7 +7,7 @@ const ClientLayout = ({ children }) => {
   return (
     <ClientProviders>
       <PageWrapper>
-        <Header />
+        <NormalHeader handleDrawerToggle={handleDrawerToggle} />
         <CurvedBackground />
         {children}
         <Footer />

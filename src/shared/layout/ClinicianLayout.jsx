@@ -1,34 +1,39 @@
 import React, { useState } from "react";
-import {
-  CurvedBackground,
-  PageWrapper,
-} from "./clinician-shared";
+import { CurvedBackground, PageWrapper } from "./clinician-shared";
 const drawerWidth = 280;
-import Header from "../clinician/header/Header";
+import NormalHeader from "../clinician/header/NormalHeader";
 import { Footer } from "../clinician/footer/Footer";
-import { Typography} from "@mui/material";
+import { Typography } from "@mui/material";
 
-const ClinicianLayout = ({ children }) => {
-  
+const ClinicianLayout = ({ window, children }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen((mobileOpen) => !mobileOpen);
+  };
+
   return (
     <>
-    <PageWrapper>
-    <CurvedBackground />
-      <Header/>
-      <Typography variant="h5" noWrap sx={{
-  display: "flex",
-  fontSize: "40px",
-  color: "white",
-  fontWeight: 500,
-  padding: "10px 0px 16px 0px",
-  justifyContent: "center",
-  alignTtems: "center"
-}}>
-  <span>PUFI-2</span>
-</Typography>
-      {children}
-      <Footer/>
-    </PageWrapper>
+      <PageWrapper>
+        <CurvedBackground />
+        <NormalHeader handleDrawerToggle={handleDrawerToggle} />
+        <Typography
+          variant="h5"
+          noWrap
+          sx={{
+            display: "flex",
+            fontSize: "40px",
+            color: "white",
+            fontWeight: 500,
+            // padding: "10px 0px 0px 0px",
+            justifyContent: "center",
+            alignTtems: "center",
+          }}
+        >
+          <span>PUFI-2</span>
+        </Typography>
+        {children}
+        <Footer />
+      </PageWrapper>
     </>
   );
 };

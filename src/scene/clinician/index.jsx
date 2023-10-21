@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import {
   Labels,
-  StyledBox,
+  StyledContainer,
   StyledPaper,
   StyledTextfield,
   StyledHeading,
@@ -28,7 +28,7 @@ const LoginLanding = () => {
   return (
     <>
       {/* <Header></Header> */}
-      <Container gap="10" justifyContent="space-around" fontFamily="Open Sans">
+      <StyledContainer justifyContent="space-around" fontFamily="Open Sans">
         {/* <StyledBox> */}
         <StyledPaper>
           <StyledHeading>Log in to your clinician account</StyledHeading>
@@ -42,7 +42,7 @@ const LoginLanding = () => {
                 <u>Forgot Password?</u>
               </Labels>
               <StyledButton href="#"> LOG IN</StyledButton>
-              <Labels mt={3}>Don't have an account yet?</Labels>
+              <Labels>Don't have an account yet?</Labels>
               {/* <StyledButton href="/clinician/register"></StyledButton> */}
               <StyledButton href="#"> CREATE NEW ACCOUNT</StyledButton>
             </form>
@@ -172,7 +172,7 @@ const LoginLanding = () => {
           </Box>
         </StyledPaper>
         {/* </StyledBox> */}
-      </Container>
+      </StyledContainer>
     </>
   );
 };

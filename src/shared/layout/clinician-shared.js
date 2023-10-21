@@ -29,6 +29,6 @@ export const ContentBox = styled(Box)`
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
     width: calc(100% - 280px);
-    padding: 16px;
+    // padding: 16px;
   }
 `;
