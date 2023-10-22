@@ -47,14 +47,18 @@ export default function Navbar({
 
   // For selection of List Item
   const [selectedIndex, setSelectedIndex] = useState(0);
-
   useEffect(() => {
-    const path = router.pathname.split("/")[2];
-    const indexOfThisPage = listItemsArray.findIndex(
-      ({ text }) => text.toLowerCase().trim().replace(" ", "-") == path
-    );
-    setSelectedIndex(indexOfThisPage);
-  }, []);
+    const currentDrawerIndex = router.pathname.startsWith(
+      "/clinician/dashboard"
+    )
+      ? 0
+      : router.pathname.startsWith("/clinician/my-clients")
+      ? 1
+      : router.pathname.startsWith("/clinician/all-survey")
+      ? 2
+      : null;
+    setSelectedIndex(currentDrawerIndex);
+  }, [router.pathname]);
 
   const handleListItemClick = (event, index, text) => {
     setSelectedIndex(index);
@@ -71,9 +75,8 @@ export default function Navbar({
               <AccountCircle />
             </Avatar>
           </ListItemAvatar>
-          {/* As View profile isn't in this scope right now, I've removed the link to it 
-          <ListItemText primary="Clinician Name" secondary="View Profile" /> */}
-          <ListItemText primary="Clinician Name" />
+          <ListItemText primary="Clinician Name" secondary="View Profile" />
+          {/* <ListItemText primary="Clinician Name" /> */}
         </ListItem>
 
         {listItemsArray.map(({ IconType, text }, index) => (
