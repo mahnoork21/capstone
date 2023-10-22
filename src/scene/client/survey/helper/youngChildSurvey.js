@@ -6,7 +6,6 @@ export const youngChildSurvey = [
     label: "Does your child do the activity?",
     options: [
       {
-        labelShort: "Yes",
         label: "Yes",
         value: 2,
       },
@@ -60,19 +59,16 @@ export const youngChildSurvey = [
         value: 3,
       },
       {
-        labelShort: "With non-prosthetic hand alone",
         label: "With non-prosthetic hand alone",
         responseGuideType: "activityGuide-nonProstehticHand",
         value: 2,
       },
       {
-        labelShort: "With help from another person",
         label: "With some help from another person",
         responseGuideType: "activityGuide-anotherPerson",
         value: 1,
       },
       {
-        labelShort: "Don't know/not sure",
         label: "Don't know/not sure",
         responseGuideType: "activityGuide-notSure",
         additionalResponseIfSelected: {
