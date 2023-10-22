@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { colorImageLables } from "../activity-analysis/helper/survey-labels";
+import { colorImageLables } from "../activity-analysis/helper/color-image-labels";
 import { Container } from "./styled";
 
 const ColorLabels = ({ amount }) => {

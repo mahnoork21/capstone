@@ -2,9 +2,9 @@ import { Button } from "@mui/material";
 import ReportHeader from "./components/report-header";
 import { Container } from "./styled";
 import ActivityAnalysis from "./components/activity-analysis";
-import { labels } from "./components/activity-analysis/helper/survey-labels";
 import { useState } from "react";
 import WeightedCalculation from "./components/weighted-calculation";
+import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 
 //TODO:
 //1. when client id will appear in the database, add client id to the surveyData
@@ -28,7 +28,7 @@ const SurveyReport = () => {
         </Button>
       </div>
 
-      {Object.keys(labels).map((questionId) => (
+      {youngChildSurvey.map(({ questionId }) => (
         <ActivityAnalysis surveyId={surveyId} questionId={questionId} />
       ))}
 

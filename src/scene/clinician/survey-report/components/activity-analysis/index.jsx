@@ -7,9 +7,9 @@ import { getSurveyById } from "@/firebase/surveyRepo";
 import { Container, PieWrapper, SubContainer, TableWrapper } from "./styled";
 import { getScores } from "./helper/scores-helper";
 import { getData, options } from "./helper/chart-helper";
-import { labels } from "./helper/survey-labels";
 import { getTotalWeightedScore } from "./helper/weighted-calculation-helper";
 import ColorLabels from "../color-labels";
+import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 
 const ActivityAnalysis = ({ surveyId, questionId }) => {
   const [scores, setScores] = useState({});
@@ -47,7 +47,13 @@ const ActivityAnalysis = ({ surveyId, questionId }) => {
         <p>Loading data...</p>
       ) : (
         <>
-          <h2>{labels[questionId].question}</h2>
+          <h2>
+            {
+              youngChildSurvey.find(
+                (question) => question.questionId === questionId
+              ).label
+            }
+          </h2>
           <SubContainer>
             <PieWrapper>
               {data?.datasets?.length > 0 ? (
