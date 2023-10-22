@@ -12,14 +12,37 @@ import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import PufiToolTip from "@/shared/components/pufi-tooltip";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
 
 const ClientHome = () => {
   const [wideMode, setWideMode] = useState(false);
   const [error, setError] = useState("");
-  const { handleStartSurveyClick, currentSurveyId, setHeaderButtonType } =
-    useContext(ClientContext);
+  const {
+    handleStartSurveyClick,
+    organizationId,
+    clinicianId,
+    surveyId,
+    setHeaderButtonType,
+    survey,
+  } = useContext(ClientContext);
 
-  const handleRedirect = () => {};
+  const handleViewInstructionsclick = () => {
+    if (survey) {
+      router.push({
+        pathname: "/client/view-instructions",
+        query: {
+          orgId: organizationId,
+          clinicianId: clinicianId,
+          surveyId: surveyId,
+        },
+      });
+    } else {
+      setError(
+        "Survey Link is invalid. Please contact your clinician for a link to the survey."
+      );
+    }
+  };
 
   const handleOnClick = async () => {
     const error = handleStartSurveyClick();
@@ -76,16 +99,12 @@ const ClientHome = () => {
             START SURVEY
           </StyledButton>
 
-          <Link
-            href={{
-              pathname: "/client/view-instructions",
-              query: { surveyId: currentSurveyId },
-            }}
+          <StyledButton
+            variant="outlined"
+            onClick={handleViewInstructionsclick}
           >
-            <StyledButton variant="outlined" onClick={handleRedirect}>
-              VIEW INSTRUCTIONS
-            </StyledButton>
-          </Link>
+            VIEW INSTRUCTIONS
+          </StyledButton>
         </div>
 
         <Snackbar

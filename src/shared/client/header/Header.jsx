@@ -20,7 +20,9 @@ const Header = () => {
     handleStartSurveyClick,
     setHeaderButtonType,
     isNavBarVisible,
-    currentSurveyId,
+    organizationId,
+    clinicianId,
+    surveyId,
     setErrors,
     setSurvey,
     setIsEditMode,
@@ -49,7 +51,9 @@ const Header = () => {
       router.push({
         pathname: "/client",
         query: {
-          surveyId: currentSurveyId,
+          orgId: organizationId,
+          clinicianId: clinicianId,
+          surveyId: surveyId,
         },
       });
     } else if (headerButtonType === HeaderButtonType.SAVE_CHANGES) {
@@ -60,14 +64,20 @@ const Header = () => {
           currentAnswer
         );
 
-        const survey = await getSurveyById(currentSurveyId);
+        const survey = await getSurveyById(
+          organizationId,
+          clinicianId,
+          surveyId
+        );
         setSurvey(survey);
 
         setIsEditMode(false);
         router.push({
           pathname: "/client/summary",
           query: {
-            surveyId: currentSurveyId,
+            orgId: organizationId,
+            clinicianId: clinicianId,
+            surveyId: surveyId,
           },
         });
       } else {
@@ -103,7 +113,11 @@ const Header = () => {
             <Link
               href={{
                 pathname: "/client",
-                query: { surveyId: currentSurveyId },
+                query: {
+                  orgId: organizationId,
+                  clinicianId: clinicianId,
+                  surveyId: surveyId,
+                },
               }}
             >
               Home
