@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { getSurveyById } from "@/firebase/surveyRepo";
 import { capitalizeEveryWord } from "../activity-analysis/helper/string-utils";
-import { capitalize } from "@mui/material";
 
-const ReportHeader = ({ surveyId }) => {
+const ReportHeader = ({ survey }) => {
   const [surveyData, setSurveyData] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       try {
         setLoading(true);
-        const survey = await getSurveyById(surveyId);
         setSurveyData((prevSurveyData) => ({
           surveyType: survey["survey_type"],
           surveyUpdated: survey["updated"]
@@ -31,7 +28,7 @@ const ReportHeader = ({ surveyId }) => {
     };
 
     fetchData();
-  }, [surveyId]);
+  }, [survey]);
   return (
     <Container>
       {loading ? (
@@ -43,7 +40,7 @@ const ReportHeader = ({ surveyId }) => {
               Client ID: <span>Client123</span>
             </p>
             <p>
-              Survey Id: <span>{surveyId}</span>
+              Survey Id: <span>{survey["survey_id"]}</span>
             </p>
           </div>
           <div className="survey-data">

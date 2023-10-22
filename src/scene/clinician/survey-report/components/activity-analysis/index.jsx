@@ -11,7 +11,7 @@ import { getTotalWeightedScore } from "./helper/weighted-calculation-helper";
 import ColorLabels from "../color-labels";
 import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 
-const ActivityAnalysis = ({ surveyId, questionId }) => {
+const ActivityAnalysis = ({ survey, questionId }) => {
   const [scores, setScores] = useState({});
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
@@ -19,12 +19,11 @@ const ActivityAnalysis = ({ surveyId, questionId }) => {
   Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       try {
         setLoading(true);
-        const surveyData = await getSurveyById(surveyId);
 
-        const scores = getScores(surveyData, questionId);
+        const scores = getScores(survey, questionId);
 
         setScores((prevScores) => scores);
 
@@ -39,7 +38,7 @@ const ActivityAnalysis = ({ surveyId, questionId }) => {
     };
 
     fetchData();
-  }, [surveyId]);
+  }, [survey]);
 
   return (
     <Container>
