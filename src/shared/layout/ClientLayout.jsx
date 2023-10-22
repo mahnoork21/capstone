@@ -7,7 +7,7 @@ const ClientLayout = ({ children }) => {
   return (
     <ClientProviders>
       <PageWrapper>
-        <NormalHeader handleDrawerToggle={handleDrawerToggle} />
+        <lHeader />
         <CurvedBackground />
         {children}
         <Footer />

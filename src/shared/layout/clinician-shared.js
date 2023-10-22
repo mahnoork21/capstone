@@ -12,6 +12,9 @@ export const CurvedBackground = styled.div`
   top: 0;
   left: 0;
   z-index: -1;
+  @media (max-width: 390px) {
+    display: none;
+  }
 `;
 
 export const PageWrapper = styled.div`

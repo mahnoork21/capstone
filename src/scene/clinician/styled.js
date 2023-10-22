@@ -9,58 +9,55 @@ import {
 } from "@mui/material";
 
 export const StyledBox = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 3;
+  padding-left: 24px;
+  padding-top: 30px;
+  padding-bottom: 66px;
+  padding-right: 24px;
 `;
 export const StyledContainer = styled(Container)`
   width: 100%;
+  align-items: center;
+  align-content: center;
   flex-shrink: 0;
   border-radius: 8px;
+  margin: 0;
+  
+  justify-content: center;
 
-  @media (max-width: 400px) {
-    width: 100%;
-    padding: 0px;
-    margin: 0px;
+  @media (max-width: 390px) {
+    width: 390px;
   }
-  @media (max-width: 960px) {
-    margin-top: 20px;
-    width: 100%;
-    height: 100%;
-    flex-shrink: 0;
-    // padding-left: 16px;
-    // padding-right: 16px;
+  @media (min-width: 391px) and (max-width: 959px) {
+    margin-left: 15px
+    margin-right: 15px;
+    margin-top:24px;
   }
-  @media (min-width: 1920px) {
-    margin-left: 25px; /* Margin for extra large screens */
-    margin-right: 25px;
+  @media (min-width: 960px) {
+    // flex-shrink: 0;
+    margin-left: 100px;
+    // margin-right: 100px;
   }
 `;
 export const StyledPaper = styled(Paper)`
-  // // elevation: 3;
   align-items: center;
   align-content: center;
-  // padding: 16px;
   margin-bottom: 16px;
   border-radius: 8px;
   background: #fff;
+  flex-shrink: 0;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
-  @media (max-width: 400px) {
-    width: 100%;
-    padding: 0px;
+  @media (max-width: 390px) {
+    width: 390px;
   }
-  @media (max-width: 600px) {
-    width: 100%;
-    padding: 0px;
-    // // margin-left: 15px;
-    // margin-right: 15px;
+  @media (min-width: 391px) and (max-width: 959px) {
+    margin-top: 10px;
   }
-  @media (min-width: 1920px) {
-    padding: 16px;
-    margin-left: 25px; /* Margin for extra large screens */
-    margin-right: 25px; /* Margin for extra large screens */
+  @media (min-width: 960px) {
+    height: 480px;
+
+    margin-left: 75px;
+    margin-right: 0px;
   }
 `;
 
@@ -147,7 +144,7 @@ export const StyledButton = styled(Button)`
 export const StyledTypo = styled(Typography)`
   text-align: center;
   color: var(--pufi-black, #333);
-
+  padding-top: 32px;
   max-width: 650px;
 
   font-size: 1.5rem;

@@ -19,6 +19,7 @@ import {
   StyledPaper,
   StyledTextfield,
   StyledHeading,
+  StyledBox,
   FormBox,
   StyledButton,
   StyledTypo,
@@ -27,9 +28,7 @@ import {
 const LoginLanding = () => {
   return (
     <>
-      {/* <Header></Header> */}
-      <StyledContainer justifyContent="space-around" fontFamily="Open Sans">
-        {/* <StyledBox> */}
+      <StyledContainer justifyContent="space-around">
         <StyledPaper>
           <StyledHeading>Log in to your clinician account</StyledHeading>
           <FormBox>
@@ -53,7 +52,7 @@ const LoginLanding = () => {
           <StyledTypo>
             Learn about the PUFI-2, how it was develped, and how it can be used.
           </StyledTypo>
-          <Box>
+          <StyledBox>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
@@ -169,9 +168,8 @@ const LoginLanding = () => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-          </Box>
+          </StyledBox>
         </StyledPaper>
-        {/* </StyledBox> */}
       </StyledContainer>
     </>
   );
