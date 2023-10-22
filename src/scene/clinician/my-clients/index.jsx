@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useRouter } from "next/router";
 import {
   AddClientButton,
   AddNewSurveyButton,
@@ -39,6 +40,7 @@ import {
   KeyboardBackspaceOutlined,
   Search,
 } from "@mui/icons-material";
+
 import ClientListItem from "./components/ClientListItem";
 import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import { ClinicianContext } from "@/context/ClinicianContext";
@@ -242,6 +244,7 @@ const surveysListData = [
 ];
 
 const MyClients = () => {
+  const router = useRouter();
   const { breakpoint } = useContext(ClinicianContext);
 
   const [clientsPageNo, setClientsPageNo] = useState(1);
@@ -253,6 +256,10 @@ const MyClients = () => {
     setSelectedIndex(index);
   };
 
+  const addClientButtonClick = () => {
+    router.push("/clinician/my-clients/add-new-client");
+  };
+
   return (
     <StyledBox4>
       <StyledBox5>
@@ -260,7 +267,9 @@ const MyClients = () => {
           MY CLIENTS
         </MyClientsHeadingTypography>
         {breakpoint === "mobile" && (
-          <AddClientButton>Add Client</AddClientButton>
+          <AddClientButton onClick={addClientButtonClick}>
+            Add Client
+          </AddClientButton>
         )}
       </StyledBox5>
       <MainContentBox>
@@ -404,7 +413,9 @@ const MyClients = () => {
         )}
       </MainContentBox>
       {breakpoint === "desktop" && (
-        <AddClientButton>Add Client</AddClientButton>
+        <AddClientButton onClick={addClientButtonClick}>
+          Add Client
+        </AddClientButton>
       )}
     </StyledBox4>
   );

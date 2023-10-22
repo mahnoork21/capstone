@@ -10,6 +10,8 @@ import {
 import { breakpoint } from "@/styles/breakpoints";
 
 export const StyledCard = styled(Card)`
+  display: flex;
+  flex-direction: row;
   border-top: 10px solid #fcaf17;
   border-radius: 8px;
   background: #fff;
@@ -19,19 +21,34 @@ export const StyledCard = styled(Card)`
   @media only screen and (min-width: ${breakpoint.desktop}) {
     width: 250px;
     min-height: 175px;
+    flex-direction: column;
   }
 `;
 
 export const StyledCardContent = styled(CardContent)`
   display: flex;
   flex-flow: row wrap;
-  padding: 8px;
+  flex-grow: 3;
+  padding-right: 4px;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 8px;
+  }
 `;
 
 export const StyledCardActions = styled(CardActions)`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  flex-grow: 3;
+  justify-content: center;
   gap: 8px;
+  padding-left: 0;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    flex-direction: row;
+    padding: 8px;
+    justify-content: flex-end;
+  }
 `;
 
 export const StyledTypography1 = styled(Typography)`

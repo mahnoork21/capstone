@@ -15,10 +15,11 @@ export const StyledListItemButton = styled(ListItemButton)`
   display: flex;
   width: 100%;
   padding: 8px;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   border-radius: 8px;
   margin: 8px 0 0 0;
+  background-color: #fff;
 
   &.Mui-selected,
   &.Mui-selected:hover {

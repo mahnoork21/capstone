@@ -17,7 +17,11 @@ import { breakpoint } from "@/styles/breakpoints";
 export const StyledBox4 = styled(Box)`
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 12px;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 8px;
+  }
 `;
 
 export const StyledBox5 = styled(Box)`
@@ -46,15 +50,19 @@ export const MainContentBox = styled(Box)`
 
 export const ClientListCard = styled(Card)`
   display: inline-flex;
-  min-height: 700px;
+  min-height: 550px;
   height: 100%;
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
   flex-shrink: 0;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0);
+  box-shadow: 0 0;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
     width: 220px;
+    background: #fff;
   }
 `;
 
@@ -78,8 +86,12 @@ export const StyledButtonsBox2 = styled(Box)`
 export const StyledCardContent = styled(CardContent)`
   display: flex;
   flex-direction: column;
-  padding: 8px 8px 0 10px;
+  padding: 0;
   margin-bottom: 0;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 8px 8px 0 10px;
+  }
 `;
 
 export const StyledSearchBox = styled(Box)`
@@ -88,11 +100,12 @@ export const StyledSearchBox = styled(Box)`
   width: 100%;
   justify-content: space-between;
   border-radius: 8px;
-  background: var(--pufi-grey-light, #f2f2f2);
+  background: #fff;
   margin-top: 8px;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
     width: 200px;
+    background: var(--pufi-grey-light, #f2f2f2);
   }
 `;
 
