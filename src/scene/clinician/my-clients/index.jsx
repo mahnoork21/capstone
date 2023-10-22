@@ -5,22 +5,15 @@ import {
   AddNewSurveyButton,
   BackButton,
   ButtonsBox,
-  ClientListCard,
   FilterSurveyButton,
   MainContentBox,
   MyClientsHeadingTypography,
-  NumberOfClientsTypography,
+  NumberOfSurveysTypography,
   StyledBox2,
   StyledBox3,
   StyledBox4,
   StyledBox5,
   StyledButtonsBox2,
-  StyledCardActions,
-  StyledCardContent,
-  StyledList1,
-  StyledSearchBox,
-  StyledSearchInputBase,
-  StyledSearchTextField,
   SurveysBox,
 } from "./styled";
 import {
@@ -41,9 +34,11 @@ import {
   Search,
 } from "@mui/icons-material";
 
-import ClientListItem from "./components/ClientListItem";
+import ClientListItem from "./components/clientListItem";
 import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import { ClinicianContext } from "@/context/ClinicianContext";
+import ClientListCard from "./components/clientListCard";
+import FilterBy from "./components/filterBy";
 
 const clientsListData = [
   {
@@ -138,7 +133,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client1234",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -146,7 +141,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client1235",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -154,7 +149,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client1236",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -162,7 +157,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client1237",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -170,7 +165,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client1238",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -178,7 +173,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client1239",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -186,7 +181,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12310",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -194,7 +189,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12311",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -202,7 +197,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12312",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -210,7 +205,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12313",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -218,7 +213,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12314",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -226,7 +221,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12315",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -234,7 +229,7 @@ const surveysListData = [
     percentageComplete: 40,
   },
   {
-    clientId: "client123",
+    clientId: "client12316",
     surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
@@ -248,12 +243,28 @@ const MyClients = () => {
   const { breakpoint } = useContext(ClinicianContext);
 
   const [clientsPageNo, setClientsPageNo] = useState(1);
+  const handleClientsPageNoClick = (value) => {
+    setClientsPageNo(value);
+  };
+
   const [surveysPageNo, setSurveysPageNo] = useState(1);
 
   // For Selection of Clients list
   const [selectedIndex, setSelectedIndex] = useState();
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
+  };
+
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
+  const toggleFilterPanelClick = (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setIsFilterPanelOpen((s) => !s);
   };
 
   const addClientButtonClick = () => {
@@ -274,62 +285,13 @@ const MyClients = () => {
       </StyledBox5>
       <MainContentBox>
         {(breakpoint === "desktop" || !selectedIndex) && (
-          <ClientListCard>
-            <StyledCardContent>
-              <StyledSearchBox>
-                <StyledSearchInputBase
-                  placeholder="Search by Client Id"
-                  inputProps={{ "aria-label": "Search by Client Id" }}
-                />
-                <IconButton type="button" aria-label="search">
-                  <Search />
-                </IconButton>
-              </StyledSearchBox>
-
-              <StyledList1>
-                {clientsListData
-                  .slice(8 * (clientsPageNo - 1), 8 * clientsPageNo)
-                  .map(({ clientId, clientAddDate }) => (
-                    <ClientListItem
-                      key={clientId}
-                      clientId={clientId}
-                      clientAddDate={clientAddDate}
-                      selectedIndex={selectedIndex}
-                      handleListItemClick={handleListItemClick}
-                    />
-                  ))}
-              </StyledList1>
-            </StyledCardContent>
-            <StyledCardActions>
-              <NumberOfClientsTypography>
-                {8 * clientsPageNo - 7} -
-                {" " + Math.min(8 * clientsPageNo, clientsListData.length)} of
-                {" " + clientsListData.length} Clients
-              </NumberOfClientsTypography>
-              <StyledButtonsBox2>
-                <IconButton
-                  aria-label="keyboardArrowLeft"
-                  disabled={clientsPageNo === 1}
-                  onClick={() => setClientsPageNo((n) => (n === 1 ? n : n - 1))}
-                >
-                  <KeyboardArrowLeftSharp />
-                </IconButton>
-                <IconButton
-                  aria-label="keyboardArrowRight"
-                  disabled={
-                    clientsPageNo === Math.ceil(clientsListData.length / 8)
-                  }
-                  onClick={() =>
-                    setClientsPageNo((n) =>
-                      n === Math.ceil(clientsListData.length / 8) ? n : n + 1
-                    )
-                  }
-                >
-                  <KeyboardArrowRightSharp />
-                </IconButton>
-              </StyledButtonsBox2>
-            </StyledCardActions>
-          </ClientListCard>
+          <ClientListCard
+            clientsListData={clientsListData}
+            clientsPageNo={clientsPageNo}
+            handleClientsPageNoClick={handleClientsPageNoClick}
+            selectedIndex={selectedIndex}
+            handleListItemClick={handleListItemClick}
+          />
         )}
 
         {(breakpoint === "desktop" || !!selectedIndex) && (
@@ -349,7 +311,7 @@ const MyClients = () => {
               </div>
               <div>
                 <AddNewSurveyButton>Add New Survey</AddNewSurveyButton>
-                <FilterSurveyButton>
+                <FilterSurveyButton onClick={toggleFilterPanelClick}>
                   <FilterListOutlined />
                   {breakpoint === "desktop" && "Filter"}
                 </FilterSurveyButton>
@@ -369,6 +331,7 @@ const MyClients = () => {
                     percentageComplete,
                   }) => (
                     <ClientSurveyCard
+                      key={clientId}
                       clientId={clientId}
                       surveyId={surveyId}
                       type={type}
@@ -381,11 +344,11 @@ const MyClients = () => {
             </StyledBox2>
 
             <StyledBox3>
-              <NumberOfClientsTypography>
+              <NumberOfSurveysTypography>
                 {6 * surveysPageNo - 5} -
                 {" " + Math.min(6 * surveysPageNo, surveysListData.length)} of
-                {" " + surveysListData.length} Clients
-              </NumberOfClientsTypography>
+                {" " + surveysListData.length} Surveys
+              </NumberOfSurveysTypography>
               <StyledButtonsBox2>
                 <IconButton
                   aria-label="keyboardArrowLeft"
@@ -417,6 +380,10 @@ const MyClients = () => {
           Add Client
         </AddClientButton>
       )}
+      <FilterBy
+        isFilterPanelOpen={isFilterPanelOpen}
+        toggleFilterPanelClick={toggleFilterPanelClick}
+      />
     </StyledBox4>
   );
 };

@@ -48,74 +48,9 @@ export const MainContentBox = styled(Box)`
   flex-direction: row;
 `;
 
-export const ClientListCard = styled(Card)`
-  display: inline-flex;
-  min-height: 550px;
-  height: 100%;
-  width: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-shrink: 0;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0);
-  box-shadow: 0 0;
-
-  @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 220px;
-    background: #fff;
-  }
-`;
-
-export const StyledCardActions = styled(CardActions)`
-  display: flex;
-  justify-content: space-between;
-  padding-top: 0;
-  padding-left: 16px;
-`;
-
-export const NumberOfClientsTypography = styled(Typography)`
-  font-size: 0.875rem;
-  font-weight: 600;
-`;
-
 export const StyledButtonsBox2 = styled(Box)`
   display: flex;
   flex-direction: row;
-`;
-
-export const StyledCardContent = styled(CardContent)`
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin-bottom: 0;
-
-  @media only screen and (min-width: ${breakpoint.desktop}) {
-    padding: 8px 8px 0 10px;
-  }
-`;
-
-export const StyledSearchBox = styled(Box)`
-  display: flex;
-  flex-grow: 1;
-  width: 100%;
-  justify-content: space-between;
-  border-radius: 8px;
-  background: #fff;
-  margin-top: 8px;
-
-  @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 200px;
-    background: var(--pufi-grey-light, #f2f2f2);
-  }
-`;
-
-export const StyledSearchInputBase = styled(InputBase)`
-  padding-left: 8px;
-  flex-grow: 1;
-`;
-
-export const StyledList1 = styled(List)`
-  padding-bottom: 0;
 `;
 
 export const SurveysBox = styled(Box)`
@@ -190,7 +125,10 @@ export const StyledBox3 = styled(Box)`
   padding: 0 12px;
 `;
 
-export const NumberOfSurveysTypography = styled(Typography)``;
+export const NumberOfSurveysTypography = styled(Typography)`
+  font-size: 0.875rem;
+  font-weight: 600;
+`;
 
 export const AddClientButton = styled(Button)`
   color: var(--primary-contrast, #fff);
