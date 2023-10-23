@@ -17,25 +17,53 @@ import { auth } from "@/firebase/firebase";
 //add to that component onClick event (on view scores) that will pass surveyId as a parameter to the url (or store survey Id in clinician context),
 //and i will retrieve this surveyId here instead of hardcoded useState surveyId
 const SurveyReport = () => {
-  const [surveyId, setSurveyId] = useState("XSxoZPRkwfObDw4iGWfr");
+  const [surveyId, setSurveyId] = useState("30niDrNz2WnfgDBQlivC");
   const [loading, setLoading] = useState(true);
   const [survey, setSurvey] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSurvey = async (id) => {
+      const survey = await getSurveyById(id);
+      setSurvey((prev) => survey);
+    };
+
+    const authenticateAndFetch = async () => {
+      setLoading(true);
+
       try {
-        setLoading(true);
-        const surveyData = await getSurveyById(surveyId);
-        setSurvey((prev) => surveyData);
+        await signInWithEmailAndPassword(
+          auth,
+          "alla.gnatkiv@gmail.com",
+          "pass-pufi2"
+        ).then((user) => {
+          console.log(user);
+          fetchSurvey(surveyId);
+        });
       } catch (error) {
-        console.error("Error fetching survey:", error);
+        // handle error
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    authenticateAndFetch();
   }, [surveyId]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const surveyData = await getSurveyById(surveyId);
+  //       setSurvey((prev) => surveyData);
+  //     } catch (error) {
+  //       console.error("Error fetching survey:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [surveyId]);
 
   const downloadCSV = () => {
     const download = async () => {
@@ -73,7 +101,8 @@ const SurveyReport = () => {
   return (
     <Container>
       <h1>SUMMARY SCORES</h1>
-
+      <h1>{JSON.stringify(survey)}</h1>
+      {/* 
       <div className="header-flex">
         <ReportHeader survey={survey} />
         <Button
@@ -90,7 +119,7 @@ const SurveyReport = () => {
         <ActivityAnalysis survey={survey} questionId={questionId} />
       ))}
 
-      <WeightedCalculation />
+      <WeightedCalculation /> */}
     </Container>
   );
 };
