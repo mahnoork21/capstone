@@ -13,11 +13,11 @@ import {
 
 export const StyledDrawer = styled(Drawer)``;
 
-export const StyledBox1 = styled(Box)`
+export const MainContainerBox = styled(Box)`
   width: 280px;
 `;
 
-export const StyledBox2 = styled(Box)`
+export const HeadingBox = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,15 +28,15 @@ export const StyledBox2 = styled(Box)`
   font-weight: 600;
 `;
 
-export const StyledBox3 = styled(Box)`
+export const FilterOptionsBox = styled(Box)`
   display: flex;
   flex-direction: column;
   padding: 16px;
 `;
 
-export const StyledList1 = styled(List)``;
+export const StyledFiltersList = styled(List)``;
 
-export const StyledTypography1 = styled(Typography)`
+export const StyledFiltersHeadingTypography = styled(Typography)`
   font-weight: 600;
 `;
 

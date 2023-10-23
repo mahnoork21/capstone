@@ -1,25 +1,19 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
-  StyledBox1,
-  StyledBox2,
-  StyledBox3,
+  MainContainerBox,
+  HeadingBox,
+  FilterOptionsBox,
   StyledDrawer,
-  StyledList1,
+  StyledFiltersList,
   StyledListItem,
   StyledListItemButton,
   StyledListItemIcon,
   StyledListItemText,
   StyledTextField,
-  StyledTypography1,
+  StyledFiltersHeadingTypography,
 } from "./styled";
-import {
-  Checkbox,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
+import { Checkbox, Toolbar } from "@mui/material";
 
 export default function FilterPanel({
   isFilterPanelOpen,
@@ -55,11 +49,11 @@ export default function FilterPanel({
       open={isFilterPanelOpen}
       onClose={toggleFilterPanelClick}
     >
-      <StyledBox1 role="presentation">
+      <MainContainerBox role="presentation">
         <Toolbar />
-        <StyledBox2>Filter By</StyledBox2>
+        <HeadingBox>Filter By</HeadingBox>
 
-        <StyledBox3>
+        <FilterOptionsBox>
           {router.pathname.split("/")[2] === "all-surveys" && (
             <StyledTextField
               id="inputClientId"
@@ -70,8 +64,10 @@ export default function FilterPanel({
 
           {Object.entries(checkedItems).map(([heading, listItems]) => {
             return (
-              <StyledList1 key={heading}>
-                <StyledTypography1>{heading}:</StyledTypography1>
+              <StyledFiltersList key={heading}>
+                <StyledFiltersHeadingTypography>
+                  {heading}:
+                </StyledFiltersHeadingTypography>
 
                 {Object.entries(listItems).map(([name, isChecked]) => {
                   const labelId = heading + "-" + name.replace(" ", "-");
@@ -97,15 +93,17 @@ export default function FilterPanel({
                     </StyledListItem>
                   );
                 })}
-              </StyledList1>
+              </StyledFiltersList>
             );
           })}
 
-          <StyledTypography1>Added Date:</StyledTypography1>
+          <StyledFiltersHeadingTypography>
+            Added Date:
+          </StyledFiltersHeadingTypography>
           <StyledTextField id="fromDate" label="From Date" variant="outlined" />
           <StyledTextField id="toDate" label="To Date" variant="outlined" />
-        </StyledBox3>
-      </StyledBox1>
+        </FilterOptionsBox>
+      </MainContainerBox>
     </StyledDrawer>
   );
 }

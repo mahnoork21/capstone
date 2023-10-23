@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyledClientListCard,
   StyledCardContent,
   StyledCardActions,
-  StyledList1,
+  StyledClientsList,
   StyledSearchBox,
   StyledSearchInputBase,
-  StyledSearchTextField,
   NumberOfClientsTypography,
-  StyledButtonsBox2,
+  StyledForwardAndBackwardButtonsBox,
 } from "./styled";
 import { IconButton } from "@mui/material";
 import {
@@ -18,13 +17,23 @@ import {
 } from "@mui/icons-material";
 import ClientListItem from "../clientListItem";
 
+const noOfItemsOnOnePage = 6;
+
 export default function ClientListCard({
   clientsListData,
-  clientsPageNo,
   selectedIndex,
   handleListItemClick,
+  clientsPageNo,
   handleClientsPageNoClick,
 }) {
+  useEffect(() => {
+    if (clientsListData.length === 0) {
+      handleClientsPageNoClick(0);
+    } else {
+      handleClientsPageNoClick(1);
+    }
+  }, [clientsListData]);
+
   return (
     <StyledClientListCard>
       <StyledCardContent>
@@ -38,9 +47,12 @@ export default function ClientListCard({
           </IconButton>
         </StyledSearchBox>
 
-        <StyledList1>
+        <StyledClientsList>
           {clientsListData
-            .slice(8 * (clientsPageNo - 1), 8 * clientsPageNo)
+            .slice(
+              noOfItemsOnOnePage * (clientsPageNo - 1),
+              noOfItemsOnOnePage * clientsPageNo
+            )
             .map(({ clientId, clientAddDate }) => (
               <ClientListItem
                 key={clientId}
@@ -50,18 +62,23 @@ export default function ClientListCard({
                 handleListItemClick={handleListItemClick}
               />
             ))}
-        </StyledList1>
+        </StyledClientsList>
       </StyledCardContent>
       <StyledCardActions>
         <NumberOfClientsTypography>
-          {8 * clientsPageNo - 7} -
-          {" " + Math.min(8 * clientsPageNo, clientsListData.length)} of
+          {Math.max(noOfItemsOnOnePage * (clientsPageNo - 1) + 1, 0)} -
+          {" " +
+            Math.min(
+              noOfItemsOnOnePage * clientsPageNo,
+              clientsListData.length
+            )}{" "}
+          of
           {" " + clientsListData.length} Clients
         </NumberOfClientsTypography>
-        <StyledButtonsBox2>
+        <StyledForwardAndBackwardButtonsBox>
           <IconButton
             aria-label="keyboardArrowLeft"
-            disabled={clientsPageNo === 1}
+            disabled={clientsPageNo === 1 || clientsPageNo === 0}
             onClick={() =>
               handleClientsPageNoClick((n) => (n === 1 ? n : n - 1))
             }
@@ -70,16 +87,22 @@ export default function ClientListCard({
           </IconButton>
           <IconButton
             aria-label="keyboardArrowRight"
-            disabled={clientsPageNo === Math.ceil(clientsListData.length / 8)}
+            disabled={
+              clientsPageNo ===
+                Math.ceil(clientsListData.length / noOfItemsOnOnePage) ||
+              clientsPageNo === 0
+            }
             onClick={() =>
               handleClientsPageNoClick((n) =>
-                n === Math.ceil(clientsListData.length / 8) ? n : n + 1
+                n === Math.ceil(clientsListData.length / noOfItemsOnOnePage)
+                  ? n
+                  : n + 1
               )
             }
           >
             <KeyboardArrowRightSharp />
           </IconButton>
-        </StyledButtonsBox2>
+        </StyledForwardAndBackwardButtonsBox>
       </StyledCardActions>
     </StyledClientListCard>
   );

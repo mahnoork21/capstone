@@ -2,44 +2,19 @@ import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import {
   AddClientButton,
-  AddNewSurveyButton,
-  BackButton,
-  ButtonsBox,
-  FilterSurveyButton,
   MainContentBox,
   MyClientsHeadingTypography,
-  NumberOfSurveysTypography,
-  StyledBox2,
-  StyledBox3,
-  StyledBox4,
-  StyledBox5,
-  StyledButtonsBox2,
-  SurveysBox,
+  MainContainerBox,
+  HeadingBox,
 } from "./styled";
-import {
-  CardActions,
-  CardContent,
-  Box,
-  InputBase,
-  IconButton,
-  Pagination,
-  List,
-  ButtonGroup,
-} from "@mui/material";
-import {
-  FilterListOutlined,
-  KeyboardArrowLeftSharp,
-  KeyboardArrowRightSharp,
-  KeyboardBackspaceOutlined,
-  Search,
-} from "@mui/icons-material";
 
-import ClientListItem from "./components/clientListItem";
-import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import { ClinicianContext } from "@/context/ClinicianContext";
 import ClientListCard from "./components/clientListCard";
-import FilterBy from "./components/filterBy";
+import FilterPanel from "../../../shared/clinician/filterPanel";
+import SurveysPerClient from "./components/surveysPerClient";
+import AddNewSurveyCard from "./components/addNewSurveyCard";
 
+// Temporary static data
 const clientsListData = [
   {
     clientId: "Client-12345",
@@ -122,115 +97,114 @@ const clientsListData = [
     clientAddDate: "Added - September 16th, 2023",
   },
 ];
-
 const surveysListData = [
   {
     clientId: "client123",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    surveyId: "849be0e3aea7-433b-849f-9844a2d9153",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client1234",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-9844a2d9152",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client1235",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-9844a2d9132",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client1236",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-9844a2d9532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client1237",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-9844a2d1532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client1238",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-9844a291532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client1239",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-9844ad91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12310",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-98442d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12311",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-43b-849f-984a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12312",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-984a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12313",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-944a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12314",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f-844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12315",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849f9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
     percentageComplete: 40,
   },
   {
-    clientId: "client12316",
-    surveyId: "849be0e3aea7-433b-849f-9844a2d91532",
+    clientId: "client123",
+    surveyId: "849be0e3aea7-433b-849-9844a2d91532",
     type: "Older Child(Parent)",
     creationDate: "10/09/2023",
     completionDate: undefined,
@@ -248,11 +222,14 @@ const MyClients = () => {
   };
 
   const [surveysPageNo, setSurveysPageNo] = useState(1);
+  const handleSurveysPageNoClick = (p) => {
+    setSurveysPageNo(p);
+  };
 
   // For Selection of Clients list
-  const [selectedIndex, setSelectedIndex] = useState();
+  const [selectedClientIndex, setSelectedClientIndex] = useState();
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
+    setSelectedClientIndex(index);
   };
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
@@ -267,13 +244,16 @@ const MyClients = () => {
     setIsFilterPanelOpen((s) => !s);
   };
 
+  const [isAddNewSurveyShown, setIsAddNewSurveyShown] = useState(false);
+  const toggleAddNewSurveyCard = () => setIsAddNewSurveyShown((p) => !p);
+
   const addClientButtonClick = () => {
     router.push("/clinician/my-clients/add-new-client");
   };
 
   return (
-    <StyledBox4>
-      <StyledBox5>
+    <MainContainerBox>
+      <HeadingBox>
         <MyClientsHeadingTypography variant="h1">
           MY CLIENTS
         </MyClientsHeadingTypography>
@@ -282,97 +262,33 @@ const MyClients = () => {
             Add Client
           </AddClientButton>
         )}
-      </StyledBox5>
+      </HeadingBox>
       <MainContentBox>
-        {(breakpoint === "desktop" || !selectedIndex) && (
+        {(breakpoint === "desktop" || !selectedClientIndex) && (
           <ClientListCard
             clientsListData={clientsListData}
             clientsPageNo={clientsPageNo}
             handleClientsPageNoClick={handleClientsPageNoClick}
-            selectedIndex={selectedIndex}
+            selectedIndex={selectedClientIndex}
             handleListItemClick={handleListItemClick}
           />
         )}
 
-        {(breakpoint === "desktop" || !!selectedIndex) && (
-          <SurveysBox>
-            <ButtonsBox>
-              <div>
-                {breakpoint === "mobile" && (
-                  <BackButton
-                    onClick={() => {
-                      setSelectedIndex();
-                      setSurveysPageNo(1);
-                    }}
-                  >
-                    <KeyboardBackspaceOutlined />
-                  </BackButton>
-                )}
-              </div>
-              <div>
-                <AddNewSurveyButton>Add New Survey</AddNewSurveyButton>
-                <FilterSurveyButton onClick={toggleFilterPanelClick}>
-                  <FilterListOutlined />
-                  {breakpoint === "desktop" && "Filter"}
-                </FilterSurveyButton>
-              </div>
-            </ButtonsBox>
-
-            <StyledBox2>
-              {surveysListData
-                .slice(6 * (surveysPageNo - 1), 6 * surveysPageNo)
-                .map(
-                  ({
-                    clientId,
-                    surveyId,
-                    type,
-                    creationDate,
-                    completionDate,
-                    percentageComplete,
-                  }) => (
-                    <ClientSurveyCard
-                      key={clientId}
-                      clientId={clientId}
-                      surveyId={surveyId}
-                      type={type}
-                      creationDate={creationDate}
-                      completionDate={completionDate}
-                      percentageComplete={percentageComplete}
-                    />
-                  )
-                )}
-            </StyledBox2>
-
-            <StyledBox3>
-              <NumberOfSurveysTypography>
-                {6 * surveysPageNo - 5} -
-                {" " + Math.min(6 * surveysPageNo, surveysListData.length)} of
-                {" " + surveysListData.length} Surveys
-              </NumberOfSurveysTypography>
-              <StyledButtonsBox2>
-                <IconButton
-                  aria-label="keyboardArrowLeft"
-                  disabled={surveysPageNo === 1}
-                  onClick={() => setSurveysPageNo((n) => (n === 1 ? n : n - 1))}
-                >
-                  <KeyboardArrowLeftSharp />
-                </IconButton>
-                <IconButton
-                  aria-label="keyboardArrowRight"
-                  disabled={
-                    surveysPageNo === Math.ceil(surveysListData.length / 6)
-                  }
-                  onClick={() =>
-                    setSurveysPageNo((n) =>
-                      n === Math.ceil(surveysListData.length / 6) ? n : n + 1
-                    )
-                  }
-                >
-                  <KeyboardArrowRightSharp />
-                </IconButton>
-              </StyledButtonsBox2>
-            </StyledBox3>
-          </SurveysBox>
+        {(breakpoint === "desktop" || !!selectedClientIndex) && (
+          <>
+            {isAddNewSurveyShown && (
+              <AddNewSurveyCard onCancelClick={toggleAddNewSurveyCard} />
+            )}
+            {!isAddNewSurveyShown && selectedClientIndex && (
+              <SurveysPerClient
+                surveysListData={surveysListData}
+                surveysPageNo={surveysPageNo}
+                handleSurveysPageNoClick={handleSurveysPageNoClick}
+                toggleFilterPanelClick={toggleFilterPanelClick}
+                addNewSurveyClick={toggleAddNewSurveyCard}
+              />
+            )}
+          </>
         )}
       </MainContentBox>
       {breakpoint === "desktop" && (
@@ -380,11 +296,11 @@ const MyClients = () => {
           Add Client
         </AddClientButton>
       )}
-      <FilterBy
+      <FilterPanel
         isFilterPanelOpen={isFilterPanelOpen}
         toggleFilterPanelClick={toggleFilterPanelClick}
       />
-    </StyledBox4>
+    </MainContainerBox>
   );
 };
 

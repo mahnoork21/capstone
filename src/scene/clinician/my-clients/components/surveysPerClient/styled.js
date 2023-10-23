@@ -1,17 +1,5 @@
 import styled from "@emotion/styled";
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  FormControlLabel,
-  FormLabel,
-  InputBase,
-  List,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { breakpoint } from "@/styles/breakpoints";
 
 export const AddNewSurveyButton = styled(Button)`
@@ -62,7 +50,7 @@ export const NumberOfSurveysTypography = styled(Typography)`
   font-weight: 600;
 `;
 
-export const StyledBox2 = styled(Box)`
+export const SurveyCardsBox = styled(Box)`
   display: flex;
   flex-flow: row wrap;
   gap: 16px;
@@ -71,7 +59,7 @@ export const StyledBox2 = styled(Box)`
   margin: 16px 0;
 `;
 
-export const StyledBox3 = styled(Box)`
+export const PaginationBox = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -80,7 +68,7 @@ export const StyledBox3 = styled(Box)`
   padding: 0 12px;
 `;
 
-export const StyledButtonsBox2 = styled(Box)`
+export const StyledForwardAndBackwardButtonsBox = styled(Box)`
   display: flex;
   flex-direction: row;
 `;

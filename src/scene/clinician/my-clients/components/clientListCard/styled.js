@@ -12,7 +12,7 @@ import { breakpoint } from "@/styles/breakpoints";
 
 export const StyledClientListCard = styled(Card)`
   display: inline-flex;
-  min-height: 550px;
+  min-height: 672px;
   height: 100%;
   width: 100%;
   flex-direction: column;
@@ -39,7 +39,7 @@ export const StyledCardContent = styled(CardContent)`
   }
 `;
 
-export const StyledList1 = styled(List)`
+export const StyledClientsList = styled(List)`
   padding-bottom: 0;
 `;
 
@@ -75,7 +75,7 @@ export const NumberOfClientsTypography = styled(Typography)`
   font-weight: 600;
 `;
 
-export const StyledButtonsBox2 = styled(Box)`
+export const StyledForwardAndBackwardButtonsBox = styled(Box)`
   display: flex;
   flex-direction: row;
 `;

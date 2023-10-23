@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  CardContent,
-  CardActions,
-  FormControl,
-  RadioGroup,
-  Radio,
-} from "@mui/material";
+import { CardActions, FormControl, RadioGroup, Radio } from "@mui/material";
 import {
   FormBox,
   MobileCardHeadingTypography,
@@ -19,6 +13,7 @@ import {
   ModifiedFormControlLabel,
   ModifiedFormLabel,
   MobileFullWidthButton,
+  StyledCardContent,
 } from "./styled";
 
 const AddNewClient = () => {
@@ -26,7 +21,7 @@ const AddNewClient = () => {
     <>
       <PageHeadingTypography>My Clients</PageHeadingTypography>
       <MobileContentCard>
-        <CardContent>
+        <StyledCardContent>
           <MobileCardHeadingTypography>
             Add New Client
           </MobileCardHeadingTypography>
@@ -74,7 +69,7 @@ const AddNewClient = () => {
               </RadioGroup>
             </FormControl>
           </FormBox>
-        </CardContent>
+        </StyledCardContent>
         <CardActions>
           <MobileFullWidthButton variant="contained">
             Add Client

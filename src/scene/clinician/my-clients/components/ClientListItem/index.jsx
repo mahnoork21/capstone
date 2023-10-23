@@ -4,7 +4,7 @@ import {
   StyledClientAddDateTypography,
   StyledListItemButton,
 } from "./styled";
-import { ListItemButton, ListItemText } from "@mui/material";
+import { ListItemText } from "@mui/material";
 import { ChevronRightOutlined } from "@mui/icons-material";
 import { ClinicianContext } from "@/context/ClinicianContext";
 

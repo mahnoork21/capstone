@@ -10,15 +10,15 @@ import {
 import { ClinicianContext } from "@/context/ClinicianContext";
 import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import {
+  SurveysBox,
   AddNewSurveyButton,
   BackButton,
   ButtonsBox,
   FilterSurveyButton,
   NumberOfSurveysTypography,
-  StyledBox2,
-  StyledBox3,
-  StyledButtonsBox2,
-  SurveysBox,
+  SurveyCardsBox,
+  PaginationBox,
+  StyledForwardAndBackwardButtonsBox,
 } from "./styled";
 
 const noOfItemsOnOnePage = 6;
@@ -66,7 +66,7 @@ export default function SurveysPerClient({
         </div>
       </ButtonsBox>
 
-      <StyledBox2>
+      <SurveyCardsBox>
         {surveysListData
           .slice(
             noOfItemsOnOnePage * (surveysPageNo - 1),
@@ -92,9 +92,9 @@ export default function SurveysPerClient({
               />
             )
           )}
-      </StyledBox2>
+      </SurveyCardsBox>
 
-      <StyledBox3>
+      <PaginationBox>
         <NumberOfSurveysTypography>
           {Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
           {" - " +
@@ -104,7 +104,7 @@ export default function SurveysPerClient({
             ) || 0}
           {" of " + surveysListData.length || 0} Surveys
         </NumberOfSurveysTypography>
-        <StyledButtonsBox2>
+        <StyledForwardAndBackwardButtonsBox>
           <IconButton
             aria-label="keyboardArrowLeft"
             disabled={surveysPageNo === 0 || surveysPageNo === 1}
@@ -131,8 +131,8 @@ export default function SurveysPerClient({
           >
             <KeyboardArrowRightSharp />
           </IconButton>
-        </StyledButtonsBox2>
-      </StyledBox3>
+        </StyledForwardAndBackwardButtonsBox>
+      </PaginationBox>
     </SurveysBox>
   );
 }
