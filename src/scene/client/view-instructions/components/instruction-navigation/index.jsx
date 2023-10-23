@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
 import PositionIndicator from "./components/position-indicator";
 import { InstructionNavigationContainer } from "./styled";
-import { StyledButton } from "@/scene/client/components/button";
+import { StyledButton } from "@/scene/client/home/components/button";
 import Link from "next/link";
+import { useContext } from "react";
+import { ClientContext } from "@/context/ClientContext";
 
 const InstructionNavigation = ({
   activePositionId,
@@ -10,6 +12,8 @@ const InstructionNavigation = ({
   onNextClick,
   nextButtonDisabled,
 }) => {
+  const { currentSurveyId } = useContext(ClientContext);
+
   return (
     <InstructionNavigationContainer>
       <Button
@@ -24,7 +28,12 @@ const InstructionNavigation = ({
       </Button>
       <PositionIndicator activePositionId={activePositionId} />
       {nextButtonDisabled ? (
-        <Link href="/client/survey">
+        <Link
+          href={{
+            pathname: "/client/survey",
+            query: { surveyId: currentSurveyId },
+          }}
+        >
           <StyledButton primary variant="contained">
             START SURVEY
           </StyledButton>

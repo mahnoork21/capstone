@@ -13,11 +13,9 @@ export const Container = styled.div`
 
   .intro-body-header {
     color: var(--pufi-black, #333);
-    font-family: Open Sans;
     font-size: 1.75rem;
     font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 2.625rem */
   }
 
   .content {
@@ -58,7 +56,7 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 24px;
+    row-gap: 0px;
 
     .content {
       width: 100%;
