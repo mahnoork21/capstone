@@ -15,10 +15,11 @@ import {
 } from "@mui/material";
 import {
   Labels,
-  StyledBox,
+  StyledContainer,
   StyledPaper,
   StyledTextfield,
   StyledHeading,
+  StyledBox,
   FormBox,
   StyledButton,
   StyledTypo,
@@ -27,9 +28,7 @@ import {
 const LoginLanding = () => {
   return (
     <>
-      {/* <Header></Header> */}
-      <Container gap="10" justifyContent="space-around" fontFamily="Open Sans">
-        {/* <StyledBox> */}
+      <StyledContainer justifyContent="space-around">
         <StyledPaper>
           <StyledHeading>Log in to your clinician account</StyledHeading>
           <FormBox>
@@ -42,11 +41,11 @@ const LoginLanding = () => {
                 <u>Forgot Password?</u>
               </Labels>
               <StyledButton href="#"> LOG IN</StyledButton>
-              <Labels mt={3}>Don't have an account yet?</Labels>
+              <Labels>Don't have an account yet?</Labels>
               <StyledButton href="/clinician/register">
-                {/* <StyledButton href="#">*/}
                 CREATE NEW ACCOUNT
               </StyledButton>
+              {/* <StyledButton href="#"> CREATE NEW ACCOUNT</StyledButton> */}
             </form>
           </FormBox>
         </StyledPaper>
@@ -55,7 +54,7 @@ const LoginLanding = () => {
           <StyledTypo>
             Learn about the PUFI-2, how it was develped, and how it can be used.
           </StyledTypo>
-          <Box>
+          <StyledBox>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
@@ -171,10 +170,9 @@ const LoginLanding = () => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-          </Box>
+          </StyledBox>
         </StyledPaper>
-        {/* </StyledBox> */}
-      </Container>
+      </StyledContainer>
     </>
   );
 };

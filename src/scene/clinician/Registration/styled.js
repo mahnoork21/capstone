@@ -2,10 +2,19 @@ import styled from "@emotion/styled";
 import { Paper, Typography, Container, Box } from "@mui/material";
 
 export const ContentContainer = styled(Container)`
+  width: 100%;
+  margin-left: auto;
+
+  box-sizing: border-box;
+  margin-right: auto;
   display: flex;
+
+  align-content: center;
   flex-direction: column;
-  justify-content: space-around;
-  gap: 3;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border-block: 8px;
 `;
 
 export const StepperBox = styled(Box)`

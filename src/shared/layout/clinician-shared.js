@@ -12,6 +12,9 @@ export const CurvedBackground = styled.div`
   top: 0;
   left: 0;
   z-index: -1;
+  @media (max-width: 390px) {
+    display: none;
+  }
 `;
 
 export const PageWrapper = styled.div`
@@ -29,6 +32,6 @@ export const ContentBox = styled(Box)`
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
     width: calc(100% - 280px);
-    padding: 16px;
+    // padding: 16px;
   }
 `;
