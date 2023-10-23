@@ -21,11 +21,11 @@ export const StyledContainer = styled(Container)`
   flex-shrink: 0;
   border-radius: 8px;
   margin: 0;
-  
   justify-content: center;
 
   @media (max-width: 390px) {
     width: 390px;
+    margin-left: 8px;
   }
   @media (min-width: 391px) and (max-width: 959px) {
     margin-left: 15px
@@ -33,9 +33,9 @@ export const StyledContainer = styled(Container)`
     margin-top:24px;
   }
   @media (min-width: 960px) {
-    // flex-shrink: 0;
-    margin-left: 100px;
-    // margin-right: 100px;
+    
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 export const StyledPaper = styled(Paper)`
@@ -56,8 +56,8 @@ export const StyledPaper = styled(Paper)`
   @media (min-width: 960px) {
     height: 480px;
 
-    margin-left: 75px;
-    margin-right: 0px;
+    margin-left: 80px;
+    margin-right: 75px;
   }
 `;
 
