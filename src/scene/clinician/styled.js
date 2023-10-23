@@ -21,6 +21,7 @@ export const StyledContainer = styled(Container)`
   flex-shrink: 0;
   border-radius: 8px;
   margin: 0;
+  padding-top: 8px;
   justify-content: center;
 
   @media (max-width: 390px) {
