@@ -40,5 +40,6 @@ export const updateCommentAndCompleteSurvey = async (comment) => {
     final_comment: comment,
     is_submitted: true,
     updated: serverTimestamp(),
+    submitted: serverTimestamp(),
   });
 };

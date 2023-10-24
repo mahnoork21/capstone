@@ -4,7 +4,7 @@ import HeaderRow from "./components/header-row";
 
 const BeforeStartSurvey = () => {
   return (
-    <>
+    <div>
       <HeaderRow />
 
       {data.map(({ src, text }, index) => (
@@ -15,7 +15,7 @@ const BeforeStartSurvey = () => {
           imagePosition={index % 2 === 0 ? 0 : 1}
         />
       ))}
-    </>
+    </div>
   );
 };
 

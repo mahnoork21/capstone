@@ -5,14 +5,18 @@ import { Button } from "@mui/material";
 export const HeaderButton = styled(Button)`
   color: white;
   border-color: white;
-  padding: 16px 36px;
+  padding: 8px;
   border-radius: 12px;
   border-width: 2px;
-  font-size: 16px;
+  font-size: 1rem;
 
   &:hover {
     border-color: white;
     border-width: 2px;
+  }
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 16px 36px;
   }
 `;
 

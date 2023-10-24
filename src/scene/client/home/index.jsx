@@ -4,22 +4,20 @@ import HomeContainer from "./components/home-container";
 import { GreyP } from "./components/home-container/styled";
 import { StyledButton } from "./components/button";
 import MainContainer from "@/shared/components/main-container";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
+import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import PufiToolTip from "@/shared/components/pufi-tooltip";
 
 const ClientHome = () => {
   const [wideMode, setWideMode] = useState(false);
   const [error, setError] = useState("");
-  const { setCurrentSurveyId, handleStartSurveyClick } =
+  const { handleStartSurveyClick, currentSurveyId, setHeaderButtonType } =
     useContext(ClientContext);
-
-  const router = useRouter();
-  const { surveyId } = router.query;
-  setCurrentSurveyId(surveyId);
 
   const handleRedirect = () => {};
 
@@ -47,12 +45,16 @@ const ClientHome = () => {
     </>
   );
 
+  useEffect(() => {
+    setHeaderButtonType(HeaderButtonType.START_SURVEY);
+  }, []);
+
   return (
     <MainContainer>
       <HomeContainer>
         <div className="content">
           <h1 className="intro-body-header">What is PUFI-2 survey?</h1>
-          <p className="content-text">
+          <p>
             The PUFI-2 questionnaire lets children and parents tell their
             clinicians about the functional use of a prosthetic device at home,
             at school, and in the community.
@@ -74,7 +76,12 @@ const ClientHome = () => {
             START SURVEY
           </StyledButton>
 
-          <Link href="/client/view-instructions">
+          <Link
+            href={{
+              pathname: "/client/view-instructions",
+              query: { surveyId: currentSurveyId },
+            }}
+          >
             <StyledButton variant="outlined" onClick={handleRedirect}>
               VIEW INSTRUCTIONS
             </StyledButton>

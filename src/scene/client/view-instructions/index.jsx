@@ -1,9 +1,9 @@
 import MainContainer from "@/shared/components/main-container";
-import HomeContainer from "../components/home-container";
+import HomeContainer from "../home/components/home-container";
 import TypesOfQuestions from "./components/types-of-questions";
 import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";
-import BeforeStartSurvey from "./components/before-start-survey";
+import BeforeStartSurvey from "../../../shared/client/section/before-start-survey";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import ActivityGuide from "./components/activity-guide";
@@ -13,7 +13,8 @@ const ViewInstructions = () => {
   const [instructionId, setInstructionId] = useState(0);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
   const router = useRouter();
-  const { currentSurveyId } = useContext(ClientContext);
+  const { currentSurveyId, setDidViewResponseGuide } =
+    useContext(ClientContext);
 
   const handleBackClick = () => {
     if (instructionId >= 0) {
@@ -26,6 +27,10 @@ const ViewInstructions = () => {
       setInstructionId((prevInstructionId) => prevInstructionId + 1);
     }
   };
+
+  if (instructionId === 1) {
+    setDidViewResponseGuide(true);
+  }
 
   useEffect(() => {
     if (instructionId < 0) {
