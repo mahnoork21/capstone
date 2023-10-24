@@ -2,7 +2,6 @@ import React from "react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
   Typography,
-  Container,
   Box,
   Button,
   Stepper,
@@ -17,8 +16,10 @@ import {
   StyledPaper,
   StyledTypo,
   StepperBox,
+  StyledBox,
   FormBox,
   Labels,
+  StyledContainer,
   StyledTextfield,
 } from "./styled";
 import {
@@ -88,41 +89,44 @@ const TOS = () => {
   };
   return (
     <>
-      <Typography variant="h4" marginBottom={2}>
-        <b>Terms of Service and Privacy Policy</b>
-      </Typography>
-      <Typography marginBottom={2}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Libero enim sed
-        faucibus turpis. Pellentesque habitant morbi tristique senectus et netus
-        et malesuada fames. Eu scelerisque felis imperdiet proin fermentum leo
-        vel orci porta. Euismod nisi porta lorem mollis aliquam ut. Habitant
-        morbi tristique senectus et. Risus sed vulputate odio ut enim. Accumsan
-        lacus vel facilisis volutpat est velit. Neque aliquam vestibulum morbi
-        blandit cursus. Id faucibus nisl tincidunt eget nullam.{" "}
-      </Typography>
-      <Typography marginBottom={2}>
-        Et netus et malesuada fames ac turpis egestas sed. Arcu vitae elementum
-        curabitur vitae. Tellus orci ac auctor augue mauris augue neque gravida.
-        Duis at tellus at urna condimentum mattis pellentesque id nibh. Massa
-        ultricies mi quis hendrerit dolor. Aliquet nibh praesent tristique magna
-        sit amet. Massa sed elementum tempus egestas sed. Ut diam quam nulla
-        porttitor massa id neque aliquam vestibulum. Eget magna fermentum
-        iaculis eu. Tellus rutrum tellus pellentesque eu tincidunt tortor
-        aliquam nulla facilisi. Scelerisque fermentum dui faucibus in ornare.
-        Dolor magna eget est lorem ipsum dolor sit.{" "}
-      </Typography>
+      <React.Fragment>
+        <Typography variant="h4" marginBottom={2}>
+          <b>Terms of Service and Privacy Policy</b>
+        </Typography>
+        <Typography marginBottom={2}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero
+          enim sed faucibus turpis. Pellentesque habitant morbi tristique
+          senectus et netus et malesuada fames. Eu scelerisque felis imperdiet
+          proin fermentum leo vel orci porta. Euismod nisi porta lorem mollis
+          aliquam ut. Habitant morbi tristique senectus et. Risus sed vulputate
+          odio ut enim. Accumsan lacus vel facilisis volutpat est velit. Neque
+          aliquam vestibulum morbi blandit cursus. Id faucibus nisl tincidunt
+          eget nullam.{" "}
+        </Typography>
+        <Typography marginBottom={2}>
+          Et netus et malesuada fames ac turpis egestas sed. Arcu vitae
+          elementum curabitur vitae. Tellus orci ac auctor augue mauris augue
+          neque gravida. Duis at tellus at urna condimentum mattis pellentesque
+          id nibh. Massa ultricies mi quis hendrerit dolor. Aliquet nibh
+          praesent tristique magna sit amet. Massa sed elementum tempus egestas
+          sed. Ut diam quam nulla porttitor massa id neque aliquam vestibulum.
+          Eget magna fermentum iaculis eu. Tellus rutrum tellus pellentesque eu
+          tincidunt tortor aliquam nulla facilisi. Scelerisque fermentum dui
+          faucibus in ornare. Dolor magna eget est lorem ipsum dolor sit.{" "}
+        </Typography>
 
-      <Typography display={"inline-block"}>
-        <Checkbox
-          sx={{ display: "inline-block" }}
-          label="agree"
-          checked={checked}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-        I agree to abide by the Terms and Conditions and Privacy Policy.
-      </Typography>
+        <Typography display={"inline-block"}>
+          <Checkbox
+            sx={{ display: "inline-block" }}
+            label="agree"
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          I agree to abide by the Terms and Conditions and Privacy Policy.
+        </Typography>
+      </React.Fragment>
     </>
   );
 };
@@ -186,22 +190,9 @@ const Registration = () => {
   };
   return (
     <>
-      <Container gap="10" justifyContent="space-around" fontFamily="Open Sans">
+      <StyledContainer justifyContent="space-around">
         <StyledPaper>
           <StyledTypo>Create a new Clinician account</StyledTypo>
-
-          <Stepper activeStep={activeStep} sx={{ m: 2 }}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-
-              return (
-                <Step key={index} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
 
           {activeStep === steps.length ? (
             <>
@@ -215,6 +206,18 @@ const Registration = () => {
             <>
               <FormProvider {...methods}>
                 <StepperBox>
+                  <Stepper activeStep={activeStep} sx={{ m: 2 }}>
+                    {steps.map((label, index) => {
+                      const stepProps = {};
+                      const labelProps = {};
+
+                      return (
+                        <Step key={index} {...stepProps}>
+                          <StepLabel {...labelProps}>{label}</StepLabel>
+                        </Step>
+                      );
+                    })}
+                  </Stepper>
                   <form onSubmit={methods.handleSubmit(handleNext)}>
                     <FormBox>
                       {getStepContent(activeStep)}
@@ -255,7 +258,7 @@ const Registration = () => {
           <StyledTypo>
             Learn about the PUFI-2, how it was develped, and how it can be used.
           </StyledTypo>
-          <Box>
+          <StyledBox>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
@@ -373,11 +376,11 @@ const Registration = () => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-          </Box>
+          </StyledBox>
         </StyledPaper>
 
         {/* </Box> */}
-      </Container>
+      </StyledContainer>
     </>
   );
 };
