@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
   Typography,
@@ -11,6 +11,8 @@ import {
   AccordionSummary,
   AccordionDetails,
   Checkbox,
+  Snackbar,
+  MuiAlert,
 } from "@mui/material";
 import {
   StyledPaper,
@@ -32,28 +34,81 @@ import {
 const steps = ["Personal Details", "Organizational Details", "TOS"];
 
 const PersonalDetils = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  console.log(errors);
   return (
     <>
       <React.Fragment>
         <Box display={"block"}>
           <Labels>First Name</Labels>
-          <StyledTextfield aria-required="true" />
+          <Controller
+            control={control}
+            name="firstName"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <StyledTextfield
+                id="first-name"
+                // error={Boolean(errors?.firstName)}
+                // helperText={errors.firstName?.message}
+                {...field}
+              />
+            )}
+          />
         </Box>
         <Box display={"block"}>
           <Labels>Last Name</Labels>
-          <StyledTextfield aria-required="true" />
+          <Controller
+            control={control}
+            name="lastName"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <StyledTextfield id="last-name" {...field} />
+            )}
+          />
         </Box>
         <Box display={"block"}>
           <Labels>Email</Labels>
-          <StyledTextfield aria-required="true" />
+          <Controller
+            control={control}
+            name="email"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => <StyledTextfield id="email-id" {...field} />}
+          />
         </Box>
         <Box display={"block"}>
           <Labels>Password</Labels>
-          <StyledTextfield aria-required="true" />
+          <Controller
+            control={control}
+            name="password"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <StyledTextfield type="password" id="pwd" {...field} />
+            )}
+          />
         </Box>
         <Box display={"block"}>
           <Labels>Confirm Password</Labels>
-          <StyledTextfield aria-required="true" />
+          <Controller
+            control={control}
+            name="confirmPassword"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <StyledTextfield type="password" id="cpwd" {...field} />
+            )}
+          />
         </Box>
       </React.Fragment>
     </>
@@ -61,32 +116,65 @@ const PersonalDetils = () => {
 };
 
 const OrganizationDetails = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  console.log(errors);
   return (
     <>
       <React.Fragment>
         <Box display={"block"}>
           <Labels>Organization Name</Labels>
-          <StyledTextfield />
+          <Controller
+            control={control}
+            name="organization"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => (
+              <StyledTextfield id="organization" {...field} />
+            )}
+          />{" "}
         </Box>
 
         <Box display={"block"}>
           <Labels>Clinician Id</Labels>
-          <StyledTextfield />
+          <Controller
+            control={control}
+            name="clinicianId"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => <StyledTextfield id="cid" {...field} />}
+          />
         </Box>
         <Box display={"block"}>
           <Labels>Role</Labels>
-          <StyledTextfield />
+          <Controller
+            control={control}
+            name="role"
+            rules={{
+              required: true,
+            }}
+            render={({ field }) => <StyledTextfield id="role" {...field} />}
+          />
         </Box>
       </React.Fragment>
     </>
   );
 };
 const TOS = () => {
-  const [checked, setChecked] = React.useState(true);
+  const [unchecked, setChecked] = React.useState(true);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  console.log(errors);
   return (
     <>
       <React.Fragment>
@@ -117,15 +205,26 @@ const TOS = () => {
         </Typography>
 
         <Typography display={"inline-block"}>
-          <Checkbox
-            sx={{ display: "inline-block" }}
-            label="agree"
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
+          <Controller
+            control={control}
+            checked={unchecked}
+            name="tos"
+            rules={{
+              required: "agree please",
+            }}
+            render={({ field }) => (
+              <Checkbox
+                sx={{ display: "inline-block" }}
+                id="tos"
+                onChange={handleChange}
+                inputProps={{ "aria-label": "controlled" }}
+                {...field}
+              />
+            )}
           />
           I agree to abide by the Terms and Conditions and Privacy Policy.
         </Typography>
+        {errors.tos && <p style={{ color: "red" }}>{errors.tos.message}</p>}
       </React.Fragment>
     </>
   );
@@ -144,19 +243,29 @@ function getStepContent(step) {
       return "unknown step";
   }
 }
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [open, setOpen] = useState(false);
+  const { control, handleSubmit, formState } = useForm();
 
   const methods = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
+      password: "",
+      confirmPassword: "",
       organization: "",
-      clinicianid: "",
+      clinicianId: "",
       role: "",
     },
   });
+  const isStepFalied = () => {
+    return Boolean(Object.keys(methods.formState.errors).length);
+  };
 
   const handleNext = (data) => {
     console.log(data);
@@ -165,26 +274,45 @@ const Registration = () => {
         .then((data) => data.json())
         .then((res) => {
           console.log(res);
+          setOpen(true);
+        })
+        .catch((error) => {
+          // alert(`Error! ${error}`);
+          console.log("Error : ", error);
+          setOpen(true);
         });
     } else {
-      console.log("data is not there");
-      setActiveStep(activeStep + 1);
+      if (
+        !data.firstName ||
+        !data.lastName ||
+        !data.email ||
+        !data.password ||
+        !data.confirmPassword
+      ) {
+        console.log("data is not complete");
+        console.log(
+          data.firstName,
+          data.lastName,
+          data.email,
+          data.password,
+          data.confirmPassword
+        );
+        setOpen(true);
+      } else {
+        console.log("daata is complete");
+        setActiveStep(activeStep + 1);
+      }
     }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-
-  const handleSkip = () => {
-    if (!isStepSkipped(activeStep)) {
-      setSkippedSteps([...skippedSteps, activeStep]);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
     }
-    setActiveStep(activeStep + 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
+    setOpen(false);
   };
   return (
     <>
@@ -250,6 +378,16 @@ const Registration = () => {
                         </Box>
                       </FormBox>
                     </form>
+                    <Snackbar
+                      open={open}
+                      autoHideDuration={1000}
+                      onClose={handleClose}
+                    >
+                      {/* <Alert onClose={handleClose} severity="success">
+                        {" "}
+                        Success! Data saved.
+                      </Alert> */}
+                    </Snackbar>
                   </StyledBox>
                 </StepperBox>
               </FormProvider>
