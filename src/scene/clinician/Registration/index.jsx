@@ -37,23 +37,23 @@ const PersonalDetils = () => {
       <React.Fragment>
         <Box display={"block"}>
           <Labels>First Name</Labels>
-          <StyledTextfield />
+          <StyledTextfield aria-required="true" />
         </Box>
         <Box display={"block"}>
           <Labels>Last Name</Labels>
-          <StyledTextfield />
+          <StyledTextfield aria-required="true" />
         </Box>
         <Box display={"block"}>
           <Labels>Email</Labels>
-          <StyledTextfield />
+          <StyledTextfield aria-required="true" />
         </Box>
         <Box display={"block"}>
           <Labels>Password</Labels>
-          <StyledTextfield />
+          <StyledTextfield aria-required="true" />
         </Box>
         <Box display={"block"}>
           <Labels>Confirm Password</Labels>
-          <StyledTextfield />
+          <StyledTextfield aria-required="true" />
         </Box>
       </React.Fragment>
     </>
@@ -204,7 +204,7 @@ const Registration = () => {
             <>
               <FormProvider {...methods}>
                 <StepperBox>
-                  <Stepper activeStep={activeStep} sx={{ m: 2 }}>
+                  <Stepper activeStep={activeStep} sx={{ m: 1 }}>
                     {steps.map((label, index) => {
                       const stepProps = {};
                       const labelProps = {};
@@ -216,37 +216,41 @@ const Registration = () => {
                       );
                     })}
                   </Stepper>
-                  <form onSubmit={methods.handleSubmit(handleNext)}>
-                    <FormBox>
-                      {getStepContent(activeStep)}
+                  <StyledBox>
+                    <form onSubmit={methods.handleSubmit(handleNext)}>
+                      <FormBox>
+                        {getStepContent(activeStep)}
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          pt: 2,
-                          justifyContent: "left",
-                        }}
-                      >
-                        <Button
-                          color="inherit"
-                          onClick={handleBack}
-                          sx={{ mr: 1 }}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            pt: 2,
+                            justifyContent: "left",
+                          }}
                         >
-                          Back
-                        </Button>
+                          <Button
+                            color="inherit"
+                            onClick={handleBack}
+                            sx={{ mr: 1 }}
+                          >
+                            Back
+                          </Button>
 
-                        <Button
-                          variant="contained"
-                          // onClick={handleNext}
-                          type="submit"
-                        >
-                          {activeStep === steps.length - 1 ? "SIGN UP" : "Next"}
-                        </Button>
-                        <Box sx={{ flex: "1 1 auto" }} />
-                      </Box>
-                    </FormBox>
-                  </form>
+                          <Button
+                            variant="contained"
+                            // onClick={handleNext}
+                            type="submit"
+                          >
+                            {activeStep === steps.length - 1
+                              ? "SIGN UP"
+                              : "Next"}
+                          </Button>
+                          <Box sx={{ flex: "1 1 auto" }} />
+                        </Box>
+                      </FormBox>
+                    </form>
+                  </StyledBox>
                 </StepperBox>
               </FormProvider>
             </>

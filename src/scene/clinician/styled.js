@@ -50,6 +50,7 @@ export const StyledPaper = styled(Paper)`
 
   @media (max-width: 390px) {
     width: 390px;
+    height: 462px;
   }
   @media (min-width: 391px) and (max-width: 959px) {
     margin-top: 10px;

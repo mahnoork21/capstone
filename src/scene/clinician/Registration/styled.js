@@ -42,7 +42,6 @@ export const StyledPaper = styled(Paper)`
     margin-top: 10px;
   }
   @media (min-width: 960px) {
-    height: 577px;
     // width: 100%;
     max-width: 1024px;
     margin-left: 4.25rem;
@@ -56,6 +55,9 @@ export const StepperBox = styled(Box)`
   align-items: flex-start;
   gap: 24px;
   height: auto;
+  @media (min-width: 960px){
+    padding-bottom: 0;
+  }
   
 `;
 
@@ -105,7 +107,7 @@ export const StyledTextfield = styled.input`
 export const StyledTypo = styled(Typography)`
   color: var(--pufi-black, #333);
   margin-top: 10px;
-  padding-top: 24px;
+  padding-top: 8px;
   max-width: 650px;
 
   font-size: 1.5rem;
