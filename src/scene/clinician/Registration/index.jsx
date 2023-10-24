@@ -146,7 +146,6 @@ function getStepContent(step) {
 }
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
-  // const [skipped, setSkipped] = React.useState(new Set());
 
   const methods = useForm({
     defaultValues: {
@@ -166,7 +165,6 @@ const Registration = () => {
         .then((data) => data.json())
         .then((res) => {
           console.log(res);
-          // setActiveStep(activeStep + 1);
         });
     } else {
       console.log("data is not there");

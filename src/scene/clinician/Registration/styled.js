@@ -1,48 +1,6 @@
 import styled from "@emotion/styled";
 import { Paper, Typography, Container, Box } from "@mui/material";
 
-// export const ContentContainer = styled(Container)`
-//   width: 100%;
-//   margin-left: auto;
-
-//   box-sizing: border-box;
-//   margin-right: auto;
-//   display: flex;
-
-//   align-content: center;
-//   flex-direction: column;
-//   flex-wrap: wrap;
-//   justify-content: center;
-//   align-items: center;
-//   border-block: 8px;
-// `;
-
-// export const StyledPaper = styled(Paper)`
-//   // elevation: 3;
-//   margin-left: 4px;
-//   // margin-right: 4px;
-//   align-items: center;
-//   align-content: center;
-//   padding: 1rem;
-//   margin: 1rem;
-//   border-radius: 8px;
-//   background: #fff;
-//   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-
-//   @media (min-width: 600px) {
-//     margin-left: 4px; /* Margin for small screens */
-//     margin-right: 4px; /* Margin for small screens */
-//   }
-//   @media (min-width: 960px) {
-//     margin-left: 80px; /* Margin for medium screens */
-//     margin-right: 75px; /* Margin for medium screens */
-//   }
-//   @media (min-width: 1920px) {
-//     margin-left: 25px; /* Margin for extra large screens */
-//     margin-right: 25px; /* Margin for extra large screens */
-//   }
-// `;
-
 export const StyledContainer = styled(Container)`
   width: 100%;
   align-items: center;
@@ -126,14 +84,14 @@ export const FormBox = styled(Box)`
 `;
 export const Labels = styled(Typography)`
   position: relative;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
+
+  \font-size: 0.875rem;
   font-style: normal;
   font-weight: 600;
 `;
 export const StyledTextfield = styled.input`
   width: 100%;
-  max-width: 520px;
+  max-width: 420px;
   height: 48px;
   border-radius: 8px;
   border: 2px solid var(--pufi-grey, #d9d9d9);
