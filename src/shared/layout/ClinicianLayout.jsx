@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { CurvedBackground, PageWrapper } from "./clinician-shared";
+import {
+  ContentBox,
+  CurvedBackground,
+  FlexBox,
+  PageWrapper,
+} from "./clinician-shared";
 const drawerWidth = 280;
 import NormalHeader from "../clinician/header/NormalHeader";
 import { Footer } from "../clinician/footer/Footer";
-import { Typography } from "@mui/material";
+import { CssBaseline, Toolbar, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import ClinicianProviders from "./ClinicianProviders";
+import Navbar from "../clinician/navbar";
+import AuthHeader from "../clinician/header/AuthHeader";
 
 const ClinicianLayout = ({ window, children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -11,30 +20,40 @@ const ClinicianLayout = ({ window, children }) => {
     setMobileOpen((mobileOpen) => !mobileOpen);
   };
 
+  const router = useRouter();
+  const isAuth =
+    router.pathname === "/clinician/login" ||
+    router.pathname === "/clinician/register";
+
   return (
-    <>
-      <PageWrapper>
-        <CurvedBackground />
-        <NormalHeader handleDrawerToggle={handleDrawerToggle} />
-        <Typography
-          variant="h5"
-          noWrap
-          sx={{
-            display: "flex",
-            fontSize: "40px",
-            color: "white",
-            fontWeight: 500,
-            // padding: "10px 0px 0px 0px",
-            justifyContent: "center",
-            alignTtems: "center",
-          }}
-        >
-          <span>PUFI-2</span>
-        </Typography>
-        {children}
-        <Footer />
-      </PageWrapper>
-    </>
+    <ClinicianProviders>
+      {isAuth ? (
+        <PageWrapper>
+          <CurvedBackground />
+          <AuthHeader />
+          {children}
+          <Footer />
+        </PageWrapper>
+      ) : (
+        <FlexBox>
+          <CssBaseline />
+
+          <NormalHeader handleDrawerToggle={handleDrawerToggle} />
+
+          <Navbar
+            window={window}
+            mobileOpen={mobileOpen}
+            handleDrawerToggle={handleDrawerToggle}
+            drawerWidth={drawerWidth}
+          />
+
+          <ContentBox component="main">
+            <Toolbar />
+            {children}
+          </ContentBox>
+        </FlexBox>
+      )}
+    </ClinicianProviders>
   );
 };
 

@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import {
   Box,
@@ -23,44 +24,18 @@ export const StyledContainer = styled(Container)`
   margin: 0;
   padding-top: 8px;
   justify-content: center;
-
-  @media (max-width: 390px) {
-    width: 390px;
-    margin-left: 8px;
-  }
-  @media (min-width: 391px) and (max-width: 959px) {
-    margin-left: 15px
-    margin-right: 15px;
-    margin-top:24px;
-  }
-  @media (min-width: 960px) {
-    
-    margin-left: auto;
-    margin-right: auto;
-  }
 `;
+
 export const StyledPaper = styled(Paper)`
   align-items: center;
   align-content: center;
   margin-bottom: 16px;
   border-radius: 8px;
+  padding: 16px;
   background: #fff;
   flex-shrink: 0;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-
-  @media (max-width: 390px) {
-    width: 390px;
-    height: 462px;
-  }
-  @media (min-width: 391px) and (max-width: 959px) {
-    margin-top: 10px;
-  }
-  @media (min-width: 960px) {
-    height: 480px;
-
-    margin-left: 4.25rem;
-    margin-right: 4.25rem;
-  }
+  width: 100%;
 `;
 
 export const StyledHeading = styled(Typography)`
@@ -80,20 +55,8 @@ export const FormBox = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media (min-width: 400px) {
-    margin-left: 0px; /* Margin for small screens */
-    margin-right: 0px; /* Margin for small screens */
-  }
-  @media (min-width: 960px) {
-    margin-left: 15px; /* Margin for medium screens */
-    margin-right: 15px; /* Margin for medium screens */
-  }
-  @media (min-width: 1920px) {
-    margin-left: 25px; /* Margin for extra large screens */
-    margin-right: 25px; /* Margin for extra large screens */
-  }
 `;
+
 export const Labels = styled(Typography)`
   margin-top: 12px;
   position: relative;
@@ -102,6 +65,7 @@ export const Labels = styled(Typography)`
   font-style: normal;
   font-weight: 600;
 `;
+
 export const StyledTextfield = styled.input`
   width: 420px;
   // max-width: 420px;
@@ -113,8 +77,9 @@ export const StyledTextfield = styled.input`
   padding: 0px 8px;
   flex-direction: column;
   align-items: flex-start;
-  @media (max-width: 600px) {
-    width: 358px;
+
+  @media (max-width: ${breakpoint.desktop}) {
+    width: 320px;
   }
 `;
 

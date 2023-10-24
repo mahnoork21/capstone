@@ -24,10 +24,11 @@ import {
   StyledButton,
   StyledTypo,
 } from "./styled";
+import MainContainer from "@/shared/components/main-container";
 
 const LoginLanding = () => {
   return (
-    <>
+    <MainContainer>
       <StyledContainer justifyContent="space-around">
         <StyledPaper>
           <StyledHeading>Log in to your clinician account</StyledHeading>
@@ -171,7 +172,7 @@ const LoginLanding = () => {
           </StyledBox>
         </StyledPaper>
       </StyledContainer>
-    </>
+    </MainContainer>
   );
 };
 

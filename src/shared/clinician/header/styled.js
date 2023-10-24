@@ -21,27 +21,27 @@ export const HeaderContainer = styled.div`
     display: flex;
   }
 `;
+
 export const HeaderAppBar = styled(AppBar)`
   z-index: 1201;
   display: flex;
-  @media only screen and (min-width: ${breakpoint.desktop}) {
-    display: none;
-  }
 `;
+
 export const HeaderToolbar = styled(Toolbar)`
   display: flex;
   justify-content: space-between;
 `;
+
 export const HeaderMenuIconButton = styled(IconButton)`
   display: block;
+
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    & > svg{
-    display: none;
+    & > svg {
+      display: none;
     }
   }
-  
-  }
 `;
+
 export const HeaderButton = styled(Button)`
   color: white;
   border-color: white;
