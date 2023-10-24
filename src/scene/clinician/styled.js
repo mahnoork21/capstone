@@ -50,6 +50,7 @@ export const StyledPaper = styled(Paper)`
 
   @media (max-width: 390px) {
     width: 390px;
+    height: 462px;
   }
   @media (min-width: 391px) and (max-width: 959px) {
     margin-top: 10px;
@@ -57,13 +58,13 @@ export const StyledPaper = styled(Paper)`
   @media (min-width: 960px) {
     height: 480px;
 
-    margin-left: 80px;
-    margin-right: 75px;
+    margin-left: 4.25rem;
+    margin-right: 4.25rem;
   }
 `;
 
 export const StyledHeading = styled(Typography)`
-  color: #000;
+  color: var(--pufi-black, #333);
   padding-top: 24px;
   font-size: 1.5rem;
   font-style: normal;
@@ -143,9 +144,8 @@ export const StyledButton = styled(Button)`
 `;
 
 export const StyledTypo = styled(Typography)`
-  text-align: center;
   color: var(--pufi-black, #333);
-  padding-top: 32px;
+  padding-top: 24px;
   max-width: 650px;
 
   font-size: 1.5rem;
