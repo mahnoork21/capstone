@@ -1,6 +1,4 @@
 import React from "react";
-// import styled from "./styled";
-// import Header from "@/shared/clinician/header/Header";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import {
