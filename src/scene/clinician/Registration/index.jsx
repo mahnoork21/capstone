@@ -62,63 +62,90 @@ const PersonalDetils = () => {
         </Box>
         {errors.firstName && (
           <Snackbar
-            // anchorOrigin={(top, center)}
             open={open}
             autoHideDuration={2000}
             message={errors.firstName.message}
           />
-          // <h1 style={{ color: "red" }}>{errors.firstName.message}</h1>
         )}
+
         <Box display={"block"}>
           <Labels>Last Name</Labels>
           <Controller
             control={control}
             name="lastName"
             rules={{
-              required: true,
+              required: "last name is required",
             }}
             render={({ field }) => (
               <StyledTextfield id="last-name" {...field} />
             )}
           />
         </Box>
+        {errors.lastName && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.lastName.message}
+          />
+        )}
         <Box display={"block"}>
           <Labels>Email</Labels>
           <Controller
             control={control}
             name="email"
             rules={{
-              required: true,
+              required: "email is required",
             }}
-            render={({ field }) => <StyledTextfield id="email-id" {...field} />}
+            render={({ field }) => <StyledTextfield id="email" {...field} />}
           />
         </Box>
+        {errors.email && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.email.message}
+          />
+        )}
         <Box display={"block"}>
           <Labels>Password</Labels>
           <Controller
             control={control}
             name="password"
             rules={{
-              required: true,
+              required: "password is required",
             }}
             render={({ field }) => (
               <StyledTextfield type="password" id="pwd" {...field} />
             )}
           />
         </Box>
+        {errors.password && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.password.message}
+          />
+        )}
         <Box display={"block"}>
           <Labels>Confirm Password</Labels>
           <Controller
             control={control}
             name="confirmPassword"
             rules={{
-              required: true,
+              required: "confirm password",
             }}
             render={({ field }) => (
               <StyledTextfield type="password" id="cpwd" {...field} />
             )}
           />
         </Box>
+        {errors.confirmPassword && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.confirmPassword.message}
+          />
+        )}
       </React.Fragment>
     </>
   );
@@ -139,13 +166,20 @@ const OrganizationDetails = () => {
             control={control}
             name="organization"
             rules={{
-              required: true,
+              required: "organization is required",
             }}
             render={({ field }) => (
               <StyledTextfield id="organization" {...field} />
             )}
           />{" "}
         </Box>
+        {errors.organization && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.organization.message}
+          />
+        )}
 
         <Box display={"block"}>
           <Labels>Clinician Id</Labels>
@@ -153,22 +187,36 @@ const OrganizationDetails = () => {
             control={control}
             name="clinicianId"
             rules={{
-              required: true,
+              required: "clinicain id is required",
             }}
             render={({ field }) => <StyledTextfield id="cid" {...field} />}
           />
         </Box>
+        {errors.clinicianId && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.clinicianId.message}
+          />
+        )}
         <Box display={"block"}>
           <Labels>Role</Labels>
           <Controller
             control={control}
             name="role"
             rules={{
-              required: true,
+              required: "role is required",
             }}
             render={({ field }) => <StyledTextfield id="role" {...field} />}
           />
         </Box>
+        {errors.role && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.role.message}
+          />
+        )}
       </React.Fragment>
     </>
   );
@@ -219,7 +267,7 @@ const TOS = () => {
             checked={unchecked}
             name="tos"
             rules={{
-              required: "can not agrreee",
+              required: "agrreee please",
             }}
             render={({ field }) => (
               <Checkbox
@@ -233,14 +281,14 @@ const TOS = () => {
           />
           I agree to abide by the Terms and Conditions and Privacy Policy.
         </Typography>
-        {/* {errors.tos && (
+        {errors.tos && (
           <Snackbar
             open={open}
             autoHideDuration={2000}
             message={errors.tos.message}
           />
-        )} */}
-        {errors.tos && <h1 style={{ color: "red" }}>{errors.tos.message}</h1>}
+        )}
+        {errors.tos && <p style={{ color: "red" }}>{errors.tos.message}</p>}
       </React.Fragment>
     </>
   );
