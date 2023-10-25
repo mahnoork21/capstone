@@ -371,6 +371,16 @@ const Registration = () => {
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+    console.log(activeStep);
+    {
+      activeStep === 0 ? (
+        <Button color="inherit" href="/clinician/login" sx={{ mr: 1 }}>
+          Back to Login
+        </Button>
+      ) : (
+        <></>
+      );
+    }
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
