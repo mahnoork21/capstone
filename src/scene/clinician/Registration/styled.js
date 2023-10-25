@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Paper, Typography, Container, Box } from "@mui/material";
+import { Paper, Typography, Container, Box, Snackbar } from "@mui/material";
 
 export const StyledContainer = styled(Container)`
   width: 100%;
@@ -129,4 +129,11 @@ export const StyledBox = styled(Box)`
   padding-top: 30px;
   padding-bottom: 66px;
   padding-right: 24px;
+`;
+
+export const errorSnackbar = styled(Snackbar)`
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 `;

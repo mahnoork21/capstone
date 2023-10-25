@@ -23,6 +23,7 @@ import {
   Labels,
   StyledContainer,
   StyledTextfield,
+  errorSnackbar,
 } from "./styled";
 import {
   useForm,
@@ -48,18 +49,26 @@ const PersonalDetils = () => {
             control={control}
             name="firstName"
             rules={{
-              required: true,
+              required: "first name is required",
             }}
             render={({ field }) => (
               <StyledTextfield
-                id="first-name"
-                // error={Boolean(errors?.firstName)}
-                // helperText={errors.firstName?.message}
+                id="firstName"
+                inputProps={{ "aria-label": "controlled" }}
                 {...field}
               />
             )}
           />
         </Box>
+        {errors.firstName && (
+          <Snackbar
+            // anchorOrigin={(top, center)}
+            open={open}
+            autoHideDuration={2000}
+            message={errors.firstName.message}
+          />
+          // <h1 style={{ color: "red" }}>{errors.firstName.message}</h1>
+        )}
         <Box display={"block"}>
           <Labels>Last Name</Labels>
           <Controller
@@ -210,7 +219,7 @@ const TOS = () => {
             checked={unchecked}
             name="tos"
             rules={{
-              required: "agree please",
+              required: "can not agrreee",
             }}
             render={({ field }) => (
               <Checkbox
@@ -224,7 +233,14 @@ const TOS = () => {
           />
           I agree to abide by the Terms and Conditions and Privacy Policy.
         </Typography>
-        {errors.tos && <p style={{ color: "red" }}>{errors.tos.message}</p>}
+        {/* {errors.tos && (
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            message={errors.tos.message}
+          />
+        )} */}
+        {errors.tos && <h1 style={{ color: "red" }}>{errors.tos.message}</h1>}
       </React.Fragment>
     </>
   );
@@ -249,7 +265,7 @@ function Alert(props) {
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
-  const { control, handleSubmit, formState } = useForm();
+  const { control, handleSubmit, errors } = useForm();
 
   const methods = useForm({
     defaultValues: {
