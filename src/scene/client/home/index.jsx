@@ -27,6 +27,8 @@ const ClientHome = () => {
     survey,
   } = useContext(ClientContext);
 
+  const router = useRouter();
+
   const handleViewInstructionsclick = () => {
     if (survey) {
       router.push({

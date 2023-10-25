@@ -21,7 +21,6 @@ export const ClientProvider = ({ children }) => {
   const [survey, setSurvey] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const [user, setUser] = useState(null);
   const [breakpoint, setBreakpoint] = useState(`desktop`);
 
   const [headerButtonType, setHeaderButtonType] = useState(
@@ -40,16 +39,6 @@ export const ClientProvider = ({ children }) => {
   const activityResponses = survey?.activity_response;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        console.log("[Debug] user = ", user);
-      }
-    });
-
-    signInAnonymously(auth).then(() => {
-      console.log("Signed In anonymously");
-    });
 
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
     const changeListener = (e) => {
@@ -63,24 +52,22 @@ export const ClientProvider = ({ children }) => {
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener("change", changeListener);
       return () => {
-        unsubscribe();
         mediaQuery.removeEventListener("change", changeListener);
       };
     } else {
       //for backward compatibility with older safari broswers
       mediaQuery.addListener(changeListener);
       return () => {
-        unsubscribe();
         mediaQuery.removeListener(changeListener);
       };
     }
   }, []);
 
   useEffect(() => {
-    if (user && surveyId && organizationId && clinicianId) {
+    if (surveyId && organizationId && clinicianId) {
       getCurrentSurvey();
     }
-  }, [organizationId, clinicianId, surveyId, user]);
+  }, [organizationId, clinicianId, surveyId]);
 
   const getCurrentSurvey = async () => {
     const survey = await getSurveyById(organizationId, clinicianId, surveyId);
