@@ -7,7 +7,7 @@ import {
 } from "./clinician-shared";
 const drawerWidth = 280;
 import NormalHeader from "../clinician/header/NormalHeader";
-import { Footer } from "../clinician/footer/Footer";
+import Footer from "../clinician/footer";
 import { CssBaseline, Toolbar, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import ClinicianProviders from "./ClinicianProviders";
