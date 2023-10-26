@@ -33,7 +33,12 @@ import {
 } from "react-hook-form";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
-
+const handleCloseSnackbar = (event, reason) => {
+  if (reason === "clickaway") {
+    return;
+  }
+  // setOpen(false);
+};
 const PersonalDetils = () => {
   const {
     control,
@@ -63,8 +68,10 @@ const PersonalDetils = () => {
         {errors.firstName && (
           <Snackbar
             open={open}
-            autoHideDuration={2000}
+            autoHideDuration={3000}
             message={errors.firstName.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
 
@@ -86,6 +93,8 @@ const PersonalDetils = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.lastName.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
         <Box display={"block"}>
@@ -104,6 +113,8 @@ const PersonalDetils = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.email.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
         <Box display={"block"}>
@@ -124,6 +135,8 @@ const PersonalDetils = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.password.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
         <Box display={"block"}>
@@ -144,6 +157,8 @@ const PersonalDetils = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.confirmPassword.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
       </React.Fragment>
@@ -178,6 +193,8 @@ const OrganizationDetails = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.organization.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
 
@@ -197,6 +214,8 @@ const OrganizationDetails = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.clinicianId.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
         <Box display={"block"}>
@@ -286,9 +305,11 @@ const TOS = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.tos.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
-        {errors.tos && <p style={{ color: "red" }}>{errors.tos.message}</p>}
+        {/* {errors.tos && <p style={{ color: "red" }}>{errors.tos.message}</p>} */}
       </React.Fragment>
     </>
   );
@@ -327,9 +348,6 @@ const Registration = () => {
       role: "",
     },
   });
-  const isStepFalied = () => {
-    return Boolean(Object.keys(methods.formState.errors).length);
-  };
 
   const handleNext = (data) => {
     console.log(data);
