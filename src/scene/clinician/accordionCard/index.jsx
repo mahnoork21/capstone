@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
+import { StyledTypography } from "./styled";
 const AccordionCard = () => {
   return (
     <>
@@ -14,12 +15,12 @@ const AccordionCard = () => {
           id="panel1-header"
           aria-controler="panel1-content"
         >
-          <Typography>
-            <b>What is PUFI-2 ?</b>
-          </Typography>
+          <StyledTypography>
+            <b>What is PUFI-2?</b>
+          </StyledTypography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <StyledTypography>
             The Prosthetic Upper Extremity Functional Index (PUFI) is a child-
             and parent-report questionnaire administered by a health care
             practitioner that evaluates real-world prosthesis use in a range of
@@ -27,7 +28,7 @@ const AccordionCard = () => {
             goal for the PUFI is to measure change in status over time. The
             PUFI-2 is not a medical device. The PUFI-2 is intended to only be
             used by health care practitioners as part of their care practice.
-          </Typography>
+          </StyledTypography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -36,17 +37,17 @@ const AccordionCard = () => {
           id="panel2-header"
           aria-controler="panel2-content"
         >
-          <Typography>
-            <b>Who is the PUFI-2 used for ?</b>
-          </Typography>
+          <StyledTypography>
+            <b>Who is the PUFI-2 used for?</b>
+          </StyledTypography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <StyledTypography>
             The PUFI-2 is used for children with upper limb prosthesis. There
             are two versions: The young child version - ages 3 to 6 years The
             older child version - ages 7 and up The assessment can be taken by
             the child and/or their parent/caregiver.
-          </Typography>
+          </StyledTypography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -55,12 +56,12 @@ const AccordionCard = () => {
           id="panel3-header"
           aria-controler="panel3-content"
         >
-          <Typography>
+          <StyledTypography>
             <b>Whai is the assessment process?</b>
-          </Typography>
+          </StyledTypography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <StyledTypography>
             After creating an account, health care practitioner's request the
             completion of the PUFI-2 via email, and children and/or parents
             complete the assessment on their own. Once complete, health care
@@ -68,7 +69,7 @@ const AccordionCard = () => {
             in an associated research project or in clinical use for sharing and
             discussing the results with the child/parent and using within the
             child's clinical record.
-          </Typography>
+          </StyledTypography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -77,12 +78,12 @@ const AccordionCard = () => {
           id="panel4-header"
           aria-controler="panel4-content"
         >
-          <Typography>
+          <StyledTypography>
             <b>When should the PUFI-2 be administered?</b>
-          </Typography>
+          </StyledTypography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <StyledTypography>
             Reasons for completing the PUFI-2 questionnaire may include, but are
             not limited to: First time prosthetic user After client receives new
             prosthetic device(s) or any changes/adjustments to their prosthetic
@@ -90,7 +91,7 @@ const AccordionCard = () => {
             needs over time (e.g. 3 month, 6 months, 12 months check-in). Each
             clinic/health care practitioner will determine when to re-administer
             the PUFI-2 based on their client's needs and practice setting.
-          </Typography>
+          </StyledTypography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -99,12 +100,12 @@ const AccordionCard = () => {
           id="panel5-header"
           aria-controler="panel5-content"
         >
-          <Typography>
+          <StyledTypography>
             <b>Background and Research Involvement</b>
-          </Typography>
+          </StyledTypography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <StyledTypography>
             The PUFI was created and validated over 25 years ago at Holland
             Bloorview Kids Rehab Hospital by Dr. Virginia Wright and her team.
             The PUFI has since been updated with co-creation involvement by
@@ -116,7 +117,7 @@ const AccordionCard = () => {
             Naumann S, Jutai J. Evaluation of the validity of the prosthetic
             upper extremity functional index for children.
             https://pubmed.ncbi.nlm.nih.gov/12690590/
-          </Typography>
+          </StyledTypography>
         </AccordionDetails>
       </Accordion>
     </>
