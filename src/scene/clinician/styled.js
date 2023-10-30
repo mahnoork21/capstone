@@ -126,4 +126,8 @@ export const StyledTypo = styled(Typography)`
     margin-left: 13rem; /* Margin for extra large screens */
     margin-right: 10rem; /* Margin for extra large screens */
   }
+
+  @media (max-width: ${breakpoint.desktop}) {
+    font-size: 1.25rem;
+  }
 `;
