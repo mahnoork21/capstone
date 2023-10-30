@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
   Typography,
@@ -315,6 +316,7 @@ const TOS = () => {
   );
 };
 function getStepContent(step) {
+  const router = useRouter();
   switch (step) {
     case 0:
       return <PersonalDetils />;
@@ -325,7 +327,8 @@ function getStepContent(step) {
       return <TOS />;
 
     default:
-      return "unknown step";
+      router.push("/clinician/login");
+      return null;
   }
 }
 function Alert(props) {
@@ -359,7 +362,6 @@ const Registration = () => {
           setOpen(true);
         })
         .catch((error) => {
-          // alert(`Error! ${error}`);
           console.log("Error : ", error);
           setOpen(true);
         });
