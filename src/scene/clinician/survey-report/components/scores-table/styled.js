@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { TableContainer, TableHead } from "@mui/material";
 
@@ -21,5 +22,37 @@ export const StyledTableContainer = styled(TableContainer)`
 
   & .answer {
     min-width: 312px;
+  }
+
+  & .count {
+    min-width: 50px;
+  }
+
+  & .percentage {
+    min-width: 50px;
+  }
+
+  @media screen and (max-width: 1235px) {
+    & .answer {
+      min-width: 200px;
+    }
+  }
+
+  @media screen and (max-width: 1130px) {
+    & .answer {
+      min-width: 150px;
+    }
+  }
+
+  @media screen and (max-width: 1080px) {
+    & .answer {
+      min-width: 100px;
+    }
+  }
+
+  @media screen and (max-width: ${breakpoint.desktop}) {
+    & .answer {
+      min-width: 300px;
+    }
   }
 `;

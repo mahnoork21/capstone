@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
@@ -28,5 +29,18 @@ export const Container = styled.div`
     border-radius: 12px;
     border: 1px solid #1979be;
     background: var(--pufi-primary-blue, #1979be);
+  }
+
+  @media screen and (max-width: ${breakpoint.desktop}) {
+    padding-left: 16px;
+    padding-top: 12px;
+    & .header-flex {
+      flex-direction: column;
+      align-items: start;
+    }
+
+    & .download-button {
+      float: right;
+    }
   }
 `;

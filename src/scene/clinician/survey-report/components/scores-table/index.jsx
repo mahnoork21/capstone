@@ -35,8 +35,12 @@ const ScoresTable = ({ scores }) => {
               <TableCell component="th" scope="row" className="answer">
                 {row.answer}
               </TableCell>
-              <TableCell>{row.count}</TableCell>
-              <TableCell>{row.percentage}</TableCell>
+              <TableCell component="th" scope="row" className="count">
+                {row.count}
+              </TableCell>
+              <TableCell component="th" scope="row" className="percentage">
+                {row.percentage}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

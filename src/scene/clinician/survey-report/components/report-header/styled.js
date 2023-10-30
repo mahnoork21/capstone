@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
@@ -19,5 +20,12 @@ export const Container = styled.div`
 
   & span {
     font-weight: 600;
+  }
+
+  @media screen and (max-width: ${breakpoint.desktop}) {
+    & .survey-data {
+      flex-direction: column;
+      align-items: start;
+    }
   }
 `;

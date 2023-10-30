@@ -19,12 +19,13 @@ import { auth } from "@/firebase/firebase";
 const SurveyReport = () => {
   const [surveyId, setSurveyId] = useState("30niDrNz2WnfgDBQlivC");
   const [loading, setLoading] = useState(true);
-  const [survey, setSurvey] = useState({});
+  const [surveyData, setSurveyData] = useState({});
 
   useEffect(() => {
     const fetchSurvey = async (id) => {
       const survey = await getSurveyById(id);
-      setSurvey((prev) => survey);
+      setSurveyData((prev) => survey);
+      console.log("survey -> ", survey);
     };
 
     const authenticateAndFetch = async () => {
@@ -68,7 +69,7 @@ const SurveyReport = () => {
   const downloadCSV = () => {
     const download = async () => {
       // Extract data into CSV format
-      const [csvHeader, csvData] = parseDataToCsvFormatYoungChild(survey);
+      const [csvHeader, csvData] = parseDataToCsvFormatYoungChild(surveyData);
 
       // Convert JSON data to CSV format
       const json2csvParser = new Parser({ csvHeader });
@@ -99,28 +100,33 @@ const SurveyReport = () => {
       });
   };
   return (
-    <Container>
-      <h1>SUMMARY SCORES</h1>
-      <h1>{JSON.stringify(survey)}</h1>
-      {/* 
-      <div className="header-flex">
-        <ReportHeader survey={survey} />
-        <Button
-          className="download-button"
-          variant="contained"
-          startIcon={<img src="/icons/download.svg" alt="Download" />}
-          onClick={downloadCSV}
-        >
-          Download CSV
-        </Button>
-      </div>
+    <>
+      {loading ? (
+        <p>Loading data...</p>
+      ) : (
+        <Container>
+          <h1>SUMMARY SCORES</h1>
 
-      {youngChildSurvey.map(({ questionId }) => (
-        <ActivityAnalysis survey={survey} questionId={questionId} />
-      ))}
+          <div className="header-flex">
+            <ReportHeader survey={surveyData} />
+            <Button
+              className="download-button"
+              variant="contained"
+              startIcon={<img src="/icons/download.svg" alt="Download" />}
+              onClick={downloadCSV}
+            >
+              Download CSV
+            </Button>
+          </div>
 
-      <WeightedCalculation /> */}
-    </Container>
+          {youngChildSurvey.map(({ questionId }) => (
+            <ActivityAnalysis survey={surveyData} questionId={questionId} />
+          ))}
+
+          <WeightedCalculation />
+        </Container>
+      )}
+    </>
   );
 };
 

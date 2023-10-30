@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
@@ -20,6 +21,13 @@ export const Container = styled.div`
     font-size: 1rem;
     padding-top: 20px;
   }
+
+  & .no-data {
+    text-align: center;
+    color: darkred;
+    font-style: italic;
+    font-weight: bold;
+  }
 `;
 
 export const SubContainer = styled.div`
@@ -28,6 +36,13 @@ export const SubContainer = styled.div`
   align-items: center;
   & > div {
     flex: 0.5;
+  }
+
+  @media only screen and (max-width: ${breakpoint.desktop}) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 24px;
   }
 `;
 

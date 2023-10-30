@@ -15,6 +15,7 @@ const ActivityAnalysis = ({ survey, questionId }) => {
   const [scores, setScores] = useState({});
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
+  const [totalScore, setTotalScore] = useState(-1);
 
   Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -26,6 +27,13 @@ const ActivityAnalysis = ({ survey, questionId }) => {
         const scores = getScores(survey, questionId);
 
         setScores((prevScores) => scores);
+
+        const getTotal = Object.values(scores).reduce(
+          (acc, val) => acc + val,
+          0
+        );
+
+        setTotalScore((prevScore) => getTotal);
 
         const data = getData(scores);
 
@@ -53,22 +61,29 @@ const ActivityAnalysis = ({ survey, questionId }) => {
               ).label
             }
           </h2>
-          <SubContainer>
-            <PieWrapper>
-              {data?.datasets?.length > 0 ? (
-                <Pie data={data} options={options} />
-              ) : (
-                <p>Loading data...</p>
-              )}
-            </PieWrapper>
-            <div></div>
-            <TableWrapper>
-              <ColorLabels amount={Object.keys(scores).length} />
-              <ScoresTable scores={scores} />
-            </TableWrapper>
-          </SubContainer>
+          {totalScore === -1 || totalScore === 0 ? (
+            <p className="no-data">No data provided</p>
+          ) : (
+            <SubContainer>
+              <PieWrapper>
+                {data?.datasets?.length > 0 ? (
+                  <Pie data={data} options={options} />
+                ) : (
+                  <p>Loading data...</p>
+                )}
+              </PieWrapper>
+              <div></div>
+              <TableWrapper>
+                <ColorLabels amount={Object.keys(scores).length} />
+                <ScoresTable scores={scores} />
+              </TableWrapper>
+            </SubContainer>
+          )}
 
-          {questionId === "do" || questionId === "how" ? (
+          {questionId === "do" ||
+          questionId === "how" ||
+          totalScore === -1 ||
+          totalScore === 0 ? (
             <></>
           ) : (
             <div className="total-score">
