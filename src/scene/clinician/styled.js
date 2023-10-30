@@ -46,6 +46,10 @@ export const StyledHeading = styled(Typography)`
   font-weight: 600;
 
   text-align: center;
+
+  @media only screen and (max-width: ${breakpoint.desktop}) {
+    font-size: 1.25rem;
+  }
 `;
 
 export const FormBox = styled(Box)`
@@ -103,9 +107,14 @@ export const StyledButton = styled(Button)`
     color: var(--primary-contrast, #fff);
   }
   /* button */
+
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
+
+  @media only screen and (max-width: ${breakpoint.desktop}) {
+    font-size: 0.875rem;
+  }
 `;
 
 export const StyledTypo = styled(Typography)`
@@ -125,5 +134,9 @@ export const StyledTypo = styled(Typography)`
   @media (min-width: 900px) {
     margin-left: 13rem; /* Margin for extra large screens */
     margin-right: 10rem; /* Margin for extra large screens */
+  }
+
+  @media (max-width: ${breakpoint.desktop}) {
+    font-size: 1.25rem;
   }
 `;
