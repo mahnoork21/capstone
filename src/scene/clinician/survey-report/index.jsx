@@ -1,6 +1,25 @@
-import { Button } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import ReportHeader from "./components/report-header";
-import { Container } from "./styled";
+import {
+  Container,
+  StyledTab,
+  BoldTableCell,
+  StyledTableRow,
+  StyledTabs,
+  TabsWrapper,
+  StyledTableContainer,
+} from "./styled";
 import ActivityAnalysis from "./components/activity-analysis";
 import { useEffect, useState } from "react";
 import WeightedCalculation from "./components/weighted-calculation";
@@ -8,6 +27,9 @@ import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey"
 import { getSurveyById } from "@/firebase/surveyRepo";
 import { parseDataToCsvFormatYoungChild } from "./helpers/download-helper";
 import { Parser } from "json2csv";
+import PieChartOutlineIcon from "@mui/icons-material/PieChartOutline";
+import TableViewIcon from "@mui/icons-material/TableView";
+import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 
@@ -20,6 +42,7 @@ const SurveyReport = () => {
   const [surveyId, setSurveyId] = useState("30niDrNz2WnfgDBQlivC");
   const [loading, setLoading] = useState(true);
   const [surveyData, setSurveyData] = useState({});
+  const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
     const fetchSurvey = async (id) => {
@@ -41,7 +64,7 @@ const SurveyReport = () => {
           fetchSurvey(surveyId);
         });
       } catch (error) {
-        // handle error
+        console.log("Error", error);
       } finally {
         setLoading(false);
       }
@@ -99,6 +122,13 @@ const SurveyReport = () => {
         // Handle error if necessary
       });
   };
+
+  const handleTabValueChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  console.log("loading = ", loading);
+
   return (
     <>
       {loading ? (
@@ -119,11 +149,94 @@ const SurveyReport = () => {
             </Button>
           </div>
 
-          {youngChildSurvey.map(({ questionId }) => (
-            <ActivityAnalysis survey={surveyData} questionId={questionId} />
-          ))}
+          <StyledTabs value={tabValue} onChange={handleTabValueChange}>
+            <StyledTab
+              icon={<PieChartOutlineIcon />}
+              label="Charts"
+              iconPosition="start"
+              id="simple-tab-0"
+            />
+            <StyledTab
+              icon={<TableViewIcon />}
+              iconPosition="start"
+              label="Raw Score"
+              id="simple-tab-1"
+            />
+          </StyledTabs>
 
-          <WeightedCalculation />
+          {tabValue === 0 ? (
+            <>
+              {youngChildSurvey.map(({ questionId }) => (
+                <ActivityAnalysis survey={surveyData} questionId={questionId} />
+              ))}
+
+              <WeightedCalculation />
+            </>
+          ) : (
+            Object.keys(surveyData).length && (
+              <StyledTableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {[
+                        "",
+                        "Activity",
+                        "Is the activity done?",
+                        "Usage",
+                        "Ease of Use",
+                        "Usefulness",
+                        "Without Prosthesis",
+                      ].map((headerItem) => (
+                        <BoldTableCell align="center">
+                          {headerItem}
+                        </BoldTableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {youngChildActivity.map((activity, index) => {
+                      const currentActivityResponse =
+                        surveyData.activity_response[activity.id];
+                      return (
+                        <StyledTableRow key={activity.id}>
+                          <BoldTableCell align="center">
+                            {index + 1}
+                          </BoldTableCell>
+                          <BoldTableCell
+                            component="th"
+                            scope="row"
+                            align="center"
+                          >
+                            {activity.id}
+                          </BoldTableCell>
+                          {youngChildSurvey.map((question, index) => {
+                            if (!currentActivityResponse) {
+                              return <TableCell align="center">N/A</TableCell>;
+                            }
+                            const surveyValue =
+                              currentActivityResponse[question.questionId]
+                                .value ?? 0;
+
+                            const option = question.options.find(
+                              (option) => option.value === surveyValue
+                            );
+
+                            return (
+                              <TableCell align="center">
+                                {option.rawScoreLabel ??
+                                  option.labelShort ??
+                                  option.label}
+                              </TableCell>
+                            );
+                          })}
+                        </StyledTableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </StyledTableContainer>
+            )
+          )}
         </Container>
       )}
     </>

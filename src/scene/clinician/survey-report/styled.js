@@ -1,5 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
+import { Tab, TableCell, TableContainer, TableRow, Tabs } from "@mui/material";
 
 export const Container = styled.div`
   margin-right: 50px;
@@ -43,4 +44,30 @@ export const Container = styled.div`
       float: right;
     }
   }
+`;
+
+export const StyledTab = styled(Tab)`
+  font-weight: bold;
+`;
+
+export const StyledTabs = styled(Tabs)`
+  border-bottom: 1px solid lightgray;
+`;
+
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+export const BoldTableCell = styled(TableCell)`
+  font-weight: bold;
+`;
+
+export const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
 `;
