@@ -1,5 +1,10 @@
-import ClientHome from "../../scene/client";
+import ClientHome from "../../scene/client/home";
+import useSurveyIdCheck from "@/utils/custom-hooks/useSurveyIdCheck";
 
-const ClientHomePage = () => <ClientHome />;
+const ClientHomePage = () => {
+  useSurveyIdCheck();
+
+  return <ClientHome />;
+};
 
 export default ClientHomePage;

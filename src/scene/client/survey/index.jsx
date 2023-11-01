@@ -1,6 +1,9 @@
 import MainContainer from "@/shared/components/main-container";
 import {
-  ResponseGuideContainer,
+  EditModeButtons,
+  MiniGuidePopover,
+  MiniGuidePopoverWrapper,
+  StyledPopover,
   StyledStepper,
   StyledTextField,
   SurveyContainer,
@@ -8,6 +11,7 @@ import {
 } from "./styled";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
+  Drawer,
   Popover,
   Radio,
   RadioGroup,
@@ -31,11 +35,19 @@ import { ClientContext } from "@/context/ClientContext";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
 import { ProgressLabel } from "./components/activity-info-heading/styled";
+import ActivityGuideInstructionArea from "@/shared/client/section/activity-guide-instruction-area";
+import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-scale-instruction-area";
+import MiniGuide from "./components/mini-guide";
+import PrimaryClientButton from "@/shared/client/buttons/primary";
+import SecondaryClientButton from "@/shared/client/buttons/secondary";
 
 const SurveyContent = () => {
   const {
+    isEditMode,
+    setIsEditMode,
     currentActivityIndex,
     currentAnswer,
+    setCurrentAnswer,
     setCurrentActivityIndex,
     updateAnswer,
     errors,
@@ -44,6 +56,7 @@ const SurveyContent = () => {
     currentSurveyId,
     setHeaderButtonType,
     activityResponses,
+    breakpoint,
   } = useContext(ClientContext);
   const currentActivity = youngChildActivity[currentActivityIndex];
   const [steps, setSteps] = useState();
@@ -60,19 +73,24 @@ const SurveyContent = () => {
   const [miniGuideAnchorEl, setMiniGuideAnchorEL] = useState(null);
   const [miniGuideInfo, setMiniGuideInfo] = useState(null);
   const [isUpdatingdb, setIsUpdatingdb] = useState(false);
+  const [currentAnswerCopy, setCurrentAnswerCopy] = useState();
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
     : false;
 
   useEffect(() => {
-    console.log(" === Setting save and exit");
-    setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
+    isEditMode
+      ? setHeaderButtonType(HeaderButtonType.SAVE_CHANGES)
+      : setHeaderButtonType(HeaderButtonType.SAVE_AND_EXIT);
   }, []);
 
   //Generates steps to be used in Stepper
   useEffect(() => {
     if (currentAnswer) {
+      if (!currentAnswerCopy) {
+        setCurrentAnswerCopy(currentAnswer);
+      }
       const steps = youngChildSurvey.map((surveyQuestion) => {
         const response = currentAnswer[surveyQuestion.questionId];
         const checkedResponse = checkIfResponseIsValid(
@@ -159,10 +177,24 @@ const SurveyContent = () => {
 
         //end of survey
         if (currentActivityIndex + 1 === youngChildActivity.length) {
-          router.push("/client/summary");
+          router.push({
+            pathname: "/client/summary",
+            query: {
+              surveyId: currentSurveyId,
+            },
+          });
           return;
         }
-        setCurrentActivityIndex(currentActivityIndex + 1);
+
+        setIsEditMode(false);
+        isEditMode
+          ? router.push({
+              pathname: "/client/summary",
+              query: {
+                surveyId: currentSurveyId,
+              },
+            })
+          : setCurrentActivityIndex(currentActivityIndex + 1);
       } catch (error) {
         console.log(`Error when updating or getting`, error);
         return;
@@ -218,6 +250,16 @@ const SurveyContent = () => {
     setMiniGuideAnchorEL(null);
   };
 
+  const handleDiscardButtonClick = () => {
+    setCurrentAnswer(currentAnswerCopy);
+    router.push({
+      pathname: "/client/summary",
+      query: {
+        surveyId: currentSurveyId,
+      },
+    });
+  };
+
   console.log("[Debug] Activity == ", currentActivity);
   console.log("[Debug] Answer == ", currentAnswer);
   console.log("[Debug] Steps == ", steps);
@@ -259,20 +301,26 @@ const SurveyContent = () => {
                     name={`radio-buttons-group-${step.questionId}`}
                     value={getSavedAnswer(step.questionId)}
                   >
-                    {step.options.map(({ questionId, value, label }) => {
-                      return (
-                        <Option
-                          checked={getSavedAnswer(step.questionId) == value}
-                          value={value}
-                          control={<Radio />}
-                          name={`radio-buttons-${questionId}`}
-                          label={label}
-                          updateAnswer={updateAnswer}
-                          questionId={step.questionId}
-                          handleOnMiniGuideClick={handleOnMiniGuideClick}
-                        />
-                      );
-                    })}
+                    {step.options.map(
+                      (
+                        { questionId, value, label, miniGuideType },
+                        optionIndex
+                      ) => {
+                        return (
+                          <Option
+                            checked={getSavedAnswer(step.questionId) == value}
+                            value={value}
+                            control={<Radio />}
+                            name={`radio-buttons-${questionId}`}
+                            label={label}
+                            updateAnswer={updateAnswer}
+                            questionId={step.questionId}
+                            miniGuideType={miniGuideType}
+                            handleOnMiniGuideClick={handleOnMiniGuideClick}
+                          />
+                        );
+                      }
+                    )}
                   </RadioGroup>
                   {step.questionId === "do" && currentAnswer.do.value === 1 && (
                     <MessageToUser
@@ -349,81 +397,75 @@ const SurveyContent = () => {
                       </>
                     )}
 
-                  {step.questionId !== "do" &&
-                    step.questionId === "how" &&
-                    currentAnswer.how.value !== 0 && (
-                      <>
-                        <StyledTextField
-                          style={{ marginTop: 12 }}
-                          id="comment-input"
-                          label="Comments"
-                          variant="filled"
-                          multiline
-                          value={currentAnswer[step.questionId].comment}
-                          onChange={(event) => {
-                            updateAnswer(
-                              step.questionId,
-                              event.target.value,
-                              "comment"
-                            );
-                          }}
-                        />
-                        <MessageToUser
-                          message={youngChildSurvey[stepIndex]?.comment?.hint}
-                          questionId={step.questionId}
-                        />
-                      </>
-                    )}
+                  {(step.questionId === "how" &&
+                    currentAnswer.how.value !== 0) ||
+                  ["well", "useful", "without"].includes(step.questionId) ? (
+                    <>
+                      <StyledTextField
+                        style={{ marginTop: 12 }}
+                        id="comment-input"
+                        label="Comments"
+                        variant="filled"
+                        multiline
+                        value={currentAnswer[step.questionId].comment}
+                        onChange={(event) => {
+                          updateAnswer(
+                            step.questionId,
+                            event.target.value,
+                            "comment"
+                          );
+                        }}
+                      />
+                      <MessageToUser
+                        message={youngChildSurvey[stepIndex]?.comment?.hint}
+                        questionId={step.questionId}
+                      />
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </StepContent>
               </Step>
             ) : null;
           })}
         </StyledStepper>
 
-        <SurveyNavigationWrapper>
-          {currentActivityIndex !== 0 && (
+        {isEditMode ? (
+          <EditModeButtons>
+            <PrimaryClientButton onClick={handleOnNextButtonClicked}>
+              Save Changes
+            </PrimaryClientButton>
+            <SecondaryClientButton onClick={handleDiscardButtonClick}>
+              Discard Changes
+            </SecondaryClientButton>
+          </EditModeButtons>
+        ) : (
+          <SurveyNavigationWrapper>
+            {currentActivityIndex !== 0 && (
+              <SurveyNavButton
+                variant="outlined"
+                onClick={handleOnBackButtonClicked}
+                isBack={true}
+                isLoading={isUpdatingdb}
+              >
+                Back
+              </SurveyNavButton>
+            )}
+            <ProgressLabel>
+              {currentActivityIndex + 1} of {youngChildActivity.length}{" "}
+              Activities
+            </ProgressLabel>
             <SurveyNavButton
               variant="outlined"
-              onClick={handleOnBackButtonClicked}
-              isBack={true}
+              onClick={handleOnNextButtonClicked}
               isLoading={isUpdatingdb}
             >
-              Back
+              Next
             </SurveyNavButton>
-          )}
-          <ProgressLabel>
-            {currentActivityIndex + 1} of {youngChildActivity.length} Activities
-          </ProgressLabel>
-          <SurveyNavButton
-            variant="outlined"
-            onClick={handleOnNextButtonClicked}
-            isLoading={isUpdatingdb}
-          >
-            Next
-          </SurveyNavButton>
-        </SurveyNavigationWrapper>
-      </SurveyContainer>
-      <Popover
-        id={"activity-guide"}
-        open={Boolean(activityGuideAnchorEL)}
-        anchorEl={activityGuideAnchorEL}
-        onClose={handleOnActivityClose}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-      >
-        {isActivityGuide ? (
-          <ResponseGuideContainer>Activity Guide</ResponseGuideContainer>
-        ) : (
-          <ResponseGuideContainer>Difficulty Scale</ResponseGuideContainer>
+          </SurveyNavigationWrapper>
         )}
-      </Popover>
-      <Popover
+      </SurveyContainer>
+      <MiniGuidePopover
         id={"mini-guide"}
         open={Boolean(miniGuideAnchorEl)}
         anchorEl={miniGuideAnchorEl}
@@ -437,14 +479,56 @@ const SurveyContent = () => {
           horizontal: "center",
         }}
       >
-        {miniGuideInfo ? (
-          <div
-            style={{ width: "300px", height: "200px" }}
-          >{`question:  ${miniGuideInfo.questionId}, response:  ${miniGuideInfo.label}`}</div>
-        ) : (
-          ""
+        {miniGuideInfo && (
+          <MiniGuidePopoverWrapper>
+            <MiniGuide
+              questionId={miniGuideInfo.questionId}
+              miniGuideType={miniGuideInfo.miniGuideType}
+            />
+          </MiniGuidePopoverWrapper>
         )}
-      </Popover>
+      </MiniGuidePopover>
+      {breakpoint === "desktop" ? (
+        <StyledPopover
+          id={"survey-activity-guide"}
+          open={Boolean(activityGuideAnchorEL)}
+          anchorEl={activityGuideAnchorEL}
+          onClose={handleOnActivityClose}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "right",
+          }}
+        >
+          {isActivityGuide ? (
+            <ActivityGuideInstructionArea
+              isInSurvey={true}
+              handleOnActivityClose={handleOnActivityClose}
+            />
+          ) : (
+            <DifficultyScaleInstructionArea
+              isInSurvey={true}
+              handleOnActivityClose={handleOnActivityClose}
+            />
+          )}
+        </StyledPopover>
+      ) : (
+        <Drawer
+          anchor={"right"}
+          open={Boolean(activityGuideAnchorEL)}
+          onClose={handleOnActivityClose}
+          variant="temporary"
+        >
+          {isActivityGuide ? (
+            <ActivityGuideInstructionArea isInSurvey={true} />
+          ) : (
+            <DifficultyScaleInstructionArea isInSurvey={true} />
+          )}
+        </Drawer>
+      )}
     </MainContainer>
   );
 };
