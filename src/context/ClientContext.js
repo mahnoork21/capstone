@@ -16,9 +16,12 @@ export const ClientContext = createContext();
 
 export const ClientProvider = ({ children }) => {
   const [currentSurveyId, setCurrentSurveyId] = useState(null);
+  const [survey, setSurvey] = useState();
+  const [isEditMode, setIsEditMode] = useState(false);
+
   const [user, setUser] = useState(null);
   const [breakpoint, setBreakpoint] = useState(`desktop`);
-  const [survey, setSurvey] = useState();
+
   const [headerButtonType, setHeaderButtonType] = useState(
     HeaderButtonType.START_SURVEY
   );
@@ -28,6 +31,7 @@ export const ClientProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
 
   const [isNavBarVisible, setIsNavBarVisible] = useState(true);
+  const [didViewResponseGuide, setDidViewResponseGuide] = useState(false);
 
   const router = useRouter();
 
@@ -81,8 +85,20 @@ export const ClientProvider = ({ children }) => {
       setSurvey(survey);
 
       if (survey.is_submitted) {
-        router.push("/client/survey-complete");
+        router.push({
+          pathname: "/client/survey-complete",
+          query: {
+            surveyId: currentSurveyId,
+          },
+        });
       }
+    } else {
+      router.push({
+        pathname: "/client",
+        query: {
+          ["error-status"]: "invalid-survey-id",
+        },
+      });
     }
   };
 
@@ -135,9 +151,28 @@ export const ClientProvider = ({ children }) => {
   const handleStartSurveyClick = useCallback(() => {
     if (survey) {
       if (currentActivityIndex + 1 === youngChildActivity.length) {
-        router.push("/client/summary");
+        router.push({
+          pathname: "/client/summary",
+          query: {
+            surveyId: currentSurveyId,
+          },
+        });
       } else {
-        router.push("/client/survey");
+        if (didViewResponseGuide) {
+          router.push({
+            pathname: "/client/survey",
+            query: {
+              surveyId: currentSurveyId,
+            },
+          });
+        } else {
+          router.push({
+            pathname: "/client/response-guide",
+            query: {
+              surveyId: currentSurveyId,
+            },
+          });
+        }
       }
     } else {
       //TODO show error message that error not found in homepage
@@ -147,27 +182,28 @@ export const ClientProvider = ({ children }) => {
         return "Survey Id is not valid. Please contact your clinician.";
       }
     }
-  }, [currentSurveyId, survey, currentActivityIndex]);
+  }, [currentSurveyId, survey, currentActivityIndex, didViewResponseGuide]);
 
   //Called when user selects an option
   const updateAnswer = (questionId, answer, type) => {
     switch (type) {
       case "value":
         currentAnswer[questionId].value = answer;
+        const questionIndex = questionIds.indexOf(questionId);
+        questionIds.forEach((questionId, index) => {
+          if (index > questionIndex) {
+            currentAnswer[questionId] = {};
+          }
+        });
         break;
       case "body-part":
         currentAnswer[questionId]["bodypart"] = answer;
         break;
       case "commentForNotSure":
         currentAnswer[questionId]["commentForNotSure"] = answer;
+      case "comment":
+        currentAnswer[questionId]["comment"] = answer;
     }
-
-    const questionIndex = questionIds.indexOf(questionId);
-    questionIds.forEach((questionId, index) => {
-      if (index > questionIndex) {
-        currentAnswer[questionId] = {};
-      }
-    });
 
     setErrors({});
     setCurrentAnswer({
@@ -175,7 +211,7 @@ export const ClientProvider = ({ children }) => {
     });
   };
 
-  console.log("[Debug] SurveyId == ", currentSurveyId);
+  console.log("[Debug] SurveyId == ", currentSurveyId, didViewResponseGuide);
   console.log("[Debug] Survey == ", survey);
   console.log("[Debug] Activity Response == ", survey?.activity_response);
   console.log("[Debug] Activity index == ", currentActivityIndex);
@@ -184,21 +220,26 @@ export const ClientProvider = ({ children }) => {
     <ClientContext.Provider
       value={{
         currentSurveyId,
+        setCurrentSurveyId: setCurrentSurveyId,
+        survey,
         setSurvey,
+        isEditMode,
+        setIsEditMode: setIsEditMode,
         activityResponses,
         breakpoint,
         headerButtonType,
         setHeaderButtonType: setHeaderButtonType,
-        setCurrentSurveyId: setCurrentSurveyId,
         handleStartSurveyClick: handleStartSurveyClick,
         currentActivityIndex,
         currentAnswer,
+        setCurrentAnswer,
         updateAnswer,
         setCurrentActivityIndex: setCurrentActivityIndex,
         errors,
         setErrors,
         isNavBarVisible,
         setIsNavBarVisible: setIsNavBarVisible,
+        setDidViewResponseGuide: setDidViewResponseGuide,
       }}
     >
       {children}

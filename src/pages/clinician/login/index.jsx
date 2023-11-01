@@ -1,4 +1,4 @@
-import LoginLanding from "@/scene/clinician";
+import LoginLanding from "@/scene/clinician/login";
 
 const LoginLandingPage = () => {
   return <LoginLanding />;

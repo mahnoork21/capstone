@@ -40,6 +40,7 @@ const handleCloseSnackbar = (event, reason) => {
   }
   // setOpen(false);
 };
+
 const PersonalDetils = () => {
   const {
     control,
@@ -199,7 +200,7 @@ const OrganizationDetails = () => {
           />
         )}
 
-        <Box display={"block"}>
+        {/* <Box display={"block"}>
           <Labels>Clinician Id</Labels>
           <Controller
             control={control}
@@ -218,7 +219,7 @@ const OrganizationDetails = () => {
             onClose={handleCloseSnackbar}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
-        )}
+        )} */}
         <Box display={"block"}>
           <Labels>Role</Labels>
           <Controller
