@@ -14,9 +14,9 @@ const ClientSurveyCard = ({
   clientId,
   surveyId,
   type,
-  creationDate,
-  completionDate,
-  percentageComplete,
+  // creationDate,
+  // completionDate,
+  // percentageComplete,
 }) => {
   //   var today = new Date();
   //   console.log(today);
@@ -34,9 +34,9 @@ const ClientSurveyCard = ({
     <>
       <StyledCard>
         <StyledCardContent>
-          <StyledTypography1>Client Id:</StyledTypography1>
+          <StyledTypography1>Client ID:</StyledTypography1>
           <StyledTypography2>{clientId}</StyledTypography2>
-          <StyledTypography1>Survey Id:</StyledTypography1>
+          <StyledTypography1>Survey ID:</StyledTypography1>
           <StyledTypography2>{surveyId}</StyledTypography2>
           <StyledTypography1>Type:</StyledTypography1>
           <StyledTypography2>{type}</StyledTypography2>
