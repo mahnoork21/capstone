@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AccordionCard from "./login/accordionCard";
+import AccordionCard from "./accordionCard";
 import {
   Labels,
   StyledContainer,

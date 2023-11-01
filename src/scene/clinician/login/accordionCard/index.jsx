@@ -13,7 +13,6 @@ const AccordionCard = () => {
         <AccordionSummary
           expandIcon={<ArrowForwardIosIcon />}
           id="panel1-header"
-          aria-controler="panel1-content"
         >
           <StyledTypography>
             <b>What is PUFI-2?</b>
@@ -35,7 +34,6 @@ const AccordionCard = () => {
         <AccordionSummary
           expandIcon={<ArrowForwardIosIcon />}
           id="panel2-header"
-          aria-controler="panel2-content"
         >
           <StyledTypography>
             <b>Who is the PUFI-2 used for?</b>
@@ -54,7 +52,6 @@ const AccordionCard = () => {
         <AccordionSummary
           expandIcon={<ArrowForwardIosIcon />}
           id="panel3-header"
-          aria-controler="panel3-content"
         >
           <StyledTypography>
             <b>Whai is the assessment process?</b>
@@ -76,7 +73,6 @@ const AccordionCard = () => {
         <AccordionSummary
           expandIcon={<ArrowForwardIosIcon />}
           id="panel4-header"
-          aria-controler="panel4-content"
         >
           <StyledTypography>
             <b>When should the PUFI-2 be administered?</b>
@@ -98,7 +94,6 @@ const AccordionCard = () => {
         <AccordionSummary
           expandIcon={<ArrowForwardIosIcon />}
           id="panel5-header"
-          aria-controler="panel5-content"
         >
           <StyledTypography>
             <b>Background and Research Involvement</b>
