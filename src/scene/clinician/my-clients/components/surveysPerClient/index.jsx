@@ -29,6 +29,7 @@ export default function SurveysPerClient({
   handleSurveysPageNoClick,
   toggleFilterPanelClick,
   addNewSurveyClick,
+  handleListItemClick,
 }) {
   const { breakpoint } = useContext(ClinicianContext);
 

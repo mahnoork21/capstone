@@ -10,9 +10,17 @@ import {
   Typography,
 } from "@mui/material";
 
+import { breakpoint } from "@/styles/breakpoints";
+
 export const StyledMainCard = styled(Card)`
-  margin-left: 16px;
   height: 100%;
+  max-width: 500px;
+  flex-grow: 1;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    margin-left: 16px;
+    width: 500px;
+  }
 `;
 
 export const StyledCardContent = styled(CardContent)`
@@ -38,7 +46,6 @@ export const HeadingTypography = styled(Typography)`
 export const FormBox = styled(Box)`
   display: flex;
   flex-direction: column;
-  width: 500px;
   margin-top: 24px;
 `;
 

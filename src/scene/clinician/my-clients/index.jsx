@@ -21,11 +21,11 @@ const clientsListData = [
     clientAddDate: "Added - September 16th, 2023",
   },
   {
-    clientId: "Client-1235Client-1235Client-1235",
+    clientId: "Client-1235Client-1235",
     clientAddDate: "Added - September 16th, 2023",
   },
   {
-    clientId: "Client-1235Client-1235Client-123",
+    clientId: "Client-1235Client-123",
     clientAddDate: "Added - September 16th, 2023",
   },
   {
@@ -286,6 +286,7 @@ const MyClients = () => {
                 handleSurveysPageNoClick={handleSurveysPageNoClick}
                 toggleFilterPanelClick={toggleFilterPanelClick}
                 addNewSurveyClick={toggleAddNewSurveyCard}
+                handleListItemClick={handleListItemClick}
               />
             )}
           </>

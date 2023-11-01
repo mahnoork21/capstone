@@ -19,7 +19,7 @@ export const StyledCard = styled(Card)`
   flex-shrink: 0;
   width: 100%;
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 250px;
+    width: 264px;
     min-height: 175px;
     flex-direction: column;
   }

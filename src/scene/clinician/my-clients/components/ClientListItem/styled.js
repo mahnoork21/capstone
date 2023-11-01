@@ -16,6 +16,7 @@ export const StyledListItemButton = styled(ListItemButton)`
   width: 100%;
   padding: 8px;
   flex-direction: row;
+  flex-grow: 1;
   align-items: center;
   border-radius: 8px;
   margin: 8px 0 0 0;
@@ -31,6 +32,6 @@ export const StyledListItemButton = styled(ListItemButton)`
   }
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 200px;
+    width: 260px;
   }
 `;

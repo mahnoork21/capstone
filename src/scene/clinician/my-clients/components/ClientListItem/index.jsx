@@ -27,6 +27,7 @@ const ClientListItem = ({
           {clientAddDate}
         </StyledClientAddDateTypography>
       </ListItemText>
+
       {breakpoint === "mobile" && <ChevronRightOutlined />}
     </StyledListItemButton>
   );

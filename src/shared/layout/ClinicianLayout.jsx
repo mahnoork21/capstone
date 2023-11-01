@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Toolbar, Box, CssBaseline } from "@mui/material";
+import { Toolbar, CssBaseline } from "@mui/material";
 
 import Footer from "../clinician/footer";
 import AuthHeader from "../clinician/header/AuthHeader";
@@ -13,8 +13,6 @@ import {
 } from "./clinician-shared";
 import ClinicianProviders from "./ClinicianProviders";
 import Navbar from "../clinician/navbar";
-
-const drawerWidth = 280;
 
 const ClinicianLayout = ({ window, children }) => {
   const router = useRouter();
@@ -44,7 +42,6 @@ const ClinicianLayout = ({ window, children }) => {
             window={window}
             mobileOpen={mobileOpen}
             handleDrawerToggle={handleDrawerToggle}
-            drawerWidth={drawerWidth}
           />
 
           <ContentBox component="main">

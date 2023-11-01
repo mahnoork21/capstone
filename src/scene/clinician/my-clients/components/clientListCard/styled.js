@@ -11,19 +11,19 @@ import {
 import { breakpoint } from "@/styles/breakpoints";
 
 export const StyledClientListCard = styled(Card)`
-  display: inline-flex;
-  min-height: 672px;
-  height: 100%;
+  display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
   flex-shrink: 0;
+  align-content: stretch;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0);
   box-shadow: 0 0;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 220px;
+    min-height: 672px;
+    width: 280px;
     background: #fff;
   }
 `;
@@ -33,7 +33,6 @@ export const StyledCardContent = styled(CardContent)`
   flex-direction: column;
   padding: 0;
   margin-bottom: 0;
-
   @media only screen and (min-width: ${breakpoint.desktop}) {
     padding: 8px 8px 0 10px;
   }
@@ -41,6 +40,8 @@ export const StyledCardContent = styled(CardContent)`
 
 export const StyledClientsList = styled(List)`
   padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const StyledSearchBox = styled(Box)`
@@ -53,7 +54,7 @@ export const StyledSearchBox = styled(Box)`
   margin-top: 8px;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    width: 200px;
+    width: 260px;
     background: var(--pufi-grey-light, #f2f2f2);
   }
 `;
@@ -66,8 +67,10 @@ export const StyledSearchInputBase = styled(InputBase)`
 export const StyledCardActions = styled(CardActions)`
   display: flex;
   justify-content: space-between;
-  padding-top: 0;
-  padding-left: 16px;
+  margin-top: 8px;
+  padding: 4px 0 8px 16px;
+  background-color: var(--primary-contrast, #fff);
+  border-radius: 8px;
 `;
 
 export const NumberOfClientsTypography = styled(Typography)`
