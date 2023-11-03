@@ -24,6 +24,8 @@ import {
   Labels,
   StyledContainer,
   StyledTextfield,
+  ColumnBox,
+  RowBox,
   errorSnackbar,
 } from "./styled";
 import {
@@ -34,6 +36,16 @@ import {
 } from "react-hook-form";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
+const {
+  firstName,
+  lastName,
+  email,
+  password,
+  confirmPassword,
+  organization,
+  clinicianId,
+  role,
+} = user;
 const handleCloseSnackbar = (event, reason) => {
   if (reason === "clickaway") {
     return;
@@ -50,119 +62,145 @@ const PersonalDetils = () => {
   return (
     <>
       <React.Fragment>
-        <Box display={"block"}>
-          <Labels>First Name</Labels>
-          <Controller
-            control={control}
-            name="firstName"
-            rules={{
-              required: "first name is required",
-            }}
-            render={({ field }) => (
-              <StyledTextfield
-                id="firstName"
-                inputProps={{ "aria-label": "controlled" }}
-                {...field}
+        <Box display={"flex"}>
+          <ColumnBox>
+            <RowBox>
+              <Labels>First Name</Labels>
+              <Controller
+                control={control}
+                name="firstName"
+                rules={{
+                  required: "first name is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield
+                    id="firstName"
+                    value={user.firstName}
+                    onChange={data}
+                    inputProps={{ "aria-label": "controlled" }}
+                    {...field}
+                  />
+                )}
+              />
+            </RowBox>
+
+            {errors.firstName && (
+              <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                message={errors.firstName.message}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
               />
             )}
-          />
-        </Box>
-        {errors.firstName && (
-          <Snackbar
-            open={open}
-            autoHideDuration={3000}
-            message={errors.firstName.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
 
-        <Box display={"block"}>
-          <Labels>Last Name</Labels>
-          <Controller
-            control={control}
-            name="lastName"
-            rules={{
-              required: "last name is required",
-            }}
-            render={({ field }) => (
-              <StyledTextfield id="last-name" {...field} />
+            <RowBox>
+              <Labels>Email</Labels>
+              <Controller
+                control={control}
+                name="email"
+                rules={{
+                  required: "email is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield id="email" value={user.email} {...field} />
+                )}
+              />
+            </RowBox>
+            {errors.email && (
+              <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                message={errors.email.message}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              />
             )}
-          />
-        </Box>
-        {errors.lastName && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.lastName.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
-        <Box display={"block"}>
-          <Labels>Email</Labels>
-          <Controller
-            control={control}
-            name="email"
-            rules={{
-              required: "email is required",
-            }}
-            render={({ field }) => <StyledTextfield id="email" {...field} />}
-          />
-        </Box>
-        {errors.email && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.email.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
-        <Box display={"block"}>
-          <Labels>Password</Labels>
-          <Controller
-            control={control}
-            name="password"
-            rules={{
-              required: "password is required",
-            }}
-            render={({ field }) => (
-              <StyledTextfield type="password" id="pwd" {...field} />
+
+            <RowBox>
+              <Labels>Password</Labels>
+              <Controller
+                control={control}
+                name="password"
+                rules={{
+                  required: "password is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield
+                    type="password"
+                    id="pwd"
+                    value={user.password}
+                    {...field}
+                  />
+                )}
+              />
+            </RowBox>
+            {errors.password && (
+              <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                message={errors.password.message}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              />
             )}
-          />
-        </Box>
-        {errors.password && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.password.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
-        <Box display={"block"}>
-          <Labels>Confirm Password</Labels>
-          <Controller
-            control={control}
-            name="confirmPassword"
-            rules={{
-              required: "confirm password",
-            }}
-            render={({ field }) => (
-              <StyledTextfield type="password" id="cpwd" {...field} />
+            <RowBox>
+              <Labels>Confirm Password</Labels>
+              <Controller
+                control={control}
+                name="confirmPassword"
+                rules={{
+                  required: "confirm password",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield
+                    type="password"
+                    id="cpwd"
+                    value={user.confirmpassword}
+                    {...field}
+                  />
+                )}
+              />
+            </RowBox>
+            {errors.confirmPassword && (
+              <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                message={errors.confirmPassword.message}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              />
             )}
-          />
+          </ColumnBox>
+          <ColumnBox>
+            <RowBox>
+              <Labels>Last Name</Labels>
+              <Controller
+                control={control}
+                name="lastName"
+                rules={{
+                  required: "last name is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield
+                    id="last-name"
+                    value={user.lastName}
+                    {...field}
+                  />
+                )}
+              />
+            </RowBox>
+            {errors.lastName && (
+              <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                message={errors.lastName.message}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              />
+            )}
+          </ColumnBox>
         </Box>
-        {errors.confirmPassword && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.confirmPassword.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
       </React.Fragment>
     </>
   );
@@ -174,6 +212,7 @@ const OrganizationDetails = () => {
     formState: { errors },
   } = useFormContext();
   console.log(errors);
+
   return (
     <>
       <React.Fragment>
@@ -186,7 +225,11 @@ const OrganizationDetails = () => {
               required: "organization is required",
             }}
             render={({ field }) => (
-              <StyledTextfield id="organization" {...field} />
+              <StyledTextfield
+                id="organization"
+                value={user.organization}
+                {...field}
+              />
             )}
           />{" "}
         </Box>
@@ -228,7 +271,9 @@ const OrganizationDetails = () => {
             rules={{
               required: "role is required",
             }}
-            render={({ field }) => <StyledTextfield id="role" {...field} />}
+            render={({ field }) => (
+              <StyledTextfield id="role" value={user.role} {...field} />
+            )}
           />
         </Box>
         {errors.role && (
@@ -236,6 +281,8 @@ const OrganizationDetails = () => {
             open={open}
             autoHideDuration={2000}
             message={errors.role.message}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
       </React.Fragment>
@@ -253,6 +300,7 @@ const TOS = () => {
     formState: { errors },
   } = useFormContext();
   console.log(errors);
+
   return (
     <>
       <React.Fragment>
@@ -288,13 +336,14 @@ const TOS = () => {
             checked={unchecked}
             name="tos"
             rules={{
-              required: "agrreee please",
+              required: "agrree please",
             }}
             render={({ field }) => (
               <Checkbox
                 sx={{ display: "inline-block" }}
                 id="tos"
                 onChange={handleChange}
+                value={field.value ? true : false}
                 inputProps={{ "aria-label": "controlled" }}
                 {...field}
               />
@@ -320,11 +369,14 @@ function getStepContent(step) {
   const router = useRouter();
   switch (step) {
     case 0:
+      console.log("inside personal details", step);
       return <PersonalDetils />;
 
     case 1:
+      console.log("inside organization details", step);
       return <OrganizationDetails />;
     case 2:
+      console.log("inside TOS details", step);
       return <TOS />;
 
     default:
@@ -338,8 +390,20 @@ function Alert(props) {
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const { control, handleSubmit, errors } = useForm();
 
+  const data = (e) => {
+    firstName = e.target.firstName;
+    value = e.target.value;
+    setUser({ ...user, [firstName]: value });
+  };
   const methods = useForm({
     defaultValues: {
       firstName: "",
@@ -355,11 +419,12 @@ const Registration = () => {
 
   const handleNext = (data) => {
     console.log(data);
+
     if (activeStep == steps.length - 1) {
       fetch("https://jsonplaceholder.typicode.com/comments")
         .then((data) => data.json())
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setOpen(true);
         })
         .catch((error) => {
@@ -385,7 +450,27 @@ const Registration = () => {
         setOpen(true);
       } else {
         console.log("daata is complete");
+
+        data.preventDefault();
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            password,
+            confirmPassword,
+            organization,
+            clinicianId,
+            role,
+          }),
+        };
+
         setActiveStep(activeStep + 1);
+        console.log(activeStep);
       }
     }
   };
@@ -403,15 +488,10 @@ const Registration = () => {
       );
     }
   };
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
+
   return (
     <>
-      <StyledContainer justifyContent="space-around">
+      <StyledContainer>
         <StyledPaper>
           <StyledTypo>Create a new Clinician account</StyledTypo>
 
@@ -440,7 +520,10 @@ const Registration = () => {
                     })}
                   </Stepper>
                   <StyledBox>
-                    <form onSubmit={methods.handleSubmit(handleNext)}>
+                    <form
+                      onSubmit={methods.handleSubmit(handleNext)}
+                      method="POST"
+                    >
                       <FormBox>
                         {getStepContent(activeStep)}
 
@@ -476,12 +559,14 @@ const Registration = () => {
                     <Snackbar
                       open={open}
                       autoHideDuration={1000}
-                      onClose={handleClose}
+                      onClose={handleCloseSnackbar}
+                      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                      message="you have successfully logged in"
                     >
                       {/* <Alert onClose={handleClose} severity="success">
                         {" "}
                         Success! Data saved.
-                      </Alert> */}
+                            </Alert> */}
                     </Snackbar>
                   </StyledBox>
                 </StepperBox>
@@ -498,7 +583,6 @@ const Registration = () => {
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
                 id="panel1-header"
-                aria-controler="panel1-content"
               >
                 <Typography>
                   <b>What is PUFI-2 ?</b>
@@ -521,7 +605,6 @@ const Registration = () => {
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
                 id="panel2-header"
-                aria-controler="panel2-content"
               >
                 <Typography>
                   <b>Who is the PUFI-2 used for ?</b>
@@ -540,7 +623,6 @@ const Registration = () => {
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
                 id="panel3-header"
-                aria-controler="panel-content"
               >
                 <Typography>
                   <b>Whai is the assessment process?</b>
@@ -562,7 +644,6 @@ const Registration = () => {
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
                 id="panel4-header"
-                aria-controler="panel1-content"
               >
                 <Typography>
                   <b>When should the PUFI-2 be administered?</b>
@@ -586,8 +667,7 @@ const Registration = () => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ArrowForwardIosIcon />}
-                id="panel4-header"
-                aria-controler="panel1-content"
+                id="panel5-header"
               >
                 <Typography>
                   <b>Background and Research Involvement</b>

@@ -137,3 +137,12 @@ export const errorSnackbar = styled(Snackbar)`
   left: 50%;
   transform: translateX(-50%);
 `;
+
+export const ColumnBox = styled(Box)`
+  flex: 1;
+`;
+
+export const RowBox = styled(Box)`
+  align-items: center;
+  margin-bottom: 10px;
+`;
