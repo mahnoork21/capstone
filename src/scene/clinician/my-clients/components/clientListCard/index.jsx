@@ -15,7 +15,7 @@ import {
   KeyboardArrowRightSharp,
   Search,
 } from "@mui/icons-material";
-import ClientListItem from "../clientListItem";
+import ClientListItem from "../clientListItems";
 
 const noOfItemsOnOnePage = 6;
 
