@@ -2,7 +2,7 @@ import React from "react";
 import MainContainer from "@/shared/components/main-container";
 import { AuthHeaderContainer } from "./styled";
 
-const Header = () => {
+const AuthHeader = () => {
   return (
     <MainContainer>
       <AuthHeaderContainer>
@@ -12,4 +12,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default AuthHeader;
