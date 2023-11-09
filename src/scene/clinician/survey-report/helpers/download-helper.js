@@ -7,9 +7,16 @@ export const parseDataToCsvFormatYoungChild = (surveyData) => {
     )
     .reduce((acc, obj) => ({ ...acc, ...obj }), {});
 
-  const csvHeader = Object.keys(csvData);
+  const sortedCsvData = {};
+  Object.keys(csvData)
+    .sort()
+    .forEach((key) => {
+      sortedCsvData[key] = csvData[key];
+    });
+
+  const csvHeader = Object.keys(sortedCsvData);
 
   console.log("csvHeader ->", csvHeader);
 
-  return [csvHeader, csvData];
+  return [csvHeader, sortedCsvData];
 };
