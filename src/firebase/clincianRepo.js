@@ -28,11 +28,26 @@ import {
 } from "firebase/auth";
 
 export const createClinicianByEmail = async (email, password) => {
-  // try {
-  //   if (fetchSignInMethodsForEmail(email)) {
-  //     console.log("Account already exists for this email");
-  //     return;
-  //   } else {
+  try {
+    const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+    if (signInMethods && signInMethods.length > 0) {
+      console.log(
+        "Account already exists for this email. Choose another email."
+      );
+      return;
+    } else {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("New account is created.");
+    }
+  } catch (error) {
+    alert(error);
+    console.log("Inside catch block: ", error);
+  }
   //     console.log("new account is created");
   //     const userCredential = createUserWithEmailAndPassword(
   //       auth,
@@ -44,7 +59,7 @@ export const createClinicianByEmail = async (email, password) => {
   //   alert(error);
   //   console.log("inside catch block");
   // }
-  const userCredential = createUserWithEmailAndPassword(auth, email, password);
+  // const userCredential = createUserWithEmailAndPassword(auth, email, password);
   //.then((userCredential) => {
   // Signed up
 
@@ -76,7 +91,7 @@ export const addClinician = async (data) => {
       password: data.password,
       role: data.role,
       createdAt: serverTimestamp(),
-      // Add other user data fields here
+      // Add other fields here
     })
     .then((docRef) => {
       console.log("Document written with ID: ", docRef.id);
