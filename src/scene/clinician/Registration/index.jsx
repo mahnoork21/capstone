@@ -34,18 +34,22 @@ import {
   useFormContext,
   Controller,
 } from "react-hook-form";
+import {
+  addClinicianDb,
+  createClinicianByEmail,
+} from "@/firebase/clincianRepo";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
-const {
-  firstName,
-  lastName,
-  email,
-  password,
-  confirmPassword,
-  organization,
-  clinicianId,
-  role,
-} = user;
+// const user = {
+//   firstName,
+//   lastName,
+//   email,
+//   password,
+//   confirmPassword,
+//   organization,
+//   clinicianId,
+//   role,
+// };
 const handleCloseSnackbar = (event, reason) => {
   if (reason === "clickaway") {
     return;
@@ -75,8 +79,8 @@ const PersonalDetils = () => {
                 render={({ field }) => (
                   <StyledTextfield
                     id="firstName"
-                    value={user.firstName}
-                    onChange={data}
+                    // value={user.firstName}
+                    // onChange={data}
                     inputProps={{ "aria-label": "controlled" }}
                     {...field}
                   />
@@ -103,7 +107,11 @@ const PersonalDetils = () => {
                   required: "email is required",
                 }}
                 render={({ field }) => (
-                  <StyledTextfield id="email" value={user.email} {...field} />
+                  <StyledTextfield
+                    id="email"
+                    // value={user.email}
+                    {...field}
+                  />
                 )}
               />
             </RowBox>
@@ -128,8 +136,8 @@ const PersonalDetils = () => {
                 render={({ field }) => (
                   <StyledTextfield
                     type="password"
-                    id="pwd"
-                    value={user.password}
+                    id="password"
+                    // value={user.password}
                     {...field}
                   />
                 )}
@@ -155,8 +163,8 @@ const PersonalDetils = () => {
                 render={({ field }) => (
                   <StyledTextfield
                     type="password"
-                    id="cpwd"
-                    value={user.confirmpassword}
+                    id="confirmPassword"
+                    // value={user.confirmpassword}
                     {...field}
                   />
                 )}
@@ -183,8 +191,8 @@ const PersonalDetils = () => {
                 }}
                 render={({ field }) => (
                   <StyledTextfield
-                    id="last-name"
-                    value={user.lastName}
+                    id="lastName"
+                    // value={user.lastName}
                     {...field}
                   />
                 )}
@@ -227,7 +235,7 @@ const OrganizationDetails = () => {
             render={({ field }) => (
               <StyledTextfield
                 id="organization"
-                value={user.organization}
+                // value={user.organization}
                 {...field}
               />
             )}
@@ -242,27 +250,6 @@ const OrganizationDetails = () => {
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
-
-        {/* <Box display={"block"}>
-          <Labels>Clinician Id</Labels>
-          <Controller
-            control={control}
-            name="clinicianId"
-            rules={{
-              required: "clinicain id is required",
-            }}
-            render={({ field }) => <StyledTextfield id="cid" {...field} />}
-          />
-        </Box>
-        {errors.clinicianId && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.clinicianId.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )} */}
         <Box display={"block"}>
           <Labels>Role</Labels>
           <Controller
@@ -272,7 +259,11 @@ const OrganizationDetails = () => {
               required: "role is required",
             }}
             render={({ field }) => (
-              <StyledTextfield id="role" value={user.role} {...field} />
+              <StyledTextfield
+                id="role"
+                // value={user.role}
+                {...field}
+              />
             )}
           />
         </Box>
@@ -390,20 +381,22 @@ function Alert(props) {
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  // const [user, setUser] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   organization: "",
+  //   role: "",
+  // });
   const { control, handleSubmit, errors } = useForm();
 
-  const data = (e) => {
-    firstName = e.target.firstName;
-    value = e.target.value;
-    setUser({ ...user, [firstName]: value });
-  };
+  // const data = (e) => {
+  //   firstName = e.target.firstName;
+  //   value = e.target.value;
+  //   setUser({ ...user, [firstName]: value });
+  // };
   const methods = useForm({
     defaultValues: {
       firstName: "",
@@ -412,7 +405,7 @@ const Registration = () => {
       password: "",
       confirmPassword: "",
       organization: "",
-      clinicianId: "",
+
       role: "",
     },
   });
@@ -423,6 +416,7 @@ const Registration = () => {
     if (activeStep == steps.length - 1) {
       fetch("https://jsonplaceholder.typicode.com/comments")
         .then((data) => data.json())
+        .then((data) => addClinicianDb(data))
         .then((res) => {
           // console.log(res);
           setOpen(true);
@@ -450,23 +444,23 @@ const Registration = () => {
         setOpen(true);
       } else {
         console.log("daata is complete");
+        const uid = createClinicianByEmail(data.email, data.password);
+        addClinicianDb(uid, data);
 
-        data.preventDefault();
+        // data.preventDefault();
         const options = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            firstName,
-            lastName,
-            email,
-            password,
-            confirmPassword,
-            organization,
-            clinicianId,
-            role,
-          }),
+          // body: JSON.stringify({
+          //   firstName,
+          //   lastName,
+          //   email,
+          //   password,
+          //   // organization,
+          //   // role,
+          // }),
         };
 
         setActiveStep(activeStep + 1);
