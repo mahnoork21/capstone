@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { CardActions, FormControl, RadioGroup, Radio } from "@mui/material";
 import {
   FormBox,
@@ -17,7 +18,11 @@ import {
 } from "./styled";
 import { addNewClient } from "@/firebase/clinicianRepo";
 
+// TODO: Show error if client ID already present
+
 const AddNewClient = () => {
+  const router = useRouter();
+
   const [clientId, setClientId] = useState("");
   const handleClientIdChange = (e) => setClientId(e.target.value);
 
@@ -41,6 +46,8 @@ const AddNewClient = () => {
         clientId,
         surveyType
       );
+
+      router.push("/clinician/my-clients");
     } catch (err) {
       console.log("An error occured: " + err);
     }

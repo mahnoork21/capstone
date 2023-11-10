@@ -75,21 +75,21 @@ export default function SurveysPerClient({
           )
           .map(
             ({
-              clientId,
-              surveyId,
-              type,
-              creationDate,
-              completionDate,
-              percentageComplete,
+              client_id,
+              survey_id,
+              survey_type,
+              created,
+              completed_date,
+              percentage_complete,
             }) => (
               <ClientSurveyCard
-                key={surveyId}
-                clientId={clientId}
-                surveyId={surveyId}
-                type={type}
-                creationDate={creationDate}
-                completionDate={completionDate}
-                percentageComplete={percentageComplete}
+                key={survey_id}
+                clientId={client_id}
+                surveyId={survey_id}
+                type={survey_type}
+                creationDate={created}
+                completionDate={completed_date}
+                percentageComplete={percentage_complete}
               />
             )
           )}

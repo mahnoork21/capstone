@@ -24,7 +24,7 @@ const ClientListItem = ({
       <ListItemText>
         <StyledClientIdTypography>{clientId}</StyledClientIdTypography>
         <StyledClientAddDateTypography>
-          {clientAddDate}
+          Added - {clientAddDate.toDate().toDateString()}
         </StyledClientAddDateTypography>
       </ListItemText>
 

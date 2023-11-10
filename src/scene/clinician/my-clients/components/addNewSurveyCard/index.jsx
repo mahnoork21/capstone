@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AddSurveyButton,
   CancelButton,
@@ -11,8 +11,27 @@ import {
   StyledMainCard,
 } from "./styled";
 import { FormControl, Radio, RadioGroup } from "@mui/material";
+import { addNewSurvey } from "@/firebase/clinicianRepo";
 
-export default function AddNewSurveyCard({ onCancelClick }) {
+export default function AddNewSurveyCard({ toggleForm, clientId }) {
+  const [surveyType, setSurveyType] = useState("Young Child");
+  const handleSurveyTypeChange = (e) => setSurveyType(e.target.value);
+
+  const handleAddSurveyClick = async () => {
+    try {
+      await addNewSurvey(
+        "oZqnljuEU4b3jZtfHM9v",
+        "fWft9AvZD4Mc5fR33ka6Q8vOYil2",
+        clientId,
+        surveyType
+      );
+
+      toggleForm();
+    } catch (err) {
+      console.log("An error occured: " + err);
+    }
+  };
+
   return (
     <StyledMainCard>
       <StyledCardContent>
@@ -26,19 +45,21 @@ export default function AddNewSurveyCard({ onCancelClick }) {
               aria-labelledby="selectSurveyType"
               defaultValue="youngChild"
               name="radio-buttons-group"
+              value={surveyType}
+              onChange={handleSurveyTypeChange}
             >
               <ModifiedFormControlLabel
-                value="youngChild"
+                value="Young Child"
                 control={<Radio />}
                 label="Young Child"
               />
               <ModifiedFormControlLabel
-                value="olderChildParent"
+                value="Older Child (Parent)"
                 control={<Radio />}
                 label="Older Child (Parent)"
               />
               <ModifiedFormControlLabel
-                value="olderChildSelfReport"
+                value="Older Child (Self Report)"
                 control={<Radio />}
                 label="Older Child (Self Report)"
               />
@@ -47,8 +68,10 @@ export default function AddNewSurveyCard({ onCancelClick }) {
         </FormBox>
       </StyledCardContent>
       <StyledCardActions>
-        <AddSurveyButton>ADD SURVEY</AddSurveyButton>
-        <CancelButton onClick={onCancelClick}>CANCEL</CancelButton>
+        <AddSurveyButton onClick={handleAddSurveyClick}>
+          ADD SURVEY
+        </AddSurveyButton>
+        <CancelButton onClick={toggleForm}>CANCEL</CancelButton>
       </StyledCardActions>
     </StyledMainCard>
   );

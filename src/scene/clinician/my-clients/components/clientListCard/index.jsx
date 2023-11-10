@@ -34,6 +34,9 @@ export default function ClientListCard({
     }
   }, [clientsListData]);
 
+  // const fetchClients = () => {
+
+  // }
   return (
     <StyledClientListCard>
       <StyledCardContent>
@@ -53,11 +56,11 @@ export default function ClientListCard({
               noOfItemsOnOnePage * (clientsPageNo - 1),
               noOfItemsOnOnePage * clientsPageNo
             )
-            .map(({ clientId, clientAddDate }) => (
+            .map(([id, data]) => (
               <ClientListItem
-                key={clientId}
-                clientId={clientId}
-                clientAddDate={clientAddDate}
+                key={id}
+                clientId={id}
+                clientAddDate={data.added}
                 selectedIndex={selectedIndex}
                 handleListItemClick={handleListItemClick}
               />

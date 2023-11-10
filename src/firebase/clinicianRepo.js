@@ -6,7 +6,10 @@ import {
   collection,
   serverTimestamp,
   updateDoc,
-  arrayUnion,
+  query,
+  where,
+  getDocs,
+  Timestamp,
 } from "firebase/firestore";
 
 export const addNewClient = async (
@@ -27,31 +30,119 @@ export const addNewClient = async (
   );
   const clinicianSnapshot = await getDoc(clinicianRef);
 
-  if (clinicianSnapshot.exists()) {
-    const clinician = clinicianSnapshot.data();
-    if (clinician.clients.find((id) => id == clientId))
-      throw new Error("This Client Id is already present.");
+  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
 
-    const newSurveyRef = doc(collection(clinicianRef, "Survey"));
-    await setDoc(newSurveyRef, {
-      survey_type: surveyType,
-      survey_id: newSurveyRef.id,
-      clinician_id: clinicianId,
-      client_id: clientId,
-      org_id: organizationId,
-      created: serverTimestamp(),
-    });
+  const clinician = clinicianSnapshot.data();
 
-    await updateDoc(clinicianRef, {
-      clients: arrayUnion(clientId),
-      updated: serverTimestamp(),
-    });
+  if (clinician.clients[clientId])
+    throw new Error("This Client Id is already present.");
 
-    return newSurveyRef.id;
-  } else {
-    throw new Error("Clinician ID is invalid.");
-  }
+  const newSurveyRef = doc(collection(clinicianRef, "Survey"));
+  await setDoc(newSurveyRef, {
+    survey_type: surveyType,
+    survey_id: newSurveyRef.id,
+    clinician_id: clinicianId,
+    client_id: clientId,
+    org_id: organizationId,
+    created: serverTimestamp(),
+  });
+
+  await updateDoc(clinicianRef, {
+    [`clients.${clientId}`]: { added: Timestamp.fromDate(new Date()) },
+    updated: serverTimestamp(),
+  });
+
+  return newSurveyRef.id;
 };
+
+export const fetchClients = async (organizationId, clinicianId) => {
+  if (!organizationId || !clinicianId)
+    throw new Error("Insufficient data provided");
+
+  const clinicianRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId
+  );
+  const clinicianSnapshot = await getDoc(clinicianRef);
+
+  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
+
+  const clinician = clinicianSnapshot.data();
+
+  return clinician.clients;
+};
+
+export const fetchClientSurveys = async (
+  organizationId,
+  clinicianId,
+  clientId
+) => {
+  if (!organizationId || !clinicianId || !clientId)
+    throw new Error("Insufficient data provided");
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let surveys = [];
+
+  const q = query(surveysRef, where("client_id", "==", clientId));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    surveys.push(doc.data());
+  });
+
+  return surveys;
+};
+
+export const addNewSurvey = async (
+  organizationId,
+  clinicianId,
+  clientId,
+  surveyType
+) => {
+  if (!organizationId || !clinicianId || !clientId || !surveyType)
+    throw new Error("Insufficient data provided");
+
+  const clinicianRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId
+  );
+  const clinicianSnapshot = await getDoc(clinicianRef);
+
+  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
+
+  const clinician = clinicianSnapshot.data();
+
+  if (!clinician.clients[clientId])
+    throw new Error("This Client Id is not present.");
+
+  const newSurveyRef = doc(collection(clinicianRef, "Survey"));
+  await setDoc(newSurveyRef, {
+    survey_type: surveyType,
+    survey_id: newSurveyRef.id,
+    clinician_id: clinicianId,
+    client_id: clientId,
+    org_id: organizationId,
+    created: serverTimestamp(),
+  });
+
+  return newSurveyRef.id;
+};
+
+// if (!clinician.clients.includes(clientId))
+//         throw new Error("The provided client id is invalid. Add it first");
 
 // let currentSurveyPath;
 
