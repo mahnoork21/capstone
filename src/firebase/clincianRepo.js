@@ -48,31 +48,28 @@ export const createClinicianByEmail = async (email, password) => {
     alert(error);
     console.log("Inside catch block: ", error);
   }
-  //     console.log("new account is created");
-  //     const userCredential = createUserWithEmailAndPassword(
-  //       auth,
-  //       email,
-  //       password
-  //     );
-  //   }
-  // } catch (error) {
-  //   alert(error);
-  //   console.log("inside catch block");
-  // }
-  // const userCredential = createUserWithEmailAndPassword(auth, email, password);
-  //.then((userCredential) => {
-  // Signed up
-
-  //   const user = userCredential.user;
-  //   console.log(user);
-  // })
-  // .catch((error) => {
-  //   const errorCode = error.code;
-  //   const errorMessage = error.message;
-  //   // ..
-  // });
 };
-export const addClinicianDb = async (uid, data) => {};
+export const addClinicianDb = async (uid, data) => {
+  // Add a new document in collection
+  console.log("inside addClinicianDb from Repo ===", uid, data);
+  await setDoc(
+    doc(
+      db,
+      "Organization",
+      "oZqnljuEU4b3jZtfHM9v",
+      "Clinician",
+      "6WTzbkrYzUVWUrTE0DOPO94byU03"
+    ),
+    {
+      // clinician_id: uid,
+      // email: data.email,
+      // first_name: data.firstName,
+      // last_name: data.lastName,
+      // org_id: "oZqnljuEU4b3jZtfHM9v",
+      // role: data.role,
+    }
+  );
+};
 export const getClinicianById = async (clinicianId) => {
   if (!clinicianId) return null;
 

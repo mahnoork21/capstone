@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
   Typography,
   Box,
@@ -39,18 +38,10 @@ import {
   createClinicianByEmail,
 } from "@/firebase/clincianRepo";
 import AccordionCard from "@/shared/clinician/accordionCard";
+import TOScomponent from "@/shared/clinician/TOS";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
-// const user = {
-//   firstName,
-//   lastName,
-//   email,
-//   password,
-//   confirmPassword,
-//   organization,
-//   clinicianId,
-//   role,
-// };
+
 const handleCloseSnackbar = (event, reason) => {
   if (reason === "clickaway") {
     return;
@@ -63,7 +54,7 @@ const PersonalDetils = () => {
     control,
     formState: { errors },
   } = useFormContext();
-  console.log(errors);
+  // console.log(errors);
   return (
     <>
       <React.Fragment>
@@ -220,7 +211,7 @@ const OrganizationDetails = () => {
     control,
     formState: { errors },
   } = useFormContext();
-  console.log(errors);
+  // console.log(errors);
 
   return (
     <>
@@ -291,36 +282,12 @@ const TOS = () => {
     control,
     formState: { errors },
   } = useFormContext();
-  console.log(errors);
+  // console.log(errors);
 
   return (
     <>
       <React.Fragment>
-        <Typography variant="h4" marginBottom={2}>
-          <b>Terms of Service and Privacy Policy</b>
-        </Typography>
-        <Typography marginBottom={2}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero
-          enim sed faucibus turpis. Pellentesque habitant morbi tristique
-          senectus et netus et malesuada fames. Eu scelerisque felis imperdiet
-          proin fermentum leo vel orci porta. Euismod nisi porta lorem mollis
-          aliquam ut. Habitant morbi tristique senectus et. Risus sed vulputate
-          odio ut enim. Accumsan lacus vel facilisis volutpat est velit. Neque
-          aliquam vestibulum morbi blandit cursus. Id faucibus nisl tincidunt
-          eget nullam.{" "}
-        </Typography>
-        <Typography marginBottom={2}>
-          Et netus et malesuada fames ac turpis egestas sed. Arcu vitae
-          elementum curabitur vitae. Tellus orci ac auctor augue mauris augue
-          neque gravida. Duis at tellus at urna condimentum mattis pellentesque
-          id nibh. Massa ultricies mi quis hendrerit dolor. Aliquet nibh
-          praesent tristique magna sit amet. Massa sed elementum tempus egestas
-          sed. Ut diam quam nulla porttitor massa id neque aliquam vestibulum.
-          Eget magna fermentum iaculis eu. Tellus rutrum tellus pellentesque eu
-          tincidunt tortor aliquam nulla facilisi. Scelerisque fermentum dui
-          faucibus in ornare. Dolor magna eget est lorem ipsum dolor sit.{" "}
-        </Typography>
+        <TOScomponent></TOScomponent>
 
         <Typography display={"inline-block"}>
           <Controller
@@ -406,7 +373,6 @@ const Registration = () => {
       password: "",
       confirmPassword: "",
       organization: "",
-
       role: "",
     },
   });
@@ -415,14 +381,23 @@ const Registration = () => {
     console.log(data);
 
     if (activeStep == steps.length - 1) {
-      fetch("https://jsonplaceholder.typicode.com/comments")
+      // fetch("https://jsonplaceholder.typicode.com/comments")
+      //   .then((data) => {
+      //     data.json();
+
+      console.log("inside IF, LAST STEP", activeStep);
+
+      const uid = createClinicianByEmail(data.email, data.password);
+      console.log("data in LAST step");
+      console.log(uid, data.email, data.password);
+
+      addClinicianDb(data)
         .then((data) => {
-          data.json();
-          console.log("inside IF, when it's not last step", activeStep);
+          addClinicianDb(uid, data).then(() => {
+            alert("cliniian added using addClinicianDb");
+          });
         })
-        // .then((data) => addClinicianDb(data))
         .then((res) => {
-          // console.log(res);
           setOpen(true);
         })
         .catch((error) => {
@@ -437,7 +412,7 @@ const Registration = () => {
         !data.password ||
         !data.confirmPassword
       ) {
-        console.log("data is not complete");
+        console.log("data is not complete at step := ", activeStep);
         console.log(
           data.firstName,
           data.lastName,
@@ -447,29 +422,22 @@ const Registration = () => {
         );
         setOpen(true);
       } else {
-        console.log("daata is complete");
-        fetch("https://jsonplaceholder.typicode.com/comments").then((data) =>
-          addClinicianDb(data)
+        console.log("daata is complete at step := ", activeStep);
+        // fetch("https://jsonplaceholder.typicode.com/comments").then((data) =>
+        //   addClinicianDb(data)
+        // );
+        console.log(
+          "inside else where uid generates NOT LAST STEP",
+          activeStep
         );
-        console.log("inside else where uid generates", activeStep);
-        const uid = createClinicianByEmail(data.email, data.password);
-        addClinicianDb(uid, data);
 
         // data.preventDefault();
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          // body: JSON.stringify({
-          //   firstName,
-          //   lastName,
-          //   email,
-          //   password,
-          //   // organization,
-          //   // role,
-          // }),
-        };
+        // const options = {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // };
 
         setActiveStep(activeStep + 1);
         console.log(activeStep);
@@ -542,7 +510,7 @@ const Registration = () => {
                             onClick={handleBack}
                             sx={{ mr: 1 }}
                           >
-                            Back
+                            {activeStep === 0 ? "Back to Login" : "Back"}
                           </Button>
 
                           <Button
@@ -584,8 +552,6 @@ const Registration = () => {
             <AccordionCard></AccordionCard>
           </StyledBox>
         </StyledPaper>
-
-        {/* </Box> */}
       </StyledContainer>
     </>
   );
