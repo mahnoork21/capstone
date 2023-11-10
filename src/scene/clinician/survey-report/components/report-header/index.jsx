@@ -9,6 +9,7 @@ const ReportHeader = ({ survey }) => {
       const updatedDate = survey["updated"] ? survey["updated"].toDate() : null;
       setSurveyData((prevSurveyData) => ({
         surveyType: survey["survey_type"],
+        surveyCompleted: survey["is_submitted"],
         surveyUpdated: updatedDate
           ? updatedDate.toLocaleDateString("en-US", {
               month: "long",
@@ -36,7 +37,8 @@ const ReportHeader = ({ survey }) => {
             Type: <span>{surveyData.surveyType}</span>
           </p>
           <p>
-            Completed: <span>{JSON.stringify(surveyData.surveyUpdated)}</span>
+            {surveyData.surveyCompleted ? "Completed: " : "Last Updated: "}
+            <span>{JSON.stringify(surveyData.surveyUpdated)}</span>
           </p>
         </div>
       </div>

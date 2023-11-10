@@ -3,7 +3,6 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Pie } from "react-chartjs-2";
 import ScoresTable from "../scores-table";
-import { getSurveyById } from "@/firebase/surveyRepo";
 import { Container, PieWrapper, SubContainer, TableWrapper } from "./styled";
 import { getScores } from "./helper/scores-helper";
 import { getData, options } from "./helper/chart-helper";

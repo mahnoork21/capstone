@@ -22,12 +22,13 @@ const SurveyReport = () => {
   const [surveyId, setSurveyId] = useState("SCxUXNM1LeB9OTg8oMel");
   const [loading, setLoading] = useState(true);
   const [surveyData, setSurveyData] = useState({});
+  const [groupedSurveyByCategory, setGroupedSurveyByCategory] = useState({});
 
   useEffect(() => {
     const fetchSurvey = async (id) => {
       const survey = await getSurveyById(id);
       setSurveyData((prev) => survey);
-      console.log("survey -> ", survey);
+      setGroupedSurveyByCategory(() => groupByCategory(survey));
     };
 
     const authenticateAndFetch = async () => {
@@ -51,22 +52,6 @@ const SurveyReport = () => {
 
     authenticateAndFetch();
   }, [surveyId]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const surveyData = await getSurveyById(surveyId);
-  //       setSurvey((prev) => surveyData);
-  //     } catch (error) {
-  //       console.error("Error fetching survey:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [surveyId]);
 
   const downloadCSV = () => {
     const download = async () => {
@@ -107,7 +92,9 @@ const SurveyReport = () => {
         <p>Loading data...</p>
       ) : (
         <Container>
-          <h1>SUMMARY SCORES</h1>
+          <h1>
+            SUMMARY SCORES {!surveyData["is_submitted"] && " - IN PROGRESS"}
+          </h1>
 
           <div className="header-flex">
             <ReportHeader survey={surveyData} />
@@ -126,8 +113,7 @@ const SurveyReport = () => {
           ))}
 
           <WeightedCalculation />
-
-          <CategoryBarChart output={groupByCategory(surveyData)} />
+          <CategoryBarChart output={groupedSurveyByCategory} />
         </Container>
       )}
     </>
