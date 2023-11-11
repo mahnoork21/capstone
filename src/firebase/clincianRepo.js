@@ -78,6 +78,38 @@ export const addClinicianDb = async (uid, data) => {
     }
   );
 };
+
+export const addOrUpdateClinician = async (uid, data) => {
+  try {
+    const clinicianRef = db
+      .collection(db, "Organization", "oZqnljuEU4b3jZtfHM9v", "Clinician")
+      .doc(uid);
+    const clinicianDoc = await clinicianRef.get();
+
+    if (clinicianDoc.exists) {
+      // Update the existing document using setDoc()
+      await clinicianRef.setDoc(doc(clinicianRef, uid), {
+        clinician_id: "McqFsRlOJab1RxFoTbeXDoYuRZq2",
+        email: data.email,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        org_id: "oZqnljuEU4b3jZtfHM9v",
+        role: data.role,
+      });
+      console.log("Clinician document updated:", uid);
+    } else {
+      // Create a new document using addDoc()
+      await db.collection(clinicianRef).add({
+        ...data,
+        clinician_id: uid, // Assuming you want to store uid in the document
+      });
+      console.log("New clinician document created:", uid);
+    }
+  } catch (error) {
+    console.error("Error adding or updating clinician:", error);
+  }
+};
+
 export const getClinicianById = async (clinicianId) => {
   if (!clinicianId) return null;
 

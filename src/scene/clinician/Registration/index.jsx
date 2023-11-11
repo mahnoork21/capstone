@@ -36,6 +36,7 @@ import {
 import {
   addClinicianDb,
   createClinicianByEmail,
+  addOrUpdateClinician,
 } from "@/firebase/clincianRepo";
 import AccordionCard from "@/shared/clinician/accordionCard";
 import TOScomponent from "@/shared/clinician/TOS";
@@ -399,7 +400,7 @@ const Registration = () => {
 
         checkTosAndAddClinician(data)
           .then((data) => {
-            addClinicianDb(uid, data).then(() => {
+            addOrUpdateClinician(uid, data).then(() => {
               alert("cliniian added using addClinicianDb");
             });
           })
