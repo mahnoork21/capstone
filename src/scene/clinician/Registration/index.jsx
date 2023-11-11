@@ -360,11 +360,6 @@ const Registration = () => {
   // });
   const { control, handleSubmit, errors } = useForm();
 
-  // const data = (e) => {
-  //   firstName = e.target.firstName;
-  //   value = e.target.value;
-  //   setUser({ ...user, [firstName]: value });
-  // };
   const methods = useForm({
     defaultValues: {
       firstName: "",
@@ -376,7 +371,18 @@ const Registration = () => {
       role: "",
     },
   });
-
+  const checkTosAndAddClinician = (data) => {
+    return new Promise((resolve, reject) => {
+      // Check if 'tos' is true
+      if (data.tos) {
+        // If true, resolve the Promise
+        resolve(data);
+      } else {
+        // If false, reject the Promise
+        reject("Terms of Service agreement not accepted");
+      }
+    });
+  };
   const handleNext = (data) => {
     console.log(data);
 
@@ -384,26 +390,29 @@ const Registration = () => {
       // fetch("https://jsonplaceholder.typicode.com/comments")
       //   .then((data) => {
       //     data.json();
+      if (data.tos) {
+        console.log("inside IF, LAST STEP", activeStep);
 
-      console.log("inside IF, LAST STEP", activeStep);
+        const uid = createClinicianByEmail(data.email, data.password);
+        console.log("data in LAST step, uid is generated now");
+        console.log(uid, data.email, data.password);
 
-      const uid = createClinicianByEmail(data.email, data.password);
-      console.log("data in LAST step");
-      console.log(uid, data.email, data.password);
-
-      addClinicianDb(data)
-        .then((data) => {
-          addClinicianDb(uid, data).then(() => {
-            alert("cliniian added using addClinicianDb");
+        checkTosAndAddClinician(data)
+          .then((data) => {
+            addClinicianDb(uid, data).then(() => {
+              alert("cliniian added using addClinicianDb");
+            });
+          })
+          .then((res) => {
+            setOpen(true);
+          })
+          .catch((error) => {
+            console.log("Error : ", error);
+            setOpen(true);
           });
-        })
-        .then((res) => {
-          setOpen(true);
-        })
-        .catch((error) => {
-          console.log("Error : ", error);
-          setOpen(true);
-        });
+      } else {
+        alert("Please accept Terms and Conditions to continue!");
+      }
     } else {
       if (
         !data.firstName ||
@@ -423,21 +432,8 @@ const Registration = () => {
         setOpen(true);
       } else {
         console.log("daata is complete at step := ", activeStep);
-        // fetch("https://jsonplaceholder.typicode.com/comments").then((data) =>
-        //   addClinicianDb(data)
-        // );
-        console.log(
-          "inside else where uid generates NOT LAST STEP",
-          activeStep
-        );
 
-        // data.preventDefault();
-        // const options = {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // };
+        console.log("inside else, NOT LAST STEP", activeStep);
 
         setActiveStep(activeStep + 1);
         console.log(activeStep);
@@ -532,12 +528,7 @@ const Registration = () => {
                       onClose={handleCloseSnackbar}
                       anchorOrigin={{ vertical: "top", horizontal: "center" }}
                       message="you have successfully logged in"
-                    >
-                      {/* <Alert onClose={handleClose} severity="success">
-                        {" "}
-                        Success! Data saved.
-                            </Alert> */}
-                    </Snackbar>
+                    ></Snackbar>
                   </StyledBox>
                 </StepperBox>
               </FormProvider>

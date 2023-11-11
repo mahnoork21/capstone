@@ -51,22 +51,30 @@ export const createClinicianByEmail = async (email, password) => {
 };
 export const addClinicianDb = async (uid, data) => {
   // Add a new document in collection
-  console.log("inside addClinicianDb from Repo ===", uid, data);
+  console.log("inside addClinicianDb from Repo ===>", data);
+  console.log("where uid is ==>", uid);
   await setDoc(
     doc(
       db,
       "Organization",
       "oZqnljuEU4b3jZtfHM9v",
       "Clinician",
-      "6WTzbkrYzUVWUrTE0DOPO94byU03"
+      "McqFsRlOJab1RxFoTbeXDoYuRZq2"
     ),
     {
-      // clinician_id: uid,
-      // email: data.email,
-      // first_name: data.firstName,
-      // last_name: data.lastName,
+      clinician_id: "McqFsRlOJab1RxFoTbeXDoYuRZq2",
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      org_id: "oZqnljuEU4b3jZtfHM9v",
+      role: data.role,
+
+      // clinician_id: "McqFsRlOJab1RxFoTbeXDoYuRZq2",
+      // email: "sample@gmail.com",
+      // first_name: "clini",
+      // last_name: "cian",
       // org_id: "oZqnljuEU4b3jZtfHM9v",
-      // role: data.role,
+      // role: "clinician",
     }
   );
 };
