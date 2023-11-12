@@ -44,7 +44,7 @@ export const InstructionAreaWrapper = styled.div`
   position: relative;
 
   @media screen and (min-width: ${breakpoint.desktop}) {
-    padding: 24px;
+    padding: 0 24px;
     width: ${(props) => (props.isInSurvey ? "820px" : "100%")};
   }
 

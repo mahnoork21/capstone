@@ -1,8 +1,9 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 
 export const StyledSurveyNavButton = styled(Button)`
-  padding: 12px 32px;
+  padding: 12px 20px;
   font-weight: bold;
   border-width: 4px;
   border-color: var(--pufi-green);
@@ -21,5 +22,9 @@ export const StyledSurveyNavButton = styled(Button)`
 
   &:hover {
     border-width: 4px;
+  }
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    padding: 12px 32px;
   }
 `;

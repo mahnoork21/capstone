@@ -15,7 +15,7 @@ export const DifficultyScaleInstructionWrapper = styled.div`
   width: 320px;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    padding: 24px;
+    padding: 0 24px;
     width: ${(props) => (props.isInSurvey ? "1000px" : "100%")};
   }
 
