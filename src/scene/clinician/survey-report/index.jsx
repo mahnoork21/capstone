@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Paper,
+  Popover,
   Tab,
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import ReportHeader from "./components/report-header";
 import {
@@ -19,6 +21,13 @@ import {
   StyledTabs,
   TabsWrapper,
   StyledTableContainer,
+  StyledCommentIcon,
+  AnswerTableCell,
+  AnswerWrapper,
+  StyledPopover,
+  PopoverWrapper,
+  PopoverContentItem,
+  FinalCommentWrapper,
 } from "./styled";
 import ActivityAnalysis from "./components/activity-analysis";
 import { useEffect, useState } from "react";
@@ -32,6 +41,7 @@ import TableViewIcon from "@mui/icons-material/TableView";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
+import Image from "next/image";
 
 //TODO:
 //1. when client id will appear in the database, add client id to the surveyData
@@ -39,10 +49,12 @@ import { auth } from "@/firebase/firebase";
 //add to that component onClick event (on view scores) that will pass surveyId as a parameter to the url (or store survey Id in clinician context),
 //and i will retrieve this surveyId here instead of hardcoded useState surveyId
 const SurveyReport = () => {
-  const [surveyId, setSurveyId] = useState("30niDrNz2WnfgDBQlivC");
+  const [surveyId, setSurveyId] = useState("XSxoZPRkwfObDw4iGWfr");
   const [loading, setLoading] = useState(true);
   const [surveyData, setSurveyData] = useState({});
   const [tabValue, setTabValue] = useState(0);
+  const [commentAnchorEl, setcommentAnchorEl] = useState(null);
+  const [popoverContent, setPopoverContent] = useState();
 
   useEffect(() => {
     const fetchSurvey = async (id) => {
@@ -127,7 +139,12 @@ const SurveyReport = () => {
     setTabValue(newValue);
   };
 
+  const handleClose = () => {
+    setcommentAnchorEl(null);
+  };
+
   console.log("loading = ", loading);
+  console.log("Survey = ", surveyData);
 
   return (
     <>
@@ -223,9 +240,86 @@ const SurveyReport = () => {
 
                             return (
                               <TableCell align="center">
-                                {option.rawScoreLabel ??
-                                  option.labelShort ??
-                                  option.label}
+                                <AnswerWrapper>
+                                  {option.rawScoreLabel ??
+                                    option.labelShort ??
+                                    option.label}
+                                  {index === 1 && surveyValue === 3 && (
+                                    <StyledCommentIcon
+                                      width={24}
+                                      height={24}
+                                      src="/icons/notes.svg"
+                                      onClick={(event) => {
+                                        const popoverContentData = [];
+                                        popoverContentData.push({
+                                          title: "Body part",
+                                          data: currentActivityResponse[
+                                            question.questionId
+                                          ].bodypart,
+                                        });
+                                        {
+                                          currentActivityResponse[
+                                            question.questionId
+                                          ].comment
+                                            ? popoverContentData.push({
+                                                title: "Comment",
+                                                data: currentActivityResponse[
+                                                  question.questionId
+                                                ].comment,
+                                              })
+                                            : ``;
+                                        }
+                                        setPopoverContent(popoverContentData);
+                                        setcommentAnchorEl(event.currentTarget);
+                                      }}
+                                    />
+                                  )}
+                                  {index === 1 &&
+                                    surveyValue === 0 &&
+                                    currentActivityResponse[question.questionId]
+                                      ?.commentForNotSure && (
+                                      <StyledCommentIcon
+                                        width={24}
+                                        height={24}
+                                        src="/icons/notes.svg"
+                                        onClick={(event) => {
+                                          const popoverContentData = [];
+                                          popoverContentData.push({
+                                            title: "Comment",
+                                            data: currentActivityResponse[
+                                              question.questionId
+                                            ].commentForNotSure,
+                                          });
+                                          setPopoverContent(popoverContentData);
+                                          setcommentAnchorEl(
+                                            event.currentTarget
+                                          );
+                                        }}
+                                      />
+                                    )}
+                                  {index !== 1 &&
+                                    currentActivityResponse[question.questionId]
+                                      ?.comment && (
+                                      <StyledCommentIcon
+                                        width={24}
+                                        height={24}
+                                        src="/icons/notes.svg"
+                                        onClick={(event) => {
+                                          const popoverContentData = [];
+                                          popoverContentData.push({
+                                            title: "Comment",
+                                            data: currentActivityResponse[
+                                              question.questionId
+                                            ].comment,
+                                          });
+                                          setPopoverContent(popoverContentData);
+                                          setcommentAnchorEl(
+                                            event.currentTarget
+                                          );
+                                        }}
+                                      />
+                                    )}
+                                </AnswerWrapper>
                               </TableCell>
                             );
                           })}
@@ -237,6 +331,37 @@ const SurveyReport = () => {
               </StyledTableContainer>
             )
           )}
+          {surveyData.final_comment && (
+            <FinalCommentWrapper>
+              <p>Final Comment:</p>
+              <p>{surveyData.final_comment}</p>
+            </FinalCommentWrapper>
+          )}
+
+          <Popover
+            open={Boolean(commentAnchorEl)}
+            anchorEl={commentAnchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+          >
+            <PopoverWrapper>
+              {popoverContent?.map(({ title, data }) => {
+                return (
+                  <PopoverContentItem>
+                    <span>{title}: </span>
+                    <span>{data}</span>
+                  </PopoverContentItem>
+                );
+              })}
+            </PopoverWrapper>
+          </Popover>
         </Container>
       )}
     </>

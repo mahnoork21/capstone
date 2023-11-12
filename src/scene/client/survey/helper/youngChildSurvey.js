@@ -50,7 +50,7 @@ export const youngChildSurvey = [
         value: 4,
       },
       {
-        rawScoreLabel: "help of residual limb",
+        rawScoreLabel: "residual limb/body part",
         labelShort: "With assistance of residual limb",
         label:
           "With assistance of residual limb and/or another body part and/or other assistive devices",
