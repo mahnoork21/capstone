@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import differenceInDays from "date-fns/differenceInDays";
+import { MoreHorizRounded } from "@mui/icons-material";
 import {
   StyledCard,
   StyledCardActions,
@@ -8,45 +10,96 @@ import {
   StyledTypography1,
   StyledTypography2,
 } from "./styled";
-import { MoreHorizRounded } from "@mui/icons-material";
 
 const ClientSurveyCard = ({
-  clientId,
   surveyId,
-  type,
-  // creationDate,
-  // completionDate,
-  // percentageComplete,
+  surveyType,
+  clientId,
+  clinicianId,
+  orgId,
+  createdDate,
+  updatedDate,
+  submittedDate,
+  isSubmitted,
+  activityResponse,
 }) => {
-  //   var today = new Date();
-  //   console.log(today);
-  //   var dd = String(today.getDate()).padStart(2, "0");
-  //   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  //   var yyyy = today.getFullYear();
+  useEffect(() => {
+    const url = `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`;
+    console.log(url);
+  }, []);
 
-  //   today = mm + "/" + dd + "/" + yyyy;
-  //   console.log(today);
+  // TODO: Handle Dropdown buttons
 
-  //   var utc = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
-  //   console.log(utc);
+  //TODO: Implement URL for email
+  // http://localhost:3005/client?orgId=oZqnljuEU4b3jZtfHM9v&clinicianId=3vAa4UkWlrT4bdS1L5BfKszHqkl1&surveyId=30niDrNz2WnfgDBQlivC
+
+  const inProgressText = () => {
+    const daysDiff = differenceInDays(new Date(), updatedDate.toDate());
+    const questionsCount = surveyType.startsWith("Young") ? 23 : 27;
+    const percentComplete = Math.ceil(
+      (Object.keys(activityResponse).length * 100) / questionsCount
+    );
+
+    return (
+      (daysDiff > 1
+        ? daysDiff + " days ago "
+        : daysDiff == 1
+        ? "Yesterday"
+        : "Today ") +
+      " (" +
+      percentComplete +
+      "% complete)"
+    );
+  };
 
   return (
     <>
-      <StyledCard>
+      <StyledCard
+        topColor={
+          isSubmitted
+            ? "var(--pufi-primary-light, #53BB50)"
+            : updatedDate
+            ? "#FCAF17"
+            : "#E9501E"
+        }
+      >
         <StyledCardContent>
           <StyledTypography1>Client ID:</StyledTypography1>
           <StyledTypography2>{clientId}</StyledTypography2>
           <StyledTypography1>Survey ID:</StyledTypography1>
           <StyledTypography2>{surveyId}</StyledTypography2>
           <StyledTypography1>Type:</StyledTypography1>
-          <StyledTypography2>{type}</StyledTypography2>
-          <StyledTypography1>Last Updated:</StyledTypography1>
-          <StyledTypography2>12 days ago (40% complete)</StyledTypography2>
+          <StyledTypography2>{surveyType}</StyledTypography2>
+          <StyledTypography1>
+            {isSubmitted
+              ? "Completed"
+              : updatedDate
+              ? "Last Updated:"
+              : "Created"}
+          </StyledTypography1>
+          <StyledTypography2>
+            {isSubmitted
+              ? submittedDate.toDate().toDateString()
+              : updatedDate
+              ? inProgressText()
+              : createdDate.toDate().toDateString()}
+          </StyledTypography2>
         </StyledCardContent>
         <StyledCardActions>
-          <StyledLink href="#" underline="hover">
-            SEND REMINDER
-          </StyledLink>
+          {isSubmitted ? (
+            <StyledLink href="#" underline="hover">
+              VIEW SCORES
+            </StyledLink>
+          ) : updatedDate ? (
+            <StyledLink href="#" underline="hover">
+              SEND REMINDER
+            </StyledLink>
+          ) : (
+            <StyledLink href="#" underline="hover">
+              EMAIL CLIENT
+            </StyledLink>
+          )}
+
           <StyledIconButton>
             <MoreHorizRounded />
           </StyledIconButton>
