@@ -388,9 +388,6 @@ const Registration = () => {
     console.log(data);
 
     if (activeStep == steps.length - 1) {
-      // fetch("https://jsonplaceholder.typicode.com/comments")
-      //   .then((data) => {
-      //     data.json();
       if (data.tos) {
         console.log("inside IF, LAST STEP", activeStep);
 
