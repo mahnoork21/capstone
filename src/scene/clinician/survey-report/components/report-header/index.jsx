@@ -39,10 +39,12 @@ const ReportHeader = ({ survey }) => {
           <p>
             {surveyData.surveyCompleted ? "Completed: " : "Last Updated: "}
             <span>
-              {JSON.stringify(surveyData.surveyUpdated).replace(
-                /^"(.*)"$/,
-                "$1"
-              )}
+              {surveyData && surveyData.surveyUpdated !== undefined
+                ? JSON.stringify(surveyData.surveyUpdated).replace(
+                    /^"(.*)"$/,
+                    "$1"
+                  )
+                : "N/A"}
             </span>
           </p>
         </div>
