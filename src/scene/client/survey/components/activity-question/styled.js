@@ -23,4 +23,14 @@ export const GuideButton = styled(Button)`
   font-size: 0.875rem;
   text-transform: none;
   font-weight: 700;
+
+  & .MuiButton-startIcon {
+    margin-right: 2px;
+  }
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    & .MuiButton-startIcon {
+      margin-right: 8px;
+    }
+  }
 `;

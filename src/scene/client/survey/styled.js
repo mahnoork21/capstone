@@ -1,6 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
-import { Stepper, TextField, css } from "@mui/material";
+import { Popover, Stepper, TextField, css } from "@mui/material";
 
 export const SurveyContainer = styled.div`
   background-color: white;
@@ -68,8 +68,14 @@ export const BodyPartInputContainer = styled.div`
 `;
 
 export const ResponseGuideContainer = styled.div`
-  width: 750px;
-  height: 550px;
+  width: 400px;
+  height: 100vh;
+  padding: 24px;
+
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    width: 820px;
+    height: 540px;
+  }
 `;
 
 export const SurveyNavigationWrapper = styled.div`
@@ -78,4 +84,32 @@ export const SurveyNavigationWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
+`;
+
+export const EditModeButtons = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-top: 24px;
+  gap: 16px;
+  margin-left: 32px;
+`;
+
+export const StyledPopover = styled(Popover)`
+  & .MuiPopover-paper {
+    border-radius: 12px;
+    border: solid 2px var(--primary-blue);
+  }
+`;
+
+export const MiniGuidePopover = styled(Popover)`
+  & .MuiPopover-paper {
+    background-color: transparent;
+    border-radius: 12px;
+  }
+`;
+
+export const MiniGuidePopoverWrapper = styled.div`
+  width: 320px;
 `;

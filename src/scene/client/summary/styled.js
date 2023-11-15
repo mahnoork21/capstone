@@ -1,6 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
-import { TextField } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 
 export const SummaryContainer = styled.div`
   background-color: white;
@@ -110,4 +110,10 @@ export const ButtonWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-top: 24px;
+`;
+
+export const StyledEditButton = styled(IconButton)`
+  color: black;
+  position: relative;
+  top: -6px;
 `;

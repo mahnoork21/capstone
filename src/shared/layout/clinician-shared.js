@@ -22,13 +22,13 @@ export const PageWrapper = styled.div`
 
 export const FlexBox = styled(Box)`
   display: flex;
-`;  
+`;
 
 export const ContentBox = styled(Box)`
   flex-grow: 1;
-  
+
   @media only screen and (min-width: ${breakpoint.desktop}) {
     width: calc(100% - 280px);
-    padding: 16px;
-}
+    // padding: 16px;
+  }
 `;

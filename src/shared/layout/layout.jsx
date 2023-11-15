@@ -7,12 +7,12 @@ import ClinicianLayout from "./ClinicianLayout";
 const Layout = ({ children }) => {
   const router = useRouter();
 
-  const isClient = router.pathname.startsWith("/client");
+  const isClinician = router.pathname.startsWith("/clinician");
 
-  return isClient ? (
-    <ClientLayout>{children}</ClientLayout>
-  ) : (
+  return isClinician ? (
     <ClinicianLayout>{children}</ClinicianLayout>
+  ) : (
+    <ClientLayout>{children}</ClientLayout>
   );
 };
 

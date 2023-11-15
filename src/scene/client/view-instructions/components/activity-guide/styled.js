@@ -1,5 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
+import { Grid } from "@mui/material";
 
 export const GreyHeader = styled.div`
   display: flex;
@@ -32,60 +33,9 @@ export const GreyHeader = styled.div`
   }
 `;
 
-export const HowQuestion = styled.div`
-  & span {
-    color: #3a9034;
-  }
-
-  & p {
-    font-size: 0.875rem;
-    margin-bottom: 12px;
-  }
-
-  & h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-
-  @media screen and (max-width: ${breakpoint.desktop}) {
-    & h2 {
-      font-size: 1rem;
-    }
-  }
-`;
-
-export const ActivityGuideCard = styled.div`
-  display: flex;
-  width: 420px;
-  padding-right: 0px;
-  align-items: center;
-  gap: 12px;
-  border-radius: 12px;
-  border: 2px solid #1979be;
-  margin: 0 auto;
-
-  & span {
-    color: var(--pufi-primary, #3a9034);
-  }
-
-  & p {
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 5px 10px;
-  }
-
-  @media screen and (max-width: ${breakpoint.desktop}) {
-    width: 320px;
-
-    & p {
-      font-size: 0.875rem;
-    }
-  }
-`;
-
 export const Container = styled.div`
   width: 100%;
-  padding: 0 48px;
+  padding: 0px;
 
   @media screen and (max-width: ${breakpoint.desktop}) {
     padding: 0;
