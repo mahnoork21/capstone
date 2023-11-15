@@ -25,25 +25,30 @@ import {
   MobileDrawer,
   DesktopDrawer,
 } from "./styled";
+import { useRouter } from "next/router";
 
 function Navbar({ window, mobileOpen, handleDrawerToggle, drawerWidth }) {
   const { breakpoint } = useContext(ClinicianContext);
   console.log(breakpoint);
+
+  const router = useRouter();
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
   // For selection of List Item
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
 
   const listItemsArray = [
-    { IconType: HomeOutlined, text: "Dashboard" },
-    { IconType: AccountBoxOutlined, text: "My Clients" },
-    { IconType: BallotOutlined, text: "All Surveys" },
+    { IconType: HomeOutlined, text: "Dashboard", url: "dashboard" },
+    { IconType: AccountBoxOutlined, text: "My Clients", url: "my-clients" },
+    { IconType: BallotOutlined, text: "All Surveys", url: "all-surveys" },
   ];
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+    router.push("/clinician/" + listItemsArray[index].url);
+  };
 
   const Content = () => (
     <Box>
