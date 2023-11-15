@@ -1,4 +1,4 @@
-import { db, auth } from "./firebase";
+import { app, db, auth, getFirestore } from "./firebase";
 import {
   addDoc,
   collection,
@@ -9,20 +9,13 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  doc,
+  setDoc,
 } from "firebase/firestore";
 
-import { doc, setDoc } from "firebase/firestore";
-
-// const usersRef = await setDoc(
-//   doc(
-//     db,
-//     "Organization",
-//     "oZqnljuEU4b3jZtfHM9v",
-//     "clinician",
-//     "3vAa4UkWlrT4bdS1L5BfKszHqkl1"
-//   ),
-//   data
-// );
+console.log("db:", db);
+const firestore = getFirestore(db);
+console.log("Firestore instance:", firestore);
 
 import {
   createUserWithEmailAndPassword,
@@ -86,25 +79,28 @@ export const addOrUpdateClinician = async (uid, data) => {
   console.log("where uid is ==>", uid);
 
   try {
-    const clinicianRef = db
-      .collection("Organization")
-      .doc("oZqnljuEU4b3jZtfHM9v")
-      .collection("Clinician")
-      .doc(uid);
-    const clinicianDoc = await clinicianRef.get();
+    // const clinicianRef = db
+    //   .collection("Organization")
+    //   .doc("oZqnljuEU4b3jZtfHM9v")
+    //   .collection("Clinician")
+    //   .doc(uid);
+    // const clinicianDoc = await clinicianRef.get();
+
+    const clinicianRef = collection(
+      firestore,
+      "Organization",
+      "oZqnljuEU4b3jZtfHM9v",
+      "Clinician"
+    );
+    const clinicianDoc = doc(clinicianRef, uid);
+    // const clinicianDoc = await getDoc(clinicianRef);
 
     if (clinicianDoc.exists) {
       // Update the existing document using setDoc()
       await setDoc(
-        doc(
-          db,
-          "Organization",
-          "oZqnljuEU4b3jZtfHM9v",
-          "Clinician",
-          "McqFsRlOJab1RxFoTbeXDoYuRZq2"
-        ),
+        doc(db, "Organization", "oZqnljuEU4b3jZtfHM9v", "Clinician", uid),
         {
-          clinician_id: "McqFsRlOJab1RxFoTbeXDoYuRZq2",
+          clinician_id: uid,
           email: data.email,
           first_name: data.firstName,
           last_name: data.lastName,
@@ -115,12 +111,21 @@ export const addOrUpdateClinician = async (uid, data) => {
       );
       console.log("Clinician document updated:", uid);
     } else {
-      const clinicianRef = db
-        .collection("Organization")
-        .doc("oZqnljuEU4b3jZtfHM9v")
-        .collection("Clinician");
+      // const clinicianRef = db
+      //   .collection("Organization")
+      //   .doc("oZqnljuEU4b3jZtfHM9v")
+      //   .collection("Clinician");
 
-      const clinicianCollection = await clinicianRef.get();
+      // const clinicianCollection = await clinicianRef.get();
+
+      const clinicianRef = collection(
+        firestore,
+        "Organization",
+        "oZqnljuEU4b3jZtfHM9v",
+        "Clinician"
+      );
+
+      const clinicianCollection = doc(clinicianRef, uid);
 
       console.log("data is gonna store for :=>", uid);
 
@@ -134,7 +139,7 @@ export const addOrUpdateClinician = async (uid, data) => {
         role: data.role,
       };
       console.log("new_data is ", new_data);
-      const docRef = await addDoc(clinicianCollection, { [uid]: data });
+      const docRef = await addDoc(clinicianCollection, { [uid]: new_data });
     }
   } catch (error) {
     console.error("Error adding or updating clinician:", error);

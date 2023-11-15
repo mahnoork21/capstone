@@ -397,7 +397,7 @@ const Registration = () => {
 
         checkTosAndAddClinician(data)
           .then((data) => {
-            addOrUpdateClinician(uid, data).then(() => {
+            addClinicianDb(uid, data).then(() => {
               alert("cliniian added using addClinicianDb");
             });
           })
