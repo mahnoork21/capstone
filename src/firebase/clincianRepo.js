@@ -114,28 +114,28 @@ export const addOrUpdateClinician = async (uid, data) => {
         }
       );
       console.log("Clinician document updated:", uid);
-    }
-    // else {
-    //   const clinicianCollection = collection(
-    //     db,
-    //     "Organization",
-    //     "oZqnljuEU4b3jZtfHM9v",
-    //     "Clinician"
-    //   );
-    //   console.log("data is gonna store for :=>", uid);
+    } else {
+      const clinicianRef = db
+        .collection("Organization")
+        .doc("oZqnljuEU4b3jZtfHM9v")
+        .collection("Clinician");
 
-    //   const new_data = {
-    //     clinician_id: uid,
-    //     first_name: data.firstName,
-    //     last_name: data.lastName,
-    //     email: data.email,
-    //     // password: data.password,
-    //     org_id: data.organization,
-    //     role: data.role,
-    //   };
-    //   console.log("new_data is ", new_data);
-    //   const docRef = await addDoc(clinicianCollection, { [uid]: data });
-    // }
+      const clinicianCollection = await clinicianRef.get();
+
+      console.log("data is gonna store for :=>", uid);
+
+      const new_data = {
+        clinician_id: uid,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        password: data.password,
+        org_id: data.organization,
+        role: data.role,
+      };
+      console.log("new_data is ", new_data);
+      const docRef = await addDoc(clinicianCollection, { [uid]: data });
+    }
   } catch (error) {
     console.error("Error adding or updating clinician:", error);
   }
