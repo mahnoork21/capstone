@@ -45,6 +45,7 @@ export const addNewClient = async (
     client_id: clientId,
     org_id: organizationId,
     created: serverTimestamp(),
+    activity_response: {},
   });
 
   await updateDoc(clinicianRef, {
@@ -136,6 +137,7 @@ export const addNewSurvey = async (
     client_id: clientId,
     org_id: organizationId,
     created: serverTimestamp(),
+    activity_response: {},
   });
 
   return newSurveyRef.id;
