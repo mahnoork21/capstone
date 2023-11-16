@@ -40,6 +40,7 @@ import {
 } from "@/firebase/clincianRepo";
 import AccordionCard from "@/shared/clinician/accordionCard";
 import TOScomponent from "@/shared/clinician/TOS";
+import { setValidation } from "./validation";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
 
@@ -347,6 +348,7 @@ function getStepContent(step) {
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
@@ -412,29 +414,9 @@ const Registration = () => {
         alert("Please accept Terms and Conditions to continue!");
       }
     } else {
-      if (
-        !data.firstName ||
-        !data.lastName ||
-        !data.email ||
-        !data.password ||
-        !data.confirmPassword
-      ) {
-        console.log("data is not complete at step := ", activeStep);
-        console.log(
-          data.firstName,
-          data.lastName,
-          data.email,
-          data.password,
-          data.confirmPassword
-        );
-        setOpen(true);
-      } else {
-        console.log("daata is complete at step := ", activeStep);
-
-        console.log("inside else, NOT LAST STEP", activeStep);
-
+      const isitValid = setValidation(data, activeStep);
+      if (isitValid) {
         setActiveStep(activeStep + 1);
-        console.log(activeStep);
       }
     }
   };
