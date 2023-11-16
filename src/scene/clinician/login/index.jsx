@@ -26,8 +26,8 @@ const LoginLanding = () => {
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
-    setEmail(newEmail);
     setIsValidEmail(emailPattern.test(newEmail));
+    setEmail(newEmail);
   };
 
   const handlePasswordChange = (e) => {
@@ -44,6 +44,7 @@ const LoginLanding = () => {
       setOpenSnackbar(true);
     } else {
       // submit form here...
+      //call here tthe signin function from firebase
     }
   };
   const handleCloseSnackbar = (event, reason) => {
