@@ -5,10 +5,9 @@ import {
   FlexBox,
   PageWrapper,
 } from "./clinician-shared";
-const drawerWidth = 280;
 import NormalHeader from "../clinician/header/NormalHeader";
 import Footer from "../clinician/footer";
-import { CssBaseline, Toolbar, Typography } from "@mui/material";
+import { CssBaseline, Toolbar } from "@mui/material";
 import { useRouter } from "next/router";
 import ClinicianProviders from "./ClinicianProviders";
 import Navbar from "../clinician/navbar";
@@ -44,7 +43,6 @@ const ClinicianLayout = ({ window, children }) => {
             window={window}
             mobileOpen={mobileOpen}
             handleDrawerToggle={handleDrawerToggle}
-            drawerWidth={drawerWidth}
           />
 
           <ContentBox component="main">
