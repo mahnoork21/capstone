@@ -118,6 +118,7 @@ const MyClients = () => {
               />
             )}
             {!isAddNewSurveyShown && selectedClientIndex && (
+              //Here
               <SurveysPerClient
                 surveysListData={surveysListData}
                 surveysPageNo={surveysPageNo}

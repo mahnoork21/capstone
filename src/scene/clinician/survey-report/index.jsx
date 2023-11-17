@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@mui/material";
 import ReportHeader from "./components/report-header";
 import { Container } from "./styled";
@@ -19,7 +20,7 @@ import { groupByCategory } from "./components/category-bar-chart/helper/categori
 //add to that component onClick event (on view scores) that will pass surveyId as a parameter to the url (or store survey Id in clinician context),
 //and i will retrieve this surveyId here instead of hardcoded useState surveyId
 const SurveyReport = () => {
-  const [surveyId, setSurveyId] = useState("SCxUXNM1LeB9OTg8oMel");
+  const [surveyId] = useState("SCxUXNM1LeB9OTg8oMel");
   const [loading, setLoading] = useState(true);
   const [surveyData, setSurveyData] = useState({});
   const [groupedSurveyByCategory, setGroupedSurveyByCategory] = useState({});
@@ -27,7 +28,7 @@ const SurveyReport = () => {
   useEffect(() => {
     const fetchSurvey = async (id) => {
       const survey = await getSurveyById(id);
-      setSurveyData((prev) => survey);
+      setSurveyData(() => survey);
       setGroupedSurveyByCategory(() => groupByCategory(survey));
     };
 
@@ -109,7 +110,11 @@ const SurveyReport = () => {
           </div>
 
           {youngChildSurvey.map(({ questionId }) => (
-            <ActivityAnalysis survey={surveyData} questionId={questionId} />
+            <ActivityAnalysis
+              key={questionId}
+              survey={surveyData}
+              questionId={questionId}
+            />
           ))}
 
           <WeightedCalculation />

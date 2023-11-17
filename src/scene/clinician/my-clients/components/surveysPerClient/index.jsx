@@ -21,6 +21,7 @@ import {
   StyledForwardAndBackwardButtonsBox,
 } from "./styled";
 
+//Here
 const noOfItemsOnOnePage = 6;
 
 export default function SurveysPerClient({

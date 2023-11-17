@@ -45,6 +45,7 @@ export const addNewClient = async (
     client_id: clientId,
     org_id: organizationId,
     created: serverTimestamp(),
+    is_archived: false,
   });
 
   await updateDoc(clinicianRef, {
@@ -103,6 +104,34 @@ export const fetchClientSurveys = async (
   return surveys;
 };
 
+export const fetchAllClinicianSurveys = async (
+  organizationId,
+  clinicianId,
+  isArchived
+) => {
+  if (!organizationId || !clinicianId)
+    throw new Error("Insufficient data provided");
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let surveys = [];
+
+  const q = query(surveysRef, where("is_archived", "==", isArchived));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    surveys.push(doc.data());
+  });
+
+  return surveys;
+};
+
 export const addNewSurvey = async (
   organizationId,
   clinicianId,
@@ -136,6 +165,7 @@ export const addNewSurvey = async (
     client_id: clientId,
     org_id: organizationId,
     created: serverTimestamp(),
+    is_archived: false,
   });
 
   return newSurveyRef.id;
