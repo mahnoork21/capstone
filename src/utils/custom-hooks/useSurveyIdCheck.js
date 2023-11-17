@@ -1,19 +1,21 @@
 import { ClientContext } from "@/context/ClientContext";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 const useSurveyIdCheck = () => {
-  const { setCurrentSurveyId, currentSurveyId, survey } =
+  const { setOrganizationId, setClinicianId, setSurveyId, survey } =
     useContext(ClientContext);
   const router = useRouter();
 
   useEffect(() => {
-    if (!currentSurveyId && router.isReady) {
-      const { surveyId } = router.query;
-      if (!surveyId) {
+    if (router.isReady && !survey) {
+      const { orgId, clinicianId, surveyId } = router.query;
+      if (!orgId || !clinicianId || !surveyId) {
         router.push("/client");
       }
-      setCurrentSurveyId(surveyId);
+      setOrganizationId(orgId);
+      setClinicianId(clinicianId);
+      setSurveyId(surveyId);
     }
   }, [router.isReady, survey]);
 };

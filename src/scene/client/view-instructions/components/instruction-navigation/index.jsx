@@ -12,7 +12,7 @@ const InstructionNavigation = ({
   onNextClick,
   nextButtonDisabled,
 }) => {
-  const { currentSurveyId } = useContext(ClientContext);
+  const { surveyId } = useContext(ClientContext);
 
   return (
     <InstructionNavigationContainer>
@@ -31,7 +31,7 @@ const InstructionNavigation = ({
         <Link
           href={{
             pathname: "/client/survey",
-            query: { surveyId: currentSurveyId },
+            query: { surveyId: surveyId },
           }}
         >
           <StyledButton primary variant="contained">

@@ -53,7 +53,9 @@ const SurveyContent = () => {
     errors,
     setErrors,
     setSurvey,
-    currentSurveyId,
+    organizationId,
+    clinicianId,
+    surveyId,
     setHeaderButtonType,
     activityResponses,
     breakpoint,
@@ -170,7 +172,11 @@ const SurveyContent = () => {
           currentAnswer
         );
         //update the local copy
-        const survey = await getSurveyById(currentSurveyId);
+        const survey = await getSurveyById(
+          organizationId,
+          clinicianId,
+          surveyId
+        );
         setSurvey(survey);
 
         setIsUpdatingdb(false);
@@ -180,7 +186,9 @@ const SurveyContent = () => {
           router.push({
             pathname: "/client/summary",
             query: {
-              surveyId: currentSurveyId,
+              orgId: organizationId,
+              clinicianId: clinicianId,
+              surveyId: surveyId,
             },
           });
           return;
@@ -191,7 +199,9 @@ const SurveyContent = () => {
           ? router.push({
               pathname: "/client/summary",
               query: {
-                surveyId: currentSurveyId,
+                orgId: organizationId,
+                clinicianId: clinicianId,
+                surveyId: surveyId,
               },
             })
           : setCurrentActivityIndex(currentActivityIndex + 1);
@@ -218,7 +228,11 @@ const SurveyContent = () => {
           currentAnswer
         );
         //update the local copy
-        const survey = await getSurveyById(currentSurveyId);
+        const survey = await getSurveyById(
+          organizationId,
+          clinicianId,
+          surveyId
+        );
         setSurvey(survey);
         setIsUpdatingdb(false);
 
@@ -255,7 +269,9 @@ const SurveyContent = () => {
     router.push({
       pathname: "/client/summary",
       query: {
-        surveyId: currentSurveyId,
+        orgId: organizationId,
+        clinicianId: clinicianId,
+        surveyId: surveyId,
       },
     });
   };

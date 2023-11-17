@@ -11,12 +11,12 @@ export const ClinicianProvider = ({ children }) => {
   //if complete, disable the start survey button, display message
 
   //TODO read the stored user and surveyId from params
-//   const [currentSurveyId, setCurrentSurveyId] = useState(null);
-//   const [user, setUser] = useState(null);
+  //   const [surveyId, setSurveyId] = useState(null);
+  //   const [user, setUser] = useState(null);
   const [breakpoint, setBreakpoint] = useState(`desktop`);
-//   const [headerButtonType, setHeaderButtonType] = useState(
-//     HeaderButtonType.START_SURVEY
-//   );
+  //   const [headerButtonType, setHeaderButtonType] = useState(
+  //     HeaderButtonType.START_SURVEY
+  //   );
 
   useEffect(() => {
     // const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -59,12 +59,12 @@ export const ClinicianProvider = ({ children }) => {
   return (
     <ClinicianContext.Provider
       value={{
-        // currentSurveyId,
+        // surveyId,
         // user,
-        breakpoint
+        breakpoint,
         // headerButtonType,
         // setHeaderButtonType: setHeaderButtonType,
-        // setCurrentSurveyId: setCurrentSurveyId,
+        // setSurveyId: setSurveyId,
       }}
     >
       {children}
