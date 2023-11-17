@@ -31,7 +31,7 @@ export const createClinicianByEmail = async (email, password) => {
         password
       );
       console.log("New account is created.");
-      return userCredential;
+      return userCredential.user.uid;
     }
   } catch (error) {
     alert(error);

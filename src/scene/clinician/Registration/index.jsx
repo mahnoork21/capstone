@@ -73,8 +73,6 @@ const PersonalDetils = () => {
                 render={({ field }) => (
                   <StyledTextfield
                     id="firstName"
-                    // value={user.firstName}
-                    // onChange={data}
                     inputProps={{ "aria-label": "controlled" }}
                     {...field}
                   />
@@ -101,11 +99,7 @@ const PersonalDetils = () => {
                   required: "email is required",
                 }}
                 render={({ field }) => (
-                  <StyledTextfield
-                    id="email"
-                    // value={user.email}
-                    {...field}
-                  />
+                  <StyledTextfield id="email" {...field} />
                 )}
               />
             </RowBox>
@@ -128,12 +122,7 @@ const PersonalDetils = () => {
                   required: "password is required",
                 }}
                 render={({ field }) => (
-                  <StyledTextfield
-                    type="password"
-                    id="password"
-                    // value={user.password}
-                    {...field}
-                  />
+                  <StyledTextfield type="password" id="password" {...field} />
                 )}
               />
             </RowBox>
@@ -158,7 +147,6 @@ const PersonalDetils = () => {
                   <StyledTextfield
                     type="password"
                     id="confirmPassword"
-                    // value={user.confirmpassword}
                     {...field}
                   />
                 )}
@@ -184,11 +172,7 @@ const PersonalDetils = () => {
                   required: "last name is required",
                 }}
                 render={({ field }) => (
-                  <StyledTextfield
-                    id="lastName"
-                    // value={user.lastName}
-                    {...field}
-                  />
+                  <StyledTextfield id="lastName" {...field} />
                 )}
               />
             </RowBox>
@@ -213,7 +197,6 @@ const OrganizationDetails = () => {
     control,
     formState: { errors },
   } = useFormContext();
-  // console.log(errors);
 
   return (
     <>
@@ -227,11 +210,7 @@ const OrganizationDetails = () => {
               required: "organization is required",
             }}
             render={({ field }) => (
-              <StyledTextfield
-                id="organization"
-                // value={user.organization}
-                {...field}
-              />
+              <StyledTextfield id="organization" {...field} />
             )}
           />{" "}
         </Box>
@@ -252,13 +231,7 @@ const OrganizationDetails = () => {
             rules={{
               required: "role is required",
             }}
-            render={({ field }) => (
-              <StyledTextfield
-                id="role"
-                // value={user.role}
-                {...field}
-              />
-            )}
+            render={({ field }) => <StyledTextfield id="role" {...field} />}
           />
         </Box>
         {errors.role && (
@@ -284,7 +257,6 @@ const TOS = () => {
     control,
     formState: { errors },
   } = useFormContext();
-  // console.log(errors);
 
   return (
     <>
@@ -321,7 +293,6 @@ const TOS = () => {
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
           />
         )}
-        {/* {errors.tos && <p style={{ color: "red" }}>{errors.tos.message}</p>} */}
       </React.Fragment>
     </>
   );
@@ -352,15 +323,7 @@ function Alert(props) {
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
-  // const [user, setUser] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   email: "",
-  //   password: "",
-  //   confirmPassword: "",
-  //   organization: "",
-  //   role: "",
-  // });
+
   const { control, handleSubmit, errors } = useForm();
 
   const methods = useForm({
@@ -386,14 +349,14 @@ const Registration = () => {
       }
     });
   };
-  const handleNext = (data) => {
+  const handleNext = async (data) => {
     console.log(data);
 
     if (activeStep == steps.length - 1) {
       if (data.tos) {
         console.log("inside IF, LAST STEP", activeStep);
 
-        const uid = createClinicianByEmail(data.email, data.password);
+        const uid = await createClinicianByEmail(data.email, data.password);
         console.log("data in LAST step, uid is generated now");
         console.log(uid, data.email, data.password);
 
