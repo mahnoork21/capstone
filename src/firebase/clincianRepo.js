@@ -20,28 +20,19 @@ import {
 
 export const signinClinicianByEmail = async (email, password) => {
   try {
-    // const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-    // console.log("before if-else signInMethods ::", signInMethods);
-    // if (signInMethods && signInMethods.length > 0) {
-    console.log(
-      "Account already exists for this email. Choose another email.",
-      email
-    );
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
     // Signed in
-    const user = userCredential.user;
-    return true;
-    // } else {
-    //   console.log("account does not exists, CREATE NEW ONE please");
-    //   return false;
-    // }
+    const user = userCredential.user.email;
+    console.log("successfully signed in");
+    return user;
   } catch (error) {
-    alert(error);
+    // alert("Can not signed in:");
     console.log("Can not signed in: ", error);
+    return null;
   }
 };
 export const createClinicianByEmail = async (email, password) => {

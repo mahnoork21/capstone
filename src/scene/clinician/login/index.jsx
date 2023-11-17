@@ -33,7 +33,7 @@ const LoginLanding = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (email === "" || password === "") {
@@ -44,12 +44,14 @@ const LoginLanding = () => {
       setOpenSnackbar(true);
     } else {
       console.log(email, password);
-      const clinicianExists = signinClinicianByEmail(email, password);
-      if (clinicianExists === true) {
+      const clinicianExists = await signinClinicianByEmail(email, password);
+      console.log("Clinician Exists or not ::", clinicianExists);
+
+      if (clinicianExists != null) {
         setSnackbarMessage("Login Successful!");
         setOpenSnackbar(true);
       } else {
-        setSnackbarMessage("No Clinician Found with this Email Address!");
+        setSnackbarMessage("Email or Password isinvalid");
         setOpenSnackbar(true);
       }
       // submit form here...
@@ -83,7 +85,6 @@ const LoginLanding = () => {
               </Labels>
               <StyledButton type="submit"> LOG IN</StyledButton>
               <Labels>Don't have an account yet?</Labels>
-              {/* <StyledButton href="/clinician/register"></StyledButton> */}
               <StyledButton href="/clinician/register">
                 {" "}
                 CREATE NEW ACCOUNT

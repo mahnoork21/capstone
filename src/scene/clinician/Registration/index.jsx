@@ -324,7 +324,7 @@ const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
 
-  const { control, handleSubmit, errors } = useForm();
+  // const { control, handleSubmit, errors } = useForm();
 
   const methods = useForm({
     defaultValues: {
