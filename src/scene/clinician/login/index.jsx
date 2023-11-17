@@ -21,6 +21,7 @@ const LoginLanding = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
+  const [login, setLogin] = useState(false);
 
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Regular expression for email validation
 
@@ -48,14 +49,15 @@ const LoginLanding = () => {
       console.log("Clinician Exists or not ::", clinicianExists);
 
       if (clinicianExists != null) {
+        setLogin(true);
+
         setSnackbarMessage("Login Successful!");
         setOpenSnackbar(true);
       } else {
+        setLogin(false);
         setSnackbarMessage("Email or Password isinvalid");
         setOpenSnackbar(true);
       }
-      // submit form here...
-      //call here tthe signin function from firebase
     }
   };
   const handleCloseSnackbar = (event, reason) => {
@@ -97,9 +99,15 @@ const LoginLanding = () => {
             onClose={handleCloseSnackbar}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
           >
-            <MuiAlert onClose={handleCloseSnackbar} severity="error">
-              {snackbarMessage}
-            </MuiAlert>
+            {login == true ? (
+              <MuiAlert onClose={handleCloseSnackbar} severity="success">
+                {snackbarMessage}
+              </MuiAlert>
+            ) : (
+              <MuiAlert onClose={handleCloseSnackbar} severity="error">
+                {snackbarMessage}
+              </MuiAlert>
+            )}
           </Snackbar>
         </StyledPaper>
 
