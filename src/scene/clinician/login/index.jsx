@@ -12,7 +12,7 @@ import {
   StyledTypo,
 } from "./styled";
 import MainContainer from "@/shared/components/main-container";
-
+import { signinClinicianByEmail } from "../../../firebase/clincianRepo";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 const LoginLanding = () => {
@@ -43,6 +43,15 @@ const LoginLanding = () => {
       setSnackbarMessage("Invalid email address.");
       setOpenSnackbar(true);
     } else {
+      console.log(email, password);
+      const clinicianExists = signinClinicianByEmail(email, password);
+      if (clinicianExists === true) {
+        setSnackbarMessage("Login Successful!");
+        setOpenSnackbar(true);
+      } else {
+        setSnackbarMessage("No Clinician Found with this Email Address!");
+        setOpenSnackbar(true);
+      }
       // submit form here...
       //call here tthe signin function from firebase
     }

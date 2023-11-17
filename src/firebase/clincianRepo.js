@@ -15,7 +15,35 @@ import { doc, setDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
+
+export const signinClinicianByEmail = async (email, password) => {
+  try {
+    // const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+    // console.log("before if-else signInMethods ::", signInMethods);
+    // if (signInMethods && signInMethods.length > 0) {
+    console.log(
+      "Account already exists for this email. Choose another email.",
+      email
+    );
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    // Signed in
+    const user = userCredential.user;
+    return true;
+    // } else {
+    //   console.log("account does not exists, CREATE NEW ONE please");
+    //   return false;
+    // }
+  } catch (error) {
+    alert(error);
+    console.log("Can not signed in: ", error);
+  }
+};
 export const createClinicianByEmail = async (email, password) => {
   try {
     const signInMethods = await fetchSignInMethodsForEmail(auth, email);
@@ -119,33 +147,4 @@ export const addClinicianDb = async (uid, data) => {
 //   } catch (error) {
 //     console.error("Error adding or updating clinician:", error);
 //   }
-// };
-
-// export const getClinicianById = async (clinicianId) => {
-//   if (!clinicianId) return null;
-
-//   const clinicianQuery = query(
-//     collectionGroup(db, "Clinician"),
-//     where("clinician_id", "==", clinicianId)
-//   );
-// };
-
-// export const addClinician = async (data) => {
-//   usersRef
-//     .add({
-//       firstName: data.firstName,
-//       lastName: data.lastName,
-//       email: data.email,
-//       password: data.password,
-//       role: data.role,
-//       createdAt: serverTimestamp(),
-//       // Add other fields here
-//     })
-//     .then((docRef) => {
-//       console.log("Document written with ID: ", docRef.id);
-//     })
-
-//     .catch((error) => {
-//       console.error("Error adding document: ", error);
-//     });
 // };
