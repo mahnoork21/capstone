@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AccordionCard from "./accordionCard";
+import AccordionCard from "../../../shared/clinician/accordionCard";
 import {
   Labels,
   StyledContainer,
@@ -75,7 +75,10 @@ const LoginLanding = () => {
               <StyledButton type="submit"> LOG IN</StyledButton>
               <Labels>Don't have an account yet?</Labels>
               {/* <StyledButton href="/clinician/register"></StyledButton> */}
-              <StyledButton href=""> CREATE NEW ACCOUNT</StyledButton>
+              <StyledButton href="/clinician/register">
+                {" "}
+                CREATE NEW ACCOUNT
+              </StyledButton>
             </form>
           </FormBox>
           <Snackbar
