@@ -12,7 +12,7 @@ import {
   StyledTypo,
 } from "./styled";
 import MainContainer from "@/shared/components/main-container";
-
+import { signinClinicianByEmail } from "../../../firebase/clincianRepo";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 const LoginLanding = () => {
@@ -21,19 +21,20 @@ const LoginLanding = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
+  const [login, setLogin] = useState(false);
 
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Regular expression for email validation
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
-    setEmail(newEmail);
     setIsValidEmail(emailPattern.test(newEmail));
+    setEmail(newEmail);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (email === "" || password === "") {
@@ -43,7 +44,20 @@ const LoginLanding = () => {
       setSnackbarMessage("Invalid email address.");
       setOpenSnackbar(true);
     } else {
-      // submit form here...
+      console.log(email, password);
+      const clinicianExists = await signinClinicianByEmail(email, password);
+      console.log("Clinician Exists or not ::", clinicianExists);
+
+      if (clinicianExists != null) {
+        setLogin(true);
+
+        setSnackbarMessage("Login Successful!");
+        setOpenSnackbar(true);
+      } else {
+        setLogin(false);
+        setSnackbarMessage("Email or Password isinvalid");
+        setOpenSnackbar(true);
+      }
     }
   };
   const handleCloseSnackbar = (event, reason) => {
@@ -73,7 +87,6 @@ const LoginLanding = () => {
               </Labels>
               <StyledButton type="submit"> LOG IN</StyledButton>
               <Labels>Don't have an account yet?</Labels>
-              {/* <StyledButton href="/clinician/register"></StyledButton> */}
               <StyledButton href="/clinician/register">
                 {" "}
                 CREATE NEW ACCOUNT
@@ -86,9 +99,15 @@ const LoginLanding = () => {
             onClose={handleCloseSnackbar}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
           >
-            <MuiAlert onClose={handleCloseSnackbar} severity="error">
-              {snackbarMessage}
-            </MuiAlert>
+            {login == true ? (
+              <MuiAlert onClose={handleCloseSnackbar} severity="success">
+                {snackbarMessage}
+              </MuiAlert>
+            ) : (
+              <MuiAlert onClose={handleCloseSnackbar} severity="error">
+                {snackbarMessage}
+              </MuiAlert>
+            )}
           </Snackbar>
         </StyledPaper>
 
