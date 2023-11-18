@@ -363,7 +363,7 @@ const Registration = () => {
         checkTosAndAddClinician(data)
           .then((data) => {
             addClinicianDb(uid, data).then(() => {
-              alert("cliniian added using addClinicianDb");
+              console.log("cliniian added using addClinicianDb");
             });
           })
           .then((res) => {
@@ -374,7 +374,13 @@ const Registration = () => {
             setOpen(true);
           });
       } else {
-        alert("Please accept Terms and Conditions to continue!");
+        <Snackbar
+          open={open}
+          autoHideDuration={2000}
+          message="Accept Terms and Conditions to move forward"
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        />;
       }
     } else {
       const isitValid = setValidation(data, activeStep);
@@ -388,7 +394,7 @@ const Registration = () => {
     setActiveStep(activeStep - 1);
     console.log(activeStep);
     {
-      activeStep === 0 ? (
+      activeStep === 0 || activeStep >= steps.length - 1 ? (
         <Button color="inherit" href="/clinician/login" sx={{ mr: 1 }}>
           Back to Login
         </Button>
@@ -449,7 +455,9 @@ const Registration = () => {
                             onClick={handleBack}
                             sx={{ mr: 1 }}
                           >
-                            {activeStep === 0 ? "Back to Login" : "Back"}
+                            {activeStep === 0 || activeStep >= steps.length - 1
+                              ? "Back to Login"
+                              : "Back"}
                           </Button>
 
                           <Button
