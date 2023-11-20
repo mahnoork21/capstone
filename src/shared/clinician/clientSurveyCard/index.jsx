@@ -18,6 +18,9 @@ import {
   StyledTypography2,
 } from "./styled";
 import { Menu, MenuItem } from "@mui/material";
+import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOutlined";
+import { archiveRestoreSurveyById } from "@/firebase/clinicianRepo";
+import { useRouter } from "next/router";
 
 // TODO: implement email link
 
@@ -32,7 +35,10 @@ const ClientSurveyCard = ({
   submittedDate,
   isSubmitted,
   activityResponse,
+  isArchived,
 }) => {
+  const router = useRouter();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const handleMenuClick = (event) => {
@@ -75,9 +81,13 @@ const ClientSurveyCard = ({
       `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`
     );
 
-  const handleArchiveClick = () => {};
+  const handleArchiveClick = () => {
+    archiveRestoreSurveyById(surveyId);
+  };
 
-  const handleViewScoresClick = () => {};
+  const handleViewScoresClick = () => {
+    router.push(`/clinician/survey-report/${surveyId}`);
+  };
 
   const handleEmailClientClick = () => {};
 
@@ -92,8 +102,12 @@ const ClientSurveyCard = ({
             clickHandlerFn: handleCopyLinkClick,
           },
           {
-            icon: <DeleteOutline />,
-            text: "ARCHIVE",
+            icon: isArchived ? (
+              <RestoreFromTrashOutlinedIcon />
+            ) : (
+              <DeleteOutline />
+            ),
+            text: isArchived ? "RESTORE" : "ARCHIVE",
             clickHandlerFn: handleArchiveClick,
           },
         ]
@@ -110,8 +124,12 @@ const ClientSurveyCard = ({
             clickHandlerFn: handleViewScoresClick,
           },
           {
-            icon: <DeleteOutline />,
-            text: "ARCHIVE",
+            icon: isArchived ? (
+              <RestoreFromTrashOutlinedIcon />
+            ) : (
+              <DeleteOutline />
+            ),
+            text: isArchived ? "RESTORE" : "ARCHIVE",
             clickHandlerFn: handleArchiveClick,
           },
         ]
@@ -122,8 +140,12 @@ const ClientSurveyCard = ({
             clickHandlerFn: handleCopyLinkClick,
           },
           {
-            icon: <DeleteOutline />,
-            text: "ARCHIVE",
+            icon: isArchived ? (
+              <RestoreFromTrashOutlinedIcon />
+            ) : (
+              <DeleteOutline />
+            ),
+            text: isArchived ? "RESTORE" : "ARCHIVE",
             clickHandlerFn: handleArchiveClick,
           },
         ];
@@ -163,7 +185,11 @@ const ClientSurveyCard = ({
         </StyledCardContent>
         <StyledCardActions>
           {whichCard == "completed" ? (
-            <StyledLink href="#" underline="hover">
+            <StyledLink
+              href="#"
+              underline="hover"
+              onClick={handleViewScoresClick}
+            >
               VIEW SCORES
             </StyledLink>
           ) : whichCard == "in-progress" ? (

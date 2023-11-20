@@ -1,3 +1,4 @@
+import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { Box, Button } from "@mui/material";
 
@@ -32,4 +33,12 @@ export const SearchButton = styled(Button)`
 export const StyledBox = styled(Box)`
   display: flex;
   justify-content: flex-start;
+`;
+
+export const InnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 450px;
+  width: 100%;
 `;

@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import {
   Box,
+  Button,
   Drawer,
   List,
   ListItem,
@@ -10,6 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export const StyledDrawer = styled(Drawer)``;
 
@@ -68,4 +70,12 @@ export const StyledTextField = styled(TextField)`
   color: var(--pufi-grey-dark, #a8a8a8);
   margin: 8px 0;
   flex-grow: 1;
+`;
+
+export const StyledDatePicker = styled(DatePicker)`
+  margin: 5px 0px;
+`;
+
+export const StyledButton = styled(Button)`
+  margin-top: 10px;
 `;

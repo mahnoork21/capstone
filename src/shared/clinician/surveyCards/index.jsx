@@ -1,7 +1,7 @@
-import { SurveyCardsBox } from "@/scene/clinician/my-clients/components/surveysPerClient/styled";
 import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 
 import React from "react";
+import { SurveyCardsBox } from "./styled";
 
 const SurveyCards = ({ surveysListData, surveysPageNo }) => {
   const noOfItemsOnOnePage = 6;
@@ -25,6 +25,7 @@ const SurveyCards = ({ surveysListData, surveysPageNo }) => {
             submitted,
             is_submitted,
             activity_response,
+            is_archived,
           }) => (
             <ClientSurveyCard
               key={survey_id}
@@ -38,6 +39,7 @@ const SurveyCards = ({ surveysListData, surveysPageNo }) => {
               submittedDate={submitted}
               isSubmitted={is_submitted}
               activityResponse={activity_response}
+              isArchived={is_archived}
             />
           )
         )}

@@ -14,13 +14,7 @@ import { auth } from "@/firebase/firebase";
 import CategoryBarChart from "./components/category-bar-chart";
 import { groupByCategory } from "./components/category-bar-chart/helper/categories-helper";
 
-//TODO:
-//1. when client id will appear in the database, add client id to the surveyData
-//2. when surveyCard will be finished (component in All surveys -> way to get to this page -> view scores)
-//add to that component onClick event (on view scores) that will pass surveyId as a parameter to the url (or store survey Id in clinician context),
-//and i will retrieve this surveyId here instead of hardcoded useState surveyId
-const SurveyReport = () => {
-  const [surveyId] = useState("SCxUXNM1LeB9OTg8oMel");
+const SurveyReport = ({ surveyId }) => {
   const [loading, setLoading] = useState(true);
   const [surveyData, setSurveyData] = useState({});
   const [groupedSurveyByCategory, setGroupedSurveyByCategory] = useState({});

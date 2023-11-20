@@ -1,28 +1,19 @@
 import React, { useContext, useEffect } from "react";
-import { IconButton } from "@mui/material";
 import {
   FilterListOutlined,
-  KeyboardArrowLeftSharp,
-  KeyboardArrowRightSharp,
   KeyboardBackspaceOutlined,
 } from "@mui/icons-material";
 
 import { ClinicianContext } from "@/context/ClinicianContext";
-import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import {
   SurveysBox,
   AddNewSurveyButton,
   BackButton,
   ButtonsBox,
   FilterSurveyButton,
-  NumberOfSurveysTypography,
-  SurveyCardsBox,
-  PaginationBox,
-  StyledForwardAndBackwardButtonsBox,
 } from "./styled";
-
-//Here
-const noOfItemsOnOnePage = 6;
+import Pagination from "@/shared/clinician/pagination";
+import SurveyCards from "@/shared/clinician/surveyCards";
 
 export default function SurveysPerClient({
   surveysListData,
@@ -68,81 +59,16 @@ export default function SurveysPerClient({
         </div>
       </ButtonsBox>
 
-      <SurveyCardsBox>
-        {surveysListData
-          .slice(
-            noOfItemsOnOnePage * (surveysPageNo - 1),
-            noOfItemsOnOnePage * surveysPageNo
-          )
-          .map(
-            ({
-              survey_id,
-              survey_type,
-              client_id,
-              clinician_id,
-              org_id,
-              created,
-              updated,
-              submitted,
-              is_submitted,
-              activity_response,
-            }) => (
-              <ClientSurveyCard
-                key={survey_id}
-                surveyId={survey_id}
-                surveyType={survey_type}
-                clientId={client_id}
-                clinicianId={clinician_id}
-                orgId={org_id}
-                createdDate={created}
-                updatedDate={updated}
-                submittedDate={submitted}
-                isSubmitted={is_submitted}
-                activityResponse={activity_response}
-              />
-            )
-          )}
-      </SurveyCardsBox>
+      <SurveyCards
+        surveysListData={surveysListData}
+        surveysPageNo={surveysPageNo}
+      />
 
-      <PaginationBox>
-        <NumberOfSurveysTypography>
-          {Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
-          {" - " +
-            Math.min(
-              noOfItemsOnOnePage * surveysPageNo,
-              surveysListData.length
-            ) || 0}
-          {" of " + surveysListData.length || 0} Surveys
-        </NumberOfSurveysTypography>
-        <StyledForwardAndBackwardButtonsBox>
-          <IconButton
-            aria-label="keyboardArrowLeft"
-            disabled={surveysPageNo === 0 || surveysPageNo === 1}
-            onClick={() =>
-              handleSurveysPageNoClick((n) => (n === 1 ? n : n - 1))
-            }
-          >
-            <KeyboardArrowLeftSharp />
-          </IconButton>
-          <IconButton
-            aria-label="keyboardArrowRight"
-            disabled={
-              surveysPageNo ===
-                Math.ceil(surveysListData.length / noOfItemsOnOnePage) ||
-              surveysPageNo === 0
-            }
-            onClick={() =>
-              handleSurveysPageNoClick((n) =>
-                n === Math.ceil(surveysListData.length / noOfItemsOnOnePage)
-                  ? n
-                  : n + 1
-              )
-            }
-          >
-            <KeyboardArrowRightSharp />
-          </IconButton>
-        </StyledForwardAndBackwardButtonsBox>
-      </PaginationBox>
+      <Pagination
+        surveysListData={surveysListData}
+        surveysPageNo={surveysPageNo}
+        handleSurveysPageNoClick={handleSurveysPageNoClick}
+      />
     </SurveysBox>
   );
 }

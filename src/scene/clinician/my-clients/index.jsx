@@ -13,7 +13,14 @@ import ClientListCard from "./components/clientListCard";
 import FilterPanel from "../../../shared/clinician/filterPanel";
 import SurveysPerClient from "./components/surveysPerClient";
 import AddNewSurveyCard from "./components/addNewSurveyCard";
-import { fetchClientSurveys, fetchClients } from "@/firebase/clinicianRepo";
+import {
+  fetchClientSurveys,
+  fetchClients,
+  fetchClinicianSurveyById,
+  fetchFilteredClinicianSurveys,
+} from "@/firebase/clinicianRepo";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "@/firebase/firebase";
 
 const MyClients = () => {
   const router = useRouter();
@@ -37,11 +44,13 @@ const MyClients = () => {
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const toggleFilterPanelClick = (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
+    if (event) {
+      if (
+        event.type === "keydown" &&
+        (event.key === "Tab" || event.key === "Shift")
+      ) {
+        return;
+      }
     }
 
     setIsFilterPanelOpen((s) => !s);
@@ -67,24 +76,85 @@ const MyClients = () => {
 
   const [surveysListData, setSurveysListData] = useState([]);
 
+  const addClientButtonClick = () => {
+    router.push("/clinician/my-clients/add-new-client");
+  };
+
+  const [filterFormData, setFilterFormData] = useState({});
+  //Filtered Surveys
+  const updateFilteredSurveys = async (formData, searchBy) => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+    setFilterFormData(formData);
+
+    const data = { ...formData, clientId: selectedClientIndex };
+
+    if (
+      searchBy === "surveyId" &&
+      formData.surveyId !== null &&
+      formData.surveyId !== undefined &&
+      formData.surveyId !== ""
+    ) {
+      const resultSurvey = await fetchClinicianSurveyById(
+        orgId,
+        clinicianId,
+        selectedClientIndex,
+        formData.surveyId
+      );
+      if (resultSurvey) {
+        setSurveysListData([resultSurvey]);
+      } else {
+        setSurveysListData([]);
+      }
+    } else {
+      const resultSurvey = await fetchFilteredClinicianSurveys(
+        orgId,
+        clinicianId,
+        data
+      );
+
+      if (resultSurvey.length > 0) {
+        setSurveysListData(resultSurvey);
+      } else {
+        setSurveysListData([]);
+      }
+    }
+
+    setSurveysPageNo(1);
+  };
+
   useEffect(() => {
     orgId = localStorage.getItem("orgId");
     clinicianId = localStorage.getItem("clinicianId");
 
-    if (selectedClientIndex)
-      (async () => {
+    if (selectedClientIndex) {
+      const surveysRef = collection(
+        db,
+        "Organization",
+        orgId,
+        "Clinician",
+        clinicianId,
+        "Survey"
+      );
+      const q = query(surveysRef);
+
+      const unsubscribe = onSnapshot(q, async (snapshot) => {
         const surveys = await fetchClientSurveys(
           orgId,
           clinicianId,
           selectedClientIndex
         );
-        setSurveysListData(surveys);
-      })();
-  }, [selectedClientIndex, isAddNewSurveyShown]);
 
-  const addClientButtonClick = () => {
-    router.push("/clinician/my-clients/add-new-client");
-  };
+        if (Object.keys(filterFormData).length > 0) {
+          updateFilteredSurveys(filterFormData);
+        } else {
+          setSurveysListData(surveys);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [selectedClientIndex, isAddNewSurveyShown, filterFormData]);
 
   return (
     <MainContainerBox>
@@ -118,7 +188,6 @@ const MyClients = () => {
               />
             )}
             {!isAddNewSurveyShown && selectedClientIndex && (
-              //Here
               <SurveysPerClient
                 surveysListData={surveysListData}
                 surveysPageNo={surveysPageNo}
@@ -139,6 +208,7 @@ const MyClients = () => {
       <FilterPanel
         isFilterPanelOpen={isFilterPanelOpen}
         toggleFilterPanelClick={toggleFilterPanelClick}
+        updateFilteredSurveys={updateFilteredSurveys}
       />
     </MainContainerBox>
   );

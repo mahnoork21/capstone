@@ -6,7 +6,6 @@ import {
   IconButton,
   Link,
   ListItemIcon,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { breakpoint } from "@/styles/breakpoints";
@@ -47,7 +46,7 @@ export const StyledCardActions = styled(CardActions)`
   // flex-direction: column;
   // flex-grow: 3;
   // justify-content: center;
-  // gap: 8px;
+  gap: 8px;
   padding-left: 0;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {

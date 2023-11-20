@@ -1,14 +1,15 @@
 import React from "react";
-import {
-  NumberOfSurveysTypography,
-  PaginationBox,
-  StyledForwardAndBackwardButtonsBox,
-} from "@/scene/clinician/my-clients/components/surveysPerClient/styled";
+
 import { IconButton } from "@mui/material";
 import {
   KeyboardArrowLeftSharp,
   KeyboardArrowRightSharp,
 } from "@mui/icons-material";
+import {
+  NumberOfSurveysTypography,
+  PaginationBox,
+  StyledForwardAndBackwardButtonsBox,
+} from "./styled";
 
 const Pagination = ({
   surveysListData,
@@ -19,7 +20,9 @@ const Pagination = ({
   return (
     <PaginationBox>
       <NumberOfSurveysTypography>
-        {Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
+        {surveysListData.length == 0
+          ? 0
+          : Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
         {" - " +
           Math.min(
             noOfItemsOnOnePage * surveysPageNo,
@@ -40,7 +43,8 @@ const Pagination = ({
           disabled={
             surveysPageNo ===
               Math.ceil(surveysListData.length / noOfItemsOnOnePage) ||
-            surveysPageNo === 0
+            surveysPageNo === 0 ||
+            surveysListData.length === 0
           }
           onClick={() =>
             handleSurveysPageNoClick((n) =>
