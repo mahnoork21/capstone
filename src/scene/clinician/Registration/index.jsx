@@ -25,6 +25,7 @@ import {
   StyledTextfield,
   ColumnBox,
   RowBox,
+  ErrorMessage,
   errorSnackbar,
 } from "./styled";
 import {
@@ -43,7 +44,8 @@ import TOScomponent from "@/shared/clinician/TOS";
 import { setValidation } from "./validation";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
-
+// const [snackbarMessage, setSnackbarMessage] = useState("");
+let snackbarMessage = "meaasge";
 const handleCloseSnackbar = (event, reason) => {
   if (reason === "clickaway") {
     return;
@@ -81,13 +83,7 @@ const PersonalDetils = () => {
             </RowBox>
 
             {errors.firstName && (
-              <Snackbar
-                open={open}
-                autoHideDuration={3000}
-                message={errors.firstName.message}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              />
+              <ErrorMessage>{errors.firstName.message}</ErrorMessage>
             )}
 
             <RowBox>
@@ -104,13 +100,7 @@ const PersonalDetils = () => {
               />
             </RowBox>
             {errors.email && (
-              <Snackbar
-                open={open}
-                autoHideDuration={2000}
-                message={errors.email.message}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              />
+              <ErrorMessage>{errors.email.message}</ErrorMessage>
             )}
 
             <RowBox>
@@ -127,13 +117,7 @@ const PersonalDetils = () => {
               />
             </RowBox>
             {errors.password && (
-              <Snackbar
-                open={open}
-                autoHideDuration={2000}
-                message={errors.password.message}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              />
+              <ErrorMessage>{errors.password.message}</ErrorMessage>
             )}
             <RowBox>
               <Labels>Confirm Password</Labels>
@@ -153,13 +137,7 @@ const PersonalDetils = () => {
               />
             </RowBox>
             {errors.confirmPassword && (
-              <Snackbar
-                open={open}
-                autoHideDuration={2000}
-                message={errors.confirmPassword.message}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              />
+              <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
             )}
           </ColumnBox>
           <ColumnBox>
@@ -177,13 +155,7 @@ const PersonalDetils = () => {
               />
             </RowBox>
             {errors.lastName && (
-              <Snackbar
-                open={open}
-                autoHideDuration={2000}
-                message={errors.lastName.message}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              />
+              <ErrorMessage>{errors.lastName.message}</ErrorMessage>
             )}
           </ColumnBox>
         </Box>
@@ -215,13 +187,7 @@ const OrganizationDetails = () => {
           />{" "}
         </Box>
         {errors.organization && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.organization.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
+          <ErrorMessage>{errors.organization.message}</ErrorMessage>
         )}
         <Box display={"block"}>
           <Labels>Role</Labels>
@@ -234,15 +200,7 @@ const OrganizationDetails = () => {
             render={({ field }) => <StyledTextfield id="role" {...field} />}
           />
         </Box>
-        {errors.role && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.role.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
+        {errors.role && <ErrorMessage>{errors.role.message}</ErrorMessage>}
       </React.Fragment>
     </>
   );
@@ -284,15 +242,7 @@ const TOS = () => {
           />
           I agree to abide by the Terms and Conditions and Privacy Policy.
         </Typography>
-        {errors.tos && (
-          <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            message={errors.tos.message}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          />
-        )}
+        {errors.tos && <ErrorMessage>{errors.tos.message}</ErrorMessage>}
       </React.Fragment>
     </>
   );
@@ -323,8 +273,6 @@ function Alert(props) {
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
-
-  // const { control, handleSubmit, errors } = useForm();
 
   const methods = useForm({
     defaultValues: {
@@ -364,6 +312,7 @@ const Registration = () => {
           .then((data) => {
             addClinicianDb(uid, data).then(() => {
               console.log("cliniian added using addClinicianDb");
+              snackbarMessage = "clinicain added";
             });
           })
           .then((res) => {
@@ -383,12 +332,38 @@ const Registration = () => {
         />;
       }
     } else {
-      const isitValid = setValidation(data, activeStep);
+      let isitValid = false;
+      isitValid = setValidation(data, activeStep);
       if (isitValid) {
         setActiveStep(activeStep + 1);
       }
+      // do {
+      //   snackbarMessage = isitValid;
+      //   console.log
+      //   // showMessage(snackbarMessage);
+      //   setOpen(true);
+      // } while (isitValid === "true");
+
+      // setActiveStep(activeStep + 1);
     }
   };
+
+  // const showMessage = (snackbarMessage) => {
+  //   return (
+  //     <>
+  //       <Snackbar
+  //         open={open}
+  //         autoHideDuration={6000}
+  //         onClose={handleCloseSnackbar}
+  //         anchorOrigin={{ vertical: "top", horizontal: "center" }}
+  //       >
+  //         <MuiAlert onClose={handleCloseSnackbar} severity="error">
+  //           {snackbarMessage}
+  //         </MuiAlert>
+  //       </Snackbar>
+  //     </>
+  //   );
+  // };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
@@ -478,7 +453,7 @@ const Registration = () => {
                       autoHideDuration={1000}
                       onClose={handleCloseSnackbar}
                       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                      message="you have successfully logged in"
+                      message="Successfully registered"
                     ></Snackbar>
                   </StyledBox>
                 </StepperBox>

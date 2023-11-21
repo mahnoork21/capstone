@@ -80,3 +80,18 @@ export const addClinicianDb = async (uid, data) => {
     }
   );
 };
+
+export const checkEmailisUsed = async (email) => {
+  try {
+    const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+    if (signInMethods && signInMethods.length > 0) {
+      console.log(
+        "Account already exists for this email. Choose another email."
+      );
+      return;
+    }
+  } catch (error) {
+    alert(error);
+    console.log("Inside catch block: ", error);
+  }
+};

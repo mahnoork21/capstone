@@ -146,3 +146,8 @@ export const RowBox = styled(Box)`
   align-items: center;
   margin-bottom: 10px;
 `;
+
+export const ErrorMessage = styled.p`
+  font-size: 10px;
+  color: red;
+`;

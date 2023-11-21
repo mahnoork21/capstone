@@ -1,3 +1,5 @@
+import { checkEmailisUsed } from "../../../../firebase/clincianRepo";
+
 const validateEmail = (email) => {
   // Regular expression for basic email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -20,7 +22,7 @@ export const setValidation = (data, activeStep) => {
       data.confirmPassword
     );
     setOpen(true);
-  } else if (data.password.length <= 6) {
+  } else if (data.password.length < 6) {
     alert("Check for length of your password", data.password.length);
     return;
   } else if (data.password !== data.confirmPassword) {
@@ -28,6 +30,9 @@ export const setValidation = (data, activeStep) => {
     return;
   } else if (!validateEmail(data.email)) {
     alert("Please enter a valid email address");
+    return;
+  } else if (checkEmailisUsed(data.email)) {
+    alert("This Email has already been used!");
     return;
   } else {
     console.log("daata is complete at step := ", activeStep);
