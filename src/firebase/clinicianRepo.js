@@ -10,6 +10,10 @@ import {
   where,
   getDocs,
   Timestamp,
+  getCountFromServer,
+  orderBy,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 
 export const addNewClient = async (
@@ -56,54 +60,6 @@ export const addNewClient = async (
   return newSurveyRef.id;
 };
 
-export const fetchClients = async (organizationId, clinicianId) => {
-  if (!organizationId || !clinicianId)
-    throw new Error("Insufficient data provided");
-
-  const clinicianRef = doc(
-    db,
-    "Organization",
-    organizationId,
-    "Clinician",
-    clinicianId
-  );
-  const clinicianSnapshot = await getDoc(clinicianRef);
-
-  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
-
-  const clinician = clinicianSnapshot.data();
-
-  return clinician.clients;
-};
-
-export const fetchClientSurveys = async (
-  organizationId,
-  clinicianId,
-  clientId
-) => {
-  if (!organizationId || !clinicianId || !clientId)
-    throw new Error("Insufficient data provided");
-
-  const surveysRef = collection(
-    db,
-    "Organization",
-    organizationId,
-    "Clinician",
-    clinicianId,
-    "Survey"
-  );
-
-  let surveys = [];
-
-  const q = query(surveysRef, where("client_id", "==", clientId));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    surveys.push(doc.data());
-  });
-
-  return surveys;
-};
-
 export const addNewSurvey = async (
   organizationId,
   clinicianId,
@@ -141,6 +97,116 @@ export const addNewSurvey = async (
   });
 
   return newSurveyRef.id;
+};
+
+export const fetchClients = async (organizationId, clinicianId) => {
+  if (!organizationId || !clinicianId)
+    throw new Error("Insufficient data provided");
+
+  const clinicianRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId
+  );
+  const clinicianSnapshot = await getDoc(clinicianRef);
+
+  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
+
+  const clinician = clinicianSnapshot.data();
+
+  return clinician.clients;
+};
+
+let lastSurveySnapshot;
+export const fetchClientSurveys = async (
+  organizationId,
+  clinicianId,
+  clientId,
+  pageNo
+) => {
+  const queryLimit = 6;
+
+  if (!organizationId || !clinicianId || !clientId)
+    throw new Error("Insufficient data provided");
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let surveys = [];
+
+  if (pageNo === 0) {
+    return [];
+  }
+
+  if (pageNo === 1) {
+    // Query the first page of docs
+    const firstPage = query(
+      surveysRef,
+      where("client_id", "==", clientId),
+      orderBy("created"),
+      limit(queryLimit)
+    );
+    const documentSnapshots = await getDocs(firstPage);
+    documentSnapshots.forEach((doc) => {
+      surveys.push(doc.data());
+    });
+
+    // Get the last visible document
+    lastSurveySnapshot =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+    return surveys;
+  }
+
+  // Construct a new query starting at this document,
+  const nextPage = query(
+    surveysRef,
+    where("client_id", "==", clientId),
+    orderBy("created"),
+    startAfter(lastSurveySnapshot),
+    limit(queryLimit)
+  );
+  const documentSnapshots = await getDocs(nextPage);
+  documentSnapshots.forEach((doc) => {
+    surveys.push(doc.data());
+  });
+
+  // Get the last visible document
+  lastSurveySnapshot =
+    documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+  return surveys;
+};
+
+export const getTotalSurveysForClient = async (
+  organizationId,
+  clinicianId,
+  clientId
+) => {
+  if (!organizationId || !clinicianId || !clientId)
+    throw new Error("Insufficient data provided");
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+  const q = query(surveysRef, where("client_id", "==", clientId));
+
+  const snapshot = await getCountFromServer(q);
+
+  return snapshot.data().count;
 };
 
 // if (!clinician.clients.includes(clientId))

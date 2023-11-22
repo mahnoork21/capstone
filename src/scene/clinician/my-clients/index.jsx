@@ -13,7 +13,10 @@ import ClientListCard from "./components/clientListCard";
 import FilterPanel from "../../../shared/clinician/filterPanel";
 import SurveysPerClient from "./components/surveysPerClient";
 import AddNewSurveyCard from "./components/addNewSurveyCard";
-import { fetchClientSurveys, fetchClients } from "@/firebase/clinicianRepo";
+import { fetchClients } from "@/firebase/clinicianRepo";
+
+// TODO: Show error as dropdown
+// TODO: edit localStorage setting up when prachi is done implementing
 
 const MyClients = () => {
   const router = useRouter();
@@ -22,11 +25,6 @@ const MyClients = () => {
   const [clientsPageNo, setClientsPageNo] = useState(1);
   const handleClientsPageNoClick = (value) => {
     setClientsPageNo(value);
-  };
-
-  const [surveysPageNo, setSurveysPageNo] = useState(1);
-  const handleSurveysPageNoClick = (p) => {
-    setSurveysPageNo(p);
   };
 
   // For Selection of Clients list
@@ -52,35 +50,23 @@ const MyClients = () => {
 
   const [clientsListData, setClientsListData] = useState([]);
 
-  let orgId, clinicianId;
   useEffect(() => {
+    //remove this when prachi implements
     localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
     localStorage.setItem("clinicianId", "fWft9AvZD4Mc5fR33ka6Q8vOYil2");
-    orgId = localStorage.getItem("orgId");
-    clinicianId = localStorage.getItem("clinicianId");
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
 
     (async () => {
-      const clients = await fetchClients(orgId, clinicianId);
-      setClientsListData(Object.entries(clients));
+      try {
+        const clients = await fetchClients(orgId, clinicianId);
+        setClientsListData(Object.entries(clients));
+      } catch (err) {
+        console.error("An error occurred: " + err);
+      }
     })();
   }, []);
-
-  const [surveysListData, setSurveysListData] = useState([]);
-
-  useEffect(() => {
-    orgId = localStorage.getItem("orgId");
-    clinicianId = localStorage.getItem("clinicianId");
-
-    if (selectedClientIndex)
-      (async () => {
-        const surveys = await fetchClientSurveys(
-          orgId,
-          clinicianId,
-          selectedClientIndex
-        );
-        setSurveysListData(surveys);
-      })();
-  }, [selectedClientIndex, isAddNewSurveyShown]);
 
   const addClientButtonClick = () => {
     router.push("/clinician/my-clients/add-new-client");
@@ -119,12 +105,10 @@ const MyClients = () => {
             )}
             {!isAddNewSurveyShown && selectedClientIndex && (
               <SurveysPerClient
-                surveysListData={surveysListData}
-                surveysPageNo={surveysPageNo}
-                handleSurveysPageNoClick={handleSurveysPageNoClick}
                 toggleFilterPanelClick={toggleFilterPanelClick}
                 addNewSurveyClick={toggleAddNewSurveyCard}
-                handleListItemClick={handleListItemClick}
+                handleBackButtonClick={handleListItemClick}
+                clientId={selectedClientIndex}
               />
             )}
           </>

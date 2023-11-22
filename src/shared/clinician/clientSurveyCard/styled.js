@@ -6,7 +6,6 @@ import {
   IconButton,
   Link,
   ListItemIcon,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { breakpoint } from "@/styles/breakpoints";
@@ -15,7 +14,7 @@ export const StyledCard = styled(Card)`
   display: flex;
   flex-direction: row;
   // border-top: 10px solid #fcaf17;
-  border-top: 10px solid ${(props) => props.topColor};
+  border-top: 10px solid ${(props) => props["top-color"]};
   border-radius: 8px;
   background: #fff;
   box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.25);

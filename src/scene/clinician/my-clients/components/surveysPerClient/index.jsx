@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "@mui/material";
 import {
   FilterListOutlined,
@@ -9,6 +9,10 @@ import {
 
 import { ClinicianContext } from "@/context/ClinicianContext";
 import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
+import {
+  fetchClientSurveys,
+  getTotalSurveysForClient,
+} from "@/firebase/clinicianRepo";
 import {
   SurveysBox,
   AddNewSurveyButton,
@@ -24,22 +28,91 @@ import {
 const noOfItemsOnOnePage = 6;
 
 export default function SurveysPerClient({
-  surveysListData,
-  surveysPageNo,
-  handleSurveysPageNoClick,
   toggleFilterPanelClick,
   addNewSurveyClick,
-  handleListItemClick,
+  handleBackButtonClick,
+  clientId,
 }) {
   const { breakpoint } = useContext(ClinicianContext);
 
+  const [totalSurveysCount, setTotalSurveysCount] = useState(0);
+  const [surveysPageNo, setSurveysPageNo] = useState(1);
+  const handleSurveysPageNoClick = (p) => {
+    setSurveysPageNo(p);
+  };
+
+  const [surveysListData, setSurveysListData] = useState([]);
+
+  // First render: Get total surveys count and first surveys page
   useEffect(() => {
-    if (surveysListData.length === 0) {
-      handleSurveysPageNoClick(0);
-    } else {
-      handleSurveysPageNoClick(1);
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      try {
+        const count = await getTotalSurveysForClient(
+          orgId,
+          clinicianId,
+          clientId
+        );
+        setTotalSurveysCount(count);
+
+        // If there are no surveys, set page no. as 0
+        if (count == 0) {
+          setSurveysPageNo(0);
+          return;
+        }
+
+        const surveys = await fetchClientSurveys(
+          orgId,
+          clinicianId,
+          clientId,
+          surveysPageNo
+        );
+        setSurveysListData((s) => s.concat(surveys));
+      } catch (err) {
+        console.error("An error occurred: " + err);
+      }
+    })();
+
+    return () => {
+      console.log("Cleanup ran");
+      setSurveysListData([]);
+      setSurveysPageNo(1);
+    };
+  }, [clientId]);
+
+  useEffect(() => {
+    if (surveysPageNo == 0 || surveysPageNo == 1) return;
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    console.log(clientId + "  " + surveysPageNo);
+    console.log(surveysListData);
+
+    //Don't load data if page is decremented (data already loaded)
+    const dataLoadedTillPageNo = Math.ceil(
+      surveysListData.length / noOfItemsOnOnePage
+    );
+
+    if (dataLoadedTillPageNo < surveysPageNo) {
+      (async () => {
+        console.log(`Data loaded for ${clientId}`);
+        try {
+          const surveys = await fetchClientSurveys(
+            orgId,
+            clinicianId,
+            clientId,
+            surveysPageNo
+          );
+          setSurveysListData((s) => s.concat(surveys));
+        } catch (err) {
+          console.error("An error occurred: " + err);
+        }
+      })();
     }
-  }, [surveysListData]);
+  }, [surveysPageNo]);
 
   return (
     <SurveysBox>
@@ -48,7 +121,7 @@ export default function SurveysPerClient({
           {breakpoint === "mobile" && (
             <BackButton
               onClick={() => {
-                handleListItemClick();
+                handleBackButtonClick();
                 handleSurveysPageNoClick(1);
               }}
             >
@@ -107,11 +180,9 @@ export default function SurveysPerClient({
         <NumberOfSurveysTypography>
           {Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
           {" - " +
-            Math.min(
-              noOfItemsOnOnePage * surveysPageNo,
-              surveysListData.length
-            ) || 0}
-          {" of " + surveysListData.length || 0} Surveys
+            Math.min(noOfItemsOnOnePage * surveysPageNo, totalSurveysCount) ||
+            0}
+          {" of " + totalSurveysCount || 0} Surveys
         </NumberOfSurveysTypography>
         <StyledForwardAndBackwardButtonsBox>
           <IconButton
@@ -127,12 +198,12 @@ export default function SurveysPerClient({
             aria-label="keyboardArrowRight"
             disabled={
               surveysPageNo ===
-                Math.ceil(surveysListData.length / noOfItemsOnOnePage) ||
+                Math.ceil(totalSurveysCount / noOfItemsOnOnePage) ||
               surveysPageNo === 0
             }
             onClick={() =>
               handleSurveysPageNoClick((n) =>
-                n === Math.ceil(surveysListData.length / noOfItemsOnOnePage)
+                n === Math.ceil(totalSurveysCount / noOfItemsOnOnePage)
                   ? n
                   : n + 1
               )

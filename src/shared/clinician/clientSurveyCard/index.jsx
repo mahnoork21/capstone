@@ -4,7 +4,6 @@ import {
   ContentCopy,
   DeleteOutline,
   MoreHorizRounded,
-  Visibility,
   VisibilityOutlined,
 } from "@mui/icons-material";
 import {
@@ -42,11 +41,6 @@ const ClientSurveyCard = ({
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    const url = `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`;
-    console.log(url);
-  }, []);
-
   const whichCard = isSubmitted
     ? "completed"
     : updatedDate
@@ -79,9 +73,9 @@ const ClientSurveyCard = ({
 
   const handleViewScoresClick = () => {};
 
-  const handleEmailClientClick = () => {};
+  // const handleEmailClientClick = () => {};
 
-  const handleSendReminderClick = () => {};
+  // const handleSendReminderClick = () => {};
 
   const menuItems =
     whichCard == "completed"
@@ -131,7 +125,7 @@ const ClientSurveyCard = ({
   return (
     <>
       <StyledCard
-        topColor={
+        top-color={
           whichCard == "completed"
             ? "var(--pufi-primary-light, #53BB50)"
             : whichCard == "in-progress"
