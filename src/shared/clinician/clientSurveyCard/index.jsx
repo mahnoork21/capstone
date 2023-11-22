@@ -151,92 +151,90 @@ const ClientSurveyCard = ({
         ];
 
   return (
-    <>
-      <StyledCard
-        topColor={
-          whichCard == "completed"
-            ? "var(--pufi-primary-light, #53BB50)"
+    <StyledCard
+      topColor={
+        whichCard == "completed"
+          ? "var(--pufi-primary-light, #53BB50)"
+          : whichCard == "in-progress"
+          ? "#FCAF17"
+          : "#E9501E"
+      }
+    >
+      <StyledCardContent>
+        <StyledTypography1>Client ID:</StyledTypography1>
+        <StyledTypography2>{clientId}</StyledTypography2>
+        <StyledTypography1>Survey ID:</StyledTypography1>
+        <StyledTypography2>{surveyId}</StyledTypography2>
+        <StyledTypography1>Type:</StyledTypography1>
+        <StyledTypography2>{surveyType}</StyledTypography2>
+        <StyledTypography1>
+          {whichCard == "completed"
+            ? "Completed:"
             : whichCard == "in-progress"
-            ? "#FCAF17"
-            : "#E9501E"
-        }
-      >
-        <StyledCardContent>
-          <StyledTypography1>Client ID:</StyledTypography1>
-          <StyledTypography2>{clientId}</StyledTypography2>
-          <StyledTypography1>Survey ID:</StyledTypography1>
-          <StyledTypography2>{surveyId}</StyledTypography2>
-          <StyledTypography1>Type:</StyledTypography1>
-          <StyledTypography2>{surveyType}</StyledTypography2>
-          <StyledTypography1>
-            {whichCard == "completed"
-              ? "Completed:"
-              : whichCard == "in-progress"
-              ? "Last Updated:"
-              : "Created:"}
-          </StyledTypography1>
-          <StyledTypography2>
-            {whichCard == "completed"
-              ? submittedDate.toDate().toDateString()
-              : whichCard == "in-progress"
-              ? inProgressText()
-              : createdDate.toDate().toDateString()}
-          </StyledTypography2>
-        </StyledCardContent>
-        <StyledCardActions>
-          {whichCard == "completed" ? (
-            <StyledLink
-              href="#"
-              underline="hover"
-              onClick={handleViewScoresClick}
-            >
-              VIEW SCORES
-            </StyledLink>
-          ) : whichCard == "in-progress" ? (
-            <StyledLink href="#" underline="hover">
-              SEND REMINDER
-            </StyledLink>
-          ) : (
-            <StyledLink href="#" underline="hover">
-              EMAIL CLIENT
-            </StyledLink>
-          )}
-
-          <StyledIconButton
-            aria-controls={isMenuOpen ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={isMenuOpen ? "true" : undefined}
-            onClick={handleMenuClick}
+            ? "Last Updated:"
+            : "Created:"}
+        </StyledTypography1>
+        <StyledTypography2>
+          {whichCard == "completed"
+            ? submittedDate.toDate().toDateString()
+            : whichCard == "in-progress"
+            ? inProgressText()
+            : createdDate.toDate().toDateString()}
+        </StyledTypography2>
+      </StyledCardContent>
+      <StyledCardActions>
+        {whichCard == "completed" ? (
+          <StyledLink
+            href="#"
+            underline="hover"
+            onClick={handleViewScoresClick}
           >
-            <MoreHorizRounded />
-          </StyledIconButton>
-        </StyledCardActions>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          aria-labelledby="basic-button"
-          open={isMenuOpen}
-          onClose={handleMenuClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
+            VIEW SCORES
+          </StyledLink>
+        ) : whichCard == "in-progress" ? (
+          <StyledLink href="#" underline="hover">
+            SEND REMINDER
+          </StyledLink>
+        ) : (
+          <StyledLink href="#" underline="hover">
+            EMAIL CLIENT
+          </StyledLink>
+        )}
+
+        <StyledIconButton
+          aria-controls={isMenuOpen ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={isMenuOpen ? "true" : undefined}
+          onClick={handleMenuClick}
         >
-          {menuItems.map(({ icon, text, clickHandlerFn }) => (
-            <MenuItem key={text} onClick={handleMenuClose}>
-              <StyledListItemIcon>{icon}</StyledListItemIcon>
-              <StyledLink underline="none" onClick={clickHandlerFn}>
-                {text}
-              </StyledLink>
-            </MenuItem>
-          ))}
-        </Menu>
-      </StyledCard>
-    </>
+          <MoreHorizRounded />
+        </StyledIconButton>
+      </StyledCardActions>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        aria-labelledby="basic-button"
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        {menuItems.map(({ icon, text, clickHandlerFn }) => (
+          <MenuItem key={text} onClick={handleMenuClose}>
+            <StyledListItemIcon>{icon}</StyledListItemIcon>
+            <StyledLink underline="none" onClick={clickHandlerFn}>
+              {text}
+            </StyledLink>
+          </MenuItem>
+        ))}
+      </Menu>
+    </StyledCard>
   );
 };
 

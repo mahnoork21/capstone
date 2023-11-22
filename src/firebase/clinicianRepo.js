@@ -11,6 +11,7 @@ import {
   where,
   getDocs,
   Timestamp,
+  orderBy,
 } from "firebase/firestore";
 
 export const addNewClient = async (
@@ -227,6 +228,46 @@ export const fetchFilteredClinicianSurveys = async (
   return surveys;
 };
 
+export const fetchClinicianSurveysByStatus = async (
+  organizationId,
+  clinicianId,
+  surveyStatus
+) => {
+  if (!organizationId || !clinicianId || !surveyStatus) {
+    throw new Error("Insufficient data provided");
+  }
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let surveys = [];
+
+  // Build the query based on the filter parameters
+  let q = query(surveysRef, orderBy("created", "desc"));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((doc) => {
+    const { is_submitted, updated } = doc.data();
+    const survey_status = is_submitted
+      ? "Complete"
+      : updated
+      ? "In-progress"
+      : "Pending";
+
+    if (surveyStatus == survey_status) {
+      surveys.push({ ...doc.data(), surveyStatus });
+    }
+  });
+
+  return surveys;
+};
+
 export const fetchClinicianSurveyById = async (
   organizationId,
   clinicianId,
@@ -332,6 +373,32 @@ export const addNewSurvey = async (
   });
 
   return newSurveyRef.id;
+};
+
+export const doesClinicianHaveSurveys = async (organizationId, clinicianId) => {
+  try {
+    if (!organizationId || !clinicianId) {
+      throw new Error("Insufficient data provided");
+    }
+
+    const surveysRef = query(
+      collection(
+        db,
+        "Organization",
+        organizationId,
+        "Clinician",
+        clinicianId,
+        "Survey"
+      )
+    );
+
+    const querySnapshot = await getDocs(surveysRef);
+
+    return querySnapshot.size > 0;
+  } catch (error) {
+    console.error("Error checking if clinician has surveys:", error);
+    return false;
+  }
 };
 
 // if (!clinician.clients.includes(clientId))
