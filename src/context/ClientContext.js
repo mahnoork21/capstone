@@ -15,11 +15,12 @@ import { createContext, useEffect, useState, useCallback } from "react";
 export const ClientContext = createContext();
 
 export const ClientProvider = ({ children }) => {
-  const [currentSurveyId, setCurrentSurveyId] = useState(null);
+  const [surveyId, setSurveyId] = useState(null);
+  const [organizationId, setOrganizationId] = useState(null);
+  const [clinicianId, setClinicianId] = useState(null);
   const [survey, setSurvey] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const [user, setUser] = useState(null);
   const [breakpoint, setBreakpoint] = useState(`desktop`);
 
   const [headerButtonType, setHeaderButtonType] = useState(
@@ -38,15 +39,6 @@ export const ClientProvider = ({ children }) => {
   const activityResponses = survey?.activity_response;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
-
-    signInAnonymously(auth).then(() => {
-      console.log("Signed In anonymously");
-    });
 
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
     const changeListener = (e) => {
@@ -60,27 +52,25 @@ export const ClientProvider = ({ children }) => {
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener("change", changeListener);
       return () => {
-        unsubscribe();
         mediaQuery.removeEventListener("change", changeListener);
       };
     } else {
       //for backward compatibility with older safari broswers
       mediaQuery.addListener(changeListener);
       return () => {
-        unsubscribe();
         mediaQuery.removeListener(changeListener);
       };
     }
   }, []);
 
   useEffect(() => {
-    if (user && currentSurveyId) {
+    if (surveyId && organizationId && clinicianId) {
       getCurrentSurvey();
     }
-  }, [currentSurveyId, user]);
+  }, [organizationId, clinicianId, surveyId]);
 
   const getCurrentSurvey = async () => {
-    const survey = await getSurveyById(currentSurveyId);
+    const survey = await getSurveyById(organizationId, clinicianId, surveyId);
     if (survey) {
       setSurvey(survey);
 
@@ -88,7 +78,9 @@ export const ClientProvider = ({ children }) => {
         router.push({
           pathname: "/client/survey-complete",
           query: {
-            surveyId: currentSurveyId,
+            orgId: organizationId,
+            clinicianId: clinicianId,
+            surveyId: surveyId,
           },
         });
       }
@@ -154,7 +146,9 @@ export const ClientProvider = ({ children }) => {
         router.push({
           pathname: "/client/summary",
           query: {
-            surveyId: currentSurveyId,
+            orgId: organizationId,
+            clinicianId: clinicianId,
+            surveyId: surveyId,
           },
         });
       } else {
@@ -162,27 +156,33 @@ export const ClientProvider = ({ children }) => {
           router.push({
             pathname: "/client/survey",
             query: {
-              surveyId: currentSurveyId,
+              orgId: organizationId,
+              clinicianId: clinicianId,
+              surveyId: surveyId,
             },
           });
         } else {
           router.push({
             pathname: "/client/response-guide",
             query: {
-              surveyId: currentSurveyId,
+              orgId: organizationId,
+              clinicianId: clinicianId,
+              surveyId: surveyId,
             },
           });
         }
       }
     } else {
-      //TODO show error message that error not found in homepage
-      if (!currentSurveyId) {
-        return "Survey Id is not provided. Please contact your clinician for a link to the survey.";
-      } else {
-        return "Survey Id is not valid. Please contact your clinician.";
-      }
+      return "Survey Link is invalid. Please contact your clinician for a link to the survey.";
     }
-  }, [currentSurveyId, survey, currentActivityIndex, didViewResponseGuide]);
+  }, [
+    organizationId,
+    clinicianId,
+    surveyId,
+    survey,
+    currentActivityIndex,
+    didViewResponseGuide,
+  ]);
 
   //Called when user selects an option
   const updateAnswer = (questionId, answer, type) => {
@@ -201,6 +201,7 @@ export const ClientProvider = ({ children }) => {
         break;
       case "commentForNotSure":
         currentAnswer[questionId]["commentForNotSure"] = answer;
+        break;
       case "comment":
         currentAnswer[questionId]["comment"] = answer;
     }
@@ -211,7 +212,7 @@ export const ClientProvider = ({ children }) => {
     });
   };
 
-  console.log("[Debug] SurveyId == ", currentSurveyId, didViewResponseGuide);
+  console.log("[Debug] SurveyId == ", surveyId, didViewResponseGuide);
   console.log("[Debug] Survey == ", survey);
   console.log("[Debug] Activity Response == ", survey?.activity_response);
   console.log("[Debug] Activity index == ", currentActivityIndex);
@@ -219,8 +220,12 @@ export const ClientProvider = ({ children }) => {
   return (
     <ClientContext.Provider
       value={{
-        currentSurveyId,
-        setCurrentSurveyId: setCurrentSurveyId,
+        surveyId,
+        setSurveyId: setSurveyId,
+        organizationId,
+        setOrganizationId,
+        clinicianId,
+        setClinicianId,
         survey,
         setSurvey,
         isEditMode,

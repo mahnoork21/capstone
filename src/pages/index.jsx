@@ -5,7 +5,7 @@ const IndexPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/client");
+    router.push("/clinician");
   });
   return <div></div>;
 };

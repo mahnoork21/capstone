@@ -13,7 +13,7 @@ const ViewInstructions = () => {
   const [instructionId, setInstructionId] = useState(0);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
   const router = useRouter();
-  const { currentSurveyId, setDidViewResponseGuide } =
+  const { organizationId, clinicianId, surveyId, setDidViewResponseGuide } =
     useContext(ClientContext);
 
   const handleBackClick = () => {
@@ -37,7 +37,9 @@ const ViewInstructions = () => {
       router.push({
         pathname: "/client",
         query: {
-          surveyId: currentSurveyId,
+          orgId: organizationId,
+          clinicianId: clinicianId,
+          surveyId: surveyId,
         },
       });
     } else if (instructionId >= 3) {

@@ -7,7 +7,7 @@ import { useContext, useEffect } from "react";
 import { ClientContext } from "@/context/ClientContext";
 
 const ResponseGuide = () => {
-  const { setDidViewResponseGuide, currentSurveyId } =
+  const { setDidViewResponseGuide, organizationId, clinicianId, surveyId } =
     useContext(ClientContext);
 
   useEffect(() => {
@@ -21,7 +21,11 @@ const ResponseGuide = () => {
         <Link
           href={{
             pathname: "/client/survey",
-            query: { surveyId: currentSurveyId },
+            query: {
+              orgId: organizationId,
+              clinicianId: clinicianId,
+              surveyId: surveyId,
+            },
           }}
         >
           <SurveyNavButton>Survey Questions</SurveyNavButton>
