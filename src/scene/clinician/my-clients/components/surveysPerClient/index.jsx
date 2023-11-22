@@ -67,29 +67,26 @@ export default function SurveysPerClient({
           orgId,
           clinicianId,
           clientId,
-          surveysPageNo
+          1
         );
-        setSurveysListData((s) => s.concat(surveys));
+        setSurveysListData(surveys);
       } catch (err) {
         console.error("An error occurred: " + err);
       }
     })();
 
     return () => {
-      console.log("Cleanup ran");
       setSurveysListData([]);
       setSurveysPageNo(1);
     };
   }, [clientId]);
 
+  // Data fetch on page increment
   useEffect(() => {
     if (surveysPageNo == 0 || surveysPageNo == 1) return;
 
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
-
-    console.log(clientId + "  " + surveysPageNo);
-    console.log(surveysListData);
 
     //Don't load data if page is decremented (data already loaded)
     const dataLoadedTillPageNo = Math.ceil(
@@ -98,7 +95,6 @@ export default function SurveysPerClient({
 
     if (dataLoadedTillPageNo < surveysPageNo) {
       (async () => {
-        console.log(`Data loaded for ${clientId}`);
         try {
           const surveys = await fetchClientSurveys(
             orgId,
@@ -107,6 +103,7 @@ export default function SurveysPerClient({
             surveysPageNo
           );
           setSurveysListData((s) => s.concat(surveys));
+          // setSurveysListData(surveys);
         } catch (err) {
           console.error("An error occurred: " + err);
         }

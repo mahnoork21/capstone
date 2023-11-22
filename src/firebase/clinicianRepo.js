@@ -151,7 +151,7 @@ export const fetchClientSurveys = async (
     const firstPage = query(
       surveysRef,
       where("client_id", "==", clientId),
-      orderBy("created"),
+      orderBy("created", "desc"),
       limit(queryLimit)
     );
     const documentSnapshots = await getDocs(firstPage);
@@ -170,8 +170,9 @@ export const fetchClientSurveys = async (
   const nextPage = query(
     surveysRef,
     where("client_id", "==", clientId),
-    orderBy("created"),
+    orderBy("created", "desc"),
     startAfter(lastSurveySnapshot),
+    // startAfter((pageNo - 1) * queryLimit),
     limit(queryLimit)
   );
   const documentSnapshots = await getDocs(nextPage);
