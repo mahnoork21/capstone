@@ -332,11 +332,11 @@ const Registration = () => {
         />;
       }
     } else {
-      let isitValid = false;
-      isitValid = setValidation(data, activeStep);
+      const isitValid = setValidation(data, activeStep);
       if (isitValid) {
         setActiveStep(activeStep + 1);
       }
+      console.log("isitvalid: ", isitValid);
       // do {
       //   snackbarMessage = isitValid;
       //   console.log
@@ -453,8 +453,14 @@ const Registration = () => {
                       autoHideDuration={1000}
                       onClose={handleCloseSnackbar}
                       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                      message="Successfully registered"
-                    ></Snackbar>
+                    >
+                      <MuiAlert
+                        onClose={handleCloseSnackbar}
+                        severity="success"
+                      >
+                        "Successfully registered
+                      </MuiAlert>
+                    </Snackbar>
                   </StyledBox>
                 </StepperBox>
               </FormProvider>
