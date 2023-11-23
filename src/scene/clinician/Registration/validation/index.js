@@ -31,9 +31,9 @@ export const setValidation = (data, activeStep) => {
   } else if (!validateEmail(data.email)) {
     alert("Please enter a valid email address");
     return;
-    // } else if (!checkEmailisUsed(data.email)) {
-    //   alert("This Email has already been used!");
-    //   return;
+  } else if (checkEmailisUsed(data.email)) {
+    //alert("This Email has already been used!");
+    return;
   } else {
     console.log("daata is complete at step := ", activeStep);
 

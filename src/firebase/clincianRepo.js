@@ -84,15 +84,16 @@ export const addClinicianDb = async (uid, data) => {
 export const checkEmailisUsed = async (email) => {
   try {
     const signInExists = await fetchSignInMethodsForEmail(auth, email);
-    if (signInExists && signInExists.length > 0) {
-      console.log(
+    if (signInExists) {
+      alert(
         "Account already exists for this email. Choose another email.",
         signInExists,
         signInExists.length
       );
+      console.log(signInExists.toString(), signInExists.length);
       return true;
     } else {
-      console.log("No existing accounts found");
+      alert("No existing accounts found");
       return false;
     }
   } catch (error) {

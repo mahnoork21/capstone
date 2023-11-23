@@ -66,7 +66,15 @@ const LoginLanding = () => {
     }
     setOpenSnackbar(false);
   };
+  const [openSnack, setOpenSnack] = React.useState(false);
 
+  const handleForgotPassword = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = () => {
+    setOpenSnack(false);
+  };
   return (
     <MainContainer>
       <StyledContainer>
@@ -83,8 +91,23 @@ const LoginLanding = () => {
                 onChange={handlePasswordChange}
               />
               <Labels align="right" href="#">
-                <u>Forgot Password?</u>
+                <u onClick={handleForgotPassword}>Forgot Password?</u>
               </Labels>
+              <Snackbar
+                open={openSnack}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                autoHideDuration={6000}
+                onClose={handleCloseSnack}
+              >
+                <MuiAlert
+                  elevation={6}
+                  // variant="filled"
+                  onClose={handleCloseSnack}
+                  severity="info"
+                >
+                  Please connect with the research staff to reset your password
+                </MuiAlert>
+              </Snackbar>
               <StyledButton type="submit"> LOG IN</StyledButton>
               <Labels>Don't have an account yet?</Labels>
               <StyledButton href="/clinician/register">

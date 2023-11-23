@@ -13,6 +13,7 @@ import {
   Checkbox,
   Snackbar,
   MuiAlert,
+  colors,
 } from "@mui/material";
 import {
   StyledPaper,
@@ -115,6 +116,9 @@ const PersonalDetils = () => {
                   <StyledTextfield type="password" id="password" {...field} />
                 )}
               />
+              <Typography sx={{ fontSize: "12px", color: "blue" }}>
+                Password length should be 6 digits atleast.
+              </Typography>
             </RowBox>
             {errors.password && (
               <ErrorMessage>{errors.password.message}</ErrorMessage>
@@ -227,7 +231,8 @@ const TOS = () => {
             checked={unchecked}
             name="tos"
             rules={{
-              required: "agrree please",
+              required:
+                "Please agree to the Terms of Service in order to create an account",
             }}
             render={({ field }) => (
               <Checkbox
@@ -326,7 +331,7 @@ const Registration = () => {
         <Snackbar
           open={open}
           autoHideDuration={2000}
-          message="Accept Terms and Conditions to move forward"
+          message="Please agree to the Terms of Service in order to create an account"
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         />;
@@ -453,14 +458,8 @@ const Registration = () => {
                       autoHideDuration={1000}
                       onClose={handleCloseSnackbar}
                       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                    >
-                      <MuiAlert
-                        onClose={handleCloseSnackbar}
-                        severity="success"
-                      >
-                        "Successfully registered
-                      </MuiAlert>
-                    </Snackbar>
+                      message={"Successfully registered"}
+                    />
                   </StyledBox>
                 </StepperBox>
               </FormProvider>
