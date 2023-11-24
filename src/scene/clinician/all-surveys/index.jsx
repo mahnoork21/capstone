@@ -161,8 +161,8 @@ const AllSurveys = () => {
           <Pagination
             surveysListData={
               selectedTab === 0
-                ? surveysListDataActive
-                : surveysListDataArchived
+                ? surveysListDataActive.length
+                : surveysListDataArchived.length
             }
             surveysPageNo={surveysPageNo}
             handleSurveysPageNoClick={handleSurveysPageNoClick}

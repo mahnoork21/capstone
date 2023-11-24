@@ -12,7 +12,7 @@ import {
 } from "./styled";
 
 const Pagination = ({
-  surveysListData,
+  totalSurveysCount,
   surveysPageNo,
   handleSurveysPageNoClick,
 }) => {
@@ -20,15 +20,10 @@ const Pagination = ({
   return (
     <PaginationBox>
       <NumberOfSurveysTypography>
-        {surveysListData.length == 0
-          ? 0
-          : Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
+        {Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
         {" - " +
-          Math.min(
-            noOfItemsOnOnePage * surveysPageNo,
-            surveysListData.length
-          ) || 0}
-        {" of " + surveysListData.length || 0} Surveys
+          Math.min(noOfItemsOnOnePage * surveysPageNo, totalSurveysCount) || 0}
+        {" of " + totalSurveysCount || 0} Surveys
       </NumberOfSurveysTypography>
       <StyledForwardAndBackwardButtonsBox>
         <IconButton
@@ -42,13 +37,12 @@ const Pagination = ({
           aria-label="keyboardArrowRight"
           disabled={
             surveysPageNo ===
-              Math.ceil(surveysListData.length / noOfItemsOnOnePage) ||
-            surveysPageNo === 0 ||
-            surveysListData.length === 0
+              Math.ceil(totalSurveysCount / noOfItemsOnOnePage) ||
+            surveysPageNo === 0
           }
           onClick={() =>
             handleSurveysPageNoClick((n) =>
-              n === Math.ceil(surveysListData.length / noOfItemsOnOnePage)
+              n === Math.ceil(totalSurveysCount / noOfItemsOnOnePage)
                 ? n
                 : n + 1
             )

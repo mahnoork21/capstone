@@ -20,9 +20,15 @@ import {
 } from "@/firebase/clinicianRepo";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
+import {
+  fetchClientSurveys,
+  getTotalSurveysForClient,
+} from "@/firebase/clinicianRepo";
 
 // TODO: Show error as dropdown
 // TODO: edit localStorage setting up when prachi is done implementing
+
+const noOfItemsOnOnePage = 6;
 
 const MyClients = () => {
   const router = useRouter();
@@ -124,8 +130,8 @@ const MyClients = () => {
   };
 
   useEffect(() => {
-    orgId = localStorage.getItem("orgId");
-    clinicianId = localStorage.getItem("clinicianId");
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
 
     if (selectedClientIndex) {
       const surveysRef = collection(
@@ -142,7 +148,8 @@ const MyClients = () => {
         const surveys = await fetchClientSurveys(
           orgId,
           clinicianId,
-          selectedClientIndex
+          selectedClientIndex,
+          surveysPageNo
         );
 
         if (Object.keys(filterFormData).length > 0) {
@@ -155,6 +162,86 @@ const MyClients = () => {
       return () => unsubscribe();
     }
   }, [selectedClientIndex, isAddNewSurveyShown, filterFormData]);
+
+  //Handling state back from the parent component
+
+  const [totalSurveysCount, setTotalSurveysCount] = useState(0);
+  const [surveysPageNo, setSurveysPageNo] = useState(1);
+  const handleSurveysPageNoClick = (p) => {
+    setSurveysPageNo(p);
+  };
+
+  const [surveysListData, setSurveysListData] = useState([]);
+
+  // First render: Get total surveys count and first surveys page
+  useEffect(() => {
+    if (!selectedClientIndex) return;
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      try {
+        const count = await getTotalSurveysForClient(
+          orgId,
+          clinicianId,
+          selectedClientIndex
+        );
+        setTotalSurveysCount(count);
+
+        // If there are no surveys, set page no. as 0
+        if (count == 0) {
+          setSurveysPageNo(0);
+          return;
+        }
+
+        const surveys = await fetchClientSurveys(
+          orgId,
+          clinicianId,
+          selectedClientIndex,
+          1
+        );
+        setSurveysListData(surveys);
+      } catch (err) {
+        console.error("An error occurred: " + err);
+      }
+    })();
+
+    return () => {
+      setSurveysListData([]);
+      setSurveysPageNo(1);
+    };
+  }, [selectedClientIndex]);
+
+  // Data fetch on page increment
+  useEffect(() => {
+    if (surveysPageNo == 0 || surveysPageNo == 1) return;
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    //Don't load data if page is decremented (data already loaded)
+    const dataLoadedTillPageNo = Math.ceil(
+      surveysListData.length / noOfItemsOnOnePage
+    );
+
+    if (dataLoadedTillPageNo < surveysPageNo) {
+      (async () => {
+        try {
+          const surveys = await fetchClientSurveys(
+            orgId,
+            clinicianId,
+            selectedClientIndex,
+            surveysPageNo
+          );
+          setSurveysListData((s) => s.concat(surveys));
+          // setSurveysListData(surveys);
+        } catch (err) {
+          console.error("An error occurred: " + err);
+        }
+      })();
+    }
+  }, [surveysPageNo]);
 
   return (
     <MainContainerBox>
@@ -189,10 +276,13 @@ const MyClients = () => {
             )}
             {!isAddNewSurveyShown && selectedClientIndex && (
               <SurveysPerClient
+                surveysListData={surveysListData}
+                totalSurveysCount={totalSurveysCount}
+                surveysPageNo={surveysPageNo}
+                handleSurveysPageNoClick={handleSurveysPageNoClick}
                 toggleFilterPanelClick={toggleFilterPanelClick}
                 addNewSurveyClick={toggleAddNewSurveyCard}
                 handleBackButtonClick={handleListItemClick}
-                clientId={selectedClientIndex}
               />
             )}
           </>
