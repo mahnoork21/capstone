@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { breakpoint } from "@/styles/breakpoints";
 
 export const SurveysBox = styled(Box)`
@@ -54,34 +54,4 @@ export const FilterSurveyButton = styled(Button)`
   @media only screen and (min-width: ${breakpoint.desktop}) {
     padding: 8px;
   }
-`;
-
-export const SurveyCardsBox = styled(Box)`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  gap: 16px;
-  flex-grow: 1;
-  align-content: flex-start;
-  margin: 16px 0;
-`;
-
-export const PaginationBox = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background: #fff;
-  align-items: center;
-  padding: 0 12px;
-  border-radius: 8px;
-`;
-
-export const NumberOfSurveysTypography = styled(Typography)`
-  font-size: 0.875rem;
-  font-weight: 600;
-`;
-
-export const StyledForwardAndBackwardButtonsBox = styled(Box)`
-  display: flex;
-  flex-direction: row;
 `;

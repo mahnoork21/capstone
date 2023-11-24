@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { breakpoint } from "@/styles/breakpoints";
 import { Button, AppBar, IconButton, Toolbar } from "@mui/material";
-
 export const HeaderContainer = styled.div`
   display: none;
   width: 1440px;
@@ -48,7 +47,7 @@ export const HeaderButton = styled(Button)`
   padding: 16px 36px;
   border-radius: 12px;
   border-width: 2px;
-  font-size: 16px;
+  font-size: 1rem;
 
   &:hover {
     border-color: white;

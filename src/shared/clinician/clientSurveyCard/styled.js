@@ -33,6 +33,7 @@ export const StyledCardContent = styled(CardContent)`
   // flex-grow: 3;
   display: grid;
   grid-template-columns: auto 1fr;
+  flex: 1;
 
   padding-right: 4px;
 
@@ -42,17 +43,19 @@ export const StyledCardContent = styled(CardContent)`
 `;
 
 export const StyledCardActions = styled(CardActions)`
-  // display: flex;
-  // flex-direction: column;
-  // flex-grow: 3;
-  // justify-content: center;
-  // gap: 8px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 3;
+  justify-content: center;
+  align-items: flex-end;
   padding-left: 0;
+  flex: 1;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
-    // flex-direction: row;
+    flex-direction: row;
     padding: 8px;
     justify-content: flex-end;
+    gap: 8px;
   }
 `;
 
@@ -61,13 +64,22 @@ export const StyledTypography1 = styled(Typography)`
   font-weight: 400;
   // width: 100%;
   text-align: end;
+  min-width: 60px;
 `;
 
 export const StyledTypography2 = styled(Typography)`
   padding-left: 2px;
   font-size: 0.75rem;
   font-weight: 600;
+
   // width: 66%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+
+  @media only screen and (max-width: ${breakpoint.desktop}) {
+    max-width: 120px;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -75,6 +87,10 @@ export const StyledLink = styled(Link)`
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
+
+  @media only screen and (max-width: ${breakpoint.desktop}) {
+    padding-bottom: 5px;
+  }
 `;
 
 export const StyledIconButton = styled(IconButton)`
