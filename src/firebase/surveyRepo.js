@@ -1,29 +1,34 @@
 import { db } from "./firebase";
 import {
-  collectionGroup,
   doc,
   getDoc,
   getDocs,
-  query,
   serverTimestamp,
   updateDoc,
-  where,
 } from "firebase/firestore";
 
 let currentSurveyPath;
 
-export const getSurveyById = async (surveyId) => {
+export const getSurveyById = async (organizationId, clinicianId, surveyId) => {
   if (!surveyId) return null;
 
-  const surveyQuery = query(
-    collectionGroup(db, "Survey"),
-    where("survey_id", "==", surveyId)
+  const surveyRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey",
+    surveyId
   );
-  const surveySnapshot = await getDocs(surveyQuery);
+  const surveySnapshot = await getDoc(surveyRef);
 
-  if (!surveySnapshot.size) return null;
-  currentSurveyPath = surveySnapshot.docs[0].ref.path;
-  return surveySnapshot.docs[0].data();
+  if (surveySnapshot.exists()) {
+    currentSurveyPath = surveySnapshot.ref.path;
+    return surveySnapshot.data();
+  } else {
+    return null;
+  }
 };
 
 export const updateAnswerInSurvey = async (activityId, currentAnswer) => {

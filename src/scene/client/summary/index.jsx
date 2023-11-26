@@ -31,10 +31,11 @@ const SummaryContent = () => {
   const {
     activityResponses,
     setIsNavBarVisible,
-    currentSurveyId,
+    organizationId,
+    clinicianId,
+    surveyId,
     setCurrentActivityIndex,
     setIsEditMode,
-    setHeaderButtonType,
   } = useContext(ClientContext);
   const [finalComment, setFinalComment] = useState(null);
 
@@ -53,7 +54,9 @@ const SummaryContent = () => {
     router.push({
       pathname: "/client/survey-complete",
       query: {
-        surveyId: currentSurveyId,
+        orgId: organizationId,
+        clinicianId: clinicianId,
+        surveyId: surveyId,
       },
     });
   };
@@ -69,7 +72,9 @@ const SummaryContent = () => {
     router.push({
       pathname: "/client/survey",
       query: {
-        surveyId: currentSurveyId,
+        orgId: organizationId,
+        clinicianId: clinicianId,
+        surveyId: surveyId,
       },
     });
   };
@@ -118,19 +123,21 @@ const SummaryContent = () => {
                           {!isNullOrUndefined(questionRespose.value) ? (
                             <>
                               <p>{option?.label}</p>
-                              <p>
-                                {questionId === "how" &&
-                                questionRespose.value === 3
-                                  ? questionRespose.bodypart
-                                  : ""}
-                              </p>
-                              <p>
-                                {questionId === "how" &&
-                                questionRespose.value === 0
-                                  ? questionRespose.commentForNotSure
-                                  : ""}
-                              </p>
-                              <p>{questionRespose.comment}</p>
+                              {questionId === "how" &&
+                              questionRespose.value === 3 ? (
+                                <p>{questionRespose.bodypart}</p>
+                              ) : (
+                                ""
+                              )}
+                              {questionId === "how" &&
+                              questionRespose.value === 0 ? (
+                                <p>questionRespose.commentForNotSure</p>
+                              ) : (
+                                ""
+                              )}
+                              {questionRespose.comment && (
+                                <p>{questionRespose.comment}</p>
+                              )}
                             </>
                           ) : (
                             "N/A"

@@ -25,10 +25,30 @@ const ClientHome = () => {
     currentSurveyId,
     setHeaderButtonType,
     breakpoint,
+    organizationId,
+    clinicianId,
+    surveyId,
     survey,
   } = useContext(ClientContext);
 
   const router = useRouter();
+
+  const handleViewInstructionsclick = () => {
+    if (survey) {
+      router.push({
+        pathname: "/client/view-instructions",
+        query: {
+          orgId: organizationId,
+          clinicianId: clinicianId,
+          surveyId: surveyId,
+        },
+      });
+    } else {
+      setError(
+        "Survey Link is invalid. Please contact your clinician for a link to the survey."
+      );
+    }
+  };
 
   const handleOnClick = async () => {
     const error = handleStartSurveyClick();
@@ -98,15 +118,8 @@ const ClientHome = () => {
             Start Survey
           </PrimaryClientButton>
 
-          <SecondaryClientButton
-            onClick={() => {
-              router.push({
-                pathname: "/client/view-instructions",
-                query: { surveyId: currentSurveyId },
-              });
-            }}
-          >
-            View Instruction
+          <SecondaryClientButton onClick={handleViewInstructionsclick}>
+            View Instructions
           </SecondaryClientButton>
         </ButtonWrapper>
 

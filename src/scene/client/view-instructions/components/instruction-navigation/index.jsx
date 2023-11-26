@@ -12,7 +12,7 @@ const InstructionNavigation = ({
   onNextClick,
   nextButtonDisabled,
 }) => {
-  const { currentSurveyId } = useContext(ClientContext);
+  const { surveyId, clinicianId, organizationId } = useContext(ClientContext);
   const router = useRouter();
 
   return (
@@ -26,7 +26,11 @@ const InstructionNavigation = ({
           onClick={() => {
             router.push({
               pathname: "/client/survey",
-              query: { surveyId: currentSurveyId },
+              query: {
+                orgId: organizationId,
+                clinicianId: clinicianId,
+                surveyId: surveyId,
+              },
             });
           }}
         >

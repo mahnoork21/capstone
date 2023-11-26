@@ -10,7 +10,6 @@ import PrimaryClientButton from "@/shared/client/buttons/primary";
 import { saveAs } from "file-saver";
 import {
   pdf,
-  PDFViewer,
   StyleSheet,
   Document,
   Page,
@@ -26,7 +25,7 @@ import {
 import { isNullOrUndefined } from "@/utils/utils";
 
 const SurveyComplete = () => {
-  const { setIsNavBarVisible, activityResponses, currentSurveyId, survey } =
+  const { setIsNavBarVisible, activityResponses, surveyId, survey } =
     useContext(ClientContext);
   const [surveyBlob, setSurveyBlob] = useState(null);
 
@@ -58,9 +57,7 @@ const SurveyComplete = () => {
           <Text style={styles.logo}>PUFI2 - Survey Summary</Text>
         </View>
         <View style={styles.infoWrapper}>
-          <Text style={styles.infoWrapperText}>
-            Survey Id: {currentSurveyId}
-          </Text>
+          <Text style={styles.infoWrapperText}>Survey Id: {surveyId}</Text>
           <Text style={styles.infoWrapperText}>
             Survey Type: {survey.survey_type}
           </Text>
@@ -101,19 +98,21 @@ const SurveyComplete = () => {
                           {!isNullOrUndefined(questionRespose.value) ? (
                             <>
                               <Text>{option?.label}</Text>
-                              <Text>
-                                {questionId === "how" &&
-                                questionRespose.value === 3
-                                  ? questionRespose.bodypart
-                                  : ""}
-                              </Text>
-                              <Text>
-                                {questionId === "how" &&
-                                questionRespose.value === 0
-                                  ? questionRespose.commentForNotSure
-                                  : ""}
-                              </Text>
-                              <Text>{questionRespose.comment}</Text>
+                              {questionId === "how" &&
+                              questionRespose.value === 3 ? (
+                                <Text>{questionRespose.bodypart}</Text>
+                              ) : (
+                                ""
+                              )}
+                              {questionId === "how" &&
+                              questionRespose.value === 0 ? (
+                                <Text>questionRespose.commentForNotSure</Text>
+                              ) : (
+                                ""
+                              )}
+                              {questionRespose.comment && (
+                                <Text>{questionRespose.comment}</Text>
+                              )}
                             </>
                           ) : (
                             <Text>N/A</Text>
@@ -230,7 +229,7 @@ const SurveyComplete = () => {
         </p>
         <PrimaryClientButton
           onClick={() => {
-            saveAs(surveyBlob, `${currentSurveyId}.pdf`);
+            saveAs(surveyBlob, `${surveyId}.pdf`);
           }}
         >
           Download Survey
