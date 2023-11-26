@@ -1,4 +1,3 @@
-import { auth } from "@/firebase/firebase";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import {
   checkIfALLResponsesAreValid,
@@ -7,8 +6,8 @@ import {
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { questionIds } from "@/scene/client/survey/helper/youngChildSurvey";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
-import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { useRouter } from "next/router";
+import { cloneDeep } from "lodash";
 
 import { createContext, useEffect, useState, useCallback } from "react";
 
@@ -39,7 +38,6 @@ export const ClientProvider = ({ children }) => {
   const activityResponses = survey?.activity_response;
 
   useEffect(() => {
-
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
     const changeListener = (e) => {
       if (e.matches) {
@@ -103,7 +101,11 @@ export const ClientProvider = ({ children }) => {
           activityResponses[youngChildActivity[currentActivityIndex].id];
         setErrors({});
         if (currentActivityResponse) {
-          setCurrentAnswer(currentActivityResponse);
+          setCurrentAnswer(
+            isEditMode
+              ? cloneDeep(currentActivityResponse)
+              : currentActivityResponse
+          );
         } else {
           setCurrentAnswer(generateEmptyAnswer());
         }
@@ -114,7 +116,7 @@ export const ClientProvider = ({ children }) => {
         });
       }
     }
-  }, [currentActivityIndex, activityResponses]);
+  }, [currentActivityIndex, activityResponses, isEditMode]);
 
   const moveToLastAnsweredIndex = () => {
     for (const [index, activity] of youngChildActivity.entries()) {
