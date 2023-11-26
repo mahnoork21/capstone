@@ -38,6 +38,11 @@ const ClientSurveyCard = ({
 }) => {
   const router = useRouter();
 
+  let surveyUrl = `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`;
+  if (!surveyUrl.startsWith("http")) {
+    surveyUrl = "http://" + surveyUrl;
+  }
+
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const handleMenuClick = (event) => {
@@ -57,10 +62,10 @@ const ClientSurveyCard = ({
     const daysDiff = differenceInDays(new Date(), updatedDate.toDate());
     const daysDiffText =
       daysDiff > 1
-        ? daysDiff + " days ago "
+        ? daysDiff + " days ago"
         : daysDiff == 1
         ? "Yesterday"
-        : "Today ";
+        : "Today";
 
     const questionsCount = surveyType.startsWith("Young") ? 23 : 27;
     const percentComplete = Math.ceil(
@@ -70,10 +75,59 @@ const ClientSurveyCard = ({
     return daysDiffText + " (" + percentComplete + "% complete)";
   };
 
-  const handleCopyLinkClick = () =>
-    navigator.clipboard.writeText(
-      `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`
-    );
+  // Written using bold font: 𝐏𝐫𝐨𝐬𝐭𝐡𝐞𝐭𝐢𝐜 𝐔𝐩𝐩𝐞𝐫 𝐋𝐢𝐦𝐛 𝐅𝐮𝐧𝐜𝐭𝐢𝐨𝐧𝐚𝐥 𝐈𝐧𝐝𝐞𝐱
+  const emailBody = `Dear [Client Name],
+
+
+${
+  whichCard == "in-progress"
+    ? `This is a reminder email to complete the Prosthetic Upper Limb Functional Index (PUFI-2). You had last updated this survey ${inProgressText()}. The link is given below.`
+    : "Your link to complete the Prosthetic Upper Limb Functional Index (PUFI-2) is below. Please watch the PUFI-2 introduction video at the following link prior to completing the questionnaire."
+}
+
+
+This link is unique to your client ID, and should not be shared with others. If you stop or close the questionnaire after starting, your responses will be saved, and you may resume at a later point by visiting this link again.
+
+
+  PUFI-2 ${
+    surveyType.startsWith("Young") ? "Parent" : "Older Child"
+  } Questionnaire Link [${surveyUrl}]
+
+
+Once you submit the completed questionnaire, I will review your results and will share them with you at your next appointment.
+
+
+Please contact me if you have any questions or concerns.
+
+
+Thank you,
+
+
+Confidentiality Notice:
+E-mail may be intercepted between the sender and the receiver and is
+therefore neither secure nor confidential. Your continued use of e-mail
+communication confirms that you accept this risk. If this is an urgent
+matter, please contact me at the phone number provided. This e-mail,
+including any attachments, is for the sole use of the intended recipient(s)
+and may contain private, confidential, and privileged information. Any
+unauthorized review, use, disclosure or distribution is prohibited. If you
+are not the intended recipient or this information has been
+inappropriately forwarded to you, please contact the sender by reply
+e-mail and destroy all copies of the original.
+  `;
+
+  const handleEmailClick = () => {
+    const emailSubject = "Please complete the PUFI-2 questionnaire";
+
+    window.location.href = `mailto:?subject=${encodeURIComponent(
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
+  };
+
+  const handleCopyEmailBodyClick = () =>
+    navigator.clipboard.writeText(emailBody);
+
+  const handleCopyLinkClick = () => navigator.clipboard.writeText(surveyUrl);
 
   const handleArchiveClick = () => {
     archiveRestoreSurveyById(surveyId);
@@ -82,10 +136,6 @@ const ClientSurveyCard = ({
   const handleViewScoresClick = () => {
     router.push(`/clinician/survey-report/${surveyId}`);
   };
-
-  // const handleEmailClientClick = () => {};
-
-  // const handleSendReminderClick = () => {};
 
   const menuItems =
     whichCard == "completed"
@@ -113,6 +163,11 @@ const ClientSurveyCard = ({
             clickHandlerFn: handleCopyLinkClick,
           },
           {
+            icon: <ContentCopy />,
+            text: "COPY EMAIL BODY",
+            clickHandlerFn: handleCopyEmailBodyClick,
+          },
+          {
             icon: <VisibilityOutlined />,
             text: "VIEW SCORES",
             clickHandlerFn: handleViewScoresClick,
@@ -132,6 +187,11 @@ const ClientSurveyCard = ({
             icon: <ContentCopy />,
             text: "COPY LINK",
             clickHandlerFn: handleCopyLinkClick,
+          },
+          {
+            icon: <ContentCopy />,
+            text: "COPY EMAIL BODY",
+            clickHandlerFn: handleCopyEmailBodyClick,
           },
           {
             icon: isArchived ? (
@@ -186,11 +246,11 @@ const ClientSurveyCard = ({
             VIEW SCORES
           </StyledLink>
         ) : whichCard == "in-progress" ? (
-          <StyledLink href="#" underline="hover">
+          <StyledLink href="#" underline="hover" onClick={handleEmailClick}>
             SEND REMINDER
           </StyledLink>
         ) : (
-          <StyledLink href="#" underline="hover">
+          <StyledLink href="#" underline="hover" onClick={handleEmailClick}>
             EMAIL CLIENT
           </StyledLink>
         )}
