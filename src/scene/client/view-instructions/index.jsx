@@ -34,6 +34,10 @@ const ViewInstructions = () => {
 
   useEffect(() => {
     if (instructionId < 0) {
+      console.log(
+        "[In view instructions] Redirect to homepage. instructionId",
+        instructionId
+      );
       router.push({
         pathname: "/client",
         query: {

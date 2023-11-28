@@ -35,7 +35,7 @@ export const ClientProvider = ({ children }) => {
 
   const router = useRouter();
 
-  const activityResponses = survey?.activity_response;
+  let activityResponses = survey?.activity_response;
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
@@ -70,6 +70,9 @@ export const ClientProvider = ({ children }) => {
   const getCurrentSurvey = async () => {
     const survey = await getSurveyById(organizationId, clinicianId, surveyId);
     if (survey) {
+      if (!survey.activity_response) {
+        survey.activity_response = {};
+      }
       setSurvey(survey);
 
       if (survey.is_submitted) {
@@ -216,7 +219,10 @@ export const ClientProvider = ({ children }) => {
 
   console.log("[Debug] SurveyId == ", surveyId, didViewResponseGuide);
   console.log("[Debug] Survey == ", survey);
-  console.log("[Debug] Activity Response == ", survey?.activity_response);
+  console.log(
+    "[Debug] Activity Response == ",
+    JSON.stringify(survey?.activity_response)
+  );
   console.log("[Debug] Activity index == ", currentActivityIndex);
 
   return (

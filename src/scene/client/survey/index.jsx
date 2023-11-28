@@ -289,6 +289,7 @@ const SurveyContent = () => {
               <Step
                 className={step.questionId}
                 active={isStepVisible(stepIndex)}
+                key={step.questionId}
               >
                 <StepLabel>
                   <ActivityQuestion
@@ -316,6 +317,7 @@ const SurveyContent = () => {
                       ({ questionId, value, label, miniGuideType }) => {
                         return (
                           <Option
+                            key={label}
                             checked={getSavedAnswer(step.questionId) == value}
                             value={value}
                             control={<Radio />}

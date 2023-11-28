@@ -11,6 +11,12 @@ const useSurveyIdCheck = () => {
     if (router.isReady && !survey) {
       const { orgId, clinicianId, surveyId } = router.query;
       if (!orgId || !clinicianId || !surveyId) {
+        console.log(
+          "Invalid route org, clinician, surveyId",
+          orgId,
+          clinicianId,
+          surveyId
+        );
         router.push("/client");
       }
       setOrganizationId(orgId);
