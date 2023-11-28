@@ -313,10 +313,7 @@ const SurveyContent = () => {
                     value={getSavedAnswer(step.questionId)}
                   >
                     {step.options.map(
-                      (
-                        { questionId, value, label, miniGuideType },
-                        optionIndex
-                      ) => {
+                      ({ questionId, value, label, miniGuideType }) => {
                         return (
                           <Option
                             checked={getSavedAnswer(step.questionId) == value}

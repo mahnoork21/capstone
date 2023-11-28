@@ -35,6 +35,8 @@ const SummaryContent = () => {
     surveyId,
     setCurrentActivityIndex,
     setIsEditMode,
+    survey,
+    setSurvey,
   } = useContext(ClientContext);
   const [finalComment, setFinalComment] = useState(null);
 
@@ -50,6 +52,12 @@ const SummaryContent = () => {
 
   const handleSubmitClick = async () => {
     await updateCommentAndCompleteSurvey(finalComment);
+    setSurvey((prevValue) => {
+      return {
+        ...prevValue,
+        final_comment: finalComment,
+      };
+    });
     router.push({
       pathname: "/client/survey-complete",
       query: {

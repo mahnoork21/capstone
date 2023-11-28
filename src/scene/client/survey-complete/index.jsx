@@ -106,7 +106,7 @@ const SurveyComplete = () => {
                               )}
                               {questionId === "how" &&
                               questionRespose.value === 0 ? (
-                                <Text>questionRespose.commentForNotSure</Text>
+                                <Text>{questionRespose.commentForNotSure}</Text>
                               ) : (
                                 ""
                               )}
