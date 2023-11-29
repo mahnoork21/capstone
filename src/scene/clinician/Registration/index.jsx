@@ -340,7 +340,7 @@ const Registration = () => {
         />;
       }
     } else {
-      const validationMessage = setValidation(data, activeStep);
+      const validationMessage = await setValidation(data, activeStep);
 
       if (validationMessage === "nextpage") {
         setActiveStep(activeStep + 1);
