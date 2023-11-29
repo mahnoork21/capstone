@@ -3,7 +3,11 @@ import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import React from "react";
 import { SurveyCardsBox } from "./styled";
 
-const SurveyCards = ({ surveysListData, surveysPageNo }) => {
+const SurveyCards = ({
+  surveysListData,
+  surveysPageNo,
+  handleArchiveRestoreOfId,
+}) => {
   const noOfItemsOnOnePage = 6;
 
   return (
@@ -40,6 +44,7 @@ const SurveyCards = ({ surveysListData, surveysPageNo }) => {
               isSubmitted={is_submitted}
               activityResponse={activity_response}
               isArchived={is_archived}
+              handleArchiveRestoreOfId={handleArchiveRestoreOfId}
             />
           )
         )}

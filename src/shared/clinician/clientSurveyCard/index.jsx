@@ -35,6 +35,7 @@ const ClientSurveyCard = ({
   isSubmitted,
   activityResponse,
   isArchived,
+  handleArchiveRestoreOfId,
 }) => {
   const router = useRouter();
 
@@ -75,7 +76,6 @@ const ClientSurveyCard = ({
     return daysDiffText + " (" + percentComplete + "% complete)";
   };
 
-  // Written using bold font: 𝐏𝐫𝐨𝐬𝐭𝐡𝐞𝐭𝐢𝐜 𝐔𝐩𝐩𝐞𝐫 𝐋𝐢𝐦𝐛 𝐅𝐮𝐧𝐜𝐭𝐢𝐨𝐧𝐚𝐥 𝐈𝐧𝐝𝐞𝐱
   const emailBody = `Dear [Client Name],
 
 
@@ -102,22 +102,12 @@ Please contact me if you have any questions or concerns.
 
 Thank you,
 
-
-Confidentiality Notice:
-E-mail may be intercepted between the sender and the receiver and is
-therefore neither secure nor confidential. Your continued use of e-mail
-communication confirms that you accept this risk. If this is an urgent
-matter, please contact me at the phone number provided. This e-mail,
-including any attachments, is for the sole use of the intended recipient(s)
-and may contain private, confidential, and privileged information. Any
-unauthorized review, use, disclosure or distribution is prohibited. If you
-are not the intended recipient or this information has been
-inappropriately forwarded to you, please contact the sender by reply
-e-mail and destroy all copies of the original.
-  `;
+`;
 
   const handleEmailClick = () => {
-    const emailSubject = "Please complete the PUFI-2 questionnaire";
+    const emailSubject =
+      (whichCard == "in-progress" ? "Reminder: " : "") +
+      "Please complete the PUFI-2 questionnaire";
 
     window.location.href = `mailto:?subject=${encodeURIComponent(
       emailSubject
@@ -129,8 +119,11 @@ e-mail and destroy all copies of the original.
 
   const handleCopyLinkClick = () => navigator.clipboard.writeText(surveyUrl);
 
-  const handleArchiveClick = () => {
-    archiveRestoreSurveyById(surveyId);
+  const handleArchiveClick = async () => {
+    // From the DB
+    await archiveRestoreSurveyById(surveyId);
+
+    await handleArchiveRestoreOfId(surveyId);
   };
 
   const handleViewScoresClick = () => {

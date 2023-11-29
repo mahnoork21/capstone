@@ -309,6 +309,7 @@ export const fetchClients = async (organizationId, clinicianId) => {
 
 //HERE EKAMPREET
 let lastSurveySnapshot;
+let clientSurveySnapshots = [];
 export const fetchClientSurveys = async (
   organizationId,
   clinicianId,
@@ -352,6 +353,7 @@ export const fetchClientSurveys = async (
     // Get the last visible document
     lastSurveySnapshot =
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    clientSurveySnapshots = [lastSurveySnapshot];
 
     return surveys;
   }
@@ -362,8 +364,9 @@ export const fetchClientSurveys = async (
     where("client_id", "==", clientId),
     where("is_archived", "==", false),
     orderBy("created", "desc"),
-    startAfter(lastSurveySnapshot),
+    // startAfter(lastSurveySnapshot),
     // startAfter((pageNo - 1) * queryLimit),
+    startAfter(clientSurveySnapshots[pageNo - 2]),
     limit(queryLimit)
   );
   const documentSnapshots = await getDocs(nextPage);
@@ -374,6 +377,9 @@ export const fetchClientSurveys = async (
   // Get the last visible document
   lastSurveySnapshot =
     documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+  // When archiving on previous page, replace snapshots of next pages
+  clientSurveySnapshots.splice(pageNo - 1, Infinity, lastSurveySnapshot);
 
   return surveys;
 };
