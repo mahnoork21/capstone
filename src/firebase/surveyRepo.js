@@ -36,6 +36,7 @@ export const updateAnswerInSurvey = async (activityId, currentAnswer) => {
   await updateDoc(surveyRef, {
     [`activity_response.${activityId}`]: currentAnswer,
     updated: serverTimestamp(),
+    status: 1,
   });
 };
 
@@ -46,5 +47,6 @@ export const updateCommentAndCompleteSurvey = async (comment) => {
     is_submitted: true,
     updated: serverTimestamp(),
     submitted: serverTimestamp(),
+    status: 2,
   });
 };

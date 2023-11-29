@@ -50,7 +50,6 @@ export default function FilterPanel({
 
   const [formValues, setFormValues] = useState({
     clientId: "",
-    surveyId: "",
     surveyType: checkedItems["Survey Type"],
     surveyStatus: checkedItems["Survey Status"],
     fromDate: "",
@@ -70,7 +69,6 @@ export default function FilterPanel({
   const resetForm = () => {
     setFormValues({
       clientId: "",
-      surveyId: "",
       surveyType: "",
       surveyStatus: "",
       fromDate: "",
@@ -154,17 +152,6 @@ export default function FilterPanel({
             {renderSurveyStatusCheckboxes()}
             {renderDatePickers()}
           </>
-        );
-
-      case "surveyId":
-        return (
-          <StyledTextField
-            id="inputSurveyId"
-            label="Input Survey Id"
-            variant="outlined"
-            value={formValues.surveyId}
-            onChange={handleInputChange("surveyId")}
-          />
         );
 
       default:
@@ -307,7 +294,6 @@ export default function FilterPanel({
               )}
               <MenuItem value="surveyType">Survey Type</MenuItem>
               <MenuItem value="surveyStatus">Survey Status</MenuItem>
-              <MenuItem value="surveyId">Survey Id</MenuItem>
             </Select>
           </FormControl>
 

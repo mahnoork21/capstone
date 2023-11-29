@@ -15,11 +15,9 @@ import SurveysPerClient from "./components/surveysPerClient";
 import AddNewSurveyCard from "./components/addNewSurveyCard";
 import {
   fetchClients,
-  fetchClinicianSurveyById,
   fetchFilteredClinicianSurveys,
+  getTotalFilteredSurveysForClient,
 } from "@/firebase/clinicianRepo";
-import { collection, onSnapshot, query } from "firebase/firestore";
-import { db } from "@/firebase/firebase";
 import {
   fetchClientSurveys,
   getTotalSurveysForClient,
@@ -88,80 +86,73 @@ const MyClients = () => {
 
   const [filterFormData, setFilterFormData] = useState({});
   //Filtered Surveys
-  const updateFilteredSurveys = async (formData, searchBy) => {
+  const updateFilteredSurveys = async (formData) => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
+
     setFilterFormData(formData);
+
+    setSurveysPageNo(1);
 
     const data = { ...formData, clientId: selectedClientIndex };
 
-    if (
-      searchBy === "surveyId" &&
-      formData.surveyId !== null &&
-      formData.surveyId !== undefined &&
-      formData.surveyId !== ""
-    ) {
-      const resultSurvey = await fetchClinicianSurveyById(
-        orgId,
-        clinicianId,
-        selectedClientIndex,
-        formData.surveyId
-      );
-      if (resultSurvey) {
-        setSurveysListData([resultSurvey]);
-      } else {
-        setSurveysListData([]);
-      }
+    const resultSurvey = await fetchFilteredClinicianSurveys(
+      orgId,
+      clinicianId,
+      data,
+      false,
+      1
+    );
+
+    const count = await getTotalFilteredSurveysForClient(
+      orgId,
+      clinicianId,
+      data,
+      false
+    );
+    setTotalSurveysCount(count);
+
+    if (count) {
+      setSurveysListData(resultSurvey);
     } else {
-      const resultSurvey = await fetchFilteredClinicianSurveys(
-        orgId,
-        clinicianId,
-        data
-      );
-
-      if (resultSurvey.length > 0) {
-        setSurveysListData(resultSurvey);
-      } else {
-        setSurveysListData([]);
-      }
+      setSurveysListData([]);
     }
-
-    setSurveysPageNo(1);
   };
 
-  useEffect(() => {
-    const orgId = localStorage.getItem("orgId");
-    const clinicianId = localStorage.getItem("clinicianId");
+  //Change it without using unsubscribe or without loding twice snapshot
+  // useEffect(() => {
+  //   const orgId = localStorage.getItem("orgId");
+  //   const clinicianId = localStorage.getItem("clinicianId");
 
-    if (selectedClientIndex) {
-      const surveysRef = collection(
-        db,
-        "Organization",
-        orgId,
-        "Clinician",
-        clinicianId,
-        "Survey"
-      );
-      const q = query(surveysRef);
+  //   if (selectedClientIndex) {
+  //     const surveysRef = collection(
+  //       db,
+  //       "Organization",
+  //       orgId,
+  //       "Clinician",
+  //       clinicianId,
+  //       "Survey"
+  //     );
+  //     const q = query(surveysRef);
 
-      const unsubscribe = onSnapshot(q, async (snapshot) => {
-        const surveys = await fetchClientSurveys(
-          orgId,
-          clinicianId,
-          selectedClientIndex,
-          surveysPageNo
-        );
+  //     const unsubscribe = onSnapshot(q, async (snapshot) => {
+  //       const surveys = await fetchClientSurveys(
+  //         orgId,
+  //         clinicianId,
+  //         selectedClientIndex,
+  //         surveysPageNo
+  //       );
 
-        if (Object.keys(filterFormData).length > 0) {
-          updateFilteredSurveys(filterFormData);
-        } else {
-          setSurveysListData(surveys);
-        }
-      });
+  //       if (Object.keys(filterFormData).length > 0) {
+  //         updateFilteredSurveys(filterFormData);
+  //       } else {
+  //         setSurveysListData(surveys);
+  //       }
+  //     });
 
-      return () => unsubscribe();
-    }
-  }, [selectedClientIndex, isAddNewSurveyShown, filterFormData]);
+  //     return () => unsubscribe();
+  //   }
+  // }, [selectedClientIndex, isAddNewSurveyShown, filterFormData]);
 
   //Handling state back from the parent component
 
@@ -175,6 +166,7 @@ const MyClients = () => {
 
   // First render: Get total surveys count and first surveys page
   useEffect(() => {
+    setFilterFormData({});
     if (!selectedClientIndex) return;
 
     const orgId = localStorage.getItem("orgId");
@@ -228,12 +220,25 @@ const MyClients = () => {
     if (dataLoadedTillPageNo < surveysPageNo) {
       (async () => {
         try {
-          const surveys = await fetchClientSurveys(
-            orgId,
-            clinicianId,
-            selectedClientIndex,
-            surveysPageNo
-          );
+          let surveys;
+          if (Object.keys(filterFormData).length > 0) {
+            const data = { ...filterFormData, clientId: selectedClientIndex };
+            surveys = await fetchFilteredClinicianSurveys(
+              orgId,
+              clinicianId,
+              data,
+              false,
+              surveysPageNo
+            );
+          } else {
+            surveys = await fetchClientSurveys(
+              orgId,
+              clinicianId,
+              selectedClientIndex,
+              surveysPageNo
+            );
+          }
+
           setSurveysListData((s) => s.concat(surveys));
           // setSurveysListData(surveys);
         } catch (err) {

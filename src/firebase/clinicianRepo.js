@@ -53,6 +53,7 @@ export const addNewClient = async (
     is_archived: false,
     activity_response: {},
     is_submitted: false,
+    status: 0,
   });
 
   await updateDoc(clinicianRef, {
@@ -99,16 +100,21 @@ export const addNewSurvey = async (
     is_archived: false,
     activity_response: {},
     is_submitted: false,
+    status: 0,
   });
 
   return newSurveyRef.id;
 };
 
+let lastAllClinicianActiveSnapshot;
+let lastAllClinicianArchivedSnapshot;
 export const fetchAllClinicianSurveys = async (
   organizationId,
   clinicianId,
-  isArchived
+  isArchived,
+  pageNo
 ) => {
+  const queryLimit = 6;
   if (!organizationId || !clinicianId)
     throw new Error("Insufficient data provided");
 
@@ -123,107 +129,68 @@ export const fetchAllClinicianSurveys = async (
 
   let surveys = [];
 
-  const q = query(surveysRef, where("is_archived", "==", isArchived));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
+  if (pageNo === 0) {
+    return [];
+  }
+
+  let q = query(surveysRef, where("is_archived", "==", isArchived));
+
+  if (pageNo === 1) {
+    // Query the first page of docs
+    const firstPage = query(q, orderBy("created", "desc"), limit(queryLimit));
+    const documentSnapshots = await getDocs(firstPage);
+    documentSnapshots.forEach((doc) => {
+      surveys.push(doc.data());
+    });
+
+    // Get the last visible document
+    if (isArchived) {
+      lastAllClinicianArchivedSnapshot =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    } else {
+      lastAllClinicianActiveSnapshot =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    }
+
+    return surveys;
+  }
+
+  // Construct a new query starting at this document,
+  let nextPage;
+  if (isArchived) {
+    nextPage = query(
+      q,
+      orderBy("created", "desc"),
+      startAfter(lastAllClinicianArchivedSnapshot),
+      limit(queryLimit)
+    );
+  } else {
+    nextPage = query(
+      q,
+      orderBy("created", "desc"),
+      startAfter(lastAllClinicianActiveSnapshot),
+      limit(queryLimit)
+    );
+  }
+
+  const documentSnapshots = await getDocs(nextPage);
+  documentSnapshots.forEach((doc) => {
     surveys.push(doc.data());
   });
 
-  return surveys;
-};
-
-export const fetchFilteredClinicianSurveys = async (
-  organizationId,
-  clinicianId,
-  { clientId, surveyType, surveyStatus, fromDate, toDate },
-  isArchived
-) => {
-  if (!organizationId || !clinicianId) {
-    throw new Error("Insufficient data provided");
+  // Get the last visible document
+  if (isArchived) {
+    lastAllClinicianArchivedSnapshot =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+  } else {
+    lastAllClinicianActiveSnapshot =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
   }
-
-  const surveysRef = collection(
-    db,
-    "Organization",
-    organizationId,
-    "Clinician",
-    clinicianId,
-    "Survey"
-  );
-
-  let surveys = [];
-
-  // Build the query based on the filter parameters
-  let q = query(surveysRef);
-
-  if (isArchived !== null && isArchived !== undefined) {
-    q = query(q, where("is_archived", "==", isArchived));
-  }
-
-  if (clientId !== "") {
-    q = query(q, where("client_id", "==", clientId));
-  }
-
-  // Check if all values in surveyType are false
-  const isAllSurveyTypesFalse = Object.values(surveyType).every(
-    (value) => !value
-  );
-
-  if (!isAllSurveyTypesFalse) {
-    const selectedSurveyTypes = Object.entries(surveyType)
-      .filter(([_, isSelected]) => isSelected)
-      .map(([type, _]) => type);
-
-    q = query(q, where("survey_type", "in", selectedSurveyTypes));
-  }
-
-  // Apply date range conditions
-  if (fromDate && toDate) {
-    const fromDateObj = new Date(fromDate);
-    const toDateObj = new Date(toDate);
-    console.log("fromDateObj -> ", fromDateObj);
-
-    if (fromDateObj && toDateObj) {
-      q = query(
-        q,
-        where("created", ">=", fromDateObj),
-        where("created", "<=", toDateObj)
-      );
-    } else {
-      console.error("Invalid date format for fromDate or toDate");
-    }
-  } else if (fromDate) {
-    q = query(q, where("created", ">=", new Date(fromDate)));
-  } else if (toDate) {
-    q = query(q, where("created", "<=", new Date(toDate)));
-  }
-
-  const querySnapshot = await getDocs(q);
-
-  const isAllSurveyStatusFalse = Object.values(surveyStatus).every(
-    (value) => !value
-  );
-
-  querySnapshot.forEach((doc) => {
-    if (!isAllSurveyStatusFalse) {
-      const { is_submitted, updated } = doc.data();
-      const survey_status = is_submitted
-        ? "Complete"
-        : updated
-        ? "In-progress"
-        : "Pending";
-
-      if (surveyStatus[survey_status]) {
-        surveys.push({ ...doc.data(), surveyStatus });
-      }
-    } else {
-      surveys.push(doc.data());
-    }
-  });
 
   return surveys;
 };
 
+//TODO: fetch only first 4
 export const fetchClinicianSurveysByStatus = async (
   organizationId,
   clinicianId,
@@ -262,42 +229,6 @@ export const fetchClinicianSurveysByStatus = async (
   });
 
   return surveys;
-};
-
-export const fetchClinicianSurveyById = async (
-  organizationId,
-  clinicianId,
-  clientId,
-  surveyId
-) => {
-  if (!organizationId || !clinicianId || !surveyId)
-    throw new Error("Insufficient data provided");
-  const surveyRef = collection(
-    db,
-    "Organization",
-    organizationId,
-    "Clinician",
-    clinicianId,
-    "Survey"
-  );
-
-  // Build the query based on the filter parameters
-  let q = query(surveyRef);
-
-  if (clientId !== "") {
-    q = query(q, where("client_id", "==", clientId));
-  }
-
-  const surveyQuery = query(q, where("survey_id", "==", surveyId));
-
-  const surveySnapshot = await getDocs(surveyQuery);
-
-  if (!surveySnapshot.size) return null;
-  console.log(
-    "surveySnapshot.docs[0].data() -> ",
-    surveySnapshot.docs[0].data()
-  );
-  return surveySnapshot.docs[0].data();
 };
 
 export const archiveRestoreSurveyById = async (surveyId) => {
@@ -376,6 +307,7 @@ export const fetchClients = async (organizationId, clinicianId) => {
   return clinician.clients;
 };
 
+//HERE EKAMPREET
 let lastSurveySnapshot;
 export const fetchClientSurveys = async (
   organizationId,
@@ -408,6 +340,7 @@ export const fetchClientSurveys = async (
     const firstPage = query(
       surveysRef,
       where("client_id", "==", clientId),
+      where("is_archived", "==", false),
       orderBy("created", "desc"),
       limit(queryLimit)
     );
@@ -427,6 +360,7 @@ export const fetchClientSurveys = async (
   const nextPage = query(
     surveysRef,
     where("client_id", "==", clientId),
+    where("is_archived", "==", false),
     orderBy("created", "desc"),
     startAfter(lastSurveySnapshot),
     // startAfter((pageNo - 1) * queryLimit),
@@ -440,6 +374,153 @@ export const fetchClientSurveys = async (
   // Get the last visible document
   lastSurveySnapshot =
     documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+  return surveys;
+};
+
+let lastFilterActiveSurveySnapshot;
+let lastFilterArchivedSurveySnapshot;
+export const fetchFilteredClinicianSurveys = async (
+  organizationId,
+  clinicianId,
+  { clientId, surveyType, surveyStatus, fromDate, toDate },
+  isArchived,
+  pageNo
+) => {
+  const queryLimit = 6;
+
+  if (!organizationId || !clinicianId) {
+    throw new Error("Insufficient data provided");
+  }
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let surveys = [];
+
+  // Build the query based on the filter parameters
+  let q = query(surveysRef);
+
+  if (isArchived !== null && isArchived !== undefined) {
+    q = query(q, where("is_archived", "==", isArchived));
+  } else {
+    q = query(q, where("is_archived", "==", false));
+  }
+
+  if (clientId !== "") {
+    q = query(q, where("client_id", "==", clientId));
+  }
+
+  // Check if all values in surveyType are false
+  const isAllSurveyTypesFalse = Object.values(surveyType).every(
+    (value) => !value
+  );
+
+  if (!isAllSurveyTypesFalse) {
+    const selectedSurveyTypes = Object.entries(surveyType)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([type, _]) => type);
+
+    q = query(q, where("survey_type", "in", selectedSurveyTypes));
+  }
+
+  // Apply date range conditions
+  if (fromDate && toDate) {
+    const fromDateObj = new Date(fromDate);
+    const toDateObj = new Date(toDate);
+
+    if (fromDateObj && toDateObj) {
+      q = query(
+        q,
+        where("created", ">=", fromDateObj),
+        where("created", "<=", toDateObj)
+      );
+    } else {
+      console.error("Invalid date format for fromDate or toDate");
+    }
+  } else if (fromDate) {
+    q = query(q, where("created", ">=", new Date(fromDate)));
+  } else if (toDate) {
+    q = query(q, where("created", "<=", new Date(toDate)));
+  }
+
+  const isAllSurveyStatusFalse = Object.values(surveyStatus).every(
+    (value) => !value
+  );
+
+  if (!isAllSurveyStatusFalse) {
+    const selectedStatuses = Object.entries(surveyStatus)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([status, _]) =>
+        status === "Complete" ? 2 : status === "In-progress" ? 1 : 0
+      );
+
+    q = query(q, where("status", "in", selectedStatuses));
+  }
+
+  if (pageNo === 0) {
+    return [];
+  }
+
+  if (pageNo === 1) {
+    // Query the first page of docs
+    const firstPage = query(q, orderBy("created", "desc"), limit(queryLimit));
+    const documentSnapshots = await getDocs(firstPage);
+    documentSnapshots.forEach((doc) => {
+      surveys.push(doc.data());
+    });
+
+    if (isArchived) {
+      // Get the last visible document
+      lastFilterArchivedSurveySnapshot =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    } else {
+      // Get the last visible document
+      lastFilterActiveSurveySnapshot =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    }
+
+    return surveys;
+  }
+
+  // Construct a new query starting at this document,
+  let nextPage;
+  if (isArchived) {
+    nextPage = query(
+      q,
+      orderBy("created", "desc"),
+      startAfter(lastFilterArchivedSurveySnapshot),
+      limit(queryLimit)
+    );
+  } else {
+    nextPage = query(
+      q,
+      orderBy("created", "desc"),
+      startAfter(lastFilterActiveSurveySnapshot),
+      limit(queryLimit)
+    );
+  }
+
+  const documentSnapshots = await getDocs(nextPage);
+  documentSnapshots.forEach((doc) => {
+    surveys.push(doc.data());
+  });
+
+  if (isArchived) {
+    // Get the last visible document
+    lastFilterArchivedSurveySnapshot =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+  } else {
+    // Get the last visible document
+    lastFilterActiveSurveySnapshot =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+  }
 
   return surveys;
 };
@@ -460,7 +541,115 @@ export const getTotalSurveysForClient = async (
     clinicianId,
     "Survey"
   );
-  const q = query(surveysRef, where("client_id", "==", clientId));
+  const q = query(
+    surveysRef,
+    where("client_id", "==", clientId),
+    where("is_archived", "==", false)
+  );
+
+  const snapshot = await getCountFromServer(q);
+
+  return snapshot.data().count;
+};
+
+export const getTotalAllClinicianSurveys = async (
+  organizationId,
+  clinicianId,
+  isArchived
+) => {
+  if (!organizationId || !clinicianId)
+    throw new Error("Insufficient data provided");
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  const q = query(surveysRef, where("is_archived", "==", isArchived));
+
+  const snapshot = await getCountFromServer(q);
+
+  return snapshot.data().count;
+};
+
+export const getTotalFilteredSurveysForClient = async (
+  organizationId,
+  clinicianId,
+  { clientId, surveyType, surveyStatus, fromDate, toDate },
+  isArchived
+) => {
+  if (!organizationId || !clinicianId) {
+    throw new Error("Insufficient data provided");
+  }
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let q = query(surveysRef);
+
+  if (isArchived !== null && isArchived !== undefined) {
+    q = query(q, where("is_archived", "==", isArchived));
+  } else {
+    q = query(q, where("is_archived", "==", false));
+  }
+
+  if (clientId !== "") {
+    q = query(q, where("client_id", "==", clientId));
+  }
+
+  const isAllSurveyTypesFalse = Object.values(surveyType).every(
+    (value) => !value
+  );
+
+  if (!isAllSurveyTypesFalse) {
+    const selectedSurveyTypes = Object.entries(surveyType)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([type, _]) => type);
+
+    q = query(q, where("survey_type", "in", selectedSurveyTypes));
+  }
+
+  if (fromDate && toDate) {
+    const fromDateObj = new Date(fromDate);
+    const toDateObj = new Date(toDate);
+
+    if (fromDateObj && toDateObj) {
+      q = query(
+        q,
+        where("created", ">=", fromDateObj),
+        where("created", "<=", toDateObj)
+      );
+    } else {
+      console.error("Invalid date format for fromDate or toDate");
+    }
+  } else if (fromDate) {
+    q = query(q, where("created", ">=", new Date(fromDate)));
+  } else if (toDate) {
+    q = query(q, where("created", "<=", new Date(toDate)));
+  }
+
+  const isAllSurveyStatusFalse = Object.values(surveyStatus).every(
+    (value) => !value
+  );
+  if (!isAllSurveyStatusFalse) {
+    const selectedStatuses = Object.entries(surveyStatus)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([status, _]) =>
+        status === "Complete" ? 2 : status === "In-progress" ? 1 : 0
+      );
+
+    q = query(q, where("status", "in", selectedStatuses));
+  }
 
   const snapshot = await getCountFromServer(q);
 
