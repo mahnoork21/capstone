@@ -1,4 +1,7 @@
 import { checkEmailisUsed } from "../../../../firebase/clincianRepo";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { useState } from "react";
 
 const validateEmail = (email) => {
   // Regular expression for basic email validation
@@ -21,24 +24,21 @@ export const setValidation = (data, activeStep) => {
       data.password,
       data.confirmPassword
     );
-    setOpen(true);
+
+    return "all fields are not complete";
   } else if (data.password.length < 6) {
-    alert("Check for length of your password", data.password.length);
-    return;
+    return "Check for length of your password";
   } else if (data.password !== data.confirmPassword) {
-    alert("Password and Confirm Password must match");
-    return;
+    return "Password and Confirm Password must match";
   } else if (!validateEmail(data.email)) {
-    alert("Please enter a valid email address");
-    return;
+    return "Please enter a valid email address";
   } else if (checkEmailisUsed(data.email)) {
-    //alert("This Email has already been used!");
-    return;
+    return "This Email has already been used!";
   } else {
     console.log("daata is complete at step := ", activeStep);
 
     console.log("inside else, NOT LAST STEP", activeStep);
 
-    return true;
+    return "nextpage";
   }
 };

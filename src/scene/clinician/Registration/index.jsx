@@ -43,10 +43,12 @@ import {
 import AccordionCard from "@/shared/clinician/accordionCard";
 import TOScomponent from "@/shared/clinician/TOS";
 import { setValidation } from "./validation";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const steps = ["Personal Details", "Organizational Details", "TOS"];
 // const [snackbarMessage, setSnackbarMessage] = useState("");
-let snackbarMessage = "meaasge";
+// let snackbarMessage = "meaasge";
 const handleCloseSnackbar = (event, reason) => {
   if (reason === "clickaway") {
     return;
@@ -278,6 +280,7 @@ function Alert(props) {
 const Registration = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
   const methods = useForm({
     defaultValues: {
@@ -317,7 +320,7 @@ const Registration = () => {
           .then((data) => {
             addClinicianDb(uid, data).then(() => {
               console.log("cliniian added using addClinicianDb");
-              snackbarMessage = "clinicain added";
+              setMessage("clinicain added");
             });
           })
           .then((res) => {
@@ -337,38 +340,16 @@ const Registration = () => {
         />;
       }
     } else {
-      const isitValid = setValidation(data, activeStep);
-      if (isitValid) {
-        setActiveStep(activeStep + 1);
-      }
-      console.log("isitvalid: ", isitValid);
-      // do {
-      //   snackbarMessage = isitValid;
-      //   console.log
-      //   // showMessage(snackbarMessage);
-      //   setOpen(true);
-      // } while (isitValid === "true");
+      const validationMessage = setValidation(data, activeStep);
 
-      // setActiveStep(activeStep + 1);
+      if (validationMessage === "nextpage") {
+        setActiveStep(activeStep + 1);
+      } else {
+        setMessage(validationMessage);
+        setOpen(true);
+      }
     }
   };
-
-  // const showMessage = (snackbarMessage) => {
-  //   return (
-  //     <>
-  //       <Snackbar
-  //         open={open}
-  //         autoHideDuration={6000}
-  //         onClose={handleCloseSnackbar}
-  //         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-  //       >
-  //         <MuiAlert onClose={handleCloseSnackbar} severity="error">
-  //           {snackbarMessage}
-  //         </MuiAlert>
-  //       </Snackbar>
-  //     </>
-  //   );
-  // };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
@@ -382,6 +363,12 @@ const Registration = () => {
         <></>
       );
     }
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -453,12 +440,34 @@ const Registration = () => {
                         </Box>
                       </FormBox>
                     </form>
-                    <Snackbar
+                    {/* <Snackbar
                       open={open}
                       autoHideDuration={1000}
                       onClose={handleCloseSnackbar}
                       anchorOrigin={{ vertical: "top", horizontal: "center" }}
                       message={"Successfully registered"}
+                    /> */}
+                    <Snackbar
+                      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                      open={open}
+                      autoHideDuration={6000}
+                      onClose={handleClose}
+                      message={message}
+                      action={
+                        // <MuiAlert onClose={handleClose} severity="warning">
+                        //   {message}
+                        // </MuiAlert>
+                        <React.Fragment>
+                          <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleClose}
+                          >
+                            <CloseIcon fontSize="small" />
+                          </IconButton>
+                        </React.Fragment>
+                      }
                     />
                   </StyledBox>
                 </StepperBox>
