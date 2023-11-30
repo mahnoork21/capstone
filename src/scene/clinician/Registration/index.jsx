@@ -355,7 +355,7 @@ const Registration = () => {
     setActiveStep(activeStep - 1);
     console.log(activeStep);
     {
-      activeStep === 0 || activeStep >= steps.length - 1 ? (
+      activeStep === 0 ? (
         <Button color="inherit" href="/clinician/login" sx={{ mr: 1 }}>
           Back to Login
         </Button>
