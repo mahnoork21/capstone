@@ -8,7 +8,7 @@ const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
-export const setValidation = (data, activeStep) => {
+export const setValidation = async (data, activeStep) => {
   if (
     !data.firstName ||
     !data.lastName ||
@@ -32,7 +32,7 @@ export const setValidation = (data, activeStep) => {
     return "Password and Confirm Password must match";
   } else if (!validateEmail(data.email)) {
     return "Please enter a valid email address";
-  } else if (checkEmailisUsed(data.email)) {
+  } else if (await checkEmailisUsed(data.email)) {
     return "This Email has already been used!";
   } else {
     console.log("daata is complete at step := ", activeStep);
