@@ -106,8 +106,8 @@ export const addNewSurvey = async (
   return newSurveyRef.id;
 };
 
-let lastAllClinicianActiveSnapshot;
-let lastAllClinicianArchivedSnapshot;
+let allClinicianActiveSnapshots = [];
+let allClinicianArchivedSnapshots = [];
 export const fetchAllClinicianSurveys = async (
   organizationId,
   clinicianId,
@@ -145,11 +145,15 @@ export const fetchAllClinicianSurveys = async (
 
     // Get the last visible document
     if (isArchived) {
-      lastAllClinicianArchivedSnapshot =
+      const lastAllClinicianArchivedSnapshot =
         documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+      allClinicianArchivedSnapshots = [lastAllClinicianArchivedSnapshot];
     } else {
-      lastAllClinicianActiveSnapshot =
+      const lastAllClinicianActiveSnapshot =
         documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+      allClinicianActiveSnapshots = [lastAllClinicianActiveSnapshot];
     }
 
     return surveys;
@@ -161,14 +165,14 @@ export const fetchAllClinicianSurveys = async (
     nextPage = query(
       q,
       orderBy("created", "desc"),
-      startAfter(lastAllClinicianArchivedSnapshot),
+      startAfter(allClinicianArchivedSnapshots[pageNo - 2]),
       limit(queryLimit)
     );
   } else {
     nextPage = query(
       q,
       orderBy("created", "desc"),
-      startAfter(lastAllClinicianActiveSnapshot),
+      startAfter(allClinicianArchivedSnapshots[pageNo - 2]),
       limit(queryLimit)
     );
   }
@@ -180,11 +184,25 @@ export const fetchAllClinicianSurveys = async (
 
   // Get the last visible document
   if (isArchived) {
-    lastAllClinicianArchivedSnapshot =
+    const lastAllClinicianArchivedSnapshot =
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+    // When archiving on previous page, replace snapshots of next pages
+    allClinicianArchivedSnapshots.splice(
+      pageNo - 1,
+      Infinity,
+      lastAllClinicianArchivedSnapshot
+    );
   } else {
-    lastAllClinicianActiveSnapshot =
+    const lastAllClinicianActiveSnapshot =
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+    // When archiving on previous page, replace snapshots of next pages
+    allClinicianActiveSnapshots.splice(
+      pageNo - 1,
+      Infinity,
+      lastAllClinicianActiveSnapshot
+    );
   }
 
   return surveys;
@@ -307,8 +325,6 @@ export const fetchClients = async (organizationId, clinicianId) => {
   return clinician.clients;
 };
 
-//HERE EKAMPREET
-let lastSurveySnapshot;
 let clientSurveySnapshots = [];
 export const fetchClientSurveys = async (
   organizationId,
@@ -351,7 +367,7 @@ export const fetchClientSurveys = async (
     });
 
     // Get the last visible document
-    lastSurveySnapshot =
+    const lastSurveySnapshot =
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
     clientSurveySnapshots = [lastSurveySnapshot];
 
@@ -364,8 +380,6 @@ export const fetchClientSurveys = async (
     where("client_id", "==", clientId),
     where("is_archived", "==", false),
     orderBy("created", "desc"),
-    // startAfter(lastSurveySnapshot),
-    // startAfter((pageNo - 1) * queryLimit),
     startAfter(clientSurveySnapshots[pageNo - 2]),
     limit(queryLimit)
   );
@@ -375,7 +389,7 @@ export const fetchClientSurveys = async (
   });
 
   // Get the last visible document
-  lastSurveySnapshot =
+  const lastSurveySnapshot =
     documentSnapshots.docs[documentSnapshots.docs.length - 1];
 
   // When archiving on previous page, replace snapshots of next pages
@@ -384,8 +398,8 @@ export const fetchClientSurveys = async (
   return surveys;
 };
 
-let lastFilterActiveSurveySnapshot;
-let lastFilterArchivedSurveySnapshot;
+let filterActiveSurveySnapshots = [];
+let filterArchivedSurveySnapshots = [];
 export const fetchFilteredClinicianSurveys = async (
   organizationId,
   clinicianId,
@@ -430,8 +444,8 @@ export const fetchFilteredClinicianSurveys = async (
 
   if (!isAllSurveyTypesFalse) {
     const selectedSurveyTypes = Object.entries(surveyType)
-      .filter(([_, isSelected]) => isSelected)
-      .map(([type, _]) => type);
+      .filter(([, isSelected]) => isSelected)
+      .map(([type]) => type);
 
     q = query(q, where("survey_type", "in", selectedSurveyTypes));
   }
@@ -462,8 +476,8 @@ export const fetchFilteredClinicianSurveys = async (
 
   if (!isAllSurveyStatusFalse) {
     const selectedStatuses = Object.entries(surveyStatus)
-      .filter(([_, isSelected]) => isSelected)
-      .map(([status, _]) =>
+      .filter(([, isSelected]) => isSelected)
+      .map(([status]) =>
         status === "Complete" ? 2 : status === "In-progress" ? 1 : 0
       );
 
@@ -484,12 +498,16 @@ export const fetchFilteredClinicianSurveys = async (
 
     if (isArchived) {
       // Get the last visible document
-      lastFilterArchivedSurveySnapshot =
+      const lastFilterArchivedSurveySnapshot =
         documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+      filterArchivedSurveySnapshots = [lastFilterArchivedSurveySnapshot];
     } else {
       // Get the last visible document
-      lastFilterActiveSurveySnapshot =
+      const lastFilterActiveSurveySnapshot =
         documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+      filterActiveSurveySnapshots = [lastFilterActiveSurveySnapshot];
     }
 
     return surveys;
@@ -501,14 +519,14 @@ export const fetchFilteredClinicianSurveys = async (
     nextPage = query(
       q,
       orderBy("created", "desc"),
-      startAfter(lastFilterArchivedSurveySnapshot),
+      startAfter(filterArchivedSurveySnapshots[pageNo - 2]),
       limit(queryLimit)
     );
   } else {
     nextPage = query(
       q,
       orderBy("created", "desc"),
-      startAfter(lastFilterActiveSurveySnapshot),
+      startAfter(filterActiveSurveySnapshots[pageNo - 2]),
       limit(queryLimit)
     );
   }
@@ -520,12 +538,26 @@ export const fetchFilteredClinicianSurveys = async (
 
   if (isArchived) {
     // Get the last visible document
-    lastFilterArchivedSurveySnapshot =
+    const lastFilterArchivedSurveySnapshot =
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+    // When archiving on previous page, replace snapshots of next pages
+    filterArchivedSurveySnapshots.splice(
+      pageNo - 1,
+      Infinity,
+      lastFilterArchivedSurveySnapshot
+    );
   } else {
     // Get the last visible document
-    lastFilterActiveSurveySnapshot =
+    const lastFilterActiveSurveySnapshot =
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+    // When archiving on previous page, replace snapshots of next pages
+    filterActiveSurveySnapshots.splice(
+      pageNo - 1,
+      Infinity,
+      lastFilterActiveSurveySnapshot
+    );
   }
 
   return surveys;
@@ -619,8 +651,8 @@ export const getTotalFilteredSurveysForClient = async (
 
   if (!isAllSurveyTypesFalse) {
     const selectedSurveyTypes = Object.entries(surveyType)
-      .filter(([_, isSelected]) => isSelected)
-      .map(([type, _]) => type);
+      .filter(([, isSelected]) => isSelected)
+      .map(([type]) => type);
 
     q = query(q, where("survey_type", "in", selectedSurveyTypes));
   }
@@ -649,8 +681,8 @@ export const getTotalFilteredSurveysForClient = async (
   );
   if (!isAllSurveyStatusFalse) {
     const selectedStatuses = Object.entries(surveyStatus)
-      .filter(([_, isSelected]) => isSelected)
-      .map(([status, _]) =>
+      .filter(([, isSelected]) => isSelected)
+      .map(([status]) =>
         status === "Complete" ? 2 : status === "In-progress" ? 1 : 0
       );
 

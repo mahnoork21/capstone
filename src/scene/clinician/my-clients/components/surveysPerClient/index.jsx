@@ -24,7 +24,7 @@ export default function SurveysPerClient({
   toggleFilterPanelClick,
   addNewSurveyClick,
   handleBackButtonClick,
-  handleArchiveOfId,
+  reloadPageData,
 }) {
   const { breakpoint } = useContext(ClinicianContext);
 
@@ -57,7 +57,7 @@ export default function SurveysPerClient({
       <SurveyCards
         surveysListData={surveysListData}
         surveysPageNo={surveysPageNo}
-        handleArchiveRestoreOfId={handleArchiveOfId}
+        reloadPageData={reloadPageData}
       />
 
       <Pagination

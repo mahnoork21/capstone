@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import differenceInDays from "date-fns/differenceInDays";
 import {
-  ContentCopy,
+  InsertLink,
   DeleteOutline,
   MoreHorizRounded,
   VisibilityOutlined,
+  ContentCopy,
 } from "@mui/icons-material";
 import {
   StyledCard,
@@ -35,7 +36,7 @@ const ClientSurveyCard = ({
   isSubmitted,
   activityResponse,
   isArchived,
-  handleArchiveRestoreOfId,
+  reloadPageData,
 }) => {
   const router = useRouter();
 
@@ -120,10 +121,9 @@ Thank you,
   const handleCopyLinkClick = () => navigator.clipboard.writeText(surveyUrl);
 
   const handleArchiveClick = async () => {
-    // From the DB
     await archiveRestoreSurveyById(surveyId);
 
-    await handleArchiveRestoreOfId(surveyId);
+    await reloadPageData();
   };
 
   const handleViewScoresClick = () => {
@@ -134,8 +134,8 @@ Thank you,
     whichCard == "completed"
       ? [
           {
-            icon: <ContentCopy />,
-            text: "COPY LINK",
+            icon: <InsertLink />,
+            text: "COPY SURVEY LINK",
             clickHandlerFn: handleCopyLinkClick,
           },
           {
@@ -151,8 +151,8 @@ Thank you,
       : whichCard == "in-progress"
       ? [
           {
-            icon: <ContentCopy />,
-            text: "COPY LINK",
+            icon: <InsertLink />,
+            text: "COPY SURVEY LINK",
             clickHandlerFn: handleCopyLinkClick,
           },
           {
@@ -177,8 +177,8 @@ Thank you,
         ]
       : [
           {
-            icon: <ContentCopy />,
-            text: "COPY LINK",
+            icon: <InsertLink />,
+            text: "COPY SURVEY LINK",
             clickHandlerFn: handleCopyLinkClick,
           },
           {
@@ -273,11 +273,15 @@ Thank you,
         }}
       >
         {menuItems.map(({ icon, text, clickHandlerFn }) => (
-          <MenuItem key={text} onClick={handleMenuClose}>
+          <MenuItem
+            key={text}
+            onClick={() => {
+              handleMenuClose();
+              clickHandlerFn();
+            }}
+          >
             <StyledListItemIcon>{icon}</StyledListItemIcon>
-            <StyledLink underline="none" onClick={clickHandlerFn}>
-              {text}
-            </StyledLink>
+            <StyledLink underline="none">{text}</StyledLink>
           </MenuItem>
         ))}
       </Menu>

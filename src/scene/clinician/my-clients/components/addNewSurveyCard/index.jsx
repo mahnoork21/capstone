@@ -18,13 +18,11 @@ export default function AddNewSurveyCard({ toggleForm, clientId }) {
   const handleSurveyTypeChange = (e) => setSurveyType(e.target.value);
 
   const handleAddSurveyClick = async () => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
     try {
-      await addNewSurvey(
-        "oZqnljuEU4b3jZtfHM9v",
-        "fWft9AvZD4Mc5fR33ka6Q8vOYil2",
-        clientId,
-        surveyType
-      );
+      await addNewSurvey(orgId, clinicianId, clientId, surveyType);
 
       toggleForm();
     } catch (err) {

@@ -65,7 +65,8 @@ const MyClients = () => {
   useEffect(() => {
     //remove this when prachi implements
     localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
-    localStorage.setItem("clinicianId", "fWft9AvZD4Mc5fR33ka6Q8vOYil2");
+    // localStorage.setItem("clinicianId", "fWft9AvZD4Mc5fR33ka6Q8vOYil2");
+    localStorage.setItem("clinicianId", "SPGwqdFIKTdjKZAvsO2N4NlwBmJ2");
 
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
@@ -119,42 +120,100 @@ const MyClients = () => {
     }
   };
 
-  const handleArchiveOfId = (surveyId) => {
-    const indexToRemove = surveysListData.findIndex(
-      ({ survey_id }) => survey_id == surveyId
+  const [totalSurveysCount, setTotalSurveysCount] = useState(0);
+  const [surveysPageNo, setSurveysPageNo] = useState(1);
+  const handleSurveysPageNoClick = (p) => {
+    setSurveysPageNo(p);
+  };
+
+  const [surveysListData, setSurveysListData] = useState([]);
+
+  // First render: Get total surveys count and first surveys page
+  useEffect(() => {
+    if (isAddNewSurveyShown) return;
+
+    setFilterFormData({});
+    if (!selectedClientIndex) return;
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      try {
+        const count = await getTotalSurveysForClient(
+          orgId,
+          clinicianId,
+          selectedClientIndex
+        );
+        setTotalSurveysCount(count);
+
+        // If there are no surveys, set page no. as 0
+        if (count == 0) {
+          setSurveysPageNo(0);
+          return;
+        }
+
+        const surveys = await fetchClientSurveys(
+          orgId,
+          clinicianId,
+          selectedClientIndex,
+          1
+        );
+        setSurveysListData(surveys);
+      } catch (err) {
+        console.error("An error occurred: " + err);
+      }
+    })();
+
+    return () => {
+      setSurveysListData([]);
+      setSurveysPageNo(1);
+    };
+  }, [selectedClientIndex, isAddNewSurveyShown]);
+
+  // Data fetch on page increment
+  useEffect(() => {
+    if (surveysPageNo == 0 || surveysPageNo == 1) return;
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    //Don't load data if page is decremented (data already loaded)
+    const dataLoadedTillPageNo = Math.ceil(
+      surveysListData.length / noOfItemsOnOnePage
     );
 
-    // Id not present in dataset, improbable
-    if (indexToRemove < 0) return;
+    if (dataLoadedTillPageNo < surveysPageNo) {
+      (async () => {
+        try {
+          let surveys;
+          if (Object.keys(filterFormData).length > 0) {
+            const data = { ...filterFormData, clientId: selectedClientIndex };
+            surveys = await fetchFilteredClinicianSurveys(
+              orgId,
+              clinicianId,
+              data,
+              false,
+              surveysPageNo
+            );
+          } else {
+            surveys = await fetchClientSurveys(
+              orgId,
+              clinicianId,
+              selectedClientIndex,
+              surveysPageNo
+            );
+          }
 
-    // If it was the only survey on last page
-    // const isFirstSurveyOnThatPage =
-    //   indexToRemove == (surveyToRemovePageNo - 1) * noOfItemsOnOnePage;
-    // const isLastSurveyInDataset = indexToRemove + 1 == surveysListData.length;
-    // if (isLastSurveyInDataset && isFirstSurveyOnThatPage) {
-    //   setSurveysListData((d) => {
-    //     const newListData = deepClone(d);
-    //     newListData.splice(indexToRemove, 1);
-    //     console.log(newListData);
-    //     return newListData;
-    //   });
+          setSurveysListData((s) => s.concat(surveys));
+        } catch (err) {
+          console.error("An error occurred: " + err);
+        }
+      })();
+    }
+  }, [surveysPageNo]);
 
-    //   setSurveysPageNo((p) => --p);
-    // } else {
-    //   // If it had surveys after it, remove the next pages data that was loaded
-    //   setSurveysListData((d) => {
-    //     const newListData = deepClone(d);
-    //     newListData.splice(indexToRemove, 1);
-    //     newListData.splice(surveyToRemovePageNo * noOfItemsOnOnePage, Infinity);
-    //     console.log(newListData);
-    //     return newListData;
-    //   });
-    // }
-
-    // setTotalSurveysCount((c) => --c);
-
-    //
-
+  const reloadPageData = () => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 
@@ -208,146 +267,22 @@ const MyClients = () => {
         console.log(surveys);
         console.log(surveysPageNo);
 
-        setSurveysListData((s) => {
-          const newSurveys = s.splice(
-            0,
-            (surveysPageNo - 1) * noOfItemsOnOnePage
-          );
-          return newSurveys.concat(surveys);
-        });
+        if (surveys.length == 0) {
+          setSurveysPageNo((p) => (p == 0 ? 0 : --p));
+        } else {
+          setSurveysListData((s) => {
+            const newSurveys = s.splice(
+              0,
+              (surveysPageNo - 1) * noOfItemsOnOnePage
+            );
+            return newSurveys.concat(surveys);
+          });
+        }
       } catch (err) {
         console.error("An error occurred: " + err);
       }
     })();
   };
-
-  //Change it without using unsubscribe or without loding twice snapshot
-  // useEffect(() => {
-  //   const orgId = localStorage.getItem("orgId");
-  //   const clinicianId = localStorage.getItem("clinicianId");
-
-  //   if (selectedClientIndex) {
-  //     const surveysRef = collection(
-  //       db,
-  //       "Organization",
-  //       orgId,
-  //       "Clinician",
-  //       clinicianId,
-  //       "Survey"
-  //     );
-  //     const q = query(surveysRef);
-
-  //     const unsubscribe = onSnapshot(q, async (snapshot) => {
-  //       const surveys = await fetchClientSurveys(
-  //         orgId,
-  //         clinicianId,
-  //         selectedClientIndex,
-  //         surveysPageNo
-  //       );
-
-  //       if (Object.keys(filterFormData).length > 0) {
-  //         updateFilteredSurveys(filterFormData);
-  //       } else {
-  //         setSurveysListData(surveys);
-  //       }
-  //     });
-
-  //     return () => unsubscribe();
-  //   }
-  // }, [selectedClientIndex, isAddNewSurveyShown, filterFormData]);
-
-  //Handling state back from the parent component
-
-  const [totalSurveysCount, setTotalSurveysCount] = useState(0);
-  const [surveysPageNo, setSurveysPageNo] = useState(1);
-  const handleSurveysPageNoClick = (p) => {
-    setSurveysPageNo(p);
-  };
-
-  const [surveysListData, setSurveysListData] = useState([]);
-
-  // First render: Get total surveys count and first surveys page
-  useEffect(() => {
-    setFilterFormData({});
-    if (!selectedClientIndex) return;
-
-    const orgId = localStorage.getItem("orgId");
-    const clinicianId = localStorage.getItem("clinicianId");
-
-    (async () => {
-      try {
-        const count = await getTotalSurveysForClient(
-          orgId,
-          clinicianId,
-          selectedClientIndex
-        );
-        setTotalSurveysCount(count);
-
-        // If there are no surveys, set page no. as 0
-        if (count == 0) {
-          setSurveysPageNo(0);
-          return;
-        }
-
-        const surveys = await fetchClientSurveys(
-          orgId,
-          clinicianId,
-          selectedClientIndex,
-          1
-        );
-        setSurveysListData(surveys);
-      } catch (err) {
-        console.error("An error occurred: " + err);
-      }
-    })();
-
-    return () => {
-      setSurveysListData([]);
-      setSurveysPageNo(1);
-    };
-  }, [selectedClientIndex]);
-
-  // Data fetch on page increment
-  useEffect(() => {
-    if (surveysPageNo == 0 || surveysPageNo == 1) return;
-
-    const orgId = localStorage.getItem("orgId");
-    const clinicianId = localStorage.getItem("clinicianId");
-
-    //Don't load data if page is decremented (data already loaded)
-    const dataLoadedTillPageNo = Math.ceil(
-      surveysListData.length / noOfItemsOnOnePage
-    );
-
-    if (dataLoadedTillPageNo < surveysPageNo) {
-      (async () => {
-        try {
-          let surveys;
-          if (Object.keys(filterFormData).length > 0) {
-            const data = { ...filterFormData, clientId: selectedClientIndex };
-            surveys = await fetchFilteredClinicianSurveys(
-              orgId,
-              clinicianId,
-              data,
-              false,
-              surveysPageNo
-            );
-          } else {
-            surveys = await fetchClientSurveys(
-              orgId,
-              clinicianId,
-              selectedClientIndex,
-              surveysPageNo
-            );
-          }
-
-          setSurveysListData((s) => s.concat(surveys));
-        } catch (err) {
-          console.error("An error occurred: " + err);
-        }
-      })();
-    }
-  }, [surveysPageNo]);
 
   return (
     <MainContainerBox>
@@ -389,7 +324,7 @@ const MyClients = () => {
                 toggleFilterPanelClick={toggleFilterPanelClick}
                 addNewSurveyClick={toggleAddNewSurveyCard}
                 handleBackButtonClick={handleListItemClick}
-                handleArchiveOfId={handleArchiveOfId}
+                reloadPageData={reloadPageData}
               />
             )}
           </>

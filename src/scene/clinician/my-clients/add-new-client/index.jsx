@@ -39,13 +39,11 @@ const AddNewClient = () => {
       setClientIdError(false);
     }
 
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
     try {
-      await addNewClient(
-        "oZqnljuEU4b3jZtfHM9v",
-        "fWft9AvZD4Mc5fR33ka6Q8vOYil2",
-        clientId,
-        surveyType
-      );
+      await addNewClient(orgId, clinicianId, clientId, surveyType);
 
       router.push("/clinician/my-clients");
     } catch (err) {
