@@ -52,6 +52,8 @@ export default function ClientListCard({
 
         <StyledClientsList>
           {clientsListData
+            // Sort clients by the latest addition on top
+            .sort((a, b) => b[1]?.added?.toDate() - a[1]?.added?.toDate())
             .slice(
               noOfItemsOnOnePage * (clientsPageNo - 1),
               noOfItemsOnOnePage * clientsPageNo
