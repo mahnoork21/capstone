@@ -85,15 +85,9 @@ export const checkEmailisUsed = async (email) => {
   try {
     const signInExists = await fetchSignInMethodsForEmail(auth, email);
     if (signInExists.length) {
-      alert(
-        "Account already exists for this email. Choose another email.",
-        signInExists,
-        signInExists.length
-      );
       console.log(signInExists.toString(), signInExists.length);
       return true;
     } else {
-      alert("No existing accounts found");
       return false;
     }
   } catch (error) {

@@ -29,11 +29,11 @@ export const setValidation = async (data, activeStep) => {
   } else if (data.password.length < 6) {
     return "Check for length of your password";
   } else if (data.password !== data.confirmPassword) {
-    return "Password and Confirm Password must match";
+    return "Passwords do not match";
   } else if (!validateEmail(data.email)) {
     return "Please enter a valid email address";
   } else if (await checkEmailisUsed(data.email)) {
-    return "This Email has already been used!";
+    return "An account already exists with this email address";
   } else {
     console.log("daata is complete at step := ", activeStep);
 

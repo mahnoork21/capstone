@@ -119,7 +119,7 @@ const PersonalDetils = () => {
                 )}
               />
               <Typography sx={{ fontSize: "12px", color: "blue" }}>
-                Password length should be 6 digits atleast.
+                Password length must be at least 6 characters.
               </Typography>
             </RowBox>
             {errors.password && (
