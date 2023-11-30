@@ -15,6 +15,8 @@ import MainContainer from "@/shared/components/main-container";
 import { signinClinicianByEmail } from "../../../firebase/clincianRepo";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import Link from "next/link";
+
 const LoginLanding = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -110,10 +112,10 @@ const LoginLanding = () => {
               </Snackbar>
               <StyledButton type="submit"> LOG IN</StyledButton>
               <Labels>Don't have an account yet?</Labels>
-              <StyledButton href="/clinician/register">
+              <Link href="/clinician/register">
                 {" "}
-                CREATE NEW ACCOUNT
-              </StyledButton>
+                <StyledButton> CREATE NEW ACCOUNT</StyledButton>
+              </Link>
             </form>
           </FormBox>
           <Snackbar

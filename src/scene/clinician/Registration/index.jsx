@@ -422,9 +422,7 @@ const Registration = () => {
                             onClick={handleBack}
                             sx={{ mr: 1 }}
                           >
-                            {activeStep === 0 || activeStep >= steps.length - 1
-                              ? "Back to Login"
-                              : "Back"}
+                            {activeStep === 0 ? "Back to Login" : "Back"}
                           </Button>
 
                           <Button
