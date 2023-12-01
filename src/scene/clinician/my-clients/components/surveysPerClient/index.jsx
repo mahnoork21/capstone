@@ -18,7 +18,6 @@ import {
 import Pagination from "@/shared/clinician/pagination";
 import SurveyCards from "@/shared/clinician/surveyCards";
 import FilterInfo from "@/shared/clinician/filterInfo";
-import { Button } from "@mui/material";
 
 export default function SurveysPerClient({
   surveysListData,

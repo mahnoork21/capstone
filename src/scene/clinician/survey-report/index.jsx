@@ -100,8 +100,8 @@ const SurveyReport = ({ surveyId }) => {
             />
           ))}
 
-          <WeightedCalculation />
           <CategoryBarChart output={groupedSurveyByCategory} />
+          <WeightedCalculation />
         </Container>
       )}
     </>

@@ -1,3 +1,4 @@
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { Container } from "./styled";
@@ -51,7 +52,7 @@ const CategoryBarChart = ({ output }) => {
     responsive: true,
     plugins: {
       datalabels: {
-        formatter: function (value, context) {
+        formatter: function (value) {
           return value > 0 ? value : ""; //hide the label if it's 0
         },
         font: {
