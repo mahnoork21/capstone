@@ -7,6 +7,12 @@ export const SurveysBox = styled(Box)`
   flex-direction: column;
   width: 100%;
   padding: 8px;
+
+  & .filterInfo {
+    align-self: center;
+    margin-bottom: 10px;
+  }
+
   @media only screen and (min-width: ${breakpoint.desktop}) {
     max-width: 840px;
     padding: 0 0 0 16px;
@@ -17,6 +23,14 @@ export const ButtonsBox = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & .resetFilter {
+    height: 40px;
+    padding: 8px 16px;
+    margin-left: 8px;
+  }
 `;
 
 export const BackButton = styled(Button)`
@@ -48,6 +62,16 @@ export const AddNewSurveyButton = styled(Button)`
 `;
 
 export const FilterSurveyButton = styled(Button)`
+  border-radius: 6px;
+  border: 2px solid var(--pufi-primary-blue, #1979be);
+  margin-right: 8px;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 8px;
+  }
+`;
+
+export const FilterSurveyResetButton = styled(Button)`
   border-radius: 6px;
   border: 2px solid var(--pufi-primary-blue, #1979be);
 

@@ -3,9 +3,12 @@ import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 import React from "react";
 import { SurveyCardsBox } from "./styled";
 
-const SurveyCards = ({ surveysListData, surveysPageNo, reloadPageData }) => {
-  const noOfItemsOnOnePage = 6;
-
+const SurveyCards = ({
+  surveysListData,
+  surveysPageNo,
+  reloadPageData,
+  noOfItemsOnOnePage,
+}) => {
   return (
     <SurveyCardsBox>
       {surveysListData

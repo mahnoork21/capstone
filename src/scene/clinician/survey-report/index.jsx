@@ -9,8 +9,6 @@ import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey"
 import { getSurveyById } from "@/firebase/surveyRepo";
 import { parseDataToCsvFormatYoungChild } from "./helpers/download-helper";
 import { Parser } from "json2csv";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
 import CategoryBarChart from "./components/category-bar-chart";
 import { groupByCategory } from "./components/category-bar-chart/helper/categories-helper";
 
@@ -20,32 +18,23 @@ const SurveyReport = ({ surveyId }) => {
   const [groupedSurveyByCategory, setGroupedSurveyByCategory] = useState({});
 
   useEffect(() => {
-    const fetchSurvey = async (id) => {
-      const survey = await getSurveyById(id);
-      setSurveyData(() => survey);
-      setGroupedSurveyByCategory(() => groupByCategory(survey));
-    };
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
 
-    const authenticateAndFetch = async () => {
+    const fetchSurvey = async (orgId, clinicianId, surveyId) => {
       setLoading(true);
-
       try {
-        await signInWithEmailAndPassword(
-          auth,
-          "alla.gnatkiv@gmail.com",
-          "pass-pufi2"
-        ).then((user) => {
-          console.log(user);
-          fetchSurvey(surveyId);
-        });
+        const survey = await getSurveyById(orgId, clinicianId, surveyId);
+        setSurveyData(() => survey);
+        setGroupedSurveyByCategory(() => groupByCategory(survey));
+        setLoading(false);
       } catch (error) {
-        // handle error
-      } finally {
+        console.log("Error occured in SurveyReport - ", error);
         setLoading(false);
       }
     };
 
-    authenticateAndFetch();
+    fetchSurvey(orgId, clinicianId, surveyId);
   }, [surveyId]);
 
   const downloadCSV = () => {

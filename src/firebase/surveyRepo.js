@@ -1,11 +1,5 @@
 import { db } from "./firebase";
-import {
-  doc,
-  getDoc,
-  getDocs,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 let currentSurveyPath;
 

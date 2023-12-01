@@ -73,7 +73,7 @@ export const StyledTextField = styled(TextField)`
 `;
 
 export const StyledDatePicker = styled(DatePicker)`
-  margin: 5px 0px;
+  margin: 10px 0px;
 `;
 
 export const StyledButton = styled(Button)`

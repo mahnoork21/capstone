@@ -114,7 +114,7 @@ export const fetchAllClinicianSurveys = async (
   isArchived,
   pageNo
 ) => {
-  const queryLimit = 6;
+  const queryLimit = 9;
   if (!organizationId || !clinicianId)
     throw new Error("Insufficient data provided");
 
@@ -172,7 +172,7 @@ export const fetchAllClinicianSurveys = async (
     nextPage = query(
       q,
       orderBy("created", "desc"),
-      startAfter(allClinicianArchivedSnapshots[pageNo - 2]),
+      startAfter(allClinicianActiveSnapshots[pageNo - 2]),
       limit(queryLimit)
     );
   }
@@ -405,10 +405,9 @@ export const fetchFilteredClinicianSurveys = async (
   clinicianId,
   { clientId, surveyType, surveyStatus, fromDate, toDate },
   isArchived,
-  pageNo
+  pageNo,
+  queryLimit
 ) => {
-  const queryLimit = 6;
-
   if (!organizationId || !clinicianId) {
     throw new Error("Insufficient data provided");
   }

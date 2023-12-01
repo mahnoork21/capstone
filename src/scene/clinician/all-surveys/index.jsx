@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, InnerContainer, SearchButton, StyledBox } from "./styled";
 import SearchIcon from "@mui/icons-material/Search";
-import { Tab, Tabs } from "@mui/material";
+import { Button, Tab, Tabs } from "@mui/material";
 import {
   fetchAllClinicianSurveys,
   fetchFilteredClinicianSurveys,
@@ -12,39 +12,14 @@ import { MainContainerBox } from "../my-clients/styled";
 import FilterPanel from "@/shared/clinician/filterPanel";
 import Pagination from "@/shared/clinician/pagination";
 import SurveyCards from "@/shared/clinician/surveyCards";
+import FilterInfo from "@/shared/clinician/filterInfo";
 
-const noOfItemsOnOnePage = 6;
+const noOfItemsOnOnePage = 9;
 
 const AllSurveys = () => {
   //Surveys List Data for Active and Archived Surveys
   const [surveysListDataActive, setSurveysListDataActive] = useState([]);
   const [surveysListDataArchived, setSurveysListDataArchived] = useState([]);
-
-  // TODO: Cahnge it
-  // useEffect(() => {
-  //   const orgId = localStorage.getItem("orgId");
-  //   const clinicianId = localStorage.getItem("clinicianId");
-
-  //   const surveysRef = collection(
-  //     db,
-  //     "Organization",
-  //     orgId,
-  //     "Clinician",
-  //     clinicianId,
-  //     "Survey"
-  //   );
-  //   const q = query(surveysRef);
-
-  //   const unsubscribe = onSnapshot(q, async (snapshot) => {
-  //     const active = await fetchAllClinicianSurveys(orgId, clinicianId, false);
-  //     setSurveysListDataActive(active);
-
-  //     const archived = await fetchAllClinicianSurveys(orgId, clinicianId, true);
-  //     setSurveysListDataArchived(archived);
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
 
   //Surveys Page Number
   const [surveysPageNo, setSurveysPageNo] = useState(1);
@@ -147,7 +122,6 @@ const AllSurveys = () => {
   }, [selectedTab]);
 
   //Filtered Surveys
-  //TODO: finish filtering feature as in my-clients
   const [filterFormData, setFilterFormData] = useState({});
   const updateFilteredSurveys = async (formData) => {
     const orgId = localStorage.getItem("orgId");
@@ -162,7 +136,8 @@ const AllSurveys = () => {
       clinicianId,
       formData,
       false,
-      1
+      1,
+      noOfItemsOnOnePage
     );
 
     const resultSurveysArchived = await fetchFilteredClinicianSurveys(
@@ -170,7 +145,8 @@ const AllSurveys = () => {
       clinicianId,
       formData,
       true,
-      1
+      1,
+      noOfItemsOnOnePage
     );
 
     const countActive = await getTotalFilteredSurveysForClient(
@@ -189,13 +165,13 @@ const AllSurveys = () => {
     );
     setTotalArchivedSurveysCount(countArchived);
 
-    if (countActive) {
+    if (countActive > 0) {
       setSurveysListDataActive(resultSurveysActive);
     } else {
       setSurveysListDataActive([]);
     }
 
-    if (countArchived) {
+    if (countArchived > 0) {
       setSurveysListDataArchived(resultSurveysArchived);
     } else {
       setSurveysListDataArchived([]);
@@ -231,7 +207,8 @@ const AllSurveys = () => {
               clinicianId,
               filterFormData,
               isArchived,
-              surveysPageNo
+              surveysPageNo,
+              noOfItemsOnOnePage
             );
           } else {
             surveys = await fetchAllClinicianSurveys(
@@ -254,18 +231,146 @@ const AllSurveys = () => {
     }
   }, [surveysPageNo]);
 
+  const reloadPageData = () => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      try {
+        let countActive;
+        let countArchived;
+        if (Object.keys(filterFormData).length > 0) {
+          countActive = await getTotalFilteredSurveysForClient(
+            orgId,
+            clinicianId,
+            filterFormData,
+            false
+          );
+          setTotalActiveSurveysCount(countActive);
+
+          countArchived = await getTotalFilteredSurveysForClient(
+            orgId,
+            clinicianId,
+            filterFormData,
+            true
+          );
+          setTotalArchivedSurveysCount(countArchived);
+        } else {
+          countActive = await getTotalAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            false
+          );
+          setTotalActiveSurveysCount(countActive);
+
+          countArchived = await getTotalAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            true
+          );
+          setTotalArchivedSurveysCount(countArchived);
+        }
+
+        // If there are no surveys, set page no. as 0
+        if (
+          (selectedTab === 0 && countActive === 0) ||
+          (selectedTab === 1 && countArchived === 0)
+        ) {
+          setSurveysPageNo(0);
+          return;
+        }
+
+        let surveysActive;
+        let surveysArchived;
+        if (Object.keys(filterFormData).length > 0) {
+          surveysActive = await fetchFilteredClinicianSurveys(
+            orgId,
+            clinicianId,
+            filterFormData,
+            false,
+            surveysPageNo,
+            noOfItemsOnOnePage
+          );
+
+          surveysArchived = await fetchFilteredClinicianSurveys(
+            orgId,
+            clinicianId,
+            filterFormData,
+            true,
+            surveysPageNo,
+            noOfItemsOnOnePage
+          );
+        } else {
+          surveysActive = await fetchAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            false,
+            surveysPageNo
+          );
+
+          surveysArchived = await fetchAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            true,
+            surveysPageNo
+          );
+        }
+
+        let surveys = selectedTab === 0 ? surveysActive : surveysArchived;
+        let setSurveysListData =
+          selectedTab === 0
+            ? setSurveysListDataActive
+            : setSurveysListDataArchived;
+
+        if (surveys.length == 0) {
+          setSurveysPageNo((p) => (p == 0 ? 0 : --p));
+        } else {
+          setSurveysListData((s) => {
+            const newSurveys = s.splice(
+              0,
+              (surveysPageNo - 1) * noOfItemsOnOnePage
+            );
+            return newSurveys.concat(surveys);
+          });
+        }
+      } catch (err) {
+        console.error("An error occurred: " + err);
+      }
+    })();
+  };
+
+  const filterPanelRef = useRef();
+  const handleResetFilter = () => {
+    updateFilteredSurveys({
+      clientId: "",
+      surveyType: "",
+      surveyStatus: "",
+      fromDate: "",
+      toDate: "",
+    });
+    filterPanelRef.current.resetFormValues();
+  };
+
   return (
     <MainContainerBox>
       <Container>
         <div className="header">
           <h1>ALL SURVEYS</h1>
-          <SearchButton
-            variant="outlined"
-            startIcon={<SearchIcon />}
-            onClick={toggleFilterPanelClick}
-          >
-            SEARCH SURVEY
-          </SearchButton>
+          {Object.values(filterFormData).some((value) => value !== "") && (
+            <FilterInfo formData={filterFormData} />
+          )}
+          <div className="filterButtons">
+            <SearchButton
+              variant="outlined"
+              startIcon={<SearchIcon />}
+              onClick={toggleFilterPanelClick}
+            >
+              SEARCH SURVEY
+            </SearchButton>
+            <Button primary variant="contained" onClick={handleResetFilter}>
+              Reset Filter
+            </Button>
+          </div>
         </div>
 
         <StyledBox>
@@ -283,6 +388,8 @@ const AllSurveys = () => {
                 : surveysListDataArchived
             }
             surveysPageNo={surveysPageNo}
+            reloadPageData={reloadPageData}
+            noOfItemsOnOnePage={noOfItemsOnOnePage}
           />
 
           <Pagination
@@ -291,13 +398,9 @@ const AllSurveys = () => {
                 ? totalActiveSurveysCount
                 : totalArchivedSurveysCount
             }
-            surveysListData={
-              selectedTab === 0
-                ? surveysListDataActive.length
-                : surveysListDataArchived.length
-            }
             surveysPageNo={surveysPageNo}
             handleSurveysPageNoClick={handleSurveysPageNoClick}
+            noOfItemsOnOnePage={noOfItemsOnOnePage}
           />
         </InnerContainer>
       </Container>
@@ -306,6 +409,7 @@ const AllSurveys = () => {
         isFilterPanelOpen={isFilterPanelOpen}
         toggleFilterPanelClick={toggleFilterPanelClick}
         updateFilteredSurveys={updateFilteredSurveys}
+        ref={filterPanelRef}
       />
     </MainContainerBox>
   );
