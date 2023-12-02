@@ -13,10 +13,15 @@ import FilterPanel from "@/shared/clinician/filterPanel";
 import Pagination from "@/shared/clinician/pagination";
 import SurveyCards from "@/shared/clinician/surveyCards";
 import FilterInfo from "@/shared/clinician/filterInfo";
+import { useRouter } from "next/router";
 
 const noOfItemsOnOnePage = 9;
 
 const AllSurveys = () => {
+  //Getting status of the surveys from url
+  const router = useRouter();
+  const { status } = router.query;
+
   //Surveys List Data for Active and Archived Surveys
   const [surveysListDataActive, setSurveysListDataActive] = useState([]);
   const [surveysListDataArchived, setSurveysListDataArchived] = useState([]);
@@ -54,75 +59,104 @@ const AllSurveys = () => {
 
   // First render: Get total surveys count and first surveys page
   useEffect(() => {
-    setFilterFormData({});
+    if (status) {
+      setFilterFormData({
+        clientId: "",
+        surveyType: "",
+        surveyStatus: {
+          Complete: status === "complete",
+          "In-progress": status === "in-progress",
+          Pending: status === "pending",
+        },
+        fromDate: "",
+        toDate: "",
+      });
+    } else {
+      setFilterFormData({});
+    }
 
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 
-    (async () => {
-      try {
-        const countActive = await getTotalAllClinicianSurveys(
-          orgId,
-          clinicianId,
-          false
-        );
-        setTotalActiveSurveysCount(countActive);
+    if (status) {
+      console.log("status");
+      updateFilteredSurveys(filterFormData);
+    } else {
+      (async () => {
+        try {
+          const countActive = await getTotalAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            false
+          );
+          setTotalActiveSurveysCount(countActive);
 
-        const countArchived = await getTotalAllClinicianSurveys(
-          orgId,
-          clinicianId,
-          true
-        );
-        setTotalArchivedSurveysCount(countArchived);
+          const countArchived = await getTotalAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            true
+          );
+          setTotalArchivedSurveysCount(countArchived);
 
-        // If there are no surveys, set page no. as 0
-        if (
-          (selectedTab === 0 && countActive === 0) ||
-          (selectedTab === 1 && countArchived === 0)
-        ) {
-          setSurveysPageNo(0);
-          return;
+          // If there are no surveys, set page no. as 0
+          if (
+            (selectedTab === 0 && countActive === 0) ||
+            (selectedTab === 1 && countArchived === 0)
+          ) {
+            setSurveysPageNo(0);
+            return;
+          }
+
+          const resultSurveysActive = await fetchAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            false,
+            1
+          );
+
+          const resultSurveysArchived = await fetchAllClinicianSurveys(
+            orgId,
+            clinicianId,
+            true,
+            1
+          );
+
+          if (countActive > 0) {
+            setSurveysListDataActive(resultSurveysActive);
+          } else {
+            setSurveysListDataActive([]);
+          }
+
+          if (countArchived > 0) {
+            setSurveysListDataArchived(resultSurveysArchived);
+          } else {
+            setSurveysListDataArchived([]);
+          }
+        } catch (err) {
+          console.error("An error occurred: " + err);
         }
-
-        const resultSurveysActive = await fetchAllClinicianSurveys(
-          orgId,
-          clinicianId,
-          false,
-          1
-        );
-
-        const resultSurveysArchived = await fetchAllClinicianSurveys(
-          orgId,
-          clinicianId,
-          true,
-          1
-        );
-
-        if (countActive > 0) {
-          setSurveysListDataActive(resultSurveysActive);
-        } else {
-          setSurveysListDataActive([]);
-        }
-
-        if (countArchived > 0) {
-          setSurveysListDataArchived(resultSurveysArchived);
-        } else {
-          setSurveysListDataArchived([]);
-        }
-      } catch (err) {
-        console.error("An error occurred: " + err);
-      }
-    })();
+      })();
+    }
 
     return () => {
       setSurveysListDataActive([]);
       setSurveysListDataArchived([]);
       setSurveysPageNo(1);
     };
-  }, [selectedTab]);
+  }, [selectedTab, status]);
 
   //Filtered Surveys
-  const [filterFormData, setFilterFormData] = useState({});
+  const [filterFormData, setFilterFormData] = useState({
+    clientId: "",
+    surveyType: "",
+    surveyStatus: {
+      Complete: status === "complete",
+      "In-progress": status === "in-progress",
+      Pending: status === "pending",
+    },
+    fromDate: "",
+    toDate: "",
+  });
   const updateFilteredSurveys = async (formData) => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");

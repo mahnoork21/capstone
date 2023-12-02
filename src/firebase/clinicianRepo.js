@@ -695,6 +695,7 @@ export const getTotalFilteredSurveysForClient = async (
 export const getTotalClinicianSurveysByStatus = async (
   organizationId,
   clinicianId,
+  isArchived,
   surveyStatus
 ) => {
   if (!organizationId || !clinicianId || !surveyStatus) {
@@ -716,7 +717,7 @@ export const getTotalClinicianSurveysByStatus = async (
   // Build the query based on the filter parameters
   let q = query(
     surveysRef,
-    where("is_archived", "==", false),
+    where("is_archived", "==", isArchived),
     where("status", "==", status),
     orderBy("created", "desc")
   );

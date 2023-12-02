@@ -46,18 +46,21 @@ const Dashboard = () => {
         const totalCompleted = await getTotalClinicianSurveysByStatus(
           orgId,
           clinicianId,
+          false,
           "Complete"
         );
 
         const totalInProgress = await getTotalClinicianSurveysByStatus(
           orgId,
           clinicianId,
+          false,
           "In-progress"
         );
 
         const totalPending = await getTotalClinicianSurveysByStatus(
           orgId,
           clinicianId,
+          false,
           "Pending"
         );
 
@@ -125,8 +128,11 @@ const Dashboard = () => {
     router.push("/clinician/my-clients/add-new-client");
   };
 
-  const viewAllClickHandler = () => {
-    router.push("/clinician/all-surveys");
+  const viewAllClickHandler = (status) => {
+    router.push({
+      pathname: "/clinician/all-surveys",
+      query: { status },
+    });
   };
 
   return (
@@ -160,7 +166,10 @@ const Dashboard = () => {
                 <span>
                   Recently Completed Surveys ({totalSurveysCompleted})
                 </span>
-                <StyledButton variant="text" onClick={viewAllClickHandler}>
+                <StyledButton
+                  variant="text"
+                  onClick={() => viewAllClickHandler("complete")}
+                >
                   View all
                 </StyledButton>
               </div>
@@ -170,7 +179,10 @@ const Dashboard = () => {
             <div>
               <div className="cards-status-heading">
                 <span>In-Progress Surveys ({totalSurveysInProgress})</span>
-                <StyledButton variant="text" onClick={viewAllClickHandler}>
+                <StyledButton
+                  variant="text"
+                  onClick={() => viewAllClickHandler("in-progress")}
+                >
                   View all
                 </StyledButton>
               </div>
@@ -179,7 +191,10 @@ const Dashboard = () => {
             <div>
               <div className="cards-status-heading">
                 <span>Pending Surveys ({totalSurveysPending})</span>
-                <StyledButton variant="text" onClick={viewAllClickHandler}>
+                <StyledButton
+                  variant="text"
+                  onClick={() => viewAllClickHandler("pending")}
+                >
                   View all
                 </StyledButton>
               </div>
