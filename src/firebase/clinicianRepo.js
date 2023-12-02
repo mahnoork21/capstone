@@ -230,7 +230,12 @@ export const fetchClinicianSurveysByStatus = async (
   let surveys = [];
 
   // Build the query based on the filter parameters
-  let q = query(surveysRef, orderBy("created", "desc"));
+  let q = query(
+    surveysRef,
+    where("is_archived", "==", false),
+    orderBy("created", "desc"),
+    limit(4)
+  );
   const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {

@@ -100,6 +100,10 @@ const Dashboard = () => {
     router.push("/clinician/my-clients/add-new-client");
   };
 
+  const viewAllClickHandler = () => {
+    router.push("/clinician/all-surveys");
+  };
+
   return (
     <>
       {loading ? (
@@ -131,7 +135,9 @@ const Dashboard = () => {
                 <span>
                   Recently Completed Surveys ({surveysListDataCompleted.length})
                 </span>
-                <StyledButton variant="text">View all</StyledButton>
+                <StyledButton variant="text" onClick={viewAllClickHandler}>
+                  View all
+                </StyledButton>
               </div>
 
               <SurveyCards surveysListData={surveysListDataCompleted} />
@@ -141,14 +147,18 @@ const Dashboard = () => {
                 <span>
                   In-Progress Surveys ({surveysListDataInProgress.length})
                 </span>
-                <StyledButton variant="text">View all</StyledButton>
+                <StyledButton variant="text" onClick={viewAllClickHandler}>
+                  View all
+                </StyledButton>
               </div>
               <SurveyCards surveysListData={surveysListDataInProgress} />
             </div>
             <div>
               <div className="cards-status-heading">
                 <span>Pending Surveys ({surveysListDataPending.length})</span>
-                <StyledButton variant="text">View all</StyledButton>
+                <StyledButton variant="text" onClick={viewAllClickHandler}>
+                  View all
+                </StyledButton>
               </div>
               <SurveyCards surveysListData={surveysListDataPending} />
             </div>
