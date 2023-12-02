@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import {
   doesClinicianHaveSurveys,
   fetchClinicianSurveysByStatus,
+  getTotalClinicianSurveysByStatus,
 } from "@/firebase/clinicianRepo";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
@@ -23,10 +24,13 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [hasSurveys, setHasSurveys] = useState(false);
+
+  const [totalSurveysCompleted, setTotalSurveysCompleted] = useState(0);
+  const [totalSurveysInProgress, setTotalSurveysInProgress] = useState(0);
+  const [totalSurveysPending, setTotalSurveysPending] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
-      localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
-      localStorage.setItem("clinicianId", "fWft9AvZD4Mc5fR33ka6Q8vOYil2");
       const orgId = localStorage.getItem("orgId");
       const clinicianId = localStorage.getItem("clinicianId");
 
@@ -37,8 +41,29 @@ const Dashboard = () => {
           orgId,
           clinicianId
         );
-
         setHasSurveys(doesHaveSurveys);
+
+        const totalCompleted = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "Complete"
+        );
+
+        const totalInProgress = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "In-progress"
+        );
+
+        const totalPending = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "Pending"
+        );
+
+        setTotalSurveysCompleted(totalCompleted);
+        setTotalSurveysInProgress(totalInProgress);
+        setTotalSurveysPending(totalPending);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -133,7 +158,7 @@ const Dashboard = () => {
             <div className="inner-cards-container">
               <div className="cards-status-heading completed">
                 <span>
-                  Recently Completed Surveys ({surveysListDataCompleted.length})
+                  Recently Completed Surveys ({totalSurveysCompleted})
                 </span>
                 <StyledButton variant="text" onClick={viewAllClickHandler}>
                   View all
@@ -144,9 +169,7 @@ const Dashboard = () => {
             </div>
             <div>
               <div className="cards-status-heading">
-                <span>
-                  In-Progress Surveys ({surveysListDataInProgress.length})
-                </span>
+                <span>In-Progress Surveys ({totalSurveysInProgress})</span>
                 <StyledButton variant="text" onClick={viewAllClickHandler}>
                   View all
                 </StyledButton>
@@ -155,7 +178,7 @@ const Dashboard = () => {
             </div>
             <div>
               <div className="cards-status-heading">
-                <span>Pending Surveys ({surveysListDataPending.length})</span>
+                <span>Pending Surveys ({totalSurveysPending})</span>
                 <StyledButton variant="text" onClick={viewAllClickHandler}>
                   View all
                 </StyledButton>
