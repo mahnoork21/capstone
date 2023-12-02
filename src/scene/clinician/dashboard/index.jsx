@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import {
   doesClinicianHaveSurveys,
   fetchClinicianSurveysByStatus,
+  getTotalClinicianSurveysByStatus,
 } from "@/firebase/clinicianRepo";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
@@ -23,10 +24,13 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [hasSurveys, setHasSurveys] = useState(false);
+
+  const [totalSurveysCompleted, setTotalSurveysCompleted] = useState(0);
+  const [totalSurveysInProgress, setTotalSurveysInProgress] = useState(0);
+  const [totalSurveysPending, setTotalSurveysPending] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
-      localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
-      localStorage.setItem("clinicianId", "fWft9AvZD4Mc5fR33ka6Q8vOYil2");
       const orgId = localStorage.getItem("orgId");
       const clinicianId = localStorage.getItem("clinicianId");
 
@@ -37,8 +41,32 @@ const Dashboard = () => {
           orgId,
           clinicianId
         );
-
         setHasSurveys(doesHaveSurveys);
+
+        const totalCompleted = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "Complete"
+        );
+
+        const totalInProgress = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "In-progress"
+        );
+
+        const totalPending = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "Pending"
+        );
+
+        setTotalSurveysCompleted(totalCompleted);
+        setTotalSurveysInProgress(totalInProgress);
+        setTotalSurveysPending(totalPending);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -100,6 +128,13 @@ const Dashboard = () => {
     router.push("/clinician/my-clients/add-new-client");
   };
 
+  const viewAllClickHandler = (status) => {
+    router.push({
+      pathname: "/clinician/all-surveys",
+      query: { status },
+    });
+  };
+
   return (
     <>
       {loading ? (
@@ -129,26 +164,39 @@ const Dashboard = () => {
             <div className="inner-cards-container">
               <div className="cards-status-heading completed">
                 <span>
-                  Recently Completed Surveys ({surveysListDataCompleted.length})
+                  Recently Completed Surveys ({totalSurveysCompleted})
                 </span>
-                <StyledButton variant="text">View all</StyledButton>
+                <StyledButton
+                  variant="text"
+                  onClick={() => viewAllClickHandler("complete")}
+                >
+                  View all
+                </StyledButton>
               </div>
 
               <SurveyCards surveysListData={surveysListDataCompleted} />
             </div>
             <div>
               <div className="cards-status-heading">
-                <span>
-                  In-Progress Surveys ({surveysListDataInProgress.length})
-                </span>
-                <StyledButton variant="text">View all</StyledButton>
+                <span>In-Progress Surveys ({totalSurveysInProgress})</span>
+                <StyledButton
+                  variant="text"
+                  onClick={() => viewAllClickHandler("in-progress")}
+                >
+                  View all
+                </StyledButton>
               </div>
               <SurveyCards surveysListData={surveysListDataInProgress} />
             </div>
             <div>
               <div className="cards-status-heading">
-                <span>Pending Surveys ({surveysListDataPending.length})</span>
-                <StyledButton variant="text">View all</StyledButton>
+                <span>Pending Surveys ({totalSurveysPending})</span>
+                <StyledButton
+                  variant="text"
+                  onClick={() => viewAllClickHandler("pending")}
+                >
+                  View all
+                </StyledButton>
               </div>
               <SurveyCards surveysListData={surveysListDataPending} />
             </div>

@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Container } from "./styled";
 
@@ -7,7 +8,7 @@ const ReportHeader = ({ survey }) => {
   useEffect(() => {
     if (survey) {
       const updatedDate = survey["updated"] ? survey["updated"].toDate() : null;
-      setSurveyData((prevSurveyData) => ({
+      setSurveyData(() => ({
         surveyType: survey["survey_type"],
         surveyCompleted: survey["is_submitted"],
         surveyUpdated: updatedDate
@@ -26,7 +27,7 @@ const ReportHeader = ({ survey }) => {
       <div className="survey-data-container">
         <div className="survey-data">
           <p>
-            Client ID: <span>Client123</span>
+            Client ID: <span>{survey["client_id"]}</span>
           </p>
           <p>
             Survey Id: <span>{survey["survey_id"]}</span>

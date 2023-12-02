@@ -17,6 +17,25 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    @media only screen and (max-width: ${breakpoint.desktop}) {
+      flex-direction: column;
+    }
+  }
+
+  .filterButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80px;
+  }
+
+  @media only screen and (max-width: ${breakpoint.desktop}) {
+    & h1 {
+      font-size: 1.375rem;
+    }
   }
 `;
 
@@ -39,6 +58,6 @@ export const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 450px;
+  height: 550px;
   width: 100%;
 `;

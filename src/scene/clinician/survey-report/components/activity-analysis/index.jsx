@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
@@ -25,18 +26,18 @@ const ActivityAnalysis = ({ survey, questionId }) => {
 
         const scores = getScores(survey, questionId);
 
-        setScores((prevScores) => scores);
+        setScores(() => scores);
 
         const getTotal = Object.values(scores).reduce(
           (acc, val) => acc + val,
           0
         );
 
-        setTotalScore((prevScore) => getTotal);
+        setTotalScore(() => getTotal);
 
         const data = getData(scores);
 
-        setData((prevData) => data);
+        setData(() => data);
       } catch (error) {
         console.error("Error fetching survey:", error);
       } finally {
@@ -86,7 +87,13 @@ const ActivityAnalysis = ({ survey, questionId }) => {
             <></>
           ) : (
             <div className="total-score">
-              Total Score (weighted): {getTotalWeightedScore(scores)}
+              {questionId === "well" &&
+                "Ability With Prosthesis Total Score (weighted): "}
+              {questionId === "useful" &&
+                "Prosthesis Usefulness Total Score (weighted): "}
+              {questionId === "without" &&
+                "Ability Without Prosthesis Total Score (weighted): "}
+              {getTotalWeightedScore(scores)}
             </div>
           )}
         </>

@@ -1,4 +1,4 @@
-const categoryMappings = {
+export const categoryMappings = {
   socks: "Selfcare",
   velcro: "Selfcare",
   pants: "Selfcare",

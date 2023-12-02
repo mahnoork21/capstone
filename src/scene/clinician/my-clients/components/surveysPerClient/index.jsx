@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import {
   FilterListOutlined,
   KeyboardBackspaceOutlined,
+  FilterListOffOutlined,
 } from "@mui/icons-material";
 
 import { ClinicianContext } from "@/context/ClinicianContext";
@@ -12,9 +13,11 @@ import {
   BackButton,
   ButtonsBox,
   FilterSurveyButton,
+  FilterSurveyResetButton,
 } from "./styled";
 import Pagination from "@/shared/clinician/pagination";
 import SurveyCards from "@/shared/clinician/surveyCards";
+import FilterInfo from "@/shared/clinician/filterInfo";
 
 export default function SurveysPerClient({
   surveysListData,
@@ -25,6 +28,9 @@ export default function SurveysPerClient({
   addNewSurveyClick,
   handleBackButtonClick,
   reloadPageData,
+  noOfItemsOnOnePage,
+  filterFormData,
+  handleResetFilter,
 }) {
   const { breakpoint } = useContext(ClinicianContext);
 
@@ -44,13 +50,23 @@ export default function SurveysPerClient({
           )}
         </div>
         <div>
+          <div className="filterInfo">
+            {Object.values(filterFormData).some((value) => value !== "") && (
+              <FilterInfo formData={filterFormData} />
+            )}
+          </div>
           <AddNewSurveyButton onClick={addNewSurveyClick}>
             Add New Survey
           </AddNewSurveyButton>
+
           <FilterSurveyButton onClick={toggleFilterPanelClick}>
             <FilterListOutlined />
             {breakpoint === "desktop" && "Filter"}
           </FilterSurveyButton>
+          <FilterSurveyResetButton onClick={handleResetFilter}>
+            <FilterListOffOutlined />
+            {breakpoint === "desktop" && "Reset"}
+          </FilterSurveyResetButton>
         </div>
       </ButtonsBox>
 
@@ -58,12 +74,14 @@ export default function SurveysPerClient({
         surveysListData={surveysListData}
         surveysPageNo={surveysPageNo}
         reloadPageData={reloadPageData}
+        noOfItemsOnOnePage={noOfItemsOnOnePage}
       />
 
       <Pagination
         totalSurveysCount={totalSurveysCount}
         surveysPageNo={surveysPageNo}
         handleSurveysPageNoClick={handleSurveysPageNoClick}
+        noOfItemsOnOnePage={noOfItemsOnOnePage}
       />
     </SurveysBox>
   );

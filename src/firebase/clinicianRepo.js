@@ -114,7 +114,7 @@ export const fetchAllClinicianSurveys = async (
   isArchived,
   pageNo
 ) => {
-  const queryLimit = 6;
+  const queryLimit = 9;
   if (!organizationId || !clinicianId)
     throw new Error("Insufficient data provided");
 
@@ -172,7 +172,7 @@ export const fetchAllClinicianSurveys = async (
     nextPage = query(
       q,
       orderBy("created", "desc"),
-      startAfter(allClinicianArchivedSnapshots[pageNo - 2]),
+      startAfter(allClinicianActiveSnapshots[pageNo - 2]),
       limit(queryLimit)
     );
   }
@@ -229,21 +229,20 @@ export const fetchClinicianSurveysByStatus = async (
 
   let surveys = [];
 
+  let status =
+    surveyStatus === "Complete" ? 2 : surveyStatus === "In-progress" ? 1 : 0;
+
   // Build the query based on the filter parameters
-  let q = query(surveysRef, orderBy("created", "desc"));
+  let q = query(
+    surveysRef,
+    where("is_archived", "==", false),
+    where("status", "==", status),
+    orderBy("created", "desc"),
+    limit(4)
+  );
   const querySnapshot = await getDocs(q);
-
   querySnapshot.forEach((doc) => {
-    const { is_submitted, updated } = doc.data();
-    const survey_status = is_submitted
-      ? "Complete"
-      : updated
-      ? "In-progress"
-      : "Pending";
-
-    if (surveyStatus == survey_status) {
-      surveys.push({ ...doc.data(), surveyStatus });
-    }
+    surveys.push(doc.data());
   });
 
   return surveys;
@@ -405,10 +404,9 @@ export const fetchFilteredClinicianSurveys = async (
   clinicianId,
   { clientId, surveyType, surveyStatus, fromDate, toDate },
   isArchived,
-  pageNo
+  pageNo,
+  queryLimit
 ) => {
-  const queryLimit = 6;
-
   if (!organizationId || !clinicianId) {
     throw new Error("Insufficient data provided");
   }
@@ -688,6 +686,41 @@ export const getTotalFilteredSurveysForClient = async (
 
     q = query(q, where("status", "in", selectedStatuses));
   }
+
+  const snapshot = await getCountFromServer(q);
+
+  return snapshot.data().count;
+};
+
+export const getTotalClinicianSurveysByStatus = async (
+  organizationId,
+  clinicianId,
+  isArchived,
+  surveyStatus
+) => {
+  if (!organizationId || !clinicianId || !surveyStatus) {
+    throw new Error("Insufficient data provided");
+  }
+
+  const surveysRef = collection(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey"
+  );
+
+  let status =
+    surveyStatus === "Complete" ? 2 : surveyStatus === "In-progress" ? 1 : 0;
+
+  // Build the query based on the filter parameters
+  let q = query(
+    surveysRef,
+    where("is_archived", "==", isArchived),
+    where("status", "==", status),
+    orderBy("created", "desc")
+  );
 
   const snapshot = await getCountFromServer(q);
 

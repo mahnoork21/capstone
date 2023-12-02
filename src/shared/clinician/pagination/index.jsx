@@ -15,12 +15,14 @@ const Pagination = ({
   totalSurveysCount,
   surveysPageNo,
   handleSurveysPageNoClick,
+  noOfItemsOnOnePage,
 }) => {
-  const noOfItemsOnOnePage = 6;
   return (
     <PaginationBox>
       <NumberOfSurveysTypography>
-        {Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
+        {totalSurveysCount === 0
+          ? 0
+          : Math.max(noOfItemsOnOnePage * (surveysPageNo - 1) + 1, 0)}
         {" - " +
           Math.min(noOfItemsOnOnePage * surveysPageNo, totalSurveysCount) || 0}
         {" of " + totalSurveysCount || 0} Surveys

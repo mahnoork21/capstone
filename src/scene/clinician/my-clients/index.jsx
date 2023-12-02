@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import {
   AddClientButton,
@@ -85,8 +85,8 @@ const MyClients = () => {
     router.push("/clinician/my-clients/add-new-client");
   };
 
-  const [filterFormData, setFilterFormData] = useState({});
   //Filtered Surveys
+  const [filterFormData, setFilterFormData] = useState({});
   const updateFilteredSurveys = async (formData) => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
@@ -102,7 +102,8 @@ const MyClients = () => {
       clinicianId,
       data,
       false,
-      1
+      1,
+      noOfItemsOnOnePage
     );
 
     const count = await getTotalFilteredSurveysForClient(
@@ -194,7 +195,8 @@ const MyClients = () => {
               clinicianId,
               data,
               false,
-              surveysPageNo
+              surveysPageNo,
+              noOfItemsOnOnePage
             );
           } else {
             surveys = await fetchClientSurveys(
@@ -253,7 +255,8 @@ const MyClients = () => {
             clinicianId,
             data,
             false,
-            surveysPageNo
+            surveysPageNo,
+            noOfItemsOnOnePage
           );
         } else {
           surveys = await fetchClientSurveys(
@@ -282,6 +285,18 @@ const MyClients = () => {
         console.error("An error occurred: " + err);
       }
     })();
+  };
+
+  const filterPanelRef = useRef();
+  const handleResetFilter = () => {
+    updateFilteredSurveys({
+      clientId: "",
+      surveyType: "",
+      surveyStatus: "",
+      fromDate: "",
+      toDate: "",
+    });
+    filterPanelRef.current.resetFormValues();
   };
 
   return (
@@ -325,6 +340,9 @@ const MyClients = () => {
                 addNewSurveyClick={toggleAddNewSurveyCard}
                 handleBackButtonClick={handleListItemClick}
                 reloadPageData={reloadPageData}
+                noOfItemsOnOnePage={noOfItemsOnOnePage}
+                filterFormData={filterFormData}
+                handleResetFilter={handleResetFilter}
               />
             )}
           </>
@@ -339,6 +357,7 @@ const MyClients = () => {
         isFilterPanelOpen={isFilterPanelOpen}
         toggleFilterPanelClick={toggleFilterPanelClick}
         updateFilteredSurveys={updateFilteredSurveys}
+        ref={filterPanelRef}
       />
     </MainContainerBox>
   );

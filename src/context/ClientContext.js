@@ -1,4 +1,4 @@
-import { auth } from "@/firebase/firebase";
+import React from "react";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import {
   checkIfALLResponsesAreValid,
@@ -7,7 +7,6 @@ import {
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { questionIds } from "@/scene/client/survey/helper/youngChildSurvey";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
-import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { useRouter } from "next/router";
 
 import { createContext, useEffect, useState, useCallback } from "react";
@@ -39,7 +38,6 @@ export const ClientProvider = ({ children }) => {
   const activityResponses = survey?.activity_response;
 
   useEffect(() => {
-
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
     const changeListener = (e) => {
       if (e.matches) {
