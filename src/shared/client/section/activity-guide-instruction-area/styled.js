@@ -1,5 +1,4 @@
 import { breakpoint } from "@/styles/breakpoints";
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export const InstructionsWrapper = styled.div`

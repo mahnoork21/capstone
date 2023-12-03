@@ -39,7 +39,6 @@ import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-s
 import MiniGuide from "./components/mini-guide";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
 import SecondaryClientButton from "@/shared/client/buttons/secondary";
-import { cloneDeep } from "lodash";
 
 const SurveyContent = () => {
   const {

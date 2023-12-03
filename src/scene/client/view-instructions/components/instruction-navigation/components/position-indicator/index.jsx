@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Position from "../position";
 import { StyledPositionIndicator } from "./styled";
 

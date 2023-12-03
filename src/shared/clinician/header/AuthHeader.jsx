@@ -1,4 +1,3 @@
-import React from "react";
 import MainContainer from "@/shared/components/main-container";
 import { AuthHeaderContainer } from "./styled";
 
