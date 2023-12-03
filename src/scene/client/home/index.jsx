@@ -1,3 +1,4 @@
+import React from "react";
 import YoutubeEmbed from "@/shared/client/youtubeEmbed/YoutubeEmbed";
 
 import HomeContainer from "./components/home-container";
@@ -9,14 +10,9 @@ import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
-import PufiToolTip from "@/shared/components/pufi-tooltip";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
 
 const ClientHome = () => {
-  const [wideMode, setWideMode] = useState(false);
   const [error, setError] = useState("");
   const {
     handleStartSurveyClick,

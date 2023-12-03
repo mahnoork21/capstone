@@ -8,7 +8,7 @@ export const StyledButton = styled(Button)`
   padding: 16px 36px;
   border-radius: 12px;
   border-width: 2px;
-  font-size: 16px;
+  font-size: 1rem;
   width: max-content;
   background-color: ${(props) =>
     props.primary ? "var(--primary-green-light)" : "white"};

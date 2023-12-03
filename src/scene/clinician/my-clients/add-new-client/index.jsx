@@ -1,11 +1,6 @@
-import React from "react";
-import {
-  CardContent,
-  CardActions,
-  FormControl,
-  RadioGroup,
-  Radio,
-} from "@mui/material";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { CardActions, FormControl, RadioGroup, Radio } from "@mui/material";
 import {
   FormBox,
   MobileCardHeadingTypography,
@@ -19,14 +14,48 @@ import {
   ModifiedFormControlLabel,
   ModifiedFormLabel,
   MobileFullWidthButton,
+  StyledCardContent,
 } from "./styled";
+import { addNewClient } from "@/firebase/clinicianRepo";
+
+// TODO: Show error if client ID already present
 
 const AddNewClient = () => {
+  const router = useRouter();
+
+  const [clientId, setClientId] = useState("");
+  const handleClientIdChange = (e) => setClientId(e.target.value);
+
+  const [surveyType, setSurveyType] = useState("Young Child");
+  const handleSurveyTypeChange = (e) => setSurveyType(e.target.value);
+
+  const [clientIdError, setClientIdError] = useState(false);
+
+  const handleAddClientClick = async () => {
+    if (clientId == "") {
+      setClientIdError(true);
+      return;
+    } else {
+      setClientIdError(false);
+    }
+
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    try {
+      await addNewClient(orgId, clinicianId, clientId, surveyType);
+
+      router.push("/clinician/my-clients");
+    } catch (err) {
+      console.log("An error occured: " + err);
+    }
+  };
+
   return (
     <>
       <PageHeadingTypography>My Clients</PageHeadingTypography>
       <MobileContentCard>
-        <CardContent>
+        <StyledCardContent>
           <MobileCardHeadingTypography>
             Add New Client
           </MobileCardHeadingTypography>
@@ -35,15 +64,17 @@ const AddNewClient = () => {
             <ClientIdTypography>Input Client ID</ClientIdTypography>
             <ClientIdTextField
               id="outlined-basic"
-              defaultValue=""
               variant="outlined"
-              error={false}
+              error={clientIdError}
+              helperText={clientIdError && "Please enter an ID"}
+              value={clientId}
+              onChange={handleClientIdChange}
             />
 
             <CenterFlexBox>
               <GreenInfoOutlinedIcon />
               <SmallTextTypography>
-                Please don't include any personal information of client
+                {"Please don't include any personal information of client"}
               </SmallTextTypography>
             </CenterFlexBox>
 
@@ -53,30 +84,35 @@ const AddNewClient = () => {
               </ModifiedFormLabel>
               <RadioGroup
                 aria-labelledby="selectSurveyType"
-                defaultValue="youngChild"
+                defaultValue="Young Child"
+                value={surveyType}
+                onChange={handleSurveyTypeChange}
                 name="radio-buttons-group"
               >
                 <ModifiedFormControlLabel
-                  value="youngChild"
+                  value="Young Child"
                   control={<Radio />}
                   label="Young Child"
                 />
                 <ModifiedFormControlLabel
-                  value="olderChildParent"
+                  value="Older Child (Parent)"
                   control={<Radio />}
                   label="Older Child (Parent)"
                 />
                 <ModifiedFormControlLabel
-                  value="olderChildSelfReport"
+                  value="Older Child (Self Report)"
                   control={<Radio />}
                   label="Older Child (Self Report)"
                 />
               </RadioGroup>
             </FormControl>
           </FormBox>
-        </CardContent>
+        </StyledCardContent>
         <CardActions>
-          <MobileFullWidthButton variant="contained">
+          <MobileFullWidthButton
+            variant="contained"
+            onClick={handleAddClientClick}
+          >
             Add Client
           </MobileFullWidthButton>
         </CardActions>
