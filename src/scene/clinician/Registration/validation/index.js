@@ -1,7 +1,4 @@
 import { checkEmailisUsed } from "../../../../firebase/clincianRepo";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import { useState } from "react";
 
 const validateEmail = (email) => {
   // Regular expression for basic email validation

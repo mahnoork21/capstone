@@ -1,6 +1,3 @@
-import MainContainer from "@/shared/components/main-container";
-import { useEffect, useState } from "react";
-import { HeaderContainer } from "./styled";
 import { Typography } from "@mui/material";
 import { HeaderAppBar, HeaderToolbar, HeaderMenuIconButton } from "./styled";
 import { Menu as MenuIcon } from "@mui/icons-material";

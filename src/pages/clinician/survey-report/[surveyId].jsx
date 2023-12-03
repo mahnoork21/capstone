@@ -1,5 +1,3 @@
-import React from "react";
-
 import SurveyReport from "@/scene/clinician/survey-report";
 import { useRouter } from "next/router";
 
