@@ -1,5 +1,6 @@
 import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 
+import React from "react";
 import { SurveyCardsBox } from "./styled";
 
 const SurveyCards = ({ surveysListData }) => {

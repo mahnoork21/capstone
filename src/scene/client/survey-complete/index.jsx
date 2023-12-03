@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+import React from "react";
 import { ClientContext } from "@/context/ClientContext";
 import MainContainer from "@/shared/components/main-container";
 
@@ -69,7 +71,7 @@ const SurveyComplete = () => {
         <View style={styles.activityWrapper}>
           {youngChildActivity.map((activity, index) => {
             return (
-              <View key={activity.id} style={styles.activity}>
+              <View style={styles.activity}>
                 <Text style={styles.activityTitle}>
                   {index + 1}. {activity.label}
                 </Text>

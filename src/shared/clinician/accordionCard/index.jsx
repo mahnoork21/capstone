@@ -1,5 +1,10 @@
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import {
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
 import { StyledTypography } from "./styled";
 const AccordionCard = () => {
   return (
@@ -49,18 +54,18 @@ const AccordionCard = () => {
           id="panel3-header"
         >
           <StyledTypography>
-            <b>What is the assessment process?</b>
+            <b>Whai is the assessment process?</b>
           </StyledTypography>
         </AccordionSummary>
         <AccordionDetails>
           <StyledTypography>
-            After creating an account, health care practitioner&#39;s request
-            the completion of the PUFI-2 via email, and children and/or parents
+            After creating an account, health care practitioner's request the
+            completion of the PUFI-2 via email, and children and/or parents
             complete the assessment on their own. Once complete, health care
-            practitioner&#39;s can view raw scores and summary charts for use
-            either in an associated research project or in clinical use for
-            sharing and discussing the results with the child/parent and using
-            within the child&#39;s clinical record.
+            practitioner's can view raw scores and summary charts for use either
+            in an associated research project or in clinical use for sharing and
+            discussing the results with the child/parent and using within the
+            child's clinical record.
           </StyledTypography>
         </AccordionDetails>
       </Accordion>
@@ -81,7 +86,7 @@ const AccordionCard = () => {
             device(s) or treatment plan Monitoring prosthetic and functional
             needs over time (e.g. 3 month, 6 months, 12 months check-in). Each
             clinic/health care practitioner will determine when to re-administer
-            the PUFI-2 based on their client&#39;s needs and practice setting.
+            the PUFI-2 based on their client's needs and practice setting.
           </StyledTypography>
         </AccordionDetails>
       </Accordion>

@@ -27,9 +27,8 @@ const ActivityGuideInstructionArea = ({
       </HowQuestion>
 
       <InstructionsWrapper isInSurvey={isInSurvey}>
-        {data_activity_guide.map(({ src, text, miniGuideType }) => (
+        {data_activity_guide.map(({ src, text }) => (
           <ActivityGuideItem
-            key={miniGuideType}
             src={src}
             text={text}
             imageSize={breakpoint === "desktop" ? 120 : 100}

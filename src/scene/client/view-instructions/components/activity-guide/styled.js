@@ -1,5 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
+import { Grid } from "@mui/material";
 
 export const GreyHeader = styled.div`
   display: flex;

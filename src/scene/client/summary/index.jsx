@@ -35,6 +35,7 @@ const SummaryContent = () => {
     surveyId,
     setCurrentActivityIndex,
     setIsEditMode,
+    survey,
     setSurvey,
   } = useContext(ClientContext);
   const [finalComment, setFinalComment] = useState(null);

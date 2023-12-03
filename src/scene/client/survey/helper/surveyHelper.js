@@ -18,7 +18,7 @@ export const checkIfResponseIsValid = (questionId, response) => {
           error: "no-response",
         };
       }
-    // break;
+      break;
     case "how":
       //how is valid if it has value, if value is 3 bodypart input is given
       //if value is 0, required comment is given
@@ -59,7 +59,7 @@ export const checkIfResponseIsValid = (questionId, response) => {
           error: "no-response",
         };
       }
-    // break;
+      break;
     case "well":
       if (!isNullOrUndefined(response.value)) {
         return {
@@ -72,7 +72,7 @@ export const checkIfResponseIsValid = (questionId, response) => {
           error: "no-response",
         };
       }
-    // break;
+      break;
     case "useful":
       if (!isNullOrUndefined(response.value)) {
         return {
@@ -85,7 +85,7 @@ export const checkIfResponseIsValid = (questionId, response) => {
           error: "no-response",
         };
       }
-    // break;
+      break;
     case "without":
       if (!isNullOrUndefined(response.value)) {
         return {
@@ -98,11 +98,11 @@ export const checkIfResponseIsValid = (questionId, response) => {
           error: "no-response",
         };
       }
-    // break;
+      break;
   }
 };
 
-export const generateEmptyAnswer = () => {
+export const generateEmptyAnswer = (activityId) => {
   const emptyAnswer = {};
   questionIds.forEach((questionId) => {
     emptyAnswer[questionId] = {};

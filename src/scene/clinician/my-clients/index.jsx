@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import {
   AddClientButton,

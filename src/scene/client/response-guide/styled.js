@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+const { default: styled } = require("@emotion/styled");
 
 export const ResponseGuideWrapper = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, InnerContainer, SearchButton, StyledBox } from "./styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Tab, Tabs } from "@mui/material";
