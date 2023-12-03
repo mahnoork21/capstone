@@ -48,7 +48,6 @@ const Header = () => {
         currentAnswer
       );
 
-      console.log("[Header: save and exit] Redirect to homepage.");
       router.push({
         pathname: "/client",
         query: {

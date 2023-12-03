@@ -35,7 +35,7 @@ export const ClientProvider = ({ children }) => {
 
   const router = useRouter();
 
-  let activityResponses = survey?.activity_response;
+  const activityResponses = survey?.activity_response;
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
