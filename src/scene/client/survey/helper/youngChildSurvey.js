@@ -17,6 +17,7 @@ export const youngChildSurvey = [
         value: 1,
       },
       {
+        rawScoreLabel: "cannot do",
         labelShort: "No cannot do",
         label: "No, cannot do even with help",
         value: 0,
@@ -33,6 +34,7 @@ export const youngChildSurvey = [
     visibleWhen: { questionId: "do", optionValue: [1, 2] },
     options: [
       {
+        rawScoreLabel: "prostetic (active)",
         labelShort: "Both arms with prosthetic hand actively",
         label:
           "Both arms together with the prosthetic hand or terminal device used actively (open and close hand/device to hold the object)",
@@ -40,6 +42,7 @@ export const youngChildSurvey = [
         value: 5,
       },
       {
+        rawScoreLabel: "prostetic (passive)",
         labelShort: "Both arms with prosthetic hand passively",
         label:
           "Both arms together with the prosthesis used passively (to position or stabilize the object, hand does not open/close)",
@@ -47,6 +50,7 @@ export const youngChildSurvey = [
         value: 4,
       },
       {
+        rawScoreLabel: "residual limb/body part",
         labelShort: "With assistance of residual limb",
         label:
           "With assistance of residual limb and/or another body part and/or other assistive devices",
@@ -59,16 +63,19 @@ export const youngChildSurvey = [
         value: 3,
       },
       {
+        rawScoreLabel: "non-prosthetic",
         label: "With non-prosthetic hand alone",
         miniGuideType: "activityGuide-nonProstehticHand",
         value: 2,
       },
       {
+        rawScoreLabel: "with help",
         label: "With some help from another person",
         miniGuideType: "activityGuide-anotherPerson",
         value: 1,
       },
       {
+        rawScoreLabel: "don't know",
         label: "Don't know/not sure",
         miniGuideType: "activityGuide-notSure",
         additionalResponseIfSelected: {
@@ -106,14 +113,14 @@ export const youngChildSurvey = [
         value: 2,
       },
       {
-        labelShort: "Needs help",
+        labelShort: "With help",
         label:
           "It is so difficult that my child needs help from another person",
         miniGuideType: "difficultyScale-anotherPerson",
         value: 1,
       },
       {
-        labelShort: "Cannot do it",
+        labelShort: "Cannot do",
         label: "Even with help, my child cannot do it using the prosthesis",
         miniGuideType: "difficultyScale-cannotDo",
         value: 0,
@@ -129,17 +136,14 @@ export const youngChildSurvey = [
     },
     options: [
       {
-        labelShort: "Very",
         label: "Very useful",
         value: 2,
       },
       {
-        labelShort: "Somewhat",
         label: "Somewhat useful",
         value: 1,
       },
       {
-        labelShort: "Not useful",
         label: "Not useful",
         value: 0,
       },
@@ -173,14 +177,14 @@ export const youngChildSurvey = [
         value: 2,
       },
       {
-        labelShort: "Needs help",
+        labelShort: "With help",
         label:
           "It is so difficult that my child needs help from another person",
         miniGuideType: "difficultyScale-anotherPerson",
         value: 1,
       },
       {
-        labelShort: "Cannot do it",
+        labelShort: "Cannot do",
         label: "Even with help, my child cannot do it using the prosthesis",
         miniGuideType: "difficultyScale-cannotDo",
         value: 0,

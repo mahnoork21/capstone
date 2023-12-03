@@ -1,5 +1,6 @@
 import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
+import { Tab, Tabs } from "@mui/material";
 
 export const Container = styled.div`
   margin-right: 50px;
@@ -43,4 +44,12 @@ export const Container = styled.div`
       float: right;
     }
   }
+`;
+
+export const StyledTab = styled(Tab)`
+  font-weight: bold;
+`;
+
+export const StyledTabs = styled(Tabs)`
+  border-bottom: 1px solid lightgray;
 `;

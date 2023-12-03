@@ -1,21 +1,24 @@
-import React from "react";
 import { Button } from "@mui/material";
 import ReportHeader from "./components/report-header";
-import { Container } from "./styled";
+import { Container, StyledTab, StyledTabs } from "./styled";
 import ActivityAnalysis from "./components/activity-analysis";
 import { useEffect, useState } from "react";
 import WeightedCalculation from "./components/weighted-calculation";
-import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import { parseDataToCsvFormatYoungChild } from "./helpers/download-helper";
 import { Parser } from "json2csv";
+import PieChartOutlineIcon from "@mui/icons-material/PieChartOutline";
+import TableViewIcon from "@mui/icons-material/TableView";
 import CategoryBarChart from "./components/category-bar-chart";
 import { groupByCategory } from "./components/category-bar-chart/helper/categories-helper";
+import RawScores from "./components/raw-scores";
+import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 
 const SurveyReport = ({ surveyId }) => {
   const [loading, setLoading] = useState(true);
   const [surveyData, setSurveyData] = useState({});
   const [groupedSurveyByCategory, setGroupedSurveyByCategory] = useState({});
+  const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
     const orgId = localStorage.getItem("orgId");
@@ -70,6 +73,11 @@ const SurveyReport = ({ surveyId }) => {
         // Handle error if necessary
       });
   };
+
+  const handleTabValueChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   return (
     <>
       {loading ? (
@@ -92,16 +100,37 @@ const SurveyReport = ({ surveyId }) => {
             </Button>
           </div>
 
-          {youngChildSurvey.map(({ questionId }) => (
-            <ActivityAnalysis
-              key={questionId}
-              survey={surveyData}
-              questionId={questionId}
+          <StyledTabs value={tabValue} onChange={handleTabValueChange}>
+            <StyledTab
+              icon={<PieChartOutlineIcon />}
+              label="Charts"
+              iconPosition="start"
+              id="simple-tab-0"
             />
-          ))}
+            <StyledTab
+              icon={<TableViewIcon />}
+              iconPosition="start"
+              label="Raw Score"
+              id="simple-tab-1"
+            />
+          </StyledTabs>
 
-          <CategoryBarChart output={groupedSurveyByCategory} />
-          <WeightedCalculation />
+          {tabValue === 0 ? (
+            <>
+              {youngChildSurvey.map(({ questionId }) => (
+                <ActivityAnalysis
+                  key={questionId}
+                  survey={surveyData}
+                  questionId={questionId}
+                />
+              ))}
+
+              <CategoryBarChart output={groupedSurveyByCategory} />
+              <WeightedCalculation />
+            </>
+          ) : (
+            <RawScores surveyData={surveyData} />
+          )}
         </Container>
       )}
     </>
