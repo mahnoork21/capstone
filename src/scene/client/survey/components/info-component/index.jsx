@@ -4,9 +4,13 @@ import { UserMessageWrapper } from "./styled";
 import { forwardRef } from "react";
 
 const MessageToUser = forwardRef(
-  ({ message, questionId, type = "info" }, ref) => {
+  ({ message, questionId, type = "info", className }, ref) => {
     return (
-      <UserMessageWrapper questionId={questionId} ref={ref}>
+      <UserMessageWrapper
+        questionId={questionId}
+        ref={ref}
+        className={className}
+      >
         {type === "info" ? (
           <Image width={32} height={32} src="/icons/info.svg" />
         ) : (

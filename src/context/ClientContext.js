@@ -1,4 +1,3 @@
-import React from "react";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import {
   checkIfALLResponsesAreValid,
@@ -8,6 +7,7 @@ import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActiv
 import { questionIds } from "@/scene/client/survey/helper/youngChildSurvey";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { useRouter } from "next/router";
+import { cloneDeep } from "lodash";
 
 import { createContext, useEffect, useState, useCallback } from "react";
 
@@ -70,6 +70,9 @@ export const ClientProvider = ({ children }) => {
   const getCurrentSurvey = async () => {
     const survey = await getSurveyById(organizationId, clinicianId, surveyId);
     if (survey) {
+      if (!survey.activity_response) {
+        survey.activity_response = {};
+      }
       setSurvey(survey);
 
       if (survey.is_submitted) {
@@ -101,7 +104,11 @@ export const ClientProvider = ({ children }) => {
           activityResponses[youngChildActivity[currentActivityIndex].id];
         setErrors({});
         if (currentActivityResponse) {
-          setCurrentAnswer(currentActivityResponse);
+          setCurrentAnswer(
+            isEditMode
+              ? cloneDeep(currentActivityResponse)
+              : currentActivityResponse
+          );
         } else {
           setCurrentAnswer(generateEmptyAnswer());
         }
@@ -112,7 +119,7 @@ export const ClientProvider = ({ children }) => {
         });
       }
     }
-  }, [currentActivityIndex, activityResponses]);
+  }, [currentActivityIndex, activityResponses, isEditMode]);
 
   const moveToLastAnsweredIndex = () => {
     for (const [index, activity] of youngChildActivity.entries()) {
@@ -187,9 +194,8 @@ export const ClientProvider = ({ children }) => {
     switch (type) {
       case "value":
         currentAnswer[questionId].value = answer;
-        const questionIndex = questionIds.indexOf(questionId);
         questionIds.forEach((questionId, index) => {
-          if (index > questionIndex) {
+          if (index > questionIds.indexOf(questionId)) {
             currentAnswer[questionId] = {};
           }
         });
@@ -212,7 +218,10 @@ export const ClientProvider = ({ children }) => {
 
   console.log("[Debug] SurveyId == ", surveyId, didViewResponseGuide);
   console.log("[Debug] Survey == ", survey);
-  console.log("[Debug] Activity Response == ", survey?.activity_response);
+  console.log(
+    "[Debug] Activity Response == ",
+    JSON.stringify(survey?.activity_response)
+  );
   console.log("[Debug] Activity index == ", currentActivityIndex);
 
   return (

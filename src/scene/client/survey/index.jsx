@@ -12,7 +12,6 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   Drawer,
-  Popover,
   Radio,
   RadioGroup,
   Step,
@@ -40,6 +39,7 @@ import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-s
 import MiniGuide from "./components/mini-guide";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
 import SecondaryClientButton from "@/shared/client/buttons/secondary";
+import { cloneDeep } from "lodash";
 
 const SurveyContent = () => {
   const {
@@ -47,7 +47,6 @@ const SurveyContent = () => {
     setIsEditMode,
     currentActivityIndex,
     currentAnswer,
-    setCurrentAnswer,
     setCurrentActivityIndex,
     updateAnswer,
     errors,
@@ -75,7 +74,6 @@ const SurveyContent = () => {
   const [miniGuideAnchorEl, setMiniGuideAnchorEL] = useState(null);
   const [miniGuideInfo, setMiniGuideInfo] = useState(null);
   const [isUpdatingdb, setIsUpdatingdb] = useState(false);
-  const [currentAnswerCopy, setCurrentAnswerCopy] = useState();
 
   const isDoMessageVisible = currentAnswer
     ? currentAnswer.do.value === 1
@@ -90,9 +88,6 @@ const SurveyContent = () => {
   //Generates steps to be used in Stepper
   useEffect(() => {
     if (currentAnswer) {
-      if (!currentAnswerCopy) {
-        setCurrentAnswerCopy(currentAnswer);
-      }
       const steps = youngChildSurvey.map((surveyQuestion) => {
         const response = currentAnswer[surveyQuestion.questionId];
         const checkedResponse = checkIfResponseIsValid(
@@ -265,7 +260,7 @@ const SurveyContent = () => {
   };
 
   const handleDiscardButtonClick = () => {
-    setCurrentAnswer(currentAnswerCopy);
+    setIsEditMode(false);
     router.push({
       pathname: "/client/summary",
       query: {
@@ -294,6 +289,7 @@ const SurveyContent = () => {
               <Step
                 className={step.questionId}
                 active={isStepVisible(stepIndex)}
+                key={step.questionId}
               >
                 <StepLabel>
                   <ActivityQuestion
@@ -318,12 +314,10 @@ const SurveyContent = () => {
                     value={getSavedAnswer(step.questionId)}
                   >
                     {step.options.map(
-                      (
-                        { questionId, value, label, miniGuideType },
-                        optionIndex
-                      ) => {
+                      ({ questionId, value, label, miniGuideType }) => {
                         return (
                           <Option
+                            key={label}
                             checked={getSavedAnswer(step.questionId) == value}
                             value={value}
                             control={<Radio />}

@@ -1,5 +1,4 @@
 import MainContainer from "@/shared/components/main-container";
-import HomeContainer from "../home/components/home-container";
 import TypesOfQuestions from "./components/types-of-questions";
 import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";
@@ -8,6 +7,7 @@ import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import ActivityGuide from "./components/activity-guide";
 import DifficultyScale from "./components/difficulty-scale";
+import { HomeContainer } from "../home/styled";
 
 const ViewInstructions = () => {
   const [instructionId, setInstructionId] = useState(0);
@@ -34,6 +34,10 @@ const ViewInstructions = () => {
 
   useEffect(() => {
     if (instructionId < 0) {
+      console.log(
+        "[In view instructions] Redirect to homepage. instructionId",
+        instructionId
+      );
       router.push({
         pathname: "/client",
         query: {
@@ -49,7 +53,6 @@ const ViewInstructions = () => {
     }
   }, [instructionId]);
 
-  //TODO: create other instructions pages
   return (
     <MainContainer>
       <HomeContainer>
@@ -64,14 +67,12 @@ const ViewInstructions = () => {
         ) : (
           <></>
         )}
-        <div className="buttons">
-          <InstructionNavigation
-            activePositionId={instructionId}
-            onBackClick={handleBackClick}
-            onNextClick={handleNextClick}
-            nextButtonDisabled={nextButtonDisabled}
-          />
-        </div>
+        <InstructionNavigation
+          activePositionId={instructionId}
+          onBackClick={handleBackClick}
+          onNextClick={handleNextClick}
+          nextButtonDisabled={nextButtonDisabled}
+        />
       </HomeContainer>
     </MainContainer>
   );
