@@ -1,4 +1,4 @@
-const { styled, tooltipClasses, Tooltip } = require("@mui/material");
+import { Tooltip, styled, tooltipClasses } from "@mui/material";
 
 export const LightTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />

@@ -22,4 +22,6 @@ const MessageToUser = forwardRef(
   }
 );
 
+MessageToUser.displayName = "MessageToUser";
+
 export default MessageToUser;

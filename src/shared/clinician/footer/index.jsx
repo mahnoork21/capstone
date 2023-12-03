@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import MainContainer from "@/shared/components/main-container";
 import { Container, FooterContainer } from "./styled";
 import Image from "next/image";
