@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { LinearProgress } from "@mui/material";
 import Image from "next/image";
 
-export const BorderLinearProgress = styled(LinearProgress)(() => ({
+export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 20,
   borderRadius: 12,
   backgroundColor: "white",

@@ -1,4 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import { auth } from "@/firebase/firebase";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 
 export const ClinicianContext = createContext();
 
