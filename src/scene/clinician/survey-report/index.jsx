@@ -78,9 +78,6 @@ const SurveyReport = ({ surveyId }) => {
     setTabValue(newValue);
   };
 
-  console.log("loading = ", loading);
-  console.log("Survey = ", surveyData);
-
   return (
     <>
       {loading ? (
