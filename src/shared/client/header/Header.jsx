@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MainContainer from "@/shared/components/main-container";
 import { HeaderButton, HeaderContainer, NavigationWrapper } from "./styled";
 import { ClientContext } from "@/context/ClientContext";
@@ -7,7 +7,7 @@ import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
-import { Button, IconButton, Snackbar } from "@mui/material";
+import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { checkIfALLResponsesAreValid } from "@/scene/client/survey/helper/surveyHelper";
 

@@ -22,7 +22,6 @@ const ClientHome = () => {
   const [error, setError] = useState("");
   const {
     handleStartSurveyClick,
-    currentSurveyId,
     setHeaderButtonType,
     breakpoint,
     organizationId,

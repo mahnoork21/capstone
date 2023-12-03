@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+import React from "react";
 import { ClientContext } from "@/context/ClientContext";
 import MainContainer from "@/shared/components/main-container";
 

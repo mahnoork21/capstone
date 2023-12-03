@@ -194,9 +194,8 @@ export const ClientProvider = ({ children }) => {
     switch (type) {
       case "value":
         currentAnswer[questionId].value = answer;
-        const questionIndex = questionIds.indexOf(questionId);
         questionIds.forEach((questionId, index) => {
-          if (index > questionIndex) {
+          if (index > questionIds.indexOf(questionId)) {
             currentAnswer[questionId] = {};
           }
         });

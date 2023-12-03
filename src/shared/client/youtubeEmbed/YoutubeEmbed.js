@@ -1,9 +1,4 @@
-import { Button } from "@mui/material";
-import PropTypes from "prop-types";
-
 const YoutubeEmbed = ({ wideMode }) => {
-  const videoWidth = "500px";
-
   return (
     <div>
       <iframe
@@ -16,11 +11,6 @@ const YoutubeEmbed = ({ wideMode }) => {
       />
     </div>
   );
-};
-
-YoutubeEmbed.propTypes = {
-  embedId: PropTypes.string.isRequired,
-  containerWidth: PropTypes.number.isRequired,
 };
 
 export default YoutubeEmbed;
