@@ -1,10 +1,5 @@
 import { useRouter } from "next/router";
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import {
   MainContainerBox,
   HeadingBox,

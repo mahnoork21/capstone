@@ -1,4 +1,3 @@
-import React from "react";
 import { Typography } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { HeaderAppBar, HeaderMenuIconButton, HeaderToolbar } from "./styled";

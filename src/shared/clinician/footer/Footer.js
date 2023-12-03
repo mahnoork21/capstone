@@ -1,6 +1,3 @@
-import { ClinicianContext } from "@/context/ClinicianContext";
-import { Link } from "@mui/material";
-import { React, useContext, useEffect, useState } from "react";
 import { Container, FooterContainer } from "@/shared/clinician/footer/styled";
 
 import MainContainer from "@/shared/components/main-container";
