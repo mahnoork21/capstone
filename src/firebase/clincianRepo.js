@@ -1,15 +1,4 @@
 import { db, auth } from "./firebase";
-import {
-  addDoc,
-  collection,
-  collectionGroup,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 
 import {
@@ -20,18 +9,11 @@ import {
 
 export const signinClinicianByEmail = async (email, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    // Signed in
-    const user = userCredential.user.email;
-    console.log("successfully signed in");
-    return user;
+    const response = await signInWithEmailAndPassword(auth, email, password);
+
+    return response;
   } catch (error) {
-    // alert("Can not signed in:");
-    console.log("Can not signed in: ", error);
+    console.log("Can not sign in: ", error);
     return null;
   }
 };
@@ -77,6 +59,7 @@ export const addClinicianDb = async (uid, data) => {
       last_name: data.lastName,
       org_id: "oZqnljuEU4b3jZtfHM9v",
       role: data.role,
+      clients: {},
     }
   );
 };

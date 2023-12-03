@@ -61,6 +61,13 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
     handleDrawerToggle();
   };
 
+  const handleLogoutClick = () => {
+    localStorage.removeItem("orgId");
+    localStorage.removeItem("clinicianId");
+
+    router.push("/clinician/login");
+  };
+
   const Content = () => (
     <Box>
       <Toolbar />
@@ -100,7 +107,7 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
         ))}
 
         <ListItem>
-          <LogOutBtn variant="outlined">
+          <LogOutBtn variant="outlined" onClick={handleLogoutClick}>
             <Logout /> LOG OUT
           </LogOutBtn>
         </ListItem>

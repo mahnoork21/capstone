@@ -23,9 +23,6 @@ import {
   getTotalSurveysForClient,
 } from "@/firebase/clinicianRepo";
 
-// TODO: Show error as dropdown
-// TODO: edit localStorage setting up when prachi is done implementing
-
 const noOfItemsOnOnePage = 6;
 
 const MyClients = () => {
@@ -63,11 +60,6 @@ const MyClients = () => {
   const [clientsListData, setClientsListData] = useState([]);
 
   useEffect(() => {
-    //remove this when prachi implements
-    localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
-    // localStorage.setItem("clinicianId", "fWft9AvZD4Mc5fR33ka6Q8vOYil2");
-    localStorage.setItem("clinicianId", "SPGwqdFIKTdjKZAvsO2N4NlwBmJ2");
-
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import AccordionCard from "../../../shared/clinician/accordionCard";
 import {
   Labels,
@@ -18,6 +19,8 @@ import MuiAlert from "@mui/material/Alert";
 import Link from "next/link";
 
 const LoginLanding = () => {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -46,15 +49,17 @@ const LoginLanding = () => {
       setSnackbarMessage("Invalid email address.");
       setOpenSnackbar(true);
     } else {
-      console.log(email, password);
-      const clinicianExists = await signinClinicianByEmail(email, password);
-      console.log("Clinician Exists or not ::", clinicianExists);
+      const response = await signinClinicianByEmail(email, password);
 
-      if (clinicianExists != null) {
+      if (response?.user?.uid) {
+        localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
+        localStorage.setItem("clinicianId", response?.user?.uid);
+
         setLogin(true);
-
         setSnackbarMessage("Login Successful!");
         setOpenSnackbar(true);
+
+        router.push("/clinician/dashboard");
       } else {
         setLogin(false);
         setSnackbarMessage("Email or Password isinvalid");
@@ -111,7 +116,7 @@ const LoginLanding = () => {
                 </MuiAlert>
               </Snackbar>
               <StyledButton type="submit"> LOG IN</StyledButton>
-              <Labels>Don't have an account yet?</Labels>
+              <Labels>{"Don't have an account yet?"}</Labels>
               <Link href="/clinician/register">
                 {" "}
                 <StyledButton> CREATE NEW ACCOUNT</StyledButton>

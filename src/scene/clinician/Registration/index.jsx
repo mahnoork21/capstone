@@ -7,13 +7,8 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Checkbox,
   Snackbar,
-  MuiAlert,
-  colors,
 } from "@mui/material";
 import {
   StyledPaper,
@@ -27,7 +22,6 @@ import {
   ColumnBox,
   RowBox,
   ErrorMessage,
-  errorSnackbar,
 } from "./styled";
 import {
   useForm,
@@ -38,7 +32,6 @@ import {
 import {
   addClinicianDb,
   createClinicianByEmail,
-  addOrUpdateClinician,
 } from "@/firebase/clincianRepo";
 import AccordionCard from "@/shared/clinician/accordionCard";
 import TOScomponent from "@/shared/clinician/TOS";
@@ -273,11 +266,13 @@ function getStepContent(step) {
       return null;
   }
 }
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+// function Alert(props) {
+//   return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 const Registration = () => {
+  const router = useRouter();
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -323,8 +318,10 @@ const Registration = () => {
               setMessage("clinicain added");
             });
           })
-          .then((res) => {
+          .then(() => {
             setOpen(true);
+
+            router.push("/clinician/login");
           })
           .catch((error) => {
             console.log("Error : ", error);
