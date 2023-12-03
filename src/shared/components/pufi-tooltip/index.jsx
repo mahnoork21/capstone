@@ -38,13 +38,18 @@ const extractGlossaryTerm = (inputText) => {
 const PufiToolTip = ({ children }) => {
   return (
     <div>
-      {extractGlossaryTerm(children).map((node) => {
+      {extractGlossaryTerm(children).map((node, index) => {
         switch (node.type) {
           case "regular":
-            return <span>{node.value}</span>;
+            return <span key={"regular" + index}>{node.value}</span>;
           case "tooltip":
             return (
-              <LightTooltip title={node.value} placement="top" arrow>
+              <LightTooltip
+                key={"tooltip" + 1}
+                title={node.value}
+                placement="top"
+                arrow
+              >
                 <span style={{ textDecoration: "underline" }}>{node.key}</span>
               </LightTooltip>
             );

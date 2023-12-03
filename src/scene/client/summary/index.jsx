@@ -25,7 +25,6 @@ import {
   ButtonWrapper,
   StyledEditButton,
 } from "./styled";
-import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 
 const SummaryContent = () => {
   const {
@@ -36,6 +35,8 @@ const SummaryContent = () => {
     surveyId,
     setCurrentActivityIndex,
     setIsEditMode,
+    survey,
+    setSurvey,
   } = useContext(ClientContext);
   const [finalComment, setFinalComment] = useState(null);
 
@@ -51,6 +52,12 @@ const SummaryContent = () => {
 
   const handleSubmitClick = async () => {
     await updateCommentAndCompleteSurvey(finalComment);
+    setSurvey((prevValue) => {
+      return {
+        ...prevValue,
+        final_comment: finalComment,
+      };
+    });
     router.push({
       pathname: "/client/survey-complete",
       query: {
@@ -88,7 +95,7 @@ const SummaryContent = () => {
         <ActivitySummaryWrapper>
           {youngChildActivity.map((activity, index) => {
             return (
-              <ActivitySummary>
+              <ActivitySummary key={activity.id}>
                 <div>
                   <span>{index + 1}.</span>
                   <h2>{activity.label}</h2>
@@ -111,7 +118,7 @@ const SummaryContent = () => {
                   );
 
                   return (
-                    <div>
+                    <div key={questionId}>
                       <SummaryItemWrapper>
                         <QuizOutlinedIcon />
                         <p>{youngChildSurvey[questionIndex].label}</p>
@@ -131,7 +138,7 @@ const SummaryContent = () => {
                               )}
                               {questionId === "how" &&
                               questionRespose.value === 0 ? (
-                                <p>questionRespose.commentForNotSure</p>
+                                <p>{questionRespose.commentForNotSure}</p>
                               ) : (
                                 ""
                               )}

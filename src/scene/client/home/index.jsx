@@ -1,25 +1,32 @@
-import React from "react";
 import YoutubeEmbed from "@/shared/client/youtubeEmbed/YoutubeEmbed";
 
-import HomeContainer from "./components/home-container";
-import { GreyP } from "./components/home-container/styled";
-import { StyledButton } from "./components/button";
+import {
+  HomeContainer,
+  GreyP,
+  InfoWrapper,
+  ContentWrapper,
+  ButtonWrapper,
+} from "./styled";
 import MainContainer from "@/shared/components/main-container";
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
+import InfoConfirmWrapper from "./components/info-confirm-wrapper";
+import PrimaryClientButton from "@/shared/client/buttons/primary";
+import SecondaryClientButton from "@/shared/client/buttons/secondary";
+import { useRouter } from "next/router";
 
 const ClientHome = () => {
   const [error, setError] = useState("");
   const {
     handleStartSurveyClick,
+    setHeaderButtonType,
+    breakpoint,
     organizationId,
     clinicianId,
     surveyId,
-    setHeaderButtonType,
     survey,
   } = useContext(ClientContext);
 
@@ -73,37 +80,47 @@ const ClientHome = () => {
   return (
     <MainContainer>
       <HomeContainer>
-        <div className="content">
-          <h1 className="intro-body-header">What is PUFI-2 survey?</h1>
-          <p>
-            The PUFI-2 questionnaire lets children and parents tell their
-            clinicians about the functional use of a prosthetic device at home,
-            at school, and in the community.
-          </p>
-          <p className="content-text">
-            Responses to these questions provide clinicians with meaningful
-            information that can be used for prosthetic treatment planning and
-            functional and prosthetic training in daily activities.
-          </p>
-        </div>
+        <InfoWrapper>
+          <ContentWrapper>
+            <h1>What is PUFI-2 survey?</h1>
+            <p>
+              The PUFI-2 questionnaire lets children and parents tell their
+              clinicians about the functional use of a prosthetic device at
+              home, at school, and in the community.
+            </p>
+            <p>
+              Responses to these questions provide clinicians with meaningful
+              information that can be used for prosthetic treatment planning and
+              functional and prosthetic training in daily activities.
+            </p>
 
-        <div>
-          <YoutubeEmbed embedId="7C8MMd7iiEU" />
-          <GreyP>SELECT THE PLAY BUTTON TO START THE VIDEO.</GreyP>
-        </div>
+            {breakpoint === "desktop" && <InfoConfirmWrapper />}
+          </ContentWrapper>
 
-        <div className="buttons">
-          <StyledButton primary variant="contained" onClick={handleOnClick}>
-            START SURVEY
-          </StyledButton>
+          <div>
+            {breakpoint !== "desktop" && (
+              <GreyP>SELECT THE PLAY BUTTON TO START THE VIDEO.</GreyP>
+            )}
+            <YoutubeEmbed />
+            {breakpoint === "desktop" && (
+              <GreyP $isDesktop={breakpoint === "desktop"}>
+                SELECT THE PLAY BUTTON TO START THE VIDEO.
+              </GreyP>
+            )}
+          </div>
+        </InfoWrapper>
 
-          <StyledButton
-            variant="outlined"
-            onClick={handleViewInstructionsclick}
-          >
-            VIEW INSTRUCTIONS
-          </StyledButton>
-        </div>
+        {breakpoint !== "desktop" && <InfoConfirmWrapper />}
+
+        <ButtonWrapper>
+          <PrimaryClientButton onClick={handleOnClick}>
+            Start Survey
+          </PrimaryClientButton>
+
+          <SecondaryClientButton onClick={handleViewInstructionsclick}>
+            View Instructions
+          </SecondaryClientButton>
+        </ButtonWrapper>
 
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}

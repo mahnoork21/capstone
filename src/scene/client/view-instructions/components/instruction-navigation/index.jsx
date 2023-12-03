@@ -1,10 +1,10 @@
-import { Button } from "@mui/material";
 import PositionIndicator from "./components/position-indicator";
 import { InstructionNavigationContainer } from "./styled";
-import { StyledButton } from "@/scene/client/home/components/button";
-import Link from "next/link";
 import { useContext } from "react";
 import { ClientContext } from "@/context/ClientContext";
+import SurveyNavButton from "@/shared/client/buttons/survey-nav-buttons";
+import PrimaryClientButton from "@/shared/client/buttons/primary";
+import { useRouter } from "next/router";
 
 const InstructionNavigation = ({
   activePositionId,
@@ -12,49 +12,32 @@ const InstructionNavigation = ({
   onNextClick,
   nextButtonDisabled,
 }) => {
-  const { surveyId } = useContext(ClientContext);
+  const { surveyId, clinicianId, organizationId } = useContext(ClientContext);
+  const router = useRouter();
 
   return (
     <InstructionNavigationContainer>
-      <Button
-        className="nav-button"
-        variant="outlined"
-        startIcon={
-          <img src="/instructions/navigation/back-arrow.svg" alt="Back" />
-        }
-        onClick={onBackClick}
-      >
+      <SurveyNavButton isBack className="nav-button" onClick={onBackClick}>
         Back
-      </Button>
+      </SurveyNavButton>
       <PositionIndicator activePositionId={activePositionId} />
       {nextButtonDisabled ? (
-        <Link
-          href={{
-            pathname: "/client/survey",
-            query: { surveyId: surveyId },
+        <PrimaryClientButton
+          onClick={() => {
+            router.push({
+              pathname: "/client/survey",
+              query: {
+                orgId: organizationId,
+                clinicianId: clinicianId,
+                surveyId: surveyId,
+              },
+            });
           }}
         >
-          <StyledButton primary variant="contained">
-            START SURVEY
-          </StyledButton>
-        </Link>
+          Start Survey
+        </PrimaryClientButton>
       ) : (
-        <Button
-          className="nav-button"
-          variant="outlined"
-          endIcon={
-            <img
-              src={`/instructions/navigation/next-arrow-${
-                nextButtonDisabled ? "disabled" : "enabled"
-              }.svg`}
-              alt="Next"
-            />
-          }
-          onClick={onNextClick}
-          disabled={nextButtonDisabled}
-        >
-          Next
-        </Button>
+        <SurveyNavButton onClick={onNextClick}>Next</SurveyNavButton>
       )}
     </InstructionNavigationContainer>
   );

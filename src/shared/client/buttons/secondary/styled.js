@@ -8,11 +8,11 @@ export const StyledSecondayClientButton = styled(Button)`
   padding: 12px 24px;
   border-radius: 12px;
   font-size: 1rem;
-  border-color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
 
   &:hover {
     color: var(--primary-blue);
-    border-color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
   }
 
   @media screen and (min-width: ${breakpoint.desktop}) {
