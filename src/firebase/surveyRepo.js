@@ -1,29 +1,28 @@
 import { db } from "./firebase";
-import {
-  collectionGroup,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 let currentSurveyPath;
 
-export const getSurveyById = async (surveyId) => {
+export const getSurveyById = async (organizationId, clinicianId, surveyId) => {
   if (!surveyId) return null;
 
-  const surveyQuery = query(
-    collectionGroup(db, "Survey"),
-    where("survey_id", "==", surveyId)
+  const surveyRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey",
+    surveyId
   );
-  const surveySnapshot = await getDocs(surveyQuery);
+  const surveySnapshot = await getDoc(surveyRef);
 
-  if (!surveySnapshot.size) return null;
-  currentSurveyPath = surveySnapshot.docs[0].ref.path;
-  return surveySnapshot.docs[0].data();
+  if (surveySnapshot.exists()) {
+    currentSurveyPath = surveySnapshot.ref.path;
+    return surveySnapshot.data();
+  } else {
+    return null;
+  }
 };
 
 export const updateAnswerInSurvey = async (activityId, currentAnswer) => {
@@ -31,6 +30,7 @@ export const updateAnswerInSurvey = async (activityId, currentAnswer) => {
   await updateDoc(surveyRef, {
     [`activity_response.${activityId}`]: currentAnswer,
     updated: serverTimestamp(),
+    status: 1,
   });
 };
 
@@ -40,5 +40,7 @@ export const updateCommentAndCompleteSurvey = async (comment) => {
     final_comment: comment,
     is_submitted: true,
     updated: serverTimestamp(),
+    submitted: serverTimestamp(),
+    status: 2,
   });
 };

@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MainContainer from "@/shared/components/main-container";
 import { HeaderButton, HeaderContainer, NavigationWrapper } from "./styled";
 import { ClientContext } from "@/context/ClientContext";
 import Link from "next/link";
 import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
-import { updateAnswerInSurvey } from "@/firebase/surveyRepo";
+import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
 import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { checkIfALLResponsesAreValid } from "@/scene/client/survey/helper/surveyHelper";
 
 const Header = () => {
   const {
@@ -19,6 +20,12 @@ const Header = () => {
     handleStartSurveyClick,
     setHeaderButtonType,
     isNavBarVisible,
+    organizationId,
+    clinicianId,
+    surveyId,
+    setErrors,
+    setSurvey,
+    setIsEditMode,
   } = useContext(ClientContext);
 
   const router = useRouter();
@@ -35,13 +42,47 @@ const Header = () => {
       if (error) {
         setError(error);
       }
-    } else {
+    } else if (headerButtonType === HeaderButtonType.SAVE_AND_EXIT) {
       await updateAnswerInSurvey(
         youngChildActivity[currentActivityIndex].id,
         currentAnswer
       );
 
-      router.push("/client");
+      router.push({
+        pathname: "/client",
+        query: {
+          orgId: organizationId,
+          clinicianId: clinicianId,
+          surveyId: surveyId,
+        },
+      });
+    } else if (headerButtonType === HeaderButtonType.SAVE_CHANGES) {
+      const error = checkIfALLResponsesAreValid(currentAnswer);
+      if (!error) {
+        await updateAnswerInSurvey(
+          youngChildActivity[currentActivityIndex].id,
+          currentAnswer
+        );
+
+        const survey = await getSurveyById(
+          organizationId,
+          clinicianId,
+          surveyId
+        );
+        setSurvey(survey);
+
+        setIsEditMode(false);
+        router.push({
+          pathname: "/client/summary",
+          query: {
+            orgId: organizationId,
+            clinicianId: clinicianId,
+            surveyId: surveyId,
+          },
+        });
+      } else {
+        setErrors(error);
+      }
     }
   };
 
@@ -69,22 +110,25 @@ const Header = () => {
 
         {isNavBarVisible && (
           <NavigationWrapper>
-            <Link href="/client">Home</Link>
+            <Link
+              href={{
+                pathname: "/client",
+                query: {
+                  orgId: organizationId,
+                  clinicianId: clinicianId,
+                  surveyId: surveyId,
+                },
+              }}
+            >
+              Home
+            </Link>
 
-            {breakpoint === "desktop" ? (
-              <HeaderButton variant="outlined" onClick={handleOnClick}>
-                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                  ? "SAVE AND EXIT"
-                  : "START SURVEY"}
-              </HeaderButton>
-            ) : (
-              <Link href="/client/survey">
-                {" "}
-                {headerButtonType === HeaderButtonType.SAVE_AND_EXIT
-                  ? "SAVE AND EXIT"
-                  : "START SURVEY"}
-              </Link>
-            )}
+            <HeaderButton
+              variant={breakpoint === "desktop" ? "outlined" : "text"}
+              onClick={handleOnClick}
+            >
+              {headerButtonType}
+            </HeaderButton>
           </NavigationWrapper>
         )}
 

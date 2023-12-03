@@ -1,29 +1,28 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
-import { Toolbar, Box, CssBaseline } from "@mui/material";
-
-import Footer from "../clinician/footer";
-import AuthHeader from "../clinician/header/AuthHeader";
-import NormalHeader from "../clinician/header/NormalHeader";
 import {
-  CurvedBackground,
-  PageWrapper,
-  FlexBox,
   ContentBox,
+  CurvedBackground,
+  FlexBox,
+  PageWrapper,
 } from "./clinician-shared";
+import NormalHeader from "../clinician/header/NormalHeader";
+import Footer from "../clinician/footer";
+import { CssBaseline, Toolbar } from "@mui/material";
+import { useRouter } from "next/router";
 import ClinicianProviders from "./ClinicianProviders";
 import Navbar from "../clinician/navbar";
-
-const drawerWidth = 280;
+import AuthHeader from "../clinician/header/AuthHeader";
 
 const ClinicianLayout = ({ window, children }) => {
-  const router = useRouter();
-  const isAuth = router.pathname === "/clinician/auth";
-
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen((mobileOpen) => !mobileOpen);
   };
+
+  const router = useRouter();
+  const isAuth =
+    router.pathname === "/clinician/login" ||
+    router.pathname === "/clinician/register";
 
   return (
     <ClinicianProviders>
@@ -44,7 +43,6 @@ const ClinicianLayout = ({ window, children }) => {
             window={window}
             mobileOpen={mobileOpen}
             handleDrawerToggle={handleDrawerToggle}
-            drawerWidth={drawerWidth}
           />
 
           <ContentBox component="main">

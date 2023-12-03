@@ -6,9 +6,9 @@ export const StyledPositionIndicator = styled.div`
   justify-content: space-between;
   align-items: space-between;
   padding: 4px 0px;
-  width: 8%;
+  gap: 4px;
 
-  @media screen and (max-width: ${breakpoint.desktop}) {
-    width: 15%;
+  @media screen and (min-width: ${breakpoint.desktop}) {
+    gap: 8px;
   }
 `;

@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Container } from "./styled";
 
@@ -7,8 +8,9 @@ const ReportHeader = ({ survey }) => {
   useEffect(() => {
     if (survey) {
       const updatedDate = survey["updated"] ? survey["updated"].toDate() : null;
-      setSurveyData((prevSurveyData) => ({
+      setSurveyData(() => ({
         surveyType: survey["survey_type"],
+        surveyCompleted: survey["is_submitted"],
         surveyUpdated: updatedDate
           ? updatedDate.toLocaleDateString("en-US", {
               month: "long",
@@ -25,7 +27,7 @@ const ReportHeader = ({ survey }) => {
       <div className="survey-data-container">
         <div className="survey-data">
           <p>
-            Client ID: <span>Client123</span>
+            Client ID: <span>{survey["client_id"]}</span>
           </p>
           <p>
             Survey Id: <span>{survey["survey_id"]}</span>
@@ -36,7 +38,15 @@ const ReportHeader = ({ survey }) => {
             Type: <span>{surveyData.surveyType}</span>
           </p>
           <p>
-            Completed: <span>{JSON.stringify(surveyData.surveyUpdated)}</span>
+            {surveyData.surveyCompleted ? "Completed: " : "Last Updated: "}
+            <span>
+              {surveyData && surveyData.surveyUpdated !== undefined
+                ? JSON.stringify(surveyData.surveyUpdated).replace(
+                    /^"(.*)"$/,
+                    "$1"
+                  )
+                : "N/A"}
+            </span>
           </p>
         </div>
       </div>

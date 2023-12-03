@@ -23,10 +23,21 @@ import {
   AnswerWrapper,
   FinalCommentTextField,
   ButtonWrapper,
+  StyledEditButton,
 } from "./styled";
 
 const SummaryContent = () => {
-  const { activityResponses, setIsNavBarVisible } = useContext(ClientContext);
+  const {
+    activityResponses,
+    setIsNavBarVisible,
+    organizationId,
+    clinicianId,
+    surveyId,
+    setCurrentActivityIndex,
+    setIsEditMode,
+    survey,
+    setSurvey,
+  } = useContext(ClientContext);
   const [finalComment, setFinalComment] = useState(null);
 
   const router = useRouter();
@@ -41,14 +52,39 @@ const SummaryContent = () => {
 
   const handleSubmitClick = async () => {
     await updateCommentAndCompleteSurvey(finalComment);
-    router.push("/client/survey-complete");
+    setSurvey((prevValue) => {
+      return {
+        ...prevValue,
+        final_comment: finalComment,
+      };
+    });
+    router.push({
+      pathname: "/client/survey-complete",
+      query: {
+        orgId: organizationId,
+        clinicianId: clinicianId,
+        surveyId: surveyId,
+      },
+    });
   };
 
-  //TODO: check if survey is present and valid
-  //Temp fix
   if (!activityResponses) {
     return;
   }
+
+  const handleEditButtonClick = (index) => {
+    setIsEditMode(true);
+
+    setCurrentActivityIndex(index);
+    router.push({
+      pathname: "/client/survey",
+      query: {
+        orgId: organizationId,
+        clinicianId: clinicianId,
+        surveyId: surveyId,
+      },
+    });
+  };
 
   return (
     <MainContainer>
@@ -59,11 +95,16 @@ const SummaryContent = () => {
         <ActivitySummaryWrapper>
           {youngChildActivity.map((activity, index) => {
             return (
-              <ActivitySummary>
+              <ActivitySummary key={activity.id}>
                 <div>
                   <span>{index + 1}.</span>
                   <h2>{activity.label}</h2>
-                  <EditOutlinedIcon />
+                  <StyledEditButton
+                    color="black"
+                    onClick={() => handleEditButtonClick(index)}
+                  >
+                    <EditOutlinedIcon />
+                  </StyledEditButton>
                 </div>
 
                 {questionIds.map((questionId, questionIndex) => {
@@ -77,32 +118,33 @@ const SummaryContent = () => {
                   );
 
                   return (
-                    <div>
+                    <div key={questionId}>
                       <SummaryItemWrapper>
                         <QuizOutlinedIcon />
                         <p>{youngChildSurvey[questionIndex].label}</p>
                       </SummaryItemWrapper>
                       <SummaryItemWrapper>
                         <KeyboardDoubleArrowRightOutlinedIcon />
-                        {}
 
                         <AnswerWrapper>
                           {!isNullOrUndefined(questionRespose.value) ? (
                             <>
                               <p>{option?.label}</p>
-                              <p>
-                                {questionId === "how" &&
-                                questionRespose.value === 3
-                                  ? questionRespose.bodypart
-                                  : ""}
-                              </p>
-                              <p>
-                                {questionId === "how" &&
-                                questionRespose.value === 0
-                                  ? questionRespose.commentForNotSure
-                                  : ""}
-                              </p>
-                              <p>{questionRespose.comment}</p>
+                              {questionId === "how" &&
+                              questionRespose.value === 3 ? (
+                                <p>{questionRespose.bodypart}</p>
+                              ) : (
+                                ""
+                              )}
+                              {questionId === "how" &&
+                              questionRespose.value === 0 ? (
+                                <p>{questionRespose.commentForNotSure}</p>
+                              ) : (
+                                ""
+                              )}
+                              {questionRespose.comment && (
+                                <p>{questionRespose.comment}</p>
+                              )}
                             </>
                           ) : (
                             "N/A"

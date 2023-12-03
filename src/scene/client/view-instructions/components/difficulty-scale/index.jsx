@@ -1,11 +1,10 @@
-import { GreyHeader, HowQuestion } from "../activity-guide/styled";
-import DifficultyInfo from "./components/difficulty-info";
-import { DifficultyInfoContainer } from "./styled";
-import { data } from "./data";
+import { GreyHeader } from "../activity-guide/styled";
+import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-scale-instruction-area";
+import { DifficultyScaleWrapper } from "./styled";
 
 const DifficultyScale = () => {
   return (
-    <>
+    <DifficultyScaleWrapper>
       <GreyHeader>
         <h1>Difficulty Scale</h1>
         <p>
@@ -13,23 +12,8 @@ const DifficultyScale = () => {
           This information will also be available within the survey.
         </p>
       </GreyHeader>
-      <HowQuestion>
-        <h2>How well is the activity performed with/without the prosthesis?</h2>
-      </HowQuestion>
-      <DifficultyInfoContainer>
-        {data.map((data, index) => (
-          <DifficultyInfo
-            key={index}
-            scaleSrc={data.scale}
-            lineIndicatorSrcDesktop={data.lineIndicatorDesktop}
-            lineIndicatorSrcMobile={data.lineIndicatorMobile}
-            title={data.title}
-            description={data.description}
-            color={data.color}
-          />
-        ))}
-      </DifficultyInfoContainer>
-    </>
+      <DifficultyScaleInstructionArea />
+    </DifficultyScaleWrapper>
   );
 };
 

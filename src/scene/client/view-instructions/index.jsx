@@ -1,19 +1,20 @@
 import MainContainer from "@/shared/components/main-container";
-import HomeContainer from "../components/home-container";
 import TypesOfQuestions from "./components/types-of-questions";
 import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";
-import BeforeStartSurvey from "./components/before-start-survey";
+import BeforeStartSurvey from "../../../shared/client/section/before-start-survey";
 import { useRouter } from "next/router";
 import { ClientContext } from "@/context/ClientContext";
 import ActivityGuide from "./components/activity-guide";
 import DifficultyScale from "./components/difficulty-scale";
+import { HomeContainer } from "../home/styled";
 
 const ViewInstructions = () => {
   const [instructionId, setInstructionId] = useState(0);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
   const router = useRouter();
-  const { currentSurveyId } = useContext(ClientContext);
+  const { organizationId, clinicianId, surveyId, setDidViewResponseGuide } =
+    useContext(ClientContext);
 
   const handleBackClick = () => {
     if (instructionId >= 0) {
@@ -27,12 +28,22 @@ const ViewInstructions = () => {
     }
   };
 
+  if (instructionId === 1) {
+    setDidViewResponseGuide(true);
+  }
+
   useEffect(() => {
     if (instructionId < 0) {
+      console.log(
+        "[In view instructions] Redirect to homepage. instructionId",
+        instructionId
+      );
       router.push({
         pathname: "/client",
         query: {
-          surveyId: currentSurveyId,
+          orgId: organizationId,
+          clinicianId: clinicianId,
+          surveyId: surveyId,
         },
       });
     } else if (instructionId >= 3) {
@@ -42,7 +53,6 @@ const ViewInstructions = () => {
     }
   }, [instructionId]);
 
-  //TODO: create other instructions pages
   return (
     <MainContainer>
       <HomeContainer>
@@ -57,14 +67,12 @@ const ViewInstructions = () => {
         ) : (
           <></>
         )}
-        <div className="buttons">
-          <InstructionNavigation
-            activePositionId={instructionId}
-            onBackClick={handleBackClick}
-            onNextClick={handleNextClick}
-            nextButtonDisabled={nextButtonDisabled}
-          />
-        </div>
+        <InstructionNavigation
+          activePositionId={instructionId}
+          onBackClick={handleBackClick}
+          onNextClick={handleNextClick}
+          nextButtonDisabled={nextButtonDisabled}
+        />
       </HomeContainer>
     </MainContainer>
   );

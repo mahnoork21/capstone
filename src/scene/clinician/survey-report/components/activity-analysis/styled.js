@@ -20,6 +20,8 @@ export const Container = styled.div`
     font-weight: 600;
     font-size: 1rem;
     padding-top: 20px;
+    text-align: center;
+    width: 100%;
   }
 
   & .no-data {
