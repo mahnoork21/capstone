@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -25,8 +25,9 @@ import {
   MainAccountBox,
   StyledAccountSvgIcon,
   InnerAccountDetailsBox,
-  StyledViewProfileLink,
 } from "./styled";
+import { fetchClinicianData } from "@/firebase/clinicianRepo";
+import { ClinicianContext } from "@/context/ClinicianContext";
 
 const listItemsArray = [
   { IconType: HomeOutlined, text: "Dashboard" },
@@ -37,8 +38,26 @@ const listItemsArray = [
 export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
   const router = useRouter();
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const { clinicianDetails, updateClinicianDetails } =
+    useContext(ClinicianContext);
+
+  // Display clinician name
+  // const [clinicianName, setClinicianName] = useState("");
+  useEffect(() => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      let response;
+      try {
+        response = await fetchClinicianData(orgId, clinicianId);
+      } catch (err) {
+        console.error(err);
+      }
+
+      updateClinicianDetails(response);
+    })();
+  }, []);
 
   // For selection of List Item
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -87,8 +106,12 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
           </svg>
         </StyledAccountSvgIcon>
         <InnerAccountDetailsBox>
-          <StyledClinicianName>Clinician Name</StyledClinicianName>
-          <StyledViewProfileLink>View Profile</StyledViewProfileLink>
+          <StyledClinicianName>
+            {clinicianDetails?.first_name + " " + clinicianDetails?.last_name}
+          </StyledClinicianName>
+          {/* Commented out for next team: 
+          Use this to easily add "View Profile" link shown in Figma 
+          <StyledViewProfileLink>View Profile</StyledViewProfileLink> */}
         </InnerAccountDetailsBox>
       </MainAccountBox>
       <List>
@@ -119,7 +142,9 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
     <>
       <NavbarBox component="nav" aria-label="mailbox folders">
         <MobileDrawer
-          container={container}
+          container={
+            window !== undefined ? () => window().document.body : undefined
+          }
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}

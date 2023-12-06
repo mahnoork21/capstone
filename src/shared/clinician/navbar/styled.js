@@ -42,6 +42,7 @@ export const MainAccountBox = styled(Box)`
   display: flex;
   flex-direction: row;
   align-content: center;
+  align-items: center;
 `;
 
 export const StyledAccountSvgIcon = styled(SvgIcon)`
@@ -53,7 +54,6 @@ export const StyledAccountSvgIcon = styled(SvgIcon)`
 export const InnerAccountDetailsBox = styled(Box)`
   display: flex;
   flex-direction: column;
-  margin-top: 24px;
 `;
 
 export const StyledClinicianName = styled(Typography)`

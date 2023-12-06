@@ -3,6 +3,9 @@ import { createContext, useEffect, useState } from "react";
 export const ClinicianContext = createContext();
 
 export const ClinicianProvider = ({ children }) => {
+  const [clinicianDetails, setClinicianDetails] = useState({});
+  const updateClinicianDetails = (details) => setClinicianDetails(details);
+
   const [breakpoint, setBreakpoint] = useState(`desktop`);
 
   useEffect(() => {
@@ -35,6 +38,8 @@ export const ClinicianProvider = ({ children }) => {
     <ClinicianContext.Provider
       value={{
         breakpoint,
+        clinicianDetails,
+        updateClinicianDetails,
       }}
     >
       {children}

@@ -304,6 +304,26 @@ export const doesClinicianHaveSurveys = async (organizationId, clinicianId) => {
   }
 };
 
+export const fetchClinicianData = async (organizationId, clinicianId) => {
+  if (!organizationId || !clinicianId)
+    throw new Error("Insufficient data provided");
+
+  const clinicianRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId
+  );
+  const clinicianSnapshot = await getDoc(clinicianRef);
+
+  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
+
+  const clinician = clinicianSnapshot.data();
+
+  return clinician;
+};
+
 export const fetchClients = async (organizationId, clinicianId) => {
   if (!organizationId || !clinicianId)
     throw new Error("Insufficient data provided");

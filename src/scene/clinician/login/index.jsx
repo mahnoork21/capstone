@@ -49,11 +49,23 @@ const LoginLanding = () => {
       setSnackbarMessage("Invalid email address.");
       setOpenSnackbar(true);
     } else {
-      const response = await signinClinicianByEmail(email, password);
+      let response;
+
+      try {
+        response = await signinClinicianByEmail(email, password);
+      } catch (err) {
+        setLogin(false);
+        setSnackbarMessage(err.message);
+        setOpenSnackbar(true);
+        return;
+      }
 
       if (response?.user?.uid) {
-        localStorage.setItem("orgId", "oZqnljuEU4b3jZtfHM9v");
-        localStorage.setItem("clinicianId", response?.user?.uid);
+        const orgId = "oZqnljuEU4b3jZtfHM9v";
+        const clinicianId = response?.user?.uid;
+
+        localStorage.setItem("orgId", orgId);
+        localStorage.setItem("clinicianId", clinicianId);
 
         setLogin(true);
         setSnackbarMessage("Login Successful!");
