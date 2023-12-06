@@ -47,7 +47,7 @@ const AddNewClient = () => {
 
       router.push("/clinician/my-clients");
     } catch (err) {
-      console.log("An error occured: " + err);
+      console.error("An error occured: " + err);
     }
   };
 
@@ -92,18 +92,19 @@ const AddNewClient = () => {
                 <ModifiedFormControlLabel
                   value="Young Child"
                   control={<Radio />}
-                  label="Young Child"
+                  label="Young Child (3 - 6 years old)"
                 />
-                <ModifiedFormControlLabel
+                {/* Commented out because we don't support Older Child survey for now */}
+                {/* <ModifiedFormControlLabel
                   value="Older Child (Parent)"
                   control={<Radio />}
-                  label="Older Child (Parent)"
+                  label="Older Child (Parent) (7+ years old)"
                 />
                 <ModifiedFormControlLabel
                   value="Older Child (Self Report)"
                   control={<Radio />}
-                  label="Older Child (Self Report)"
-                />
+                  label="Older Child (Self Report) (7+ years old)"
+                /> */}
               </RadioGroup>
             </FormControl>
           </FormBox>
