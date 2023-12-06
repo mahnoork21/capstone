@@ -12,8 +12,11 @@ import {
 } from "./styled";
 import { FormControl, Radio, RadioGroup } from "@mui/material";
 import { addNewSurvey } from "@/firebase/clinicianRepo";
+import { useSnackbarContext } from "@/context/snackbarContext";
 
 export default function AddNewSurveyCard({ toggleForm, clientId }) {
+  const { showSnackbar } = useSnackbarContext();
+
   const [surveyType, setSurveyType] = useState("Young Child");
   const handleSurveyTypeChange = (e) => setSurveyType(e.target.value);
 
@@ -26,6 +29,7 @@ export default function AddNewSurveyCard({ toggleForm, clientId }) {
 
       toggleForm();
     } catch (err) {
+      showSnackbar("error", err.message);
       console.log("An error occured: " + err);
     }
   };

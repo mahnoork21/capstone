@@ -22,8 +22,9 @@ import { Menu, MenuItem } from "@mui/material";
 import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOutlined";
 import { archiveRestoreSurveyById } from "@/firebase/clinicianRepo";
 import { useRouter } from "next/router";
+import { useSnackbarContext } from "@/context/snackbarContext";
 
-// TODO: implement email link
+// TODO: Add clinician name to email
 
 const ClientSurveyCard = ({
   surveyId,
@@ -40,6 +41,7 @@ const ClientSurveyCard = ({
   reloadPageData,
 }) => {
   const router = useRouter();
+  const { showSnackbar } = useSnackbarContext();
 
   let surveyUrl = `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`;
   if (!surveyUrl.startsWith("http")) {
@@ -80,27 +82,21 @@ const ClientSurveyCard = ({
 
   const emailBody = `Dear [Client Name],
 
-
 ${
   whichCard == "in-progress"
     ? `This is a reminder email to complete the Prosthetic Upper Limb Functional Index (PUFI-2). You had last updated this survey ${inProgressText()}. The link is given below.`
     : "Your link to complete the Prosthetic Upper Limb Functional Index (PUFI-2) is below. Please watch the PUFI-2 introduction video at the following link prior to completing the questionnaire."
 }
 
-
 This link is unique to your client ID, and should not be shared with others. If you stop or close the questionnaire after starting, your responses will be saved, and you may resume at a later point by visiting this link again.
-
 
 PUFI-2 ${
     surveyType.startsWith("Young") ? "Parent" : "Older Child"
   } Questionnaire Link [${surveyUrl}]
 
-
 Once you submit the completed questionnaire, I will review your results and will share them with you at your next appointment.
 
-
 Please contact me if you have any questions or concerns.
-
 
 Thank you,
 
@@ -124,7 +120,12 @@ Thank you,
   const handleCopyPufi2Click = () => navigator.clipboard.writeText(surveyUrl);
 
   const handleArchiveClick = async () => {
-    await archiveRestoreSurveyById(surveyId);
+    try {
+      await archiveRestoreSurveyById(orgId, clinicianId, surveyId);
+    } catch (err) {
+      showSnackbar("error", err.message);
+      console.error(err);
+    }
 
     await reloadPageData();
   };

@@ -107,7 +107,9 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
         </StyledAccountSvgIcon>
         <InnerAccountDetailsBox>
           <StyledClinicianName>
-            {clinicianDetails?.first_name + " " + clinicianDetails?.last_name}
+            {(clinicianDetails?.first_name || "") +
+              " " +
+              (clinicianDetails?.last_name || "")}
           </StyledClinicianName>
           {/* Commented out for next team: 
           Use this to easily add "View Profile" link shown in Figma 
