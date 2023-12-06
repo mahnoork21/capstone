@@ -6,6 +6,7 @@ import {
   MoreHorizRounded,
   VisibilityOutlined,
   ContentCopy,
+  OpenInNew,
 } from "@mui/icons-material";
 import {
   StyledCard,
@@ -118,7 +119,9 @@ Thank you,
   const handleCopyEmailBodyClick = () =>
     navigator.clipboard.writeText(emailBody);
 
-  const handleCopyLinkClick = () => navigator.clipboard.writeText(surveyUrl);
+  const handleOpenPufi2Click = () => window.open(surveyUrl, "_blank").focus();
+
+  const handleCopyPufi2Click = () => navigator.clipboard.writeText(surveyUrl);
 
   const handleArchiveClick = async () => {
     await archiveRestoreSurveyById(surveyId);
@@ -134,9 +137,14 @@ Thank you,
     whichCard == "completed"
       ? [
           {
+            icon: <OpenInNew />,
+            text: "OPEN PUFI-2",
+            clickHandlerFn: handleOpenPufi2Click,
+          },
+          {
             icon: <InsertLink />,
-            text: "COPY SURVEY LINK",
-            clickHandlerFn: handleCopyLinkClick,
+            text: "COPY PUFI-2 LINK",
+            clickHandlerFn: handleCopyPufi2Click,
           },
           {
             icon: isArchived ? (
@@ -151,9 +159,14 @@ Thank you,
       : whichCard == "in-progress"
       ? [
           {
+            icon: <OpenInNew />,
+            text: "OPEN PUFI-2",
+            clickHandlerFn: handleOpenPufi2Click,
+          },
+          {
             icon: <InsertLink />,
-            text: "COPY SURVEY LINK",
-            clickHandlerFn: handleCopyLinkClick,
+            text: "COPY PUFI-2 LINK",
+            clickHandlerFn: handleCopyPufi2Click,
           },
           {
             icon: <ContentCopy />,
@@ -177,9 +190,14 @@ Thank you,
         ]
       : [
           {
+            icon: <OpenInNew />,
+            text: "OPEN PUFI-2",
+            clickHandlerFn: handleOpenPufi2Click,
+          },
+          {
             icon: <InsertLink />,
-            text: "COPY SURVEY LINK",
-            clickHandlerFn: handleCopyLinkClick,
+            text: "COPY PUFI-2 LINK",
+            clickHandlerFn: handleCopyPufi2Click,
           },
           {
             icon: <ContentCopy />,
