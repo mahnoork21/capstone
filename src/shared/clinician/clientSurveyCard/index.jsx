@@ -90,7 +90,7 @@ ${
 This link is unique to your client ID, and should not be shared with others. If you stop or close the questionnaire after starting, your responses will be saved, and you may resume at a later point by visiting this link again.
 
 
-  PUFI-2 ${
+PUFI-2 ${
     surveyType.startsWith("Young") ? "Parent" : "Older Child"
   } Questionnaire Link [${surveyUrl}]
 
