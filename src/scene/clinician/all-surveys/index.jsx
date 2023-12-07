@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Container, InnerContainer, SearchButton, StyledBox } from "./styled";
+import {
+  Container,
+  InnerContainer,
+  MainContainerBox,
+  SearchButton,
+  StyledBox,
+} from "./styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Tab, Tabs } from "@mui/material";
 import {
@@ -8,7 +14,6 @@ import {
   getTotalAllClinicianSurveys,
   getTotalFilteredSurveysForClient,
 } from "@/firebase/clinicianRepo";
-import { MainContainerBox } from "../my-clients/styled";
 import FilterPanel from "@/shared/clinician/filterPanel";
 import Pagination from "@/shared/clinician/pagination";
 import SurveyCards from "@/shared/clinician/surveyCards";

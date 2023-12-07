@@ -2,6 +2,17 @@ import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 import { Box, Button } from "@mui/material";
 
+export const MainContainerBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    padding: 8px;
+    max-width: 840px;
+  }
+`;
+
 export const Container = styled.div`
   & h1 {
     color: #000;
