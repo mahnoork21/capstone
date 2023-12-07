@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-
 import {
   Box,
   List,
@@ -15,6 +14,7 @@ import {
   BallotOutlined,
   Logout,
 } from "@mui/icons-material";
+
 import {
   LogOutBtn,
   SpecialHighlightedListItemBtn,
@@ -37,6 +37,8 @@ const listItemsArray = [
 
 export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
   const router = useRouter();
+
+  const { breakpoint } = useContext(ClinicianContext);
 
   const { clinicianDetails, updateClinicianDetails } =
     useContext(ClinicianContext);
@@ -77,7 +79,7 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
   const handleListItemClick = (event, index, text) => {
     setSelectedIndex(index);
     router.push("/clinician/" + text.toLowerCase().trim().replace(" ", "-"));
-    handleDrawerToggle();
+    if (breakpoint == "mobile") handleDrawerToggle();
   };
 
   const handleLogoutClick = () => {
