@@ -303,11 +303,9 @@ const MyClients = () => {
         <MyClientsHeadingTypography variant="h1">
           MY CLIENTS
         </MyClientsHeadingTypography>
-        {breakpoint === "mobile" && (
-          <AddClientButton onClick={addClientButtonClick}>
-            Add Client
-          </AddClientButton>
-        )}
+        <AddClientButton onClick={addClientButtonClick}>
+          Add Client
+        </AddClientButton>
       </HeadingBox>
       <MainContentBox>
         {(breakpoint === "desktop" || !selectedClientIndex) && (
@@ -346,11 +344,6 @@ const MyClients = () => {
           </>
         )}
       </MainContentBox>
-      {breakpoint === "desktop" && (
-        <AddClientButton onClick={addClientButtonClick}>
-          Add Client
-        </AddClientButton>
-      )}
       <FilterPanel
         isFilterPanelOpen={isFilterPanelOpen}
         toggleFilterPanelClick={toggleFilterPanelClick}

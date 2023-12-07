@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import differenceInDays from "date-fns/differenceInDays";
 import {
   InsertLink,
@@ -23,8 +23,7 @@ import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOu
 import { archiveRestoreSurveyById } from "@/firebase/clinicianRepo";
 import { useRouter } from "next/router";
 import { useSnackbarContext } from "@/context/snackbarContext";
-
-// TODO: Add clinician name to email
+import { ClinicianContext } from "@/context/ClinicianContext";
 
 const ClientSurveyCard = ({
   surveyId,
@@ -42,6 +41,8 @@ const ClientSurveyCard = ({
 }) => {
   const router = useRouter();
   const { showSnackbar } = useSnackbarContext();
+
+  const { clinicianDetails } = useContext(ClinicianContext);
 
   let surveyUrl = `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`;
   if (!surveyUrl.startsWith("http")) {
@@ -81,6 +82,12 @@ const ClientSurveyCard = ({
   };
 
   const emailBody = `Dear [Client Name],
+
+This email is from Clinician ${
+    (clinicianDetails?.first_name || "") +
+    " " +
+    (clinicianDetails?.last_name || "")
+  }.
 
 ${
   whichCard == "in-progress"

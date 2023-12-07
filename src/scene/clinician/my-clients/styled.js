@@ -18,6 +18,7 @@ export const HeadingBox = styled(Box)`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  max-width: 1120px;
 `;
 
 export const MyClientsHeadingTypography = styled(Typography)`
