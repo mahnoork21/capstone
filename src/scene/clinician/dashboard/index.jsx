@@ -161,45 +161,51 @@ const Dashboard = () => {
             </AddClientButton>
           </div>
           <div className="outer-cards-container">
-            <div className="inner-cards-container">
-              <div className="cards-status-heading completed">
-                <span>
-                  Recently Completed Surveys ({totalSurveysCompleted})
-                </span>
-                <StyledButton
-                  variant="text"
-                  onClick={() => viewAllClickHandler("complete")}
-                >
-                  View all
-                </StyledButton>
-              </div>
+            {totalSurveysCompleted > 0 && (
+              <div className="inner-cards-container">
+                <div className="cards-status-heading completed">
+                  <span>
+                    Recently Completed Surveys ({totalSurveysCompleted})
+                  </span>
+                  <StyledButton
+                    variant="text"
+                    onClick={() => viewAllClickHandler("complete")}
+                  >
+                    View all
+                  </StyledButton>
+                </div>
 
-              <SurveyCards surveysListData={surveysListDataCompleted} />
-            </div>
-            <div>
-              <div className="cards-status-heading">
-                <span>In-Progress Surveys ({totalSurveysInProgress})</span>
-                <StyledButton
-                  variant="text"
-                  onClick={() => viewAllClickHandler("in-progress")}
-                >
-                  View all
-                </StyledButton>
+                <SurveyCards surveysListData={surveysListDataCompleted} />
               </div>
-              <SurveyCards surveysListData={surveysListDataInProgress} />
-            </div>
-            <div>
-              <div className="cards-status-heading">
-                <span>Pending Surveys ({totalSurveysPending})</span>
-                <StyledButton
-                  variant="text"
-                  onClick={() => viewAllClickHandler("pending")}
-                >
-                  View all
-                </StyledButton>
+            )}
+            {totalSurveysInProgress > 0 && (
+              <div>
+                <div className="cards-status-heading">
+                  <span>In-Progress Surveys ({totalSurveysInProgress})</span>
+                  <StyledButton
+                    variant="text"
+                    onClick={() => viewAllClickHandler("in-progress")}
+                  >
+                    View all
+                  </StyledButton>
+                </div>
+                <SurveyCards surveysListData={surveysListDataInProgress} />
               </div>
-              <SurveyCards surveysListData={surveysListDataPending} />
-            </div>
+            )}
+            {totalSurveysPending > 0 && (
+              <div>
+                <div className="cards-status-heading">
+                  <span>Pending Surveys ({totalSurveysPending})</span>
+                  <StyledButton
+                    variant="text"
+                    onClick={() => viewAllClickHandler("pending")}
+                  >
+                    View all
+                  </StyledButton>
+                </div>
+                <SurveyCards surveysListData={surveysListDataPending} />
+              </div>
+            )}
           </div>
         </MainContainer>
       )}
