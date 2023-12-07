@@ -80,7 +80,7 @@ const AddNewClient = () => {
 
             <FormControl>
               <ModifiedFormLabel id="selectSurveyType">
-                Select survey type:
+                Select questionnaire type:
               </ModifiedFormLabel>
               <RadioGroup
                 aria-labelledby="selectSurveyType"

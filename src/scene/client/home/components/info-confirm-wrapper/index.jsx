@@ -19,13 +19,15 @@ const InfoConfirmWrapper = () => {
           </SurveyIdInfoWarpper>
 
           <StyledMessageToUser
-            message={"Please confirm survey info before starting the survey."}
+            message={
+              "Please confirm questionnaire info before starting the questionnaire."
+            }
           />
         </>
       ) : (
         <StyledMessageToUser
           message={
-            "Survey link is not valid. Please contact your clinician for a link to the survey."
+            "Questionnaire link is not valid. Please contact your clinician for a link to the questionnaire."
           }
           type="error"
         />

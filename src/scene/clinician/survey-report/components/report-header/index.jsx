@@ -29,7 +29,7 @@ const ReportHeader = ({ survey }) => {
             Client ID: <span>{survey["client_id"]}</span>
           </p>
           <p>
-            Survey Id: <span>{survey["survey_id"]}</span>
+            Questionnaire Id: <span>{survey["survey_id"]}</span>
           </p>
         </div>
         <div className="survey-data">

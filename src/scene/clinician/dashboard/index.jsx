@@ -230,7 +230,7 @@ const Dashboard = () => {
               <div className="inner-cards-container">
                 <div className="cards-status-heading completed">
                   <span>
-                    Recently Completed Surveys ({totalSurveysCompleted})
+                    Recently Completed Questionnaires ({totalSurveysCompleted})
                   </span>
                   <StyledButton
                     variant="text"
@@ -249,7 +249,9 @@ const Dashboard = () => {
             {totalSurveysInProgress > 0 && (
               <div>
                 <div className="cards-status-heading">
-                  <span>In-Progress Surveys ({totalSurveysInProgress})</span>
+                  <span>
+                    In-Progress Questionnaires ({totalSurveysInProgress})
+                  </span>
                   <StyledButton
                     variant="text"
                     onClick={() => viewAllClickHandler("in-progress")}
@@ -266,7 +268,7 @@ const Dashboard = () => {
             {totalSurveysPending > 0 && (
               <div>
                 <div className="cards-status-heading">
-                  <span>Pending Surveys ({totalSurveysPending})</span>
+                  <span>Pending Questionnaires ({totalSurveysPending})</span>
                   <StyledButton
                     variant="text"
                     onClick={() => viewAllClickHandler("pending")}
