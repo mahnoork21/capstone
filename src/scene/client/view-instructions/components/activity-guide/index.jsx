@@ -11,7 +11,6 @@ const ActivityGuide = () => {
         <h1>Activity Guide</h1>
         <p>
           This information will help you understand the questions in the survey.
-          This information will also be available within the survey.
         </p>
       </GreyHeader>
 
