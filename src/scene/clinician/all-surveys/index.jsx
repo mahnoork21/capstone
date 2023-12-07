@@ -400,7 +400,7 @@ const AllSurveys = () => {
     <MainContainerBox>
       <Container>
         <div className="header">
-          <h1>ALL SURVEYS</h1>
+          <h1>ALL QUESTIONNAIRES</h1>
           {Object.values(filterFormData).some((value) => value !== "") && (
             <FilterInfo formData={filterFormData} />
           )}
@@ -410,7 +410,7 @@ const AllSurveys = () => {
               startIcon={<SearchIcon />}
               onClick={toggleFilterPanelClick}
             >
-              SEARCH SURVEY
+              SEARCH PUFI-2
             </SearchButton>
             <Button primary variant="contained" onClick={handleResetFilter}>
               Reset Filter

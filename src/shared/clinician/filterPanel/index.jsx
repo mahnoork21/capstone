@@ -376,7 +376,7 @@ const FilterPanel = forwardRef(
         <MainContainerBox role="presentation">
           <Toolbar />
           <HeadingBox>
-            {allSurveysPage ? "Search Questionnaire" : "Filter By"}
+            {allSurveysPage ? "Search PUFI-2" : "Filter By"}
           </HeadingBox>
 
           <FilterOptionsBox>

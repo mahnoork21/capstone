@@ -32,7 +32,7 @@ import { ClinicianContext } from "@/context/ClinicianContext";
 const listItemsArray = [
   { IconType: HomeOutlined, text: "Dashboard" },
   { IconType: AccountBoxOutlined, text: "My Clients" },
-  { IconType: BallotOutlined, text: "All Surveys" },
+  { IconType: BallotOutlined, text: "All Questionnaires" },
 ];
 
 export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
