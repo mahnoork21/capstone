@@ -17,10 +17,12 @@ import {
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import SurveyCards from "./components/survey-cards";
+import { useSnackbarContext } from "@/context/snackbarContext";
 
 const Dashboard = () => {
   const router = useRouter();
   const { breakpoint } = useContext(ClinicianContext);
+  const { showSnackbar } = useSnackbarContext();
 
   const [loading, setLoading] = useState(true);
   const [hasSurveys, setHasSurveys] = useState(false);
@@ -29,51 +31,51 @@ const Dashboard = () => {
   const [totalSurveysInProgress, setTotalSurveysInProgress] = useState(0);
   const [totalSurveysPending, setTotalSurveysPending] = useState(0);
 
+  const fetchData = async () => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    try {
+      setLoading(true);
+
+      const doesHaveSurveys = await doesClinicianHaveSurveys(
+        orgId,
+        clinicianId
+      );
+      setHasSurveys(doesHaveSurveys);
+
+      const totalCompleted = await getTotalClinicianSurveysByStatus(
+        orgId,
+        clinicianId,
+        false,
+        "Complete"
+      );
+
+      const totalInProgress = await getTotalClinicianSurveysByStatus(
+        orgId,
+        clinicianId,
+        false,
+        "In-progress"
+      );
+
+      const totalPending = await getTotalClinicianSurveysByStatus(
+        orgId,
+        clinicianId,
+        false,
+        "Pending"
+      );
+
+      setTotalSurveysCompleted(totalCompleted);
+      setTotalSurveysInProgress(totalInProgress);
+      setTotalSurveysPending(totalPending);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const orgId = localStorage.getItem("orgId");
-      const clinicianId = localStorage.getItem("clinicianId");
-
-      try {
-        setLoading(true);
-
-        const doesHaveSurveys = await doesClinicianHaveSurveys(
-          orgId,
-          clinicianId
-        );
-        setHasSurveys(doesHaveSurveys);
-
-        const totalCompleted = await getTotalClinicianSurveysByStatus(
-          orgId,
-          clinicianId,
-          false,
-          "Complete"
-        );
-
-        const totalInProgress = await getTotalClinicianSurveysByStatus(
-          orgId,
-          clinicianId,
-          false,
-          "In-progress"
-        );
-
-        const totalPending = await getTotalClinicianSurveysByStatus(
-          orgId,
-          clinicianId,
-          false,
-          "Pending"
-        );
-
-        setTotalSurveysCompleted(totalCompleted);
-        setTotalSurveysInProgress(totalInProgress);
-        setTotalSurveysPending(totalPending);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -135,6 +137,69 @@ const Dashboard = () => {
     });
   };
 
+  const reloadPageData = () => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      try {
+        const doesHaveSurveys = await doesClinicianHaveSurveys(
+          orgId,
+          clinicianId
+        );
+        setHasSurveys(doesHaveSurveys);
+
+        const totalCompleted = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "Complete"
+        );
+        setTotalSurveysCompleted(totalCompleted);
+
+        const totalInProgress = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "In-progress"
+        );
+        setTotalSurveysInProgress(totalInProgress);
+
+        const totalPending = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "Pending"
+        );
+        setTotalSurveysPending(totalPending);
+
+        const complete = await fetchClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "Complete"
+        );
+        setSurveysListDataCompleted(complete);
+
+        const inProgress = await fetchClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "In-progress"
+        );
+        setSurveysListDataInProgress(inProgress);
+
+        const pending = await fetchClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "Pending"
+        );
+        setSurveysListDataPending(pending);
+      } catch (err) {
+        showSnackbar("error", err.message);
+        console.error("An error occurred: " + err);
+      }
+    })();
+  };
+
   return (
     <>
       {loading ? (
@@ -175,7 +240,10 @@ const Dashboard = () => {
                   </StyledButton>
                 </div>
 
-                <SurveyCards surveysListData={surveysListDataCompleted} />
+                <SurveyCards
+                  surveysListData={surveysListDataCompleted}
+                  reloadPageData={reloadPageData}
+                />
               </div>
             )}
             {totalSurveysInProgress > 0 && (
@@ -189,7 +257,10 @@ const Dashboard = () => {
                     View all
                   </StyledButton>
                 </div>
-                <SurveyCards surveysListData={surveysListDataInProgress} />
+                <SurveyCards
+                  surveysListData={surveysListDataInProgress}
+                  reloadPageData={reloadPageData}
+                />
               </div>
             )}
             {totalSurveysPending > 0 && (
@@ -203,7 +274,10 @@ const Dashboard = () => {
                     View all
                   </StyledButton>
                 </div>
-                <SurveyCards surveysListData={surveysListDataPending} />
+                <SurveyCards
+                  surveysListData={surveysListDataPending}
+                  reloadPageData={reloadPageData}
+                />
               </div>
             )}
           </div>

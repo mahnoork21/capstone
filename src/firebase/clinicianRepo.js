@@ -207,7 +207,6 @@ export const fetchAllClinicianSurveys = async (
   return surveys;
 };
 
-//TODO: fetch only first 4
 export const fetchClinicianSurveysByStatus = async (
   organizationId,
   clinicianId,
