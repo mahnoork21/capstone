@@ -38,13 +38,9 @@ const listItemsArray = [
 export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
   const router = useRouter();
 
-  const { breakpoint } = useContext(ClinicianContext);
-
-  const { clinicianDetails, updateClinicianDetails } =
+  const { breakpoint, clinicianDetails, updateClinicianDetails } =
     useContext(ClinicianContext);
 
-  // Display clinician name
-  // const [clinicianName, setClinicianName] = useState("");
   useEffect(() => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
