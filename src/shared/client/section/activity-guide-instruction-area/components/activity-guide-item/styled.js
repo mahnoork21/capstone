@@ -13,7 +13,7 @@ export const ActivityGuideCard = styled.div`
   background-color: white;
 
   & span {
-    color: var(--pufi-primary, #3a9034);
+    color: #53bb50;
   }
 
   & p {
