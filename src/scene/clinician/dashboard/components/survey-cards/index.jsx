@@ -2,7 +2,7 @@ import ClientSurveyCard from "@/shared/clinician/clientSurveyCard";
 
 import { SurveyCardsBox } from "./styled";
 
-const SurveyCards = ({ surveysListData }) => {
+const SurveyCards = ({ surveysListData, reloadPageData }) => {
   return (
     <SurveyCardsBox>
       {surveysListData
@@ -34,6 +34,7 @@ const SurveyCards = ({ surveysListData }) => {
               isSubmitted={is_submitted}
               activityResponse={activity_response}
               isArchived={is_archived}
+              reloadPageData={reloadPageData}
             />
           )
         )}
