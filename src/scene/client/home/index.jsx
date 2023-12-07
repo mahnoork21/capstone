@@ -44,7 +44,7 @@ const ClientHome = () => {
       });
     } else {
       setError(
-        "Survey Link is invalid. Please contact your clinician for a link to the survey."
+        "Questionnaire Link is invalid. Please contact your clinician for a link to the questionnaire."
       );
     }
   };
@@ -119,7 +119,7 @@ const ClientHome = () => {
           </SecondaryClientButton>
 
           <PrimaryClientButton onClick={handleOnClick}>
-            Start Survey
+            Start PUFI-2
           </PrimaryClientButton>
         </ButtonWrapper>
 

@@ -223,11 +223,11 @@ const FilterPanel = forwardRef(
       return (
         <StyledFiltersList>
           <StyledFiltersHeadingTypography>
-            Survey Type:
+            Questionnaire Type:
           </StyledFiltersHeadingTypography>
           {Object.entries(checkedItems["Survey Type"]).map(
             ([name, isChecked]) => {
-              const labelId = "Survey Type-" + name.replace(" ", "-");
+              const labelId = "Questionnaire Type-" + name.replace(" ", "-");
 
               return (
                 <StyledListItem key={name}>
@@ -259,11 +259,11 @@ const FilterPanel = forwardRef(
       return (
         <StyledFiltersList>
           <StyledFiltersHeadingTypography>
-            Survey Status:
+            Questionnaire Status:
           </StyledFiltersHeadingTypography>
           {Object.entries(checkedItems["Survey Status"]).map(
             ([name, isChecked]) => {
-              const labelId = "Survey Status-" + name.replace(" ", "-");
+              const labelId = "Questionnaire Status-" + name.replace(" ", "-");
 
               return (
                 <StyledListItem key={name}>
@@ -376,7 +376,7 @@ const FilterPanel = forwardRef(
         <MainContainerBox role="presentation">
           <Toolbar />
           <HeadingBox>
-            {allSurveysPage ? "Search Survey" : "Filter By"}
+            {allSurveysPage ? "Search Questionnaire" : "Filter By"}
           </HeadingBox>
 
           <FilterOptionsBox>
@@ -394,8 +394,8 @@ const FilterPanel = forwardRef(
                 {allSurveysPage && (
                   <MenuItem value="clientId">Client Id</MenuItem>
                 )}
-                <MenuItem value="surveyType">Survey Type</MenuItem>
-                <MenuItem value="surveyStatus">Survey Status</MenuItem>
+                <MenuItem value="surveyType">Questionnaire Type</MenuItem>
+                <MenuItem value="surveyStatus">Questionnaire Status</MenuItem>
               </Select>
             </FormControl>
 

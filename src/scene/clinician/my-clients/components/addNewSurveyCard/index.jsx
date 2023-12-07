@@ -41,7 +41,7 @@ export default function AddNewSurveyCard({ toggleForm, clientId }) {
         <FormBox component="form" noValidate autoComplete="off">
           <FormControl>
             <ModifiedFormLabel id="selectSurveyType">
-              Select survey type:
+              Select questionnaire type:
             </ModifiedFormLabel>
             <RadioGroup
               aria-labelledby="selectSurveyType"

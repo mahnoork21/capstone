@@ -229,7 +229,7 @@ Thank you,
       <StyledCardContent>
         <StyledTypography1>Client ID:</StyledTypography1>
         <StyledTypography2>{clientId}</StyledTypography2>
-        <StyledTypography1>Survey ID:</StyledTypography1>
+        <StyledTypography1>Questionnaire ID:</StyledTypography1>
         <StyledTypography2>{surveyId}</StyledTypography2>
         <StyledTypography1>Type:</StyledTypography1>
         <StyledTypography2>{surveyType}</StyledTypography2>
