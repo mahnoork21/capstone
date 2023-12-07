@@ -86,12 +86,10 @@ const ActivityAnalysis = ({ survey, questionId }) => {
             <></>
           ) : (
             <div className="total-score">
-              {questionId === "well" &&
-                "Ability With Prosthesis Total Score (weighted): "}
-              {questionId === "useful" &&
-                "Prosthesis Usefulness Total Score (weighted): "}
+              {questionId === "well" && "Ability With Prosthesis Total Score: "}
+              {questionId === "useful" && "Prosthesis Usefulness Total Score: "}
               {questionId === "without" &&
-                "Ability Without Prosthesis Total Score (weighted): "}
+                "Ability Without Prosthesis Total Score: "}
               {getTotalWeightedScore(scores)}
             </div>
           )}
