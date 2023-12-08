@@ -31,7 +31,7 @@ export const youngChildActivity = [
   },
   {
     id: "blocks",
-    label: "Pull Apart Large Building Blocks (E.G., Duplo Or Lego)",
+    label: "Pull Apart Large Building Blocks (e.g., Duplo Or Lego)",
     image: "07-blocks.png",
   },
   {
@@ -46,7 +46,7 @@ export const youngChildActivity = [
   },
   {
     id: "lid",
-    label: "Twist The Lid Off A Small Bottle (E.G., Bubbles)",
+    label: "Twist The Lid Off A Small Bottle (e.g., Bubbles)",
     image: "10-lid.png",
   },
   {
@@ -88,7 +88,7 @@ export const youngChildActivity = [
   {
     id: "clean",
     label:
-      "Clean Up And Put Away Own Toys After Playing (E.G., Toy Bin, Large Toys, Lego/Duplo)",
+      "Clean Up And Put Away Own Toys After Playing (e.g., Toy Bin, Large Toys, Lego/Duplo)",
     image: "18-clean.png",
   },
   {

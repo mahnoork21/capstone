@@ -59,7 +59,7 @@ const RawScores = ({ surveyData }) => {
                   <StyledTableRow key={activity.id}>
                     <BoldTableCell align="center">{index + 1}</BoldTableCell>
                     <BoldTableCell component="th" scope="row" align="center">
-                      {activity.id}
+                      {activity.label}
                     </BoldTableCell>
                     {youngChildSurvey.map((question, index) => {
                       if (!currentActivityResponse) {

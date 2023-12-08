@@ -24,6 +24,7 @@ export const SummaryContainer = styled.div`
     width: 100%;
     text-align: start;
     font-size: 0.875;
+    padding: 0 32px;
 
     @media screen and (min-width: ${breakpoint.desktop}) {
       font-size: 1rem;

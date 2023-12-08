@@ -36,11 +36,13 @@ export const updateAnswerInSurvey = async (activityId, currentAnswer) => {
 
 export const updateCommentAndCompleteSurvey = async (comment) => {
   const surveyRef = doc(db, currentSurveyPath);
+  const submittedTimestamp = serverTimestamp();
   await updateDoc(surveyRef, {
     final_comment: comment,
     is_submitted: true,
     updated: serverTimestamp(),
-    submitted: serverTimestamp(),
+    submitted: submittedTimestamp,
     status: 2,
   });
+  return submittedTimestamp;
 };

@@ -50,11 +50,14 @@ const SummaryContent = () => {
   }, []);
 
   const handleSubmitClick = async () => {
-    await updateCommentAndCompleteSurvey(finalComment);
+    const submittedTimestamp = await updateCommentAndCompleteSurvey(
+      finalComment
+    );
     setSurvey((prevValue) => {
       return {
         ...prevValue,
         final_comment: finalComment,
+        submitted: submittedTimestamp,
       };
     });
     router.push({
@@ -89,7 +92,7 @@ const SummaryContent = () => {
     <MainContainer>
       <SummaryContainer>
         <h1>Thank you for taking the time to complete the PUFI-2!</h1>
-        <p>Please review your response before submitting.</p>
+        <p>Please review your response before submitting. Click on the pencil icon below to adjust your answers for any of the activities. Once you are finished reviewing, click "Submit" at the bottom of the page"</p>
 
         <ActivitySummaryWrapper>
           {youngChildActivity.map((activity, index) => {
