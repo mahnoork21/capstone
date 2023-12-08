@@ -29,6 +29,11 @@ export const HeaderAppBar = styled(AppBar)`
 export const HeaderToolbar = styled(Toolbar)`
   display: flex;
   justify-content: space-between;
+
+  & > p {
+    font-size: 2rem;
+    font-weight: 700;
+  }
 `;
 
 export const HeaderMenuIconButton = styled(IconButton)`

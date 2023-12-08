@@ -34,7 +34,8 @@ export const StyledCardContent = styled(CardContent)`
   display: grid;
   grid-template-columns: auto 1fr;
   flex: 1;
-
+  row-gap: 2px;
+  column-gap: 4px;
   padding-right: 4px;
 
   @media only screen and (min-width: ${breakpoint.desktop}) {
