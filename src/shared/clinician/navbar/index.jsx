@@ -1,13 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
+import { Box, List, ListItem, ListItemText, Toolbar } from "@mui/material";
 import {
   HomeOutlined,
   AccountBoxOutlined,
@@ -25,6 +18,7 @@ import {
   MainAccountBox,
   StyledAccountSvgIcon,
   InnerAccountDetailsBox,
+  StyledListItemIcon,
 } from "./styled";
 import { fetchClinicianData } from "@/firebase/clinicianRepo";
 import { ClinicianContext } from "@/context/ClinicianContext";
@@ -121,9 +115,9 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
               selected={selectedIndex === index}
               onClick={(event) => handleListItemClick(event, index, text)}
             >
-              <ListItemIcon>
+              <StyledListItemIcon>
                 <IconType />
-              </ListItemIcon>
+              </StyledListItemIcon>
               <ListItemText primary={text} />
             </SpecialHighlightedListItemBtn>
           </ListItem>
