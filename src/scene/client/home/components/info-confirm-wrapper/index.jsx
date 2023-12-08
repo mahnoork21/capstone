@@ -17,10 +17,6 @@ const InfoConfirmWrapper = () => {
             <p>Survey Type:</p>
             <p>{survey.survey_type ?? "N/A"}</p>
           </SurveyIdInfoWarpper>
-
-          <StyledMessageToUser
-            message={"Please confirm survey info before starting the survey."}
-          />
         </>
       ) : (
         <StyledMessageToUser
