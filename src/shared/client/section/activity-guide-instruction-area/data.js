@@ -27,6 +27,6 @@ export const data_activity_guide = [
   {
     miniGuideType: "activityGuide-notSure",
     src: "/instructions/activity-guide/activity-6.png",
-    text: "Don't know/ not sure Use this choice if none of the ways shown above seems quite right",
+    text: "Don't know/ not sure. Use this choice if none of the ways shown above seems quite right",
   },
 ];

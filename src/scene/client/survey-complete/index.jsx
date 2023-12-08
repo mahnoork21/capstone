@@ -54,12 +54,14 @@ const SurveyComplete = () => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-          <Text style={styles.logo}>PUFI2 - Survey Summary</Text>
+          <Text style={styles.logo}>PUFI2 - Questionnaire Summary</Text>
         </View>
         <View style={styles.infoWrapper}>
-          <Text style={styles.infoWrapperText}>Survey Id: {surveyId}</Text>
           <Text style={styles.infoWrapperText}>
-            Survey Type: {survey.survey_type}
+            Questionnaire Id: {surveyId}
+          </Text>
+          <Text style={styles.infoWrapperText}>
+            Questionnaire Type: {survey.survey_type}
           </Text>
           <Text style={styles.infoWrapperText}>
             Completion Date:{" "}
@@ -222,7 +224,7 @@ const SurveyComplete = () => {
     <MainContainer>
       <SurveyCompleteContainer>
         <CheckCircleOutlineIcon />
-        <p>Thank you for completing the survey.</p>
+        <p>Thank you for completing the PUFI-2.</p>
         <p>
           Your response is private and confidential. It will be used by
           clinicians to improve prosthesis use in children.
@@ -232,7 +234,7 @@ const SurveyComplete = () => {
             saveAs(surveyBlob, `${surveyId}.pdf`);
           }}
         >
-          Download Survey
+          Download PUFI-2
         </PrimaryClientButton>
       </SurveyCompleteContainer>
     </MainContainer>

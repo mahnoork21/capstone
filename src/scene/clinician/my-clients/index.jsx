@@ -22,12 +22,14 @@ import {
   fetchClientSurveys,
   getTotalSurveysForClient,
 } from "@/firebase/clinicianRepo";
+import { useSnackbarContext } from "@/context/snackbarContext";
 
 const noOfItemsOnOnePage = 6;
 
 const MyClients = () => {
   const router = useRouter();
   const { breakpoint } = useContext(ClinicianContext);
+  const { showSnackbar } = useSnackbarContext();
 
   const [clientsPageNo, setClientsPageNo] = useState(1);
   const handleClientsPageNoClick = (value) => {
@@ -68,6 +70,7 @@ const MyClients = () => {
         const clients = await fetchClients(orgId, clinicianId);
         setClientsListData(Object.entries(clients));
       } catch (err) {
+        showSnackbar("error", err.message);
         console.error("An error occurred: " + err);
       }
     })();
@@ -77,7 +80,7 @@ const MyClients = () => {
     router.push("/clinician/my-clients/add-new-client");
   };
 
-  //Filtered Surveys
+  // Filtered Surveys
   const [filterFormData, setFilterFormData] = useState({});
   const updateFilteredSurveys = async (formData) => {
     const orgId = localStorage.getItem("orgId");
@@ -154,6 +157,7 @@ const MyClients = () => {
         );
         setSurveysListData(surveys);
       } catch (err) {
+        showSnackbar("error", err.message);
         console.error("An error occurred: " + err);
       }
     })();
@@ -201,6 +205,7 @@ const MyClients = () => {
 
           setSurveysListData((s) => s.concat(surveys));
         } catch (err) {
+          showSnackbar("error", err.message);
           console.error("An error occurred: " + err);
         }
       })();
@@ -274,6 +279,7 @@ const MyClients = () => {
           });
         }
       } catch (err) {
+        showSnackbar("error", err.message);
         console.error("An error occurred: " + err);
       }
     })();
@@ -297,11 +303,9 @@ const MyClients = () => {
         <MyClientsHeadingTypography variant="h1">
           MY CLIENTS
         </MyClientsHeadingTypography>
-        {breakpoint === "mobile" && (
-          <AddClientButton onClick={addClientButtonClick}>
-            Add Client
-          </AddClientButton>
-        )}
+        <AddClientButton onClick={addClientButtonClick}>
+          Add Client
+        </AddClientButton>
       </HeadingBox>
       <MainContentBox>
         {(breakpoint === "desktop" || !selectedClientIndex) && (
@@ -340,11 +344,6 @@ const MyClients = () => {
           </>
         )}
       </MainContentBox>
-      {breakpoint === "desktop" && (
-        <AddClientButton onClick={addClientButtonClick}>
-          Add Client
-        </AddClientButton>
-      )}
       <FilterPanel
         isFilterPanelOpen={isFilterPanelOpen}
         toggleFilterPanelClick={toggleFilterPanelClick}

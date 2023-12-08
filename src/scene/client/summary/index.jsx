@@ -171,7 +171,7 @@ const SummaryContent = () => {
         <MessageToUser message="Please write any comments about the skills your child does, how they use their prosthesis, and/or other activities they do two-handed." />
         <ButtonWrapper>
           <PrimaryClientButton variant="contained" onClick={handleSubmitClick}>
-            Submit Survey
+            Submit PUFI-2
           </PrimaryClientButton>
         </ButtonWrapper>
       </SummaryContainer>

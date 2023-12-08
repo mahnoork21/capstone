@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-
 import {
   Box,
   List,
@@ -15,6 +14,7 @@ import {
   BallotOutlined,
   Logout,
 } from "@mui/icons-material";
+
 import {
   LogOutBtn,
   SpecialHighlightedListItemBtn,
@@ -25,20 +25,37 @@ import {
   MainAccountBox,
   StyledAccountSvgIcon,
   InnerAccountDetailsBox,
-  StyledViewProfileLink,
 } from "./styled";
+import { fetchClinicianData } from "@/firebase/clinicianRepo";
+import { ClinicianContext } from "@/context/ClinicianContext";
 
 const listItemsArray = [
   { IconType: HomeOutlined, text: "Dashboard" },
   { IconType: AccountBoxOutlined, text: "My Clients" },
-  { IconType: BallotOutlined, text: "All Surveys" },
+  { IconType: BallotOutlined, text: "All Questionnaires" },
 ];
 
 export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
   const router = useRouter();
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const { breakpoint, clinicianDetails, updateClinicianDetails } =
+    useContext(ClinicianContext);
+
+  useEffect(() => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      let response;
+      try {
+        response = await fetchClinicianData(orgId, clinicianId);
+      } catch (err) {
+        console.error(err);
+      }
+
+      updateClinicianDetails(response);
+    })();
+  }, []);
 
   // For selection of List Item
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -58,7 +75,7 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
   const handleListItemClick = (event, index, text) => {
     setSelectedIndex(index);
     router.push("/clinician/" + text.toLowerCase().trim().replace(" ", "-"));
-    handleDrawerToggle();
+    if (breakpoint == "mobile") handleDrawerToggle();
   };
 
   const handleLogoutClick = () => {
@@ -87,8 +104,14 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
           </svg>
         </StyledAccountSvgIcon>
         <InnerAccountDetailsBox>
-          <StyledClinicianName>Clinician Name</StyledClinicianName>
-          <StyledViewProfileLink>View Profile</StyledViewProfileLink>
+          <StyledClinicianName>
+            {(clinicianDetails?.first_name || "") +
+              " " +
+              (clinicianDetails?.last_name || "")}
+          </StyledClinicianName>
+          {/* Commented out for next team: 
+          Use this to easily add "View Profile" link shown in Figma 
+          <StyledViewProfileLink>View Profile</StyledViewProfileLink> */}
         </InnerAccountDetailsBox>
       </MainAccountBox>
       <List>
@@ -119,7 +142,9 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
     <>
       <NavbarBox component="nav" aria-label="mailbox folders">
         <MobileDrawer
-          container={container}
+          container={
+            window !== undefined ? () => window().document.body : undefined
+          }
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}

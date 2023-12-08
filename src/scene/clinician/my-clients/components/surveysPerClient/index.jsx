@@ -56,7 +56,7 @@ export default function SurveysPerClient({
             )}
           </div>
           <AddNewSurveyButton onClick={addNewSurveyClick}>
-            Add New Survey
+            Add New PUFI-2
           </AddNewSurveyButton>
 
           <FilterSurveyButton onClick={toggleFilterPanelClick}>

@@ -28,7 +28,7 @@ const ResponseGuide = () => {
             },
           }}
         >
-          <SurveyNavButton>Survey Questions</SurveyNavButton>
+          <SurveyNavButton>PUFI-2 Questions</SurveyNavButton>
         </Link>
       </ResponseGuideWrapper>
     </MainContainer>

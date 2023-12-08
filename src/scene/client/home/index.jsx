@@ -44,7 +44,7 @@ const ClientHome = () => {
       });
     } else {
       setError(
-        "Survey Link is invalid. Please contact your clinician for a link to the survey."
+        "Questionnaire Link is invalid. Please contact your clinician for a link to the questionnaire."
       );
     }
   };
@@ -82,16 +82,17 @@ const ClientHome = () => {
       <HomeContainer>
         <InfoWrapper>
           <ContentWrapper>
-            <h1>What is PUFI-2 survey?</h1>
+            <h1>What is PUFI-2?</h1>
             <p>
-              The PUFI-2 questionnaire lets children and parents tell their
-              clinicians about the functional use of a prosthetic device at
-              home, at school, and in the community.
+              The Prosthetic Upper Limb Functional Index (PUFI-2) is a parent
+              and child electronic questionnaire that measures children’s
+              performance in daily bimanual activities, the ease of performance
+              with/without the prosthesis and usefulness of the prosthesis. The
+              results from the PUFI-2 can help clinicians work collaboratively
+              with clients to inform goal setting and treatment planning.
             </p>
             <p>
-              Responses to these questions provide clinicians with meaningful
-              information that can be used for prosthetic treatment planning and
-              functional and prosthetic training in daily activities.
+              Start by learning more about the PUFI-2 in the introductory video.
             </p>
 
             {breakpoint === "desktop" && <InfoConfirmWrapper />}
@@ -113,13 +114,13 @@ const ClientHome = () => {
         {breakpoint !== "desktop" && <InfoConfirmWrapper />}
 
         <ButtonWrapper>
-          <PrimaryClientButton onClick={handleOnClick}>
-            Start Survey
-          </PrimaryClientButton>
-
           <SecondaryClientButton onClick={handleViewInstructionsclick}>
             View Instructions
           </SecondaryClientButton>
+
+          <PrimaryClientButton onClick={handleOnClick}>
+            Start PUFI-2
+          </PrimaryClientButton>
         </ButtonWrapper>
 
         <Snackbar

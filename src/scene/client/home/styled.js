@@ -64,6 +64,7 @@ export const ContentWrapper = styled.div`
 
   & > p:last-of-type {
     margin-top: 16px;
+    font-weight: 600;
   }
 
   & > ul {
@@ -92,7 +93,7 @@ export const ButtonWrapper = styled.div`
 export const GreyP = styled.p`
   color: var(--pufi-grey-dark);
   font-weight: bold;
-  font-size: 8px;
+  font-size: 0.7rem;
 
   ${(props) =>
     props.$isDesktop
@@ -107,6 +108,6 @@ export const GreyP = styled.p`
   @media only screen and (min-width: ${breakpoint.desktop}) {
     flex-direction: row;
     width: auto;
-    font-size: 10px;
+    font-size: 0.825rem;
   }
 `;

@@ -34,7 +34,7 @@ const InstructionNavigation = ({
             });
           }}
         >
-          Start Survey
+          Start PUFI-2
         </PrimaryClientButton>
       ) : (
         <SurveyNavButton onClick={onNextClick}>Next</SurveyNavButton>

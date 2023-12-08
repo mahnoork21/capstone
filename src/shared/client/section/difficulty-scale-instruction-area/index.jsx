@@ -9,6 +9,8 @@ import {
 import { ClientContext } from "@/context/ClientContext";
 import { Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { GuideButton } from "@/scene/client/survey/components/activity-question/styled";
+import FilterBAndWOutlinedIcon from "@mui/icons-material/FilterBAndWOutlined";
 
 const DifficultyScaleInstructionArea = ({
   isInSurvey = false,
@@ -20,6 +22,18 @@ const DifficultyScaleInstructionArea = ({
     <DifficultyScaleInstructionWrapper isInSurvey={isInSurvey}>
       <HowQuestion>
         <h2>How well is the activity performed with/without the prosthesis?</h2>
+        <p>
+          This information is also available within the PUFI-2 questionnaire by
+          clicking the icon{"  "}
+          <GuideButton
+            variant="outlined"
+            startIcon={<FilterBAndWOutlinedIcon />}
+          >
+            Difficulty Scale
+          </GuideButton>
+          {"  "}
+          beside response options
+        </p>
       </HowQuestion>
       <DifficultyInfoContainer isInSurvey={isInSurvey}>
         {data_difficulty_scale.map((data, index) => (

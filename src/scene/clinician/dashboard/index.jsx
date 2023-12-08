@@ -17,10 +17,12 @@ import {
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import SurveyCards from "./components/survey-cards";
+import { useSnackbarContext } from "@/context/snackbarContext";
 
 const Dashboard = () => {
   const router = useRouter();
   const { breakpoint } = useContext(ClinicianContext);
+  const { showSnackbar } = useSnackbarContext();
 
   const [loading, setLoading] = useState(true);
   const [hasSurveys, setHasSurveys] = useState(false);
@@ -29,51 +31,51 @@ const Dashboard = () => {
   const [totalSurveysInProgress, setTotalSurveysInProgress] = useState(0);
   const [totalSurveysPending, setTotalSurveysPending] = useState(0);
 
+  const fetchData = async () => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    try {
+      setLoading(true);
+
+      const doesHaveSurveys = await doesClinicianHaveSurveys(
+        orgId,
+        clinicianId
+      );
+      setHasSurveys(doesHaveSurveys);
+
+      const totalCompleted = await getTotalClinicianSurveysByStatus(
+        orgId,
+        clinicianId,
+        false,
+        "Complete"
+      );
+
+      const totalInProgress = await getTotalClinicianSurveysByStatus(
+        orgId,
+        clinicianId,
+        false,
+        "In-progress"
+      );
+
+      const totalPending = await getTotalClinicianSurveysByStatus(
+        orgId,
+        clinicianId,
+        false,
+        "Pending"
+      );
+
+      setTotalSurveysCompleted(totalCompleted);
+      setTotalSurveysInProgress(totalInProgress);
+      setTotalSurveysPending(totalPending);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const orgId = localStorage.getItem("orgId");
-      const clinicianId = localStorage.getItem("clinicianId");
-
-      try {
-        setLoading(true);
-
-        const doesHaveSurveys = await doesClinicianHaveSurveys(
-          orgId,
-          clinicianId
-        );
-        setHasSurveys(doesHaveSurveys);
-
-        const totalCompleted = await getTotalClinicianSurveysByStatus(
-          orgId,
-          clinicianId,
-          false,
-          "Complete"
-        );
-
-        const totalInProgress = await getTotalClinicianSurveysByStatus(
-          orgId,
-          clinicianId,
-          false,
-          "In-progress"
-        );
-
-        const totalPending = await getTotalClinicianSurveysByStatus(
-          orgId,
-          clinicianId,
-          false,
-          "Pending"
-        );
-
-        setTotalSurveysCompleted(totalCompleted);
-        setTotalSurveysInProgress(totalInProgress);
-        setTotalSurveysPending(totalPending);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -135,6 +137,69 @@ const Dashboard = () => {
     });
   };
 
+  const reloadPageData = () => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    (async () => {
+      try {
+        const doesHaveSurveys = await doesClinicianHaveSurveys(
+          orgId,
+          clinicianId
+        );
+        setHasSurveys(doesHaveSurveys);
+
+        const totalCompleted = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "Complete"
+        );
+        setTotalSurveysCompleted(totalCompleted);
+
+        const totalInProgress = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "In-progress"
+        );
+        setTotalSurveysInProgress(totalInProgress);
+
+        const totalPending = await getTotalClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          false,
+          "Pending"
+        );
+        setTotalSurveysPending(totalPending);
+
+        const complete = await fetchClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "Complete"
+        );
+        setSurveysListDataCompleted(complete);
+
+        const inProgress = await fetchClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "In-progress"
+        );
+        setSurveysListDataInProgress(inProgress);
+
+        const pending = await fetchClinicianSurveysByStatus(
+          orgId,
+          clinicianId,
+          "Pending"
+        );
+        setSurveysListDataPending(pending);
+      } catch (err) {
+        showSnackbar("error", err.message);
+        console.error("An error occurred: " + err);
+      }
+    })();
+  };
+
   return (
     <>
       {loading ? (
@@ -161,45 +226,62 @@ const Dashboard = () => {
             </AddClientButton>
           </div>
           <div className="outer-cards-container">
-            <div className="inner-cards-container">
-              <div className="cards-status-heading completed">
-                <span>
-                  Recently Completed Surveys ({totalSurveysCompleted})
-                </span>
-                <StyledButton
-                  variant="text"
-                  onClick={() => viewAllClickHandler("complete")}
-                >
-                  View all
-                </StyledButton>
-              </div>
+            {totalSurveysCompleted > 0 && (
+              <div className="inner-cards-container">
+                <div className="cards-status-heading completed">
+                  <span>
+                    Recently Completed Questionnaires ({totalSurveysCompleted})
+                  </span>
+                  <StyledButton
+                    variant="text"
+                    onClick={() => viewAllClickHandler("complete")}
+                  >
+                    View all
+                  </StyledButton>
+                </div>
 
-              <SurveyCards surveysListData={surveysListDataCompleted} />
-            </div>
-            <div>
-              <div className="cards-status-heading">
-                <span>In-Progress Surveys ({totalSurveysInProgress})</span>
-                <StyledButton
-                  variant="text"
-                  onClick={() => viewAllClickHandler("in-progress")}
-                >
-                  View all
-                </StyledButton>
+                <SurveyCards
+                  surveysListData={surveysListDataCompleted}
+                  reloadPageData={reloadPageData}
+                />
               </div>
-              <SurveyCards surveysListData={surveysListDataInProgress} />
-            </div>
-            <div>
-              <div className="cards-status-heading">
-                <span>Pending Surveys ({totalSurveysPending})</span>
-                <StyledButton
-                  variant="text"
-                  onClick={() => viewAllClickHandler("pending")}
-                >
-                  View all
-                </StyledButton>
+            )}
+            {totalSurveysInProgress > 0 && (
+              <div>
+                <div className="cards-status-heading">
+                  <span>
+                    In-Progress Questionnaires ({totalSurveysInProgress})
+                  </span>
+                  <StyledButton
+                    variant="text"
+                    onClick={() => viewAllClickHandler("in-progress")}
+                  >
+                    View all
+                  </StyledButton>
+                </div>
+                <SurveyCards
+                  surveysListData={surveysListDataInProgress}
+                  reloadPageData={reloadPageData}
+                />
               </div>
-              <SurveyCards surveysListData={surveysListDataPending} />
-            </div>
+            )}
+            {totalSurveysPending > 0 && (
+              <div>
+                <div className="cards-status-heading">
+                  <span>Pending Questionnaires ({totalSurveysPending})</span>
+                  <StyledButton
+                    variant="text"
+                    onClick={() => viewAllClickHandler("pending")}
+                  >
+                    View all
+                  </StyledButton>
+                </div>
+                <SurveyCards
+                  surveysListData={surveysListDataPending}
+                  reloadPageData={reloadPageData}
+                />
+              </div>
+            )}
           </div>
         </MainContainer>
       )}

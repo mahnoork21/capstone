@@ -178,7 +178,7 @@ export const ClientProvider = ({ children }) => {
         }
       }
     } else {
-      return "Survey Link is invalid. Please contact your clinician for a link to the survey.";
+      return "Questionnaire Link is invalid. Please contact your clinician for a link to the questionnaire.";
     }
   }, [
     organizationId,

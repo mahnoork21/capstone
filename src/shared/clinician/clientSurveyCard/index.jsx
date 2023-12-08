@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import differenceInDays from "date-fns/differenceInDays";
 import {
   InsertLink,
@@ -6,6 +6,7 @@ import {
   MoreHorizRounded,
   VisibilityOutlined,
   ContentCopy,
+  OpenInNew,
 } from "@mui/icons-material";
 import {
   StyledCard,
@@ -21,8 +22,8 @@ import { Menu, MenuItem } from "@mui/material";
 import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOutlined";
 import { archiveRestoreSurveyById } from "@/firebase/clinicianRepo";
 import { useRouter } from "next/router";
-
-// TODO: implement email link
+import { useSnackbarContext } from "@/context/snackbarContext";
+import { ClinicianContext } from "@/context/ClinicianContext";
 
 const ClientSurveyCard = ({
   surveyId,
@@ -39,6 +40,9 @@ const ClientSurveyCard = ({
   reloadPageData,
 }) => {
   const router = useRouter();
+  const { showSnackbar } = useSnackbarContext();
+
+  const { clinicianDetails } = useContext(ClinicianContext);
 
   let surveyUrl = `${window.location.host}/client?orgId=${orgId}&clinicianId=${clinicianId}&surveyId=${surveyId}`;
   if (!surveyUrl.startsWith("http")) {
@@ -79,6 +83,11 @@ const ClientSurveyCard = ({
 
   const emailBody = `Dear [Client Name],
 
+This email is from Clinician ${
+    (clinicianDetails?.first_name || "") +
+    " " +
+    (clinicianDetails?.last_name || "")
+  }.
 
 ${
   whichCard == "in-progress"
@@ -86,20 +95,15 @@ ${
     : "Your link to complete the Prosthetic Upper Limb Functional Index (PUFI-2) is below. Please watch the PUFI-2 introduction video at the following link prior to completing the questionnaire."
 }
 
-
 This link is unique to your client ID, and should not be shared with others. If you stop or close the questionnaire after starting, your responses will be saved, and you may resume at a later point by visiting this link again.
 
-
-  PUFI-2 ${
+PUFI-2 ${
     surveyType.startsWith("Young") ? "Parent" : "Older Child"
   } Questionnaire Link [${surveyUrl}]
 
-
 Once you submit the completed questionnaire, I will review your results and will share them with you at your next appointment.
 
-
 Please contact me if you have any questions or concerns.
-
 
 Thank you,
 
@@ -118,10 +122,17 @@ Thank you,
   const handleCopyEmailBodyClick = () =>
     navigator.clipboard.writeText(emailBody);
 
-  const handleCopyLinkClick = () => navigator.clipboard.writeText(surveyUrl);
+  const handleOpenPufi2Click = () => window.open(surveyUrl, "_blank").focus();
+
+  const handleCopyPufi2Click = () => navigator.clipboard.writeText(surveyUrl);
 
   const handleArchiveClick = async () => {
-    await archiveRestoreSurveyById(surveyId);
+    try {
+      await archiveRestoreSurveyById(orgId, clinicianId, surveyId);
+    } catch (err) {
+      showSnackbar("error", err.message);
+      console.error(err);
+    }
 
     await reloadPageData();
   };
@@ -134,9 +145,14 @@ Thank you,
     whichCard == "completed"
       ? [
           {
+            icon: <OpenInNew />,
+            text: "OPEN PUFI-2",
+            clickHandlerFn: handleOpenPufi2Click,
+          },
+          {
             icon: <InsertLink />,
-            text: "COPY SURVEY LINK",
-            clickHandlerFn: handleCopyLinkClick,
+            text: "COPY PUFI-2 LINK",
+            clickHandlerFn: handleCopyPufi2Click,
           },
           {
             icon: isArchived ? (
@@ -151,9 +167,14 @@ Thank you,
       : whichCard == "in-progress"
       ? [
           {
+            icon: <OpenInNew />,
+            text: "OPEN PUFI-2",
+            clickHandlerFn: handleOpenPufi2Click,
+          },
+          {
             icon: <InsertLink />,
-            text: "COPY SURVEY LINK",
-            clickHandlerFn: handleCopyLinkClick,
+            text: "COPY PUFI-2 LINK",
+            clickHandlerFn: handleCopyPufi2Click,
           },
           {
             icon: <ContentCopy />,
@@ -177,9 +198,14 @@ Thank you,
         ]
       : [
           {
+            icon: <OpenInNew />,
+            text: "OPEN PUFI-2",
+            clickHandlerFn: handleOpenPufi2Click,
+          },
+          {
             icon: <InsertLink />,
-            text: "COPY SURVEY LINK",
-            clickHandlerFn: handleCopyLinkClick,
+            text: "COPY PUFI-2 LINK",
+            clickHandlerFn: handleCopyPufi2Click,
           },
           {
             icon: <ContentCopy />,
@@ -210,7 +236,7 @@ Thank you,
       <StyledCardContent>
         <StyledTypography1>Client ID:</StyledTypography1>
         <StyledTypography2>{clientId}</StyledTypography2>
-        <StyledTypography1>Survey ID:</StyledTypography1>
+        <StyledTypography1>Questionnaire ID:</StyledTypography1>
         <StyledTypography2>{surveyId}</StyledTypography2>
         <StyledTypography1>Type:</StyledTypography1>
         <StyledTypography2>{surveyType}</StyledTypography2>

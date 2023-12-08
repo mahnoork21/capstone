@@ -21,7 +21,7 @@ const InfoConfirmWrapper = () => {
       ) : (
         <StyledMessageToUser
           message={
-            "Survey link is not valid. Please contact your clinician for a link to the survey."
+            "Questionnaire link is not valid. Please contact your clinician for a link to the questionnaire."
           }
           type="error"
         />

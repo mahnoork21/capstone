@@ -4,7 +4,6 @@ import {
   getDoc,
   setDoc,
   collection,
-  collectionGroup,
   serverTimestamp,
   updateDoc,
   query,
@@ -208,7 +207,6 @@ export const fetchAllClinicianSurveys = async (
   return surveys;
 };
 
-//TODO: fetch only first 4
 export const fetchClinicianSurveysByStatus = async (
   organizationId,
   clinicianId,
@@ -248,34 +246,35 @@ export const fetchClinicianSurveysByStatus = async (
   return surveys;
 };
 
-export const archiveRestoreSurveyById = async (surveyId) => {
-  if (!surveyId) throw new Error("Insufficient data provided");
+export const archiveRestoreSurveyById = async (
+  organizationId,
+  clinicianId,
+  surveyId
+) => {
+  if (!organizationId || !clinicianId || !surveyId)
+    throw new Error("Insufficient data provided");
 
-  try {
-    const surveyQuery = query(
-      collectionGroup(db, "Survey"),
-      where("survey_id", "==", surveyId)
-    );
-    const surveySnapshot = await getDocs(surveyQuery);
+  const surveyRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId,
+    "Survey",
+    surveyId
+  );
+  const surveySnapshot = await getDoc(surveyRef);
 
-    if (surveySnapshot.size === 0) {
-      throw new Error("Survey not found");
-    }
+  if (!surveySnapshot.exists()) throw new Error("Survey ID is invalid.");
 
-    const surveyDocRef = surveySnapshot.docs[0].ref;
+  const currentIsArchivedValue = surveySnapshot.data().is_archived;
 
-    const currentIsArchived = surveySnapshot.docs[0].data().is_archived;
+  // Update the "is_archived" field to the opposite value
+  await updateDoc(surveyRef, {
+    is_archived: !currentIsArchivedValue,
+  });
 
-    // Update the "is_archived" field to the opposite value
-    await updateDoc(surveyDocRef, {
-      is_archived: !currentIsArchived,
-    });
-
-    return true;
-  } catch (error) {
-    console.error("Error archiving/restoring survey:", error);
-    return false;
-  }
+  return true;
 };
 
 export const doesClinicianHaveSurveys = async (organizationId, clinicianId) => {
@@ -302,6 +301,26 @@ export const doesClinicianHaveSurveys = async (organizationId, clinicianId) => {
     console.error("Error checking if clinician has surveys:", error);
     return false;
   }
+};
+
+export const fetchClinicianData = async (organizationId, clinicianId) => {
+  if (!organizationId || !clinicianId)
+    throw new Error("Insufficient data provided");
+
+  const clinicianRef = doc(
+    db,
+    "Organization",
+    organizationId,
+    "Clinician",
+    clinicianId
+  );
+  const clinicianSnapshot = await getDoc(clinicianRef);
+
+  if (!clinicianSnapshot.exists()) throw new Error("Clinician ID is invalid.");
+
+  const clinician = clinicianSnapshot.data();
+
+  return clinician;
 };
 
 export const fetchClients = async (organizationId, clinicianId) => {
