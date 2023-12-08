@@ -58,9 +58,9 @@ const PersonalDetils = () => {
   return (
     <>
       <React.Fragment>
-        <Box display={"flex"} flexDirection={"column"}>
-          <RowBox>
-            <ColumnBox>
+        <Box display={"flex"}>
+          <ColumnBox>
+            <RowBox>
               <Labels>First Name</Labels>
               <Controller
                 control={control}
@@ -76,11 +76,12 @@ const PersonalDetils = () => {
                   />
                 )}
               />
-            </ColumnBox>
+            </RowBox>
+
             {errors.firstName && (
               <ErrorMessage>{errors.firstName.message}</ErrorMessage>
             )}
-            <ColumnBox>
+            <RowBox>
               <Labels>Last Name</Labels>
               <Controller
                 control={control}
@@ -92,62 +93,64 @@ const PersonalDetils = () => {
                   <StyledTextfield id="lastName" {...field} />
                 )}
               />
-            </ColumnBox>
+            </RowBox>
             {errors.lastName && (
               <ErrorMessage>{errors.lastName.message}</ErrorMessage>
             )}
-          </RowBox>
 
-          <ColumnBox>
-            <Labels>Email</Labels>
-            <Controller
-              control={control}
-              name="email"
-              rules={{
-                required: "email is required",
-              }}
-              render={({ field }) => <StyledTextfield id="email" {...field} />}
-            />
-
+            <RowBox>
+              <Labels>Email</Labels>
+              <Controller
+                control={control}
+                name="email"
+                rules={{
+                  required: "email is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield id="email" {...field} />
+                )}
+              />
+            </RowBox>
             {errors.email && (
               <ErrorMessage>{errors.email.message}</ErrorMessage>
             )}
 
-            <Labels>Password</Labels>
-            <Controller
-              control={control}
-              name="password"
-              rules={{
-                required: "password is required",
-              }}
-              render={({ field }) => (
-                <StyledTextfield type="password" id="password" {...field} />
-              )}
-            />
-            <Typography sx={{ fontSize: "12px", color: "blue" }}>
-              Password length must be at least 6 characters.
-            </Typography>
-
+            <RowBox>
+              <Labels>Password</Labels>
+              <Controller
+                control={control}
+                name="password"
+                rules={{
+                  required: "password is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield type="password" id="password" {...field} />
+                )}
+              />
+              <Typography sx={{ fontSize: "12px", color: "blue" }}>
+                Password length must be at least 6 characters.
+              </Typography>
+            </RowBox>
             {errors.password && (
               <ErrorMessage>{errors.password.message}</ErrorMessage>
             )}
-
-            <Labels>Confirm Password</Labels>
-            <Controller
-              control={control}
-              name="confirmPassword"
-              rules={{
-                required: "confirm password",
-              }}
-              render={({ field }) => (
-                <StyledTextfield
-                  type="password"
-                  id="confirmPassword"
-                  {...field}
-                />
-              )}
-            />
-
+            <RowBox>
+              <Labels>Confirm Password</Labels>
+              <Controller
+                control={control}
+                name="confirmPassword"
+                rules={{
+                  required: "confirm password",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield
+                    type="password"
+                    id="confirmPassword"
+                    {...field}
+                  />
+                )}
+              />
+            </RowBox>
             {errors.confirmPassword && (
               <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
             )}

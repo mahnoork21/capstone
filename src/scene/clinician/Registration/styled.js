@@ -87,7 +87,7 @@ export const FormBox = styled(Box)`
 export const Labels = styled(Typography)`
   position: relative;
 
-  font-size: 0.875rem;
+  \font-size: 0.875rem;
   font-style: normal;
   font-weight: 600;
 `;
@@ -139,19 +139,10 @@ export const errorSnackbar = styled(Snackbar)`
 `;
 
 export const ColumnBox = styled(Box)`
-  // flex: 1;
-  display: flex;
-  flex-direction: column;
+  flex: 1;
 `;
 
 export const RowBox = styled(Box)`
-  display: flex;
-  // justify-content: space-between;
-  width: 400px;
-  max-width: 400px;
-  padding; 12px 20px;
-  margin: 8px;
-  box-sizing: border-box;
   align-items: center;
   margin-bottom: 10px;
 `;
