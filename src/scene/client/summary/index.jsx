@@ -50,11 +50,14 @@ const SummaryContent = () => {
   }, []);
 
   const handleSubmitClick = async () => {
-    await updateCommentAndCompleteSurvey(finalComment);
+    const submittedTimestamp = await updateCommentAndCompleteSurvey(
+      finalComment
+    );
     setSurvey((prevValue) => {
       return {
         ...prevValue,
         final_comment: finalComment,
+        submitted: submittedTimestamp,
       };
     });
     router.push({
