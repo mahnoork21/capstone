@@ -132,7 +132,7 @@ const Dashboard = () => {
 
   const viewAllClickHandler = (status) => {
     router.push({
-      pathname: "/clinician/all-surveys",
+      pathname: "/clinician/all-questionnaires",
       query: { status },
     });
   };

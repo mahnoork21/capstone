@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 
 const noOfItemsOnOnePage = 9;
 
-const AllSurveys = () => {
+const AllQuestionnaires = () => {
   //Getting status of the surveys from url
   const router = useRouter();
   const { status } = router.query;
@@ -465,4 +465,4 @@ const AllSurveys = () => {
   );
 };
 
-export default AllSurveys;
+export default AllQuestionnaires;

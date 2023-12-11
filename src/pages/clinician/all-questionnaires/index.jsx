@@ -1,5 +1,5 @@
-import AllSurveys from "@/scene/clinician/all-surveys";
+import AllQuestionnaires from "@/scene/clinician/all-questionnaires";
 
-const AllSurveysPage = () => <AllSurveys />;
+const AllQuestionnairesPage = () => <AllQuestionnaires />;
 
-export default AllSurveysPage;
+export default AllQuestionnairesPage;
