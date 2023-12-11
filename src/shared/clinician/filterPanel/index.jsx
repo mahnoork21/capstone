@@ -34,7 +34,8 @@ const FilterPanel = forwardRef(
   ) => {
     const router = useRouter();
 
-    const allSurveysPage = router.pathname.split("/")[2] === "all-surveys";
+    const allSurveysPage =
+      router.pathname.split("/")[2] === "all-questionnaires";
 
     const [checkedItems, setCheckedItems] = useState({
       "Survey Type": {
