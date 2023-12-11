@@ -2,11 +2,11 @@ import { breakpoint } from "@/styles/breakpoints";
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-  flex-shrink: 0;
   border-radius: 8px;
   background: #fff;
+  width: 100%;
 
-  padding: 20px 30px 60px 30px;
+  padding: 20px 30px 100px 30px;
   margin-top: 20px;
 
   & h2 {
