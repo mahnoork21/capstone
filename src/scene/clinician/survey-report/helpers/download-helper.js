@@ -4,67 +4,62 @@ import { getTotalWeightedScore } from "../components/activity-analysis/helper/we
 import { getScores } from "../components/activity-analysis/helper/scores-helper";
 
 export const parseDataToCsvFormatYoungChild = (surveyData) => {
+  const customSortOrder = Object.keys(categoryMappings);
+
+  const orderWithinCategory = [
+    "do",
+    "how",
+    "well",
+    "useful",
+    "without",
+    "category",
+  ];
+
   const totalScores = {
-    ability_with_prosthesis_weighted_total_score: getTotalWeightedScore(
+    ability_with_prosthesis_total_score: getTotalWeightedScore(
       getScores(surveyData, "well")
     ),
-    prosthesis_usefulness_weighted_total_score: getTotalWeightedScore(
+    prosthesis_usefulness_total_score: getTotalWeightedScore(
       getScores(surveyData, "useful")
     ),
-    ability_without_prosthesis_weighted_total_score: getTotalWeightedScore(
+    ability_without_prosthesis_total_score: getTotalWeightedScore(
       getScores(surveyData, "without")
     ),
   };
 
   let csvData = Object.entries(surveyData["activity_response"])
     .flatMap(([key, val]) => {
-      const category = categoryMappings[key.split("_")[0]]; // Extracting the activity name
+      const category = categoryMappings[key.split("_")[0]] || ""; // Extracting the activity name
 
-      return Object.entries(val).flatMap(([questionId, v]) => {
+      return orderWithinCategory.map((orderKey) => {
+        const v = val[orderKey];
         const question = youngChildSurvey.find(
-          (q) => q.questionId === questionId
+          (q) => q.questionId === orderKey
         );
+
         const labelShort =
           question?.options.find((opt) => opt.value === v.value)?.labelShort ||
           "";
 
         // Define column names
-        const columns = [
-          `${key}_${questionId}_text`,
-          `${key}_${questionId}_value`,
-        ];
-
-        // Define values for each column
-        const values = [
-          labelShort, // For _text column
-          v.value, // For _value column
-        ];
+        const columnKey = `${key}_${orderKey}`;
 
         // Create an object with the columns and values
-        const result = {};
-        columns.forEach((col, index) => {
-          result[col] = values[index];
-        });
+        const result = {
+          [columnKey]: orderKey === "category" ? category : labelShort,
+        };
 
-        // Add the category to the result
-        result[`${key}_category`] = category;
-
-        return result;
+        return { result, order: customSortOrder.indexOf(key.split("_")[0]) };
       });
     })
+    .sort((a, b) => a.order - b.order)
+    .map((entry) => entry.result)
     .reduce((acc, obj) => ({ ...acc, ...obj }), {});
 
-  const sortedCsvData = {};
-  Object.keys(csvData)
-    .sort()
-    .forEach((key) => {
-      sortedCsvData[key] = csvData[key];
-    });
+  const csvHeader = Object.keys(csvData).concat(Object.keys(totalScores));
 
-  const csvHeader = Object.keys(sortedCsvData).concat(Object.keys(totalScores));
-
-  // Merge sortedCsvData and totalScores
-  const finalCsvData = Object.assign({}, sortedCsvData, totalScores);
+  // Merge csvData and totalScores
+  const finalCsvData = { ...csvData, ...totalScores };
 
   return [csvHeader, finalCsvData];
 };
