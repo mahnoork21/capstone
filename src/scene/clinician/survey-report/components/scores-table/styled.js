@@ -52,7 +52,7 @@ export const StyledTableContainer = styled(TableContainer)`
 
   @media screen and (max-width: ${breakpoint.desktop}) {
     & .answer {
-      min-width: 300px;
+      min-width: 100px;
     }
   }
 `;

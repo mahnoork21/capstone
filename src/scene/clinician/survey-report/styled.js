@@ -4,10 +4,12 @@ import { Tab, Tabs } from "@mui/material";
 
 export const Container = styled.div`
   margin-right: 50px;
+
   & .header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
   }
 
   & h1 {
