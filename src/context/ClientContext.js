@@ -194,9 +194,23 @@ export const ClientProvider = ({ children }) => {
     switch (type) {
       case "value":
         currentAnswer[questionId].value = answer;
-        questionIds.forEach((questionId, index) => {
-          if (index > questionIds.indexOf(questionId)) {
-            currentAnswer[questionId] = {};
+
+        // Clear answer for next question if no, cannot do is selected for 'do' question
+        // or don't know is selected for 'how' question
+        questionIds.forEach((qId, index) => {
+          if (
+            index > questionIds.indexOf(questionId) &&
+            questionId === "do" &&
+            answer === 0
+          ) {
+            currentAnswer[qId] = {};
+          }
+          if (
+            index > questionIds.indexOf(questionId) &&
+            questionId === "how" &&
+            answer === 0
+          ) {
+            currentAnswer[qId] = {};
           }
         });
         break;

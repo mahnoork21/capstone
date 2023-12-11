@@ -6,6 +6,7 @@ import {
   Drawer,
   SvgIcon,
   Typography,
+  ListItemIcon,
 } from "@mui/material";
 import { breakpoint } from "@/styles/breakpoints";
 
@@ -43,6 +44,10 @@ export const MainAccountBox = styled(Box)`
   flex-direction: row;
   align-content: center;
   align-items: center;
+
+  & li {
+    margin-top: 16px;
+  }
 `;
 
 export const StyledAccountSvgIcon = styled(SvgIcon)`
@@ -77,6 +82,9 @@ export const MobileNavContainer = styled.div`
 `;
 
 export const SpecialHighlightedListItemBtn = styled(ListItemButton)`
+  gap: 12px;
+  padding-left: 26px;
+
   &.Mui-selected {
     color: var(--pufi-primary-blue, #1979be);
 
@@ -88,4 +96,9 @@ export const SpecialHighlightedListItemBtn = styled(ListItemButton)`
 
 export const NavigationPanel = styled.div`
   background-color: white;
+`;
+
+export const StyledListItemIcon = styled(ListItemIcon)`
+  flex-grow: 0;
+  min-width: initial;
 `;

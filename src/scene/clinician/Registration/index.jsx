@@ -81,6 +81,22 @@ const PersonalDetils = () => {
             {errors.firstName && (
               <ErrorMessage>{errors.firstName.message}</ErrorMessage>
             )}
+            <RowBox>
+              <Labels>Last Name</Labels>
+              <Controller
+                control={control}
+                name="lastName"
+                rules={{
+                  required: "last name is required",
+                }}
+                render={({ field }) => (
+                  <StyledTextfield id="lastName" {...field} />
+                )}
+              />
+            </RowBox>
+            {errors.lastName && (
+              <ErrorMessage>{errors.lastName.message}</ErrorMessage>
+            )}
 
             <RowBox>
               <Labels>Email</Labels>
@@ -137,24 +153,6 @@ const PersonalDetils = () => {
             </RowBox>
             {errors.confirmPassword && (
               <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>
-            )}
-          </ColumnBox>
-          <ColumnBox>
-            <RowBox>
-              <Labels>Last Name</Labels>
-              <Controller
-                control={control}
-                name="lastName"
-                rules={{
-                  required: "last name is required",
-                }}
-                render={({ field }) => (
-                  <StyledTextfield id="lastName" {...field} />
-                )}
-              />
-            </RowBox>
-            {errors.lastName && (
-              <ErrorMessage>{errors.lastName.message}</ErrorMessage>
             )}
           </ColumnBox>
         </Box>

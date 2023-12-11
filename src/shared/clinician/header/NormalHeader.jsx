@@ -14,7 +14,7 @@ const NormalHeader = ({ handleDrawerToggle }) => {
         >
           <MenuIcon />
         </HeaderMenuIconButton>
-        <Typography variant="h5" noWrap component="div">
+        <Typography noWrap>
           PUFI-2
         </Typography>
         <div />
