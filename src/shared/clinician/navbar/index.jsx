@@ -13,6 +13,7 @@ import {
   AccountBoxOutlined,
   BallotOutlined,
   Logout,
+  HelpOutline,
 } from "@mui/icons-material";
 
 import {
@@ -33,6 +34,7 @@ const listItemsArray = [
   { IconType: HomeOutlined, text: "Dashboard" },
   { IconType: AccountBoxOutlined, text: "My Clients" },
   { IconType: BallotOutlined, text: "All Surveys" },
+  { IconType: HelpOutline, text: "Help" },
 ];
 
 export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
@@ -74,7 +76,7 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
 
   const handleListItemClick = (event, index, text) => {
     setSelectedIndex(index);
-    router.push("/clinician/" + text.toLowerCase().trim().replace(" ", "-"));
+    router.push("/clinician/" + text.toLowerCase().trim().replaceAll(" ", "-"));
     if (breakpoint == "mobile") handleDrawerToggle();
   };
 
