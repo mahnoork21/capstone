@@ -83,12 +83,6 @@ const ClientSurveyCard = ({
 
   const emailBody = `Dear [Client Name],
 
-This email is from Clinician ${
-    (clinicianDetails?.first_name || "") +
-    " " +
-    (clinicianDetails?.last_name || "")
-  }.
-
 ${
   whichCard == "in-progress"
     ? `This is a reminder email to complete the Prosthetic Upper Limb Functional Index (PUFI-2). You had last updated this survey ${inProgressText()}. The link is given below.`
@@ -106,7 +100,11 @@ Once you submit the completed questionnaire, I will review your results and will
 Please contact me if you have any questions or concerns.
 
 Thank you,
-
+${
+  (clinicianDetails?.first_name || "") +
+  " " +
+  (clinicianDetails?.last_name || "")
+}
 `;
 
   const handleEmailClick = () => {
