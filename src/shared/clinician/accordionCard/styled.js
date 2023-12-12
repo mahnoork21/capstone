@@ -10,3 +10,6 @@ export const StyledTypography = styled(Typography)`
     }
   }
 `;
+export const StyledList = styled("li")`
+  margin-left: 0.875rem;
+`;
