@@ -56,7 +56,10 @@ export const addNewClient = async (
   });
 
   await updateDoc(clinicianRef, {
-    [`clients.${clientId}`]: { added: Timestamp.fromDate(new Date()) },
+    clients: {
+      ...clinician.clients,
+      [`${clientId}`]: { added: Timestamp.fromDate(new Date()) },
+    },
     updated: serverTimestamp(),
   });
 

@@ -17,11 +17,11 @@ import {
   StyledCardContent,
 } from "./styled";
 import { addNewClient } from "@/firebase/clinicianRepo";
-
-// TODO: Show error if client ID already present
+import { useSnackbarContext } from "@/context/snackbarContext";
 
 const AddNewClient = () => {
   const router = useRouter();
+  const { showSnackbar } = useSnackbarContext();
 
   const [clientId, setClientId] = useState("");
   const handleClientIdChange = (e) => setClientId(e.target.value);
@@ -47,7 +47,8 @@ const AddNewClient = () => {
 
       router.push("/clinician/my-clients");
     } catch (err) {
-      console.error("An error occured: " + err);
+      showSnackbar("error", "Error: " + err.message);
+      console.error("An error occured: " + err.message);
     }
   };
 
