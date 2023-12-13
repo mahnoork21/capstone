@@ -99,14 +99,32 @@ const AccordionCard = () => {
             The PUFI was created and validated over 25 years ago at Holland
             Bloorview Kids Rehab Hospital by Dr. Virginia Wright and her team.
             The PUFI has since been updated with co-creation involvement by
-            children and clinicians. Publications: Wright FV, Hubbard S, Jutai
-            J, Naumann S. The Prosthetic Upper Extremity Functional Index:
-            development and reliability testing of a new functional status
-            questionnaire for children who use upper extremity prostheses.
-            https://pubmed.ncbi.nlm.nih.gov/11382260/ Wright FV, Hubbard S,
-            Naumann S, Jutai J. Evaluation of the validity of the prosthetic
-            upper extremity functional index for children.
-            https://pubmed.ncbi.nlm.nih.gov/12690590/
+            children and clinicians. <br />
+            <br />
+            <strong>Publications:</strong> <br />
+            <br />
+            Wright FV, Hubbard S, Jutai J, Naumann S. The Prosthetic Upper
+            Extremity Functional Index: development and reliability testing of a
+            new functional status questionnaire for children who use upper
+            extremity prostheses.{" "}
+            <a
+              href="https://pubmed.ncbi.nlm.nih.gov/11382260/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              View Publication
+            </a>
+            <br />
+            <br />
+            Wright FV, Hubbard S, Naumann S, Jutai J. Evaluation of the validity
+            of the prosthetic upper extremity functional index for children.
+            <a
+              href="https://pubmed.ncbi.nlm.nih.gov/12690590/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              View Publication
+            </a>
           </StyledTypography>
         </AccordionDetails>
       </Accordion>
