@@ -106,7 +106,7 @@ const AccordionCard = () => {
             Wright FV, Hubbard S, Jutai J, Naumann S. The Prosthetic Upper
             Extremity Functional Index: development and reliability testing of a
             new functional status questionnaire for children who use upper
-            extremity prostheses.{" "}
+            extremity prostheses. <br />
             <a
               href="https://pubmed.ncbi.nlm.nih.gov/11382260/"
               target="_blank"
@@ -118,6 +118,7 @@ const AccordionCard = () => {
             <br />
             Wright FV, Hubbard S, Naumann S, Jutai J. Evaluation of the validity
             of the prosthetic upper extremity functional index for children.
+            <br />
             <a
               href="https://pubmed.ncbi.nlm.nih.gov/12690590/"
               target="_blank"
