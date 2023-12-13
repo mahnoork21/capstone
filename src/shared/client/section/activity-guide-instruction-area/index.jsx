@@ -26,15 +26,20 @@ const ActivityGuideInstructionArea = ({
           Choose the way this activity is performed <span>most often</span> if
           done in more than one way
         </p>
-        <p>
-          This information is also available within the PUFI-2 questionnaire by
-          clicking the icon{"  "}
-          <GuideButton variant="outlined" startIcon={<InventoryOutlinedIcon />}>
-            Activity Guide
-          </GuideButton>
-          {"  "}
-          beside response options
-        </p>
+        {!isInSurvey && (
+          <p>
+            This information is also available within the PUFI-2 questionnaire
+            by clicking the icon{"  "}
+            <GuideButton
+              variant="outlined"
+              startIcon={<InventoryOutlinedIcon />}
+            >
+              Activity Guide
+            </GuideButton>
+            {"  "}
+            beside response options
+          </p>
+        )}
       </HowQuestion>
 
       <InstructionsWrapper isInSurvey={isInSurvey}>

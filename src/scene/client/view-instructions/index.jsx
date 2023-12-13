@@ -1,5 +1,4 @@
 import MainContainer from "@/shared/components/main-container";
-import TypesOfQuestions from "./components/types-of-questions";
 import { useContext, useEffect, useState } from "react";
 import InstructionNavigation from "./components/instruction-navigation";
 import BeforeStartSurvey from "../../../shared/client/section/before-start-survey";
@@ -23,7 +22,7 @@ const ViewInstructions = () => {
   };
 
   const handleNextClick = () => {
-    if (instructionId < 3) {
+    if (instructionId < 2) {
       setInstructionId((prevInstructionId) => prevInstructionId + 1);
     }
   };
@@ -46,7 +45,7 @@ const ViewInstructions = () => {
           surveyId: surveyId,
         },
       });
-    } else if (instructionId >= 3) {
+    } else if (instructionId >= 2) {
       setNextButtonDisabled(true);
     } else {
       setNextButtonDisabled(false);
@@ -57,12 +56,10 @@ const ViewInstructions = () => {
     <MainContainer>
       <HomeContainer>
         {instructionId === 0 ? (
-          <TypesOfQuestions />
-        ) : instructionId === 1 ? (
           <BeforeStartSurvey />
-        ) : instructionId === 2 ? (
+        ) : instructionId === 1 ? (
           <ActivityGuide />
-        ) : instructionId === 3 ? (
+        ) : instructionId === 2 ? (
           <DifficultyScale />
         ) : (
           <></>

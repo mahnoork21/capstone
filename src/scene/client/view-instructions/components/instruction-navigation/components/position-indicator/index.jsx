@@ -16,10 +16,6 @@ const PositionIndicator = ({ activePositionId }) => {
         key={`pos2-${activePositionId}`}
         active={activePositionId === 2}
       />
-      <Position
-        key={`pos3-${activePositionId}`}
-        active={activePositionId === 3}
-      />
     </StyledPositionIndicator>
   );
 };

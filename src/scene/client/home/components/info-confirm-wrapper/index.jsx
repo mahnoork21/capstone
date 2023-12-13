@@ -12,9 +12,9 @@ const InfoConfirmWrapper = () => {
           <SurveyIdInfoWarpper>
             <p>Client ID:</p>
             <p>{survey.client_id ?? "N/A"}</p>
-            <p>Survey ID:</p>
+            <p>Questionnaire ID:</p>
             <p>{survey.survey_id ?? "N/A"}</p>
-            <p>Survey Type:</p>
+            <p>Questionnaire Type:</p>
             <p>{survey.survey_type ?? "N/A"}</p>
           </SurveyIdInfoWarpper>
         </>

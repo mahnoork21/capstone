@@ -22,18 +22,20 @@ const DifficultyScaleInstructionArea = ({
     <DifficultyScaleInstructionWrapper isInSurvey={isInSurvey}>
       <HowQuestion>
         <h2>How well is the activity performed with/without the prosthesis?</h2>
-        <p>
-          This information is also available within the PUFI-2 questionnaire by
-          clicking the icon{"  "}
-          <GuideButton
-            variant="outlined"
-            startIcon={<FilterBAndWOutlinedIcon />}
-          >
-            Difficulty Scale
-          </GuideButton>
-          {"  "}
-          beside response options
-        </p>
+        {!isInSurvey && (
+          <p>
+            This information is also available within the PUFI-2 questionnaire
+            by clicking the icon{"  "}
+            <GuideButton
+              variant="outlined"
+              startIcon={<FilterBAndWOutlinedIcon />}
+            >
+              Difficulty Scale
+            </GuideButton>
+            {"  "}
+            beside response options
+          </p>
+        )}
       </HowQuestion>
       <DifficultyInfoContainer isInSurvey={isInSurvey}>
         {data_difficulty_scale.map((data, index) => (
