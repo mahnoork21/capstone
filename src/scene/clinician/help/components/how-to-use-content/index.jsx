@@ -4,7 +4,7 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
-import { HeadingBox, StyledImageContainer } from "./styled";
+import { HeadingBox, StyledImageContainer, StyledList } from "./styled";
 import { ExpandMore } from "@mui/icons-material";
 import Image from "next/image";
 import { useContext } from "react";
@@ -55,11 +55,11 @@ export default function HowToUseContent() {
           </StyledImageContainer>
 
           <Typography>
-            2. Here you can enter the client’s ID. This is the unique ID that
-            will be associated to that client. You can use any combination of
-            letters, numbers, or symbols for the client ID. Please ensure{" "}
-            <b>not</b> to include any identifying information in the client’s
-            ID.
+            2. Here you can enter the client&apos;s ID. This is the unique ID
+            that will be associated to that client. You can use any combination
+            of letters, numbers, or symbols for the client ID. Please ensure{" "}
+            <b>not</b> to include any identifying information in the
+            client&apos;s ID.
           </Typography>
           <StyledImageContainer>
             <Image
@@ -85,44 +85,46 @@ export default function HowToUseContent() {
             1. You can request a client to complete their questionnaire through
             the following methods:
             <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;a. Click <b>EMAIL CLIENT</b> in the client’s
-            questionnaire card to launch your email app.
+            &nbsp;&nbsp;&nbsp;&nbsp;a. Click <b>EMAIL CLIENT</b> in the
+            client&apos;s questionnaire card to launch your email app.
           </Typography>
           <StyledImageContainer>
             <Image
               src="/help/how-to-use/request-questionnaire-completion-1-a.png"
               width={breakpoint === "desktop" ? 450 : 300}
               height={breakpoint === "desktop" ? 270 : 180}
-              alt="Client’s questionnaire card"
+              alt="Client's questionnaire card"
             />
           </StyledImageContainer>
-
           <Typography>
-            &nbsp;&nbsp;&nbsp;&nbsp;b. Click the three dots on the client’s
+            &nbsp;&nbsp;&nbsp;&nbsp;b. Click the three dots on the client&apos;s
             questionnaire card to open other options:
-            <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;•{" "}
-            <b>
-              <i>Open PUFI-2:</i>
-            </b>{" "}
-            This will open that client&apos;s questionnaire in a new tab. This
-            can be useful if you are completing the questionnaire with your
-            client present. <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;•{" "}
-            <b>
-              <i>Copy PUFI-2 Link:</i>
-            </b>
-            If you want to send the client the link directly, without our email
-            template, click this option to copy the link to your clipboard.
-            <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;•{" "}
-            <b>
-              <i>Copy Email Body:</i>
-            </b>
-            This will copy the email template with that client’s link to your
-            clipboard.
           </Typography>
-
+          <StyledList>
+            <li>
+              <b>
+                <i>Open PUFI-2:</i>
+              </b>{" "}
+              This will open that client&apos;s questionnaire in a new tab. This
+              can be useful if you are completing the questionnaire with your
+              client present.
+            </li>
+            <li>
+              <b>
+                <i>Copy PUFI-2 Link:</i>
+              </b>
+              If you want to send the client the link directly, without our
+              email template, click this option to copy the link to your
+              clipboard.
+            </li>
+            <li>
+              <b>
+                <i>Copy Email Body:</i>
+              </b>
+              This will copy the email template with that client&apos;s link to
+              your clipboard.
+            </li>
+          </StyledList>
           <StyledImageContainer>
             <Image
               src="/help/how-to-use/request-questionnaire-completion-1-b.png"
@@ -153,7 +155,7 @@ export default function HowToUseContent() {
               src="/help/how-to-use/viewing-the-pufi-2-results-1.png"
               width={breakpoint === "desktop" ? 450 : 300}
               height={breakpoint === "desktop" ? 270 : 180}
-              alt="Client’s questionnaire card"
+              alt="Client's questionnaire card"
             />
           </StyledImageContainer>
 

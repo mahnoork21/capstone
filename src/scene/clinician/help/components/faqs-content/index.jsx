@@ -28,13 +28,13 @@ export default function FAQsContent() {
           id="panel-b-1-header"
         >
           <Typography variant="h6">
-            How do I delete clients or questionnaires?
+            How do I delete or archive questionnaires?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Use the “Archive” feature to remove clients or questionnaires. These
-            can be restored under the “Archived” tab, if needed.
+            Use the “Archive” feature to remove questionnaires. These can be
+            restored under the “Archived” tab, if needed.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -52,7 +52,7 @@ export default function FAQsContent() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Yes, client’s submissions will be saved automatically. They can
+            Yes, client&apos;s submissions will be saved automatically. They can
             close the questionnaire and return via their unique link to finish
             their submission.
           </Typography>
@@ -80,7 +80,7 @@ export default function FAQsContent() {
               src="/help/faqs/how-do-i-know-if-my-client-started.png"
               width={breakpoint === "desktop" ? 450 : 300}
               height={breakpoint === "desktop" ? 270 : 180}
-              alt="Client’s questionnaire card"
+              alt="Client's questionnaire card"
             />
           </StyledImageContainer>
         </AccordionDetails>
@@ -98,18 +98,18 @@ export default function FAQsContent() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            If client’s have partially completed their questionnaire, you can
-            remind them to complete via email. When viewing the client’s
-            questionnaire card, select <b>SEND REMINDER</b> button to open the
-            email template in your email app. Or click the three dots for other
-            options.
+            If client&apos;s have partially completed their questionnaire, you
+            can remind them to complete via email. When viewing the
+            client&apos;s questionnaire card, select <b>SEND REMINDER</b> button
+            to open the email template in your email app. Or click the three
+            dots for other options.
           </Typography>
           <StyledImageContainer>
             <Image
               src="/help/faqs/remind-client.png"
               width={breakpoint === "desktop" ? 450 : 300}
               height={breakpoint === "desktop" ? 270 : 180}
-              alt="Client’s questionnaire card"
+              alt="Client's questionnaire card"
             />
           </StyledImageContainer>
         </AccordionDetails>

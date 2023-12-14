@@ -15,3 +15,7 @@ export const StyledImageContainer = styled(Box)`
   padding: 0 auto;
   text-align: center;
 `;
+
+export const StyledList = styled.ul`
+  margin-left: 48px;
+`;
