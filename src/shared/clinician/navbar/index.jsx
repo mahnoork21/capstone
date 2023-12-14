@@ -62,8 +62,10 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
       ? 0
       : router.pathname.startsWith("/clinician/my-clients")
       ? 1
-      : router.pathname.startsWith("/clinician/all-survey")
+      : router.pathname.startsWith("/clinician/all-questionnaires")
       ? 2
+      : router.pathname.startsWith("/clinician/help")
+      ? 3
       : null;
     setSelectedIndex(currentDrawerIndex);
   }, [router.pathname]);

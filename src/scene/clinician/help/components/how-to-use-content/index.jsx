@@ -165,8 +165,8 @@ export default function HowToUseContent() {
           <StyledImageContainer>
             <Image
               src="/help/how-to-use/viewing-the-pufi-2-results-2.png"
-              width={breakpoint === "desktop" ? 800 : 300}
-              height={breakpoint === "desktop" ? 340 : 120}
+              width={breakpoint === "desktop" ? 630 : 300}
+              height={breakpoint === "desktop" ? 380 : 120}
               alt="Add a client button"
             />
           </StyledImageContainer>
