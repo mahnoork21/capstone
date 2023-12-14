@@ -65,7 +65,9 @@ const SurveyComplete = () => {
           </Text>
           <Text style={styles.infoWrapperText}>
             Completion Date:{" "}
-            {new Date(survey.submitted.seconds * 1000).toDateString()}
+            {survey.submitted
+              ? new Date(survey.submitted.seconds * 1000).toDateString()
+              : new Date().toDateString()}
           </Text>
         </View>
         <View style={styles.activityWrapper}>

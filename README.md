@@ -1,5 +1,5 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).\
-The application uses file-system based routing of **Pages Router**. \
+The application uses file-system based routing of [Pages Router](https://nextjs.org/docs/pages/building-your-application/routing). \
 The application is deployed in Firebase Hosting so the Nextjs app is converted to a static site using [Static Exports](https://nextjs.org/docs/pages/building-your-application/deploying/static-exports).\
 Do not add any [unsupported features](https://nextjs.org/docs/pages/building-your-application/deploying/static-exports#unsupported-features) when developing.
 
@@ -16,10 +16,10 @@ Do not add any [unsupported features](https://nextjs.org/docs/pages/building-you
 
 - Install firebase CLI in your local machine
 - Switch to `dev` branch. Fetch all latest changes.
-- In your termial run: `npm run build`
+- In your terminal run: `npm run build`
 - The build process ran successfully, if it doesn't give you any errors and you can see a list of routes at the end. The output is generated in 'out' folder.
-- In your termianl run: `firebase login` and make sure you are logged in to your Holland Bloorview guest account.
-- In your termianl run: `firebase deploy --only hosting`
+- In your terminal run: `firebase login` and make sure you are logged in to your Holland Bloorview guest account.
+- In your terminal run: `firebase deploy --only hosting`
 - Congratulations!! Your latest changes are deployed.
 
 ## Project Structure
