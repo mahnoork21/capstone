@@ -85,22 +85,20 @@ const AccordionCard = () => {
             listed below:
           </StyledTypography>
           <br />
-          <StyledTypography>
-            <Box ml={2}>
-              <ul>
-                <StyledList>First time prosthetic user</StyledList>
-                <StyledList>
-                  After client receives new prosthetic device(s) or any
-                  changes/adjustments to their prosthetic device(s) or treatment
-                  plan
-                </StyledList>
+          <Box ml={2}>
+            <ul>
+              <StyledList>First time prosthetic user</StyledList>
+              <StyledList>
+                After client receives new prosthetic device(s) or any
+                changes/adjustments to their prosthetic device(s) or treatment
+                plan
+              </StyledList>
 
-                <StyledList>
-                  Monitoring prosthetic and functional needs over time
-                </StyledList>
-              </ul>
-            </Box>
-          </StyledTypography>
+              <StyledList>
+                Monitoring prosthetic and functional needs over time
+              </StyledList>
+            </ul>
+          </Box>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -126,29 +124,25 @@ const AccordionCard = () => {
             Wright FV, Hubbard S, Jutai J, Naumann S. The Prosthetic Upper
             Extremity Functional Index: development and reliability testing of a
             new functional status questionnaire for children who use upper
-            extremity prostheses.
+            extremity prostheses.{" "}
             <Link
               href={"https://pubmed.ncbi.nlm.nih.gov/11382260/"}
               target="_blank"
               rel="noreferrer noopener"
             >
-              <StyledTypography>
-                https://pubmed.ncbi.nlm.nih.gov/11382260/
-              </StyledTypography>
+              https://pubmed.ncbi.nlm.nih.gov/11382260/
             </Link>
           </StyledTypography>
           <br />
           <StyledTypography>
             Wright FV, Hubbard S, Naumann S, Jutai J. Evaluation of the validity
-            of the prosthetic upper extremity functional index for children.
+            of the prosthetic upper extremity functional index for children.{" "}
             <Link
               href={"https://pubmed.ncbi.nlm.nih.gov/12690590/"}
               target="_blank"
               rel="noreferrer noopener"
             >
-              <StyledTypography>
-                https://pubmed.ncbi.nlm.nih.gov/12690590/
-              </StyledTypography>{" "}
+              https://pubmed.ncbi.nlm.nih.gov/12690590/
             </Link>
           </StyledTypography>
         </AccordionDetails>
