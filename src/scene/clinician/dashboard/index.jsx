@@ -21,7 +21,7 @@ import { useSnackbarContext } from "@/context/snackbarContext";
 
 const Dashboard = () => {
   const router = useRouter();
-  const { breakpoint } = useContext(ClinicianContext);
+  const { breakpoint, currentUser } = useContext(ClinicianContext);
   const { showSnackbar } = useSnackbarContext();
 
   const [loading, setLoading] = useState(true);
@@ -76,8 +76,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     fetchData();
-  }, []);
+  }, [currentUser]);
 
   //Surveys List Data for Active and Archived Surveys
   const [surveysListDataCompleted, setSurveysListDataCompleted] = useState([]);
@@ -87,6 +90,10 @@ const Dashboard = () => {
   const [surveysListDataPending, setSurveysListDataPending] = useState([]);
 
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 
@@ -124,7 +131,7 @@ const Dashboard = () => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [currentUser]);
 
   const addClientButtonClick = () => {
     router.push("/clinician/my-clients/add-new-client");

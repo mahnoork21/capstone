@@ -270,10 +270,12 @@ const SurveyContent = () => {
     });
   };
 
-  console.log("[Debug] Activity == ", currentActivity);
-  console.log("[Debug] Answer == ", currentAnswer);
-  console.log("[Debug] Steps == ", steps);
-  console.log("[Debug] Errors == ", errors);
+  if (process.env.NEXT_PUBLIC_NAME === "development") {
+    console.log("[Debug] Activity == ", currentActivity);
+    console.log("[Debug] Answer == ", currentAnswer);
+    console.log("[Debug] Steps == ", steps);
+    console.log("[Debug] Errors == ", errors);
+  }
 
   return (
     <MainContainer>

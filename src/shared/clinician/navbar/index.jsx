@@ -23,6 +23,7 @@ import {
 } from "./styled";
 import { fetchClinicianData } from "@/firebase/clinicianRepo";
 import { ClinicianContext } from "@/context/ClinicianContext";
+import { auth } from "@/firebase/firebase";
 
 const listItemsArray = [
   { IconType: HomeOutlined, text: "Dashboard" },
@@ -76,7 +77,8 @@ export default function Navbar({ window, mobileOpen, handleDrawerToggle }) {
     if (breakpoint == "mobile") handleDrawerToggle();
   };
 
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
+    await auth.signOut();
     localStorage.removeItem("orgId");
     localStorage.removeItem("clinicianId");
 

@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import ReportHeader from "./components/report-header";
 import { Container, StyledTab, StyledTabs } from "./styled";
 import ActivityAnalysis from "./components/activity-analysis";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import WeightedCalculation from "./components/weighted-calculation";
 import { getSurveyById } from "@/firebase/surveyRepo";
 import { parseDataToCsvFormatYoungChild } from "./helpers/download-helper";
@@ -13,6 +13,7 @@ import CategoryBarChart from "./components/category-bar-chart";
 import { groupByCategory } from "./components/category-bar-chart/helper/categories-helper";
 import RawScores from "./components/raw-scores";
 import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
+import { ClinicianContext } from "@/context/ClinicianContext";
 
 const SurveyReport = ({ surveyId }) => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,12 @@ const SurveyReport = ({ surveyId }) => {
   const [groupedSurveyByCategory, setGroupedSurveyByCategory] = useState({});
   const [tabValue, setTabValue] = useState(0);
 
+  const { currentUser } = useContext(ClinicianContext);
+
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 
@@ -38,7 +44,7 @@ const SurveyReport = ({ surveyId }) => {
     };
 
     fetchSurvey(orgId, clinicianId, surveyId);
-  }, [surveyId]);
+  }, [surveyId, currentUser]);
 
   const downloadCSV = () => {
     const download = async () => {
