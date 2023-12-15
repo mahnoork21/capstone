@@ -230,13 +230,15 @@ export const ClientProvider = ({ children }) => {
     });
   };
 
-  console.log("[Debug] SurveyId == ", surveyId, didViewResponseGuide);
-  console.log("[Debug] Survey == ", survey);
-  console.log(
-    "[Debug] Activity Response == ",
-    JSON.stringify(survey?.activity_response)
-  );
-  console.log("[Debug] Activity index == ", currentActivityIndex);
+  if (process.env.NEXT_PUBLIC_NAME === "development") {
+    console.log("[Debug] SurveyId == ", surveyId, didViewResponseGuide);
+    console.log("[Debug] Survey == ", survey);
+    console.log(
+      "[Debug] Activity Response == ",
+      JSON.stringify(survey?.activity_response)
+    );
+    console.log("[Debug] Activity index == ", currentActivityIndex);
+  }
 
   return (
     <ClientContext.Provider
