@@ -60,6 +60,7 @@ export const ContentWrapper = styled.div`
 
   & > p:first-of-type {
     margin-top: 12px;
+    margin-bottom: 8px;
   }
 
   & > p:last-of-type {

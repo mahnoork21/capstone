@@ -66,4 +66,8 @@ export const NavigationWrapper = styled.div`
   & a:last-child {
     margin-right: 0;
   }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-width: 0px;
+  }
 `;

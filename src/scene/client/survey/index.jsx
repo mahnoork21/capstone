@@ -39,6 +39,11 @@ import DifficultyScaleInstructionArea from "@/shared/client/section/difficulty-s
 import MiniGuide from "./components/mini-guide";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
 import SecondaryClientButton from "@/shared/client/buttons/secondary";
+import { useIntl } from "react-intl";
+import {
+  getLocaleYoungChildActivity,
+  getLocaleYoungChildSurvey,
+} from "@/utils/utils";
 
 const SurveyContent = () => {
   const {
@@ -57,8 +62,13 @@ const SurveyContent = () => {
     setHeaderButtonType,
     activityResponses,
     breakpoint,
+    locale,
   } = useContext(ClientContext);
-  const currentActivity = youngChildActivity[currentActivityIndex];
+
+  const intl = useIntl();
+  const currentActivity =
+    getLocaleYoungChildActivity(intl)[currentActivityIndex];
+
   const [steps, setSteps] = useState();
 
   const noResponseRef = useRef();
@@ -87,7 +97,7 @@ const SurveyContent = () => {
   //Generates steps to be used in Stepper
   useEffect(() => {
     if (currentAnswer) {
-      const steps = youngChildSurvey.map((surveyQuestion) => {
+      const steps = getLocaleYoungChildSurvey(intl).map((surveyQuestion) => {
         const response = currentAnswer[surveyQuestion.questionId];
         const checkedResponse = checkIfResponseIsValid(
           surveyQuestion.questionId,
@@ -101,7 +111,7 @@ const SurveyContent = () => {
       });
       setSteps(steps);
     }
-  }, [currentAnswer]);
+  }, [currentAnswer, locale]);
 
   useEffect(() => {
     //assumes that there can be only one error at a time

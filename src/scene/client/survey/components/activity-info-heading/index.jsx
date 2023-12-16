@@ -1,4 +1,5 @@
 import { isNullOrUndefined } from "@/utils/utils";
+import { FormattedMessage } from "react-intl";
 import { youngChildActivity } from "../../helper/youngChildActivity";
 import "./styled";
 import {
@@ -29,7 +30,14 @@ const ActivityInfoHeading = ({ currentActivityIndex, activityLabel }) => {
       <ProgressLabel>
         {activityPosition} of {youngChildActivity.length} Activities
       </ProgressLabel>
-      <ActivityHeading>{heading}</ActivityHeading>
+      <ActivityHeading>
+        <FormattedMessage
+          id="client.survey.activity.label"
+          defaultMessage="Activity"
+          description="activity label"
+        />
+        {` ${activityPosition}. ${activityLabel}`}
+      </ActivityHeading>
       {/* TODO use better method of detecting multiple lines */}
       <ImageContainer isOneLiner={heading.length < 50}>
         <ActivityImage
