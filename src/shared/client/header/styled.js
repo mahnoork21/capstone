@@ -70,4 +70,16 @@ export const NavigationWrapper = styled.div`
   .MuiOutlinedInput-notchedOutline {
     border-width: 0px;
   }
+
+  .MuiSelect-select {
+    color: white;
+  }
+
+  svg {
+    color: white;
+  }
+
+  .MuiInputBase-root {
+    margin-right: 8px;
+  }
 `;

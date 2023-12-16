@@ -117,6 +117,11 @@ const Header = () => {
 
         {isNavBarVisible && (
           <NavigationWrapper>
+            <Select value={locale} onChange={handleLocaleChange}>
+              <MenuItem value={"en"}>🇨🇦 EN</MenuItem>
+              <MenuItem value={"fr"}>🇫🇷 FR</MenuItem>
+            </Select>
+
             <Link
               href={{
                 pathname: "/client",
@@ -136,11 +141,6 @@ const Header = () => {
             >
               {headerButtonType}
             </HeaderButton>
-
-            <Select value={locale} onChange={handleLocaleChange}>
-              <MenuItem value={"en"}>🇨🇦 EN</MenuItem>
-              <MenuItem value={"fr"}>🇨🇦 FR</MenuItem>
-            </Select>
           </NavigationWrapper>
         )}
 
