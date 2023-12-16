@@ -22,6 +22,8 @@ export const ClientProvider = ({ children }) => {
 
   const [breakpoint, setBreakpoint] = useState(`desktop`);
 
+  const [locale, setLocale] = useState(`en`);
+
   const [headerButtonType, setHeaderButtonType] = useState(
     HeaderButtonType.START_SURVEY
   );
@@ -38,6 +40,9 @@ export const ClientProvider = ({ children }) => {
   const activityResponses = survey?.activity_response;
 
   useEffect(() => {
+    const locale = localStorage.getItem("user-locale");
+    locale ? setLocale(locale) : setLocale("en");
+
     const mediaQuery = window.matchMedia("screen and (min-width: 1024px)");
     const changeListener = (e) => {
       if (e.matches) {
@@ -268,6 +273,8 @@ export const ClientProvider = ({ children }) => {
         isNavBarVisible,
         setIsNavBarVisible: setIsNavBarVisible,
         setDidViewResponseGuide: setDidViewResponseGuide,
+        locale,
+        setLocale
       }}
     >
       {children}

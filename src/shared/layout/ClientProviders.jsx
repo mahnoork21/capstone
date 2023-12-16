@@ -1,6 +1,10 @@
-import { ClientProvider } from "@/context/ClientContext";
+import { ClientContext, ClientProvider } from "@/context/ClientContext";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
+import { useContext } from "react";
+import { IntlProvider } from "react-intl";
+
+import messages_fr from "../../translations/fr.json";
 
 const theme = createTheme({
   palette: {
@@ -19,10 +23,26 @@ const theme = createTheme({
   },
 });
 
+const messages = {
+  fr: messages_fr,
+};
+
+const InternalizationWrapper = ({ children }) => {
+  const { locale } = useContext(ClientContext);
+
+  return (
+    <IntlProvider locale={locale} messages={messages[locale]}>
+      {children}
+    </IntlProvider>
+  );
+};
+
 const ClientProviders = ({ children }) => {
   return (
     <ClientProvider>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <InternalizationWrapper>{children}</InternalizationWrapper>
+      </ThemeProvider>
     </ClientProvider>
   );
 };

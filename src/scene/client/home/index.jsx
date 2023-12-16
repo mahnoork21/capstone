@@ -17,6 +17,7 @@ import InfoConfirmWrapper from "./components/info-confirm-wrapper";
 import PrimaryClientButton from "@/shared/client/buttons/primary";
 import SecondaryClientButton from "@/shared/client/buttons/secondary";
 import { useRouter } from "next/router";
+import { FormattedMessage } from "react-intl";
 
 const ClientHome = () => {
   const [error, setError] = useState("");
@@ -82,14 +83,27 @@ const ClientHome = () => {
       <HomeContainer>
         <InfoWrapper>
           <ContentWrapper>
-            <h1>What is PUFI-2?</h1>
+            <h1>
+              <FormattedMessage
+                id="client.intro.heading"
+                defaultMessage="What is PUFI-2?"
+                description="Client landing page heading"
+              />
+            </h1>
             <p>
-              The Prosthetic Upper Limb Functional Index (PUFI-2) is a parent
-              and child electronic questionnaire that measures children’s
-              performance in daily bimanual activities, the ease of performance
-              with/without the prosthesis and usefulness of the prosthesis. The
-              results from the PUFI-2 can help clinicians work collaboratively
-              with clients to inform goal setting and treatment planning.
+              <FormattedMessage
+                id="client.intro.what-is-pufi2-p1"
+                defaultMessage="The Prosthetic Upper Limb Functional Index (PUFI-2) is a parent
+                and child electronic questionnaire that measures children’s
+                performance in daily bimanual activities, the ease of performance
+                with/without the prosthesis and usefulness of the prosthesis."
+                description="Client landing page paragraph 1"
+              />
+            </p>
+            <p>
+              The results from the PUFI-2 can help clinicians work
+              collaboratively with clients to inform goal setting and treatment
+              planning.
             </p>
             <p>
               Start by learning more about the PUFI-2 in the introductory video.

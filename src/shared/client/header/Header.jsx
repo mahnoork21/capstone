@@ -7,7 +7,7 @@ import { HeaderButtonType } from "@/utils/enums/headingButtonType";
 import { youngChildActivity } from "@/scene/client/survey/helper/youngChildActivity";
 import { getSurveyById, updateAnswerInSurvey } from "@/firebase/surveyRepo";
 import { useRouter } from "next/router";
-import { IconButton, Snackbar } from "@mui/material";
+import { IconButton, MenuItem, Select, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { checkIfALLResponsesAreValid } from "@/scene/client/survey/helper/surveyHelper";
 
@@ -26,6 +26,8 @@ const Header = () => {
     setErrors,
     setSurvey,
     setIsEditMode,
+    locale,
+    setLocale,
   } = useContext(ClientContext);
 
   const router = useRouter();
@@ -90,6 +92,11 @@ const Header = () => {
     setError("");
   };
 
+  const handleLocaleChange = (event) => {
+    setLocale(event.target.value);
+    localStorage.setItem("user-locale", event.target.value);
+  };
+
   const action = (
     <>
       <IconButton
@@ -129,6 +136,11 @@ const Header = () => {
             >
               {headerButtonType}
             </HeaderButton>
+
+            <Select value={locale} onChange={handleLocaleChange}>
+              <MenuItem value={"en"}>🇨🇦 EN</MenuItem>
+              <MenuItem value={"fr"}>🇨🇦 FR</MenuItem>
+            </Select>
           </NavigationWrapper>
         )}
 
