@@ -225,7 +225,11 @@ export const getLocaleYoungChildActivity = (intl) => {
     },
     {
       id: "velcro",
-      label: "Open Up And Put Shoes On And Do Up The Velcro",
+      label: intl.formatMessage({
+        id: "client.survey.activity.velcro",
+        defaultMessage: "Open Up And Put Shoes On And Do Up The Velcro",
+        description: "sock label",
+      }),
       image: "02-velcro.png",
     },
     {

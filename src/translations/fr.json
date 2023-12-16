@@ -6,5 +6,6 @@
   "client.survey.question.do.option-1": "Oui",
   "client.survey.question.do.option-2": "Je n'ai pas essayé mais je pourrais probablement le faire",
   "client.survey.question.do.option-3": "Non, je ne peux pas le faire même avec de l'aide",
-  "client.survey.activity.sock": "Mettez une paire de chaussettes"
+  "client.survey.activity.sock": "Mettez une paire de chaussettes",
+  "client.survey.activity.velcro": "Ouvrez, mettez des chaussures et fermez le Velcro."
 }
