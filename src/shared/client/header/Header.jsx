@@ -118,8 +118,8 @@ const Header = () => {
         {isNavBarVisible && (
           <NavigationWrapper>
             <Select value={locale} onChange={handleLocaleChange}>
-              <MenuItem value={"en"}>{`🇨🇦  EN`}</MenuItem>
-              <MenuItem value={"fr"}>{`🇫🇷  FR`}</MenuItem>
+              <MenuItem value={"en"}>🇨🇦 EN</MenuItem>
+              <MenuItem value={"fr"}>🇫🇷 FR</MenuItem>
             </Select>
 
             <Link
