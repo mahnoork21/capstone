@@ -37,7 +37,7 @@ export default function AddNewSurveyCard({ toggleForm, clientId }) {
   return (
     <StyledMainCard>
       <StyledCardContent>
-        <HeadingTypography>Add new survey</HeadingTypography>
+        <HeadingTypography>Add new questionnaire</HeadingTypography>
         <FormBox component="form" noValidate autoComplete="off">
           <FormControl>
             <ModifiedFormLabel id="selectSurveyType">

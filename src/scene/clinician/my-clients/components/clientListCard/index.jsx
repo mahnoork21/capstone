@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   StyledClientListCard,
   StyledCardContent,
@@ -26,17 +26,37 @@ export default function ClientListCard({
   clientsPageNo,
   handleClientsPageNoClick,
 }) {
+  const [searchText, setSearchText] = useState("");
+
+  const [displayOnlyClientsList, setDisplayOnlyClientsList] = useState([]);
+
   useEffect(() => {
     if (clientsListData.length === 0) {
       handleClientsPageNoClick(0);
     } else {
       handleClientsPageNoClick(1);
+      setDisplayOnlyClientsList(clientsListData);
     }
   }, [clientsListData]);
 
-  // const fetchClients = () => {
+  const filterClientsList = () => {
+    if (!searchText) {
+      setDisplayOnlyClientsList(clientsListData);
+    } else {
+      setDisplayOnlyClientsList(() => {
+        const filteredList = clientsListData.filter(([id]) =>
+          id.toLowerCase().includes(searchText.toLowerCase())
+        );
+        if (filteredList.length) {
+          handleClientsPageNoClick(1);
+        } else {
+          handleClientsPageNoClick(0);
+        }
+        return filteredList;
+      });
+    }
+  };
 
-  // }
   return (
     <StyledClientListCard>
       <StyledCardContent>
@@ -44,14 +64,20 @@ export default function ClientListCard({
           <StyledSearchInputBase
             placeholder="Search by Client Id"
             inputProps={{ "aria-label": "Search by Client Id" }}
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
           />
-          <IconButton type="button" aria-label="search">
+          <IconButton
+            type="button"
+            aria-label="search"
+            onClick={filterClientsList}
+          >
             <Search />
           </IconButton>
         </StyledSearchBox>
 
         <StyledClientsList>
-          {clientsListData
+          {displayOnlyClientsList
             // Sort clients by the latest addition on top
             .sort((a, b) => b[1]?.added?.toDate() - a[1]?.added?.toDate())
             .slice(
@@ -75,10 +101,10 @@ export default function ClientListCard({
           {" " +
             Math.min(
               noOfItemsOnOnePage * clientsPageNo,
-              clientsListData.length
+              displayOnlyClientsList.length
             )}{" "}
           of
-          {" " + clientsListData.length} Clients
+          {" " + displayOnlyClientsList.length} Clients
         </NumberOfClientsTypography>
         <StyledForwardAndBackwardButtonsBox>
           <IconButton
