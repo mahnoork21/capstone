@@ -54,13 +54,14 @@ export const NavigationWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 6px;
 
   & a {
-    margin-right: 24px;
     color: white;
     text-decoration: inherit;
     text-transform: uppercase;
     outline: none;
+    padding: 8px;
   }
 
   & a:last-child {
@@ -79,7 +80,7 @@ export const NavigationWrapper = styled.div`
     color: white;
   }
 
-  .MuiInputBase-root {
-    margin-right: 8px;
+  @media only screen and (min-width: ${breakpoint.desktop}) {
+    gap: 12px;
   }
 `;

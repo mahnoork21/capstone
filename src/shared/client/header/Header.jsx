@@ -122,18 +122,20 @@ const Header = () => {
               <MenuItem value={"fr"}>🇫🇷 FR</MenuItem>
             </Select>
 
-            <Link
-              href={{
-                pathname: "/client",
-                query: {
-                  orgId: organizationId,
-                  clinicianId: clinicianId,
-                  surveyId: surveyId,
-                },
-              }}
-            >
-              Home
-            </Link>
+            {breakpoint === "desktop" && (
+              <Link
+                href={{
+                  pathname: "/client",
+                  query: {
+                    orgId: organizationId,
+                    clinicianId: clinicianId,
+                    surveyId: surveyId,
+                  },
+                }}
+              >
+                Home
+              </Link>
+            )}
 
             <HeaderButton
               variant={breakpoint === "desktop" ? "outlined" : "text"}
