@@ -9,6 +9,7 @@ Do not add any [unsupported features](https://nextjs.org/docs/pages/building-you
 
 - Clone the repo to your local machine
 - 'cd' into the project folder
+- Install required packages: `npm install`
 - In your termianl run: `npm run dev `
 - Open [http://localhost:3005](http://localhost:3005) with your browser to see the result.
 
