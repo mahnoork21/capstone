@@ -139,7 +139,7 @@ export const getLocaleYoungChildSurvey = (intl) => {
         },
         {
           labelShort: "Cannot do",
-          label: "Even with help, my child cannot do it without the prosthesis",
+          label: "Even with help, my child cannot do it using the prosthesis",
           miniGuideType: "difficultyScale-cannotDo",
           value: 0,
         },
@@ -203,7 +203,7 @@ export const getLocaleYoungChildSurvey = (intl) => {
         },
         {
           labelShort: "Cannot do",
-          label: "Even with help, my child cannot do it without the prosthesis",
+          label: "Even with help, my child cannot do it using the prosthesis",
           miniGuideType: "difficultyScale-cannotDo",
           value: 0,
         },
