@@ -6,7 +6,7 @@ import ScoresTable from "../scores-table";
 import { Container, PieWrapper, SubContainer, TableWrapper } from "./styled";
 import { getScores } from "./helper/scores-helper";
 import { getData, options } from "./helper/chart-helper";
-import { getTotalWeightedScore } from "./helper/weighted-calculation-helper";
+import { getTotalWeightedScoreAbilityWithProsthesis, getTotalWeightedScoreAbilityWithoutProsthesis, getTotalWeightedScoreProsthesisUsefulness } from "./helper/weighted-calculation-helper";
 import ColorLabels from "../color-labels";
 import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 
@@ -86,11 +86,10 @@ const ActivityAnalysis = ({ survey, questionId }) => {
             <></>
           ) : (
             <div className="total-score">
-              {questionId === "well" && "Ability With Prosthesis Total Score: "}
-              {questionId === "useful" && "Prosthesis Usefulness Total Score: "}
+              {questionId === "well" && ("Ability With Prosthesis Total Score: " + getTotalWeightedScoreAbilityWithProsthesis(scores))}
+              {questionId === "useful" && ("Prosthesis Usefulness Total Score: " + getTotalWeightedScoreProsthesisUsefulness(scores))}
               {questionId === "without" &&
-                "Ability Without Prosthesis Total Score: "}
-              {getTotalWeightedScore(scores)}
+                ("Ability Without Prosthesis Total Score: " + getTotalWeightedScoreAbilityWithoutProsthesis(scores))}
             </div>
           )}
         </>
