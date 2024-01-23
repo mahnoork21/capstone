@@ -3,7 +3,7 @@ import { Container } from "./styled";
 const WeightedCalculation = () => {
   return (
     <Container>
-      <h3 className="weighted-heading">Total Score (weighted) Calculation</h3>
+      <h3 className="weighted-heading">Total Score Calculation</h3>
 
       <div className="section">
         <h4 className="weighted-subheading">Ability With Prosthesis:</h4>
