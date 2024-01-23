@@ -24,6 +24,7 @@ import {
   FinalCommentTextField,
   ButtonWrapper,
   StyledEditButton,
+  AttentionText
 } from "./styled";
 
 const SummaryContent = () => {
@@ -91,9 +92,9 @@ const SummaryContent = () => {
         <h1>Thank you for taking the time to complete the PUFI-2!</h1>
         <p>
           Please review your response before submitting. Click on the pencil
-          icon below to adjust your answers for any of the activities. Once you
+          icon below to adjust your answers for any of the activities. <AttentionText>Once you
           are finished reviewing, click &quot;Submit&quot; at the bottom of the
-          page
+          page</AttentionText>
         </p>
 
         <ActivitySummaryWrapper>

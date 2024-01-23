@@ -118,3 +118,7 @@ export const StyledEditButton = styled(IconButton)`
   position: relative;
   top: -6px;
 `;
+
+export const AttentionText = styled.b`
+  color: Tomato;
+`;
