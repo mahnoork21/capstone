@@ -470,7 +470,7 @@ const Registration = () => {
         </StyledPaper>
         <StyledPaper>
           <StyledTypo>
-            Learn about the PUFI-2, how it was develped, and how it can be used.
+            Learn about the PUFI-2, how it was developed, and how it can be used.
           </StyledTypo>
           <StyledBox>
             <AccordionCard></AccordionCard>
