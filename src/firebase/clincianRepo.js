@@ -54,7 +54,6 @@ export const addClinicianDb = async (uid, data) => {
     {
       clinician_id: uid,
       email: data.email,
-      password: data.password,
       first_name: data.firstName,
       last_name: data.lastName,
       org_id: "oZqnljuEU4b3jZtfHM9v",
