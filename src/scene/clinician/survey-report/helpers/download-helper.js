@@ -1,6 +1,6 @@
 import { youngChildSurvey } from "@/scene/client/survey/helper/youngChildSurvey";
 import { categoryMappings } from "../components/category-bar-chart/helper/categories-helper";
-import { getTotalWeightedScore } from "../components/activity-analysis/helper/weighted-calculation-helper";
+import { getTotalWeightedScoreAbilityWithProsthesis, getTotalWeightedScoreAbilityWithoutProsthesis, getTotalWeightedScoreProsthesisUsefulness } from "../components/activity-analysis/helper/weighted-calculation-helper";
 import { getScores } from "../components/activity-analysis/helper/scores-helper";
 
 export const parseDataToCsvFormatYoungChild = (surveyData) => {
@@ -16,13 +16,13 @@ export const parseDataToCsvFormatYoungChild = (surveyData) => {
   ];
 
   const totalScores = {
-    ability_with_prosthesis_total_score: getTotalWeightedScore(
+    ability_with_prosthesis_total_score: getTotalWeightedScoreAbilityWithProsthesis(
       getScores(surveyData, "well")
     ),
-    prosthesis_usefulness_total_score: getTotalWeightedScore(
+    prosthesis_usefulness_total_score: getTotalWeightedScoreProsthesisUsefulness(
       getScores(surveyData, "useful")
     ),
-    ability_without_prosthesis_total_score: getTotalWeightedScore(
+    ability_without_prosthesis_total_score: getTotalWeightedScoreAbilityWithoutProsthesis(
       getScores(surveyData, "without")
     ),
   };
