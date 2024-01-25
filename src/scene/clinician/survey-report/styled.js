@@ -28,10 +28,13 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     gap: 10px;
+    margin: 9px 0;
     flex-shrink: 0;
     border-radius: 12px;
     border: 1px solid #1979be;
     background: var(--pufi-primary-blue, #1979be);
+    box-sizing: border-box;
+    width: 100%
   }
 
   @media screen and (max-width: ${breakpoint.desktop}) {
@@ -42,7 +45,7 @@ export const Container = styled.div`
       align-items: start;
     }
 
-    & .download-button {
+    & .header-buttons {
       float: right;
     }
   }

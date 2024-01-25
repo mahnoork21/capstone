@@ -80,6 +80,10 @@ const SurveyReport = ({ surveyId }) => {
       });
   };
 
+  const printSummary = () => {
+    window.print();
+  };
+
   const handleTabValueChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -96,14 +100,24 @@ const SurveyReport = ({ surveyId }) => {
 
           <div className="header-flex">
             <ReportHeader survey={surveyData} />
-            <Button
-              className="download-button"
-              variant="contained"
-              startIcon={<img src="/icons/download.svg" alt="Download" />}
-              onClick={downloadCSV}
-            >
-              Download CSV
-            </Button>
+            <div className="header-buttons">
+              <Button
+                className="download-button"
+                variant="contained"
+                startIcon={<img src="/icons/download.svg" alt="Download" />}
+                onClick={downloadCSV}
+              >
+                Download to CSV/Excel File
+              </Button>
+              <Button
+                className="download-button"
+                variant="contained"
+                startIcon={<img src="/icons/download.svg" alt="Print" />}
+                onClick={printSummary}
+              >
+                Print/Save to PDF
+              </Button>
+            </div>
           </div>
 
           <StyledTabs value={tabValue} onChange={handleTabValueChange}>
