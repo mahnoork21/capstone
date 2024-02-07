@@ -115,7 +115,7 @@ const AccordionCard = () => {
             The PUFI was created and validated over 25 years ago at Holland
             Bloorview Kids Rehabilitation Hospital by Dr. Virginia Wright and
             her team. The PUFI has since been updated with co-creation
-            involvement by children and clinicians.
+            involvement of children, parents and clinicians.
           </StyledTypography>
           <br />
           <StyledTypography>Publications:</StyledTypography>

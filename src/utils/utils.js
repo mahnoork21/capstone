@@ -52,7 +52,7 @@ export const getLocaleYoungChildSurvey = (intl) => {
       visibleWhen: { questionId: "do", optionValue: [1, 2] },
       options: [
         {
-          rawScoreLabel: "Prostetic (active)",
+          rawScoreLabel: "Prosthesis (active)",
           labelShort: "Both arms with prosthetic hand actively",
           label:
             "Both arms together with the prosthetic hand or terminal device used actively (open and close hand/device to hold the object)",
@@ -60,7 +60,7 @@ export const getLocaleYoungChildSurvey = (intl) => {
           value: 5,
         },
         {
-          rawScoreLabel: "Prostetic (passive)",
+          rawScoreLabel: "Prosthesis (passive)",
           labelShort: "Both arms with prosthetic hand passively",
           label:
             "Both arms together with the prosthesis used passively (to position or stabilize the object, hand does not open/close)",
