@@ -62,7 +62,7 @@ export const InnerAccountDetailsBox = styled(Box)`
 `;
 
 export const StyledClinicianName = styled(Typography)`
-  font-size: 1.25rem;
+  font-size: 2.25rem;
   font-weight: 700;
 `;
 

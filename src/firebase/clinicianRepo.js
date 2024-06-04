@@ -748,3 +748,30 @@ export const getTotalClinicianSurveysByStatus = async (
 
   return snapshot.data().count;
 };
+//Delete addedClient
+// Function to delete the client
+const performClientDeletion = async (orgId, clinicianId, clientId) => {
+  try {
+    const clientDocRef = doc(db, "Organization", orgId, "Clinician", clinicianId, "Clients", clientId);
+    await deleteDoc(clientDocRef);
+    alert("Client deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting client:", error);
+    alert("Failed to delete client. Please try again later.");
+  }
+};
+
+// Function to show confirmation dialog and handle client deletion
+export const deleteClient = async (orgId, clinicianId, clientId) => {
+  // Show confirmation dialog
+  const isConfirmed = window.confirm("Are you sure you want to delete this client?");
+
+  // If user confirms deletion, proceed with deletion
+  if (isConfirmed) {
+    // Call the function to perform client deletion
+    await performClientDeletion(orgId, clinicianId, clientId);
+  } else {
+    // If user cancels deletion, do nothing
+    alert("Deletion cancelled.");
+  }
+};

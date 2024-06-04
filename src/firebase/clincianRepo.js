@@ -1,22 +1,23 @@
-import { db, auth } from "./firebase";
+import { db, auth } from "./firebase"; // Your Firebase configuration file
 import { doc, setDoc } from "firebase/firestore";
 
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
   signInWithEmailAndPassword,
+  sendEmailVerification,  // Import the sendEmailVerification function
 } from "firebase/auth";
 
 export const signinClinicianByEmail = async (email, password) => {
   try {
     const response = await signInWithEmailAndPassword(auth, email, password);
-
     return response;
   } catch (error) {
     console.log("Can not sign in: ", error);
     return null;
   }
 };
+
 export const createClinicianByEmail = async (email, password) => {
   try {
     const signInMethods = await fetchSignInMethodsForEmail(auth, email);
@@ -26,12 +27,18 @@ export const createClinicianByEmail = async (email, password) => {
       );
       return;
     } else {
+      
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       console.log("New account is created.");
+
+      // Send email verification
+      await sendEmailVerification(userCredential.user);
+      console.log("Verification email sent.");
+
       return userCredential.user.uid;
     }
   } catch (error) {
@@ -39,6 +46,7 @@ export const createClinicianByEmail = async (email, password) => {
     console.log("Inside catch block: ", error);
   }
 };
+
 export const addClinicianDb = async (uid, data) => {
   // Add a new document in collection
   console.log("inside addClinicianDb from Repo ===>", data);

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   AddClientButton,
@@ -17,6 +17,7 @@ import {
   fetchClients,
   fetchFilteredClinicianSurveys,
   getTotalFilteredSurveysForClient,
+  deleteClient, // Import deleteClient
 } from "@/firebase/clinicianRepo";
 import {
   fetchClientSurveys,
@@ -78,6 +79,21 @@ const MyClients = () => {
 
   const addClientButtonClick = () => {
     router.push("/clinician/my-clients/add-new-client");
+  };
+
+  // Function to handle client deletion
+  const handleDeleteClient = async (clientId) => {
+    const orgId = localStorage.getItem("orgId");
+    const clinicianId = localStorage.getItem("clinicianId");
+
+    try {
+      await deleteClient(orgId, clinicianId, clientId);
+      setClientsListData((prev) => prev.filter(([id]) => id !== clientId));
+      showSnackbar("success", "Client deleted successfully");
+    } catch (err) {
+      showSnackbar("error", err.message);
+      console.error("An error occurred while deleting the client: " + err);
+    }
   };
 
   // Filtered Surveys
@@ -175,7 +191,7 @@ const MyClients = () => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 
-    //Don't load data if page is decremented (data already loaded)
+    // Don't load data if page is decremented (data already loaded)
     const dataLoadedTillPageNo = Math.ceil(
       surveysListData.length / noOfItemsOnOnePage
     );
@@ -216,67 +232,31 @@ const MyClients = () => {
     const orgId = localStorage.getItem("orgId");
     const clinicianId = localStorage.getItem("clinicianId");
 
-    const data = { ...filterFormData, clientId: selectedClientIndex };
-
     (async () => {
       try {
-        let count;
-        if (Object.keys(filterFormData).length > 0) {
-          count = await getTotalFilteredSurveysForClient(
-            orgId,
-            clinicianId,
-            data,
-            false
-          );
-          setTotalSurveysCount(count);
-        } else {
-          count = await getTotalSurveysForClient(
+        const clients = await fetchClients(orgId, clinicianId);
+        setClientsListData(Object.entries(clients));
+
+        if (selectedClientIndex) {
+          const count = await getTotalSurveysForClient(
             orgId,
             clinicianId,
             selectedClientIndex
           );
-          console.log(count);
           setTotalSurveysCount(count);
-        }
 
-        // If there are no surveys, set page no. as 0
-        if (count == 0) {
-          setSurveysPageNo(0);
-          return;
-        }
+          if (count == 0) {
+            setSurveysPageNo(0);
+            return;
+          }
 
-        let surveys;
-        if (Object.keys(filterFormData).length > 0) {
-          surveys = await fetchFilteredClinicianSurveys(
-            orgId,
-            clinicianId,
-            data,
-            false,
-            surveysPageNo,
-            noOfItemsOnOnePage
-          );
-        } else {
-          surveys = await fetchClientSurveys(
+          const surveys = await fetchClientSurveys(
             orgId,
             clinicianId,
             selectedClientIndex,
-            surveysPageNo
+            1
           );
-        }
-
-        console.log(surveys);
-        console.log(surveysPageNo);
-
-        if (surveys.length == 0) {
-          setSurveysPageNo((p) => (p == 0 ? 0 : --p));
-        } else {
-          setSurveysListData((s) => {
-            const newSurveys = s.splice(
-              0,
-              (surveysPageNo - 1) * noOfItemsOnOnePage
-            );
-            return newSurveys.concat(surveys);
-          });
+          setSurveysListData(surveys);
         }
       } catch (err) {
         showSnackbar("error", err.message);
@@ -285,71 +265,58 @@ const MyClients = () => {
     })();
   };
 
-  const filterPanelRef = useRef();
-  const handleResetFilter = () => {
-    updateFilteredSurveys({
-      clientId: "",
-      surveyType: "",
-      surveyStatus: "",
-      fromDate: "",
-      toDate: "",
-    });
-    filterPanelRef.current.resetFormValues();
-  };
-
   return (
     <MainContainerBox>
       <HeadingBox>
-        <MyClientsHeadingTypography variant="h1">
-          MY CLIENTS
+        <MyClientsHeadingTypography variant="h4">
+          My Clients
         </MyClientsHeadingTypography>
-        <AddClientButton onClick={addClientButtonClick}>
-          Add Client
+        <AddClientButton variant="contained" onClick={addClientButtonClick}>
+          Add New Client
         </AddClientButton>
       </HeadingBox>
+
       <MainContentBox>
-        {(breakpoint === "desktop" || !selectedClientIndex) && (
-          <ClientListCard
-            clientsListData={clientsListData}
-            clientsPageNo={clientsPageNo}
-            handleClientsPageNoClick={handleClientsPageNoClick}
-            selectedIndex={selectedClientIndex}
-            handleListItemClick={handleListItemClick}
+        <ClientListCard
+          clientsListData={clientsListData}
+          selectedIndex={selectedClientIndex}
+          handleListItemClick={handleListItemClick}
+          clientsPageNo={clientsPageNo}
+          handleClientsPageNoClick={handleClientsPageNoClick}
+          handleDeleteClient={handleDeleteClient} // Pass the handler
+        />
+
+        {isFilterPanelOpen && (
+          <FilterPanel
+            open={isFilterPanelOpen}
+            toggleFilterPanelClick={toggleFilterPanelClick}
+            updateFilteredSurveys={updateFilteredSurveys}
+            selectedClientIndex={selectedClientIndex}
           />
         )}
 
-        {(breakpoint === "desktop" || !!selectedClientIndex) && (
+        {selectedClientIndex && (
           <>
+            <SurveysPerClient
+              surveysListData={surveysListData}
+              totalSurveysCount={totalSurveysCount}
+              surveysPageNo={surveysPageNo}
+              handleSurveysPageNoClick={handleSurveysPageNoClick}
+              noOfItemsOnOnePage={noOfItemsOnOnePage}
+              toggleAddNewSurveyCard={toggleAddNewSurveyCard}
+              reloadPageData={reloadPageData}
+            />
+
             {isAddNewSurveyShown && (
               <AddNewSurveyCard
-                toggleForm={toggleAddNewSurveyCard}
-                clientId={selectedClientIndex}
-              />
-            )}
-            {!isAddNewSurveyShown && selectedClientIndex && (
-              <SurveysPerClient
-                surveysListData={surveysListData}
-                totalSurveysCount={totalSurveysCount}
-                surveysPageNo={surveysPageNo}
-                handleSurveysPageNoClick={handleSurveysPageNoClick}
-                toggleFilterPanelClick={toggleFilterPanelClick}
-                addNewSurveyClick={toggleAddNewSurveyCard}
-                handleBackButtonClick={handleListItemClick}
+                toggleAddNewSurveyCard={toggleAddNewSurveyCard}
+                selectedClientIndex={selectedClientIndex}
                 reloadPageData={reloadPageData}
-                noOfItemsOnOnePage={noOfItemsOnOnePage}
-                filterFormData={filterFormData}
-                handleResetFilter={handleResetFilter}
               />
             )}
           </>
         )}
       </MainContentBox>
-      <FilterPanel
-        isFilterPanelOpen={isFilterPanelOpen}
-        toggleFilterPanelClick={toggleFilterPanelClick}
-        updateFilteredSurveys={updateFilteredSurveys}
-        ref={filterPanelRef}
-      />
     </MainContainerBox>
   );
 };

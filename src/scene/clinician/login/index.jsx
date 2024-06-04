@@ -53,6 +53,14 @@ const LoginLanding = () => {
 
       try {
         response = await signinClinicianByEmail(email, password);
+
+        if(!response.user.emailVerified)
+          {
+            console.log("----------"+response.user.uid);
+            alert("You are not verified yet! Please check the email.")
+            window.location.href = '/clinician/login';
+            return;
+          }
       } catch (err) {
         setLogin(false);
         setSnackbarMessage(err.message);

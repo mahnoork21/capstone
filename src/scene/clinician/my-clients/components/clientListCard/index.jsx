@@ -1,3 +1,4 @@
+// components/clientListCard.jsx
 import { useState, useEffect } from "react";
 import {
   StyledClientListCard,
@@ -9,7 +10,7 @@ import {
   NumberOfClientsTypography,
   StyledForwardAndBackwardButtonsBox,
 } from "./styled";
-import { IconButton } from "@mui/material";
+import { IconButton, Button } from "@mui/material";
 import {
   KeyboardArrowLeftSharp,
   KeyboardArrowRightSharp,
@@ -25,6 +26,7 @@ export default function ClientListCard({
   handleListItemClick,
   clientsPageNo,
   handleClientsPageNoClick,
+  handleDeleteClient, // Add this prop
 }) {
   const [searchText, setSearchText] = useState("");
 
@@ -85,13 +87,21 @@ export default function ClientListCard({
               noOfItemsOnOnePage * clientsPageNo
             )
             .map(([id, data]) => (
-              <ClientListItem
-                key={id}
-                clientId={id}
-                clientAddDate={data.added}
-                selectedIndex={selectedIndex}
-                handleListItemClick={handleListItemClick}
-              />
+              <div key={id} style={{ display: 'flex', alignItems: 'center' }}>
+                <ClientListItem
+                  clientId={id}
+                  clientAddDate={data.added}
+                  selectedIndex={selectedIndex}
+                  handleListItemClick={handleListItemClick}
+                />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleDeleteClient(id)}
+                >
+                  Delete
+                </Button>
+              </div>
             ))}
         </StyledClientsList>
       </StyledCardContent>
